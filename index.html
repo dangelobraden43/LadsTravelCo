@@ -234,11 +234,55 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .fi-myth{background:rgba(184,136,110,0.05);border:1px solid rgba(184,136,110,0.12);border-radius:5px;padding:16px 18px;margin-bottom:10px}
 .fi-myth-q{font-size:12.5px;font-weight:500;color:var(--cream);margin-bottom:6px}
 .fi-myth-a{font-size:11.5px;color:var(--cream2);line-height:1.7;font-weight:300}
-.del{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:14px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s}
+.del{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;transition:border-color .3s;cursor:pointer;overflow:hidden}
 .del:hover{border-color:var(--border2)}
-.del-i{font-size:18px;flex-shrink:0;margin-top:1px}
-.del-h{font-size:12.5px;font-weight:600;margin-bottom:3px}
-.del-p{font-size:11px;color:var(--muted);line-height:1.6;font-weight:300}
+.del-head{display:flex;align-items:center;gap:12px;padding:16px 18px}
+.del-i{font-size:18px;flex-shrink:0}
+.del-mid{flex:1}
+.del-h{font-size:13px;font-weight:600;margin-bottom:2px}
+.del-p{font-size:11px;color:var(--muted);line-height:1.5;font-weight:300}
+.del-arrow{font-size:14px;color:var(--dim);transition:transform .3s,color .3s;flex-shrink:0}
+.del.open .del-arrow{transform:rotate(180deg);color:var(--gold)}
+.del-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.del.open .del-body{max-height:5000px}
+.del-inner{padding:0 18px 20px;border-top:1px solid var(--border)}
+.del-ex-label{font-family:var(--mono);font-size:7.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--copper);margin:14px 0 8px}
+.del-ex{font-size:12px;color:var(--cream2);line-height:1.7;font-weight:300}
+.del-ex strong{color:var(--cream);font-weight:500}
+.del-ex ul{list-style:none;padding:0;margin:8px 0}
+.del-ex li{font-size:11.5px;color:var(--cream2);line-height:1.7;font-weight:300;padding:4px 0 4px 14px;position:relative}
+.del-ex li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gold-border)}
+.del-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+@media(max-width:600px){.del-grid{grid-template-columns:1fr}}
+.del-stat{background:var(--elevated);border:1px solid var(--border);border-radius:4px;padding:10px 12px;text-align:center}
+.del-stat-num{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--gold);margin-bottom:2px}
+.del-stat-label{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.del-maps{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}
+@media(max-width:600px){.del-maps{grid-template-columns:1fr}}
+.del-map-city{background:var(--elevated);border:1px solid var(--border);border-radius:4px;padding:10px 14px;font-size:11px;color:var(--cream2);font-weight:300;display:flex;justify-content:space-between;align-items:center;transition:border-color .2s}
+.del-map-city:hover{border-color:var(--border2)}
+.del-map-city strong{color:var(--cream);font-weight:500;font-size:11.5px}
+.del-map-city span{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.5px}
+.del-map-link{color:var(--gold);text-decoration:none;font-family:var(--mono);font-size:8px;letter-spacing:.5px}
+.del-map-link:hover{text-decoration:underline}
+.del-route{background:var(--elevated);border:1px solid var(--border);border-radius:4px;padding:10px 14px;margin:8px 0;font-family:var(--mono);font-size:9.5px;color:var(--cream2);letter-spacing:.3px;line-height:1.8}
+.del-route strong{color:var(--gold);font-weight:600}
+
+/* ═══ MINI QUIZ ═══ */
+.quiz-wrap{margin-top:14px}
+.quiz-q{margin-bottom:14px}
+.quiz-label{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.quiz-opts{display:flex;flex-wrap:wrap;gap:6px}
+.quiz-opt{background:var(--elevated);border:1px solid var(--border);border-radius:4px;padding:8px 14px;font-size:11px;color:var(--cream2);cursor:pointer;transition:all .2s;font-family:var(--sans);font-weight:300}
+.quiz-opt:hover{border-color:var(--border2);color:var(--cream)}
+.quiz-opt.selected{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+.quiz-result{display:none;margin-top:16px;padding:16px 18px;background:var(--elevated);border:1px solid var(--gold-border);border-left:3px solid var(--gold);border-radius:0 5px 5px 0}
+.quiz-result.show{display:block;animation:rise .3s ease}
+.quiz-result-title{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.quiz-result p{font-size:12px;color:var(--cream2);line-height:1.7;font-weight:300}
+.quiz-result strong{color:var(--cream);font-weight:500}
+.quiz-result a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-border)}
+.quiz-result a:hover{border-bottom-color:var(--gold)}
 
 /* ═══ LADS TAB ═══ */
 .lads-hero{width:100%;max-width:360px;display:block;margin:0 auto 28px;border-radius:6px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
@@ -944,10 +988,205 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 
 <div class="rule"></div>
 <div class="slabel">What You Get</div>
-<div class="del"><div class="del-i">&#128196;</div><div><div class="del-h">Designed HTML Trip Framework</div><div class="del-p">Day-by-day flow, validated spots, accommodation strategy, full cost breakdown.</div></div></div>
-<div class="del"><div class="del-i">&#9992;&#65039;</div><div><div class="del-h">Flight Intelligence</div><div class="del-p">Routing, booking windows, timing. We&rsquo;ve booked Europe round-trips under $500 four times.</div></div></div>
-<div class="del"><div class="del-i">&#128506;&#65039;</div><div><div class="del-h">Google Maps Lists</div><div class="del-p">Bars, food, attractions, day trips &mdash; pinned and ready on the ground.</div></div></div>
-<div class="del"><div class="del-i">&#128176;</div><div><div class="del-h">Money Intelligence</div><div class="del-p">Where the money goes, where people waste it, how to stretch without gutting the experience.</div></div></div>
+<p style="font-size:12px;color:var(--cream2);line-height:1.7;font-weight:300;margin-bottom:16px">Not a PDF itinerary. Not a Pinterest board. Five deliverables, each backed by the same database, research engine, and firsthand knowledge that powers everything on this site. Click any deliverable to see a real example from an existing framework.</p>
+
+<!-- DELIVERABLE 1: HTML TRIP FRAMEWORK -->
+<div class="del" onclick="this.classList.toggle('open')">
+  <div class="del-head">
+    <div class="del-i">&#128196;</div>
+    <div class="del-mid">
+      <div class="del-h">Designed HTML Trip Framework</div>
+      <div class="del-p">Day-by-day flow, validated spots, accommodation strategy, full cost breakdown.</div>
+    </div>
+    <div class="del-arrow">&#9660;</div>
+  </div>
+  <div class="del-body"><div class="del-inner">
+    <div class="del-ex-label">Real Example &mdash; Munich Oktoberfest Framework</div>
+    <div class="del-ex">
+      <p>Nine sections. Each one built from five specialized research agents covering logistics, pricing, cultural context, day trips, and savings strategy. This is what a framework actually looks like inside:</p>
+      <ul>
+        <li><strong>Quick Read</strong> &mdash; The entire trip in one paragraph. Budget range, target dates, primary strategy, accommodation pick. Everything a group needs to decide &ldquo;are we in?&rdquo; in 60 seconds</li>
+        <li><strong>Tent Strategy</strong> &mdash; Augustiner-Br&auml;u as the primary target. Why three properly executed sessions beat six half-sessions. Walk-in availability windows. Tipping strategy: &euro;6 on &euro;64 for a table of 4 &mdash; not generosity, operational strategy. Your waitress controls your next 5 hours</li>
+        <li><strong>Experience Sequence</strong> &mdash; Day-by-day flow with tent sessions, Viktualienmarkt, beer gardens, and nightlife sequenced so the group has built-in recovery days. No 6-day sprint</li>
+        <li><strong>Day Trips</strong> &mdash; Neuschwanstein and Salzburg, both covered by the Bayern Ticket (&euro;64 for a group of 4 &mdash; unlimited regional trains across Bavaria for the day)</li>
+        <li><strong>Accommodation</strong> &mdash; Schwan Locke aparthotel in Glockenbachviertel. 15-minute walk to the Wiesn. Why aparthotels over Airbnb: 70%+ cancellation risk from non-Superhost listings during Oktoberfest as hosts relist at 2-3x</li>
+        <li><strong>Flights</strong> &mdash; ORD &rarr; KEF &rarr; MUC via Icelandair at $625-750pp. Why Economy Light is a trap when Standard is within ~$80</li>
+        <li><strong>Cost Model</strong> &mdash; Per-session tent costs (&euro;103.63pp for a full session at Augustiner), full trip budgets across lean/standard/generous tiers for 5, 7, and 8-day versions. All-in: $1,800-$2,800pp for a group of 4</li>
+        <li><strong>What First-Timers Get Wrong</strong> &mdash; Six patterns that degrade the trip, sourced from consistent research. Tent-hopping, arriving after noon expecting walk-in, ignoring the cash-only economy</li>
+        <li><strong>Savings Intelligence</strong> &mdash; CashGroup ATMs, MVV Group Day Tickets (&euro;29/day for up to 5 people), Trachten sourcing strategy with price comparisons</li>
+      </ul>
+      <div class="del-grid">
+        <div class="del-stat"><div class="del-stat-num">9</div><div class="del-stat-label">Sections</div></div>
+        <div class="del-stat"><div class="del-stat-num">1,600+</div><div class="del-stat-label">Lines of Content</div></div>
+      </div>
+      <p style="margin-top:10px">Every framework is different. Dublin gets a pub crawl architecture with validated stops. Spain gets open-jaw routing strategy (Barcelona in, Madrid out). Australia gets six weeks of validated content across Sydney, Tasmania, and the Blue Mountains. The structure adapts to the destination &mdash; not a template applied to a city name.</p>
+      <p style="margin-top:8px"><a href="munich.html" target="_blank" style="color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-border);font-size:11.5px">Open the Munich Framework &rarr;</a></p>
+    </div>
+  </div></div>
+</div>
+
+<!-- DELIVERABLE 2: FLIGHT INTELLIGENCE -->
+<div class="del" onclick="this.classList.toggle('open')">
+  <div class="del-head">
+    <div class="del-i">&#9992;&#65039;</div>
+    <div class="del-mid">
+      <div class="del-h">Flight Intelligence</div>
+      <div class="del-p">Routing analysis, booking windows, fare class monitoring. We&rsquo;ve booked Europe round-trips under $500 four times.</div>
+    </div>
+    <div class="del-arrow">&#9660;</div>
+  </div>
+  <div class="del-body"><div class="del-inner">
+    <div class="del-ex-label">Real Example &mdash; Poland August 2026 (Trip in ~3 Months)</div>
+    <div class="del-ex">
+      <p>A group of 4-8 planning Poland for late August. Here&rsquo;s the actual flight analysis we&rsquo;d build:</p>
+      <p><strong>The route most people would book:</strong> ORD &rarr; some European hub &rarr; KRK (Krakow). One-stop on United or Lufthansa. $750-950pp round-trip. Arrives tired, connecting through a crowded hub, paying a premium because Krakow is a secondary airport with less competition.</p>
+      <p><strong>What we&rsquo;d actually book:</strong> LOT Polish Airlines flies ORD &rarr; WAW (Warsaw) nonstop. Most people don&rsquo;t know this route exists. It consistently prices at $680pp round-trip &mdash; $70-270 cheaper than connecting through Frankfurt or Munich. And it&rsquo;s a nonstop, which means less travel time, no connection risk, and no lost bags at a transfer hub.</p>
+      <div class="del-route">
+        <strong>Route Analysis:</strong><br>
+        Option A: ORD &rarr; WAW nonstop (LOT) &mdash; ~$680pp RT, 9.5hr direct<br>
+        Option B: ORD &rarr; FRA &rarr; KRK (Lufthansa) &mdash; ~$780pp RT, 12-14hr<br>
+        Option C: ORD &rarr; MUC &rarr; KRK (Lufthansa) &mdash; ~$810pp RT, 13-15hr<br>
+        Option D: DTW &rarr; AMS &rarr; WAW (KLM/Delta) &mdash; ~$720pp RT, 12hr<br>
+        <strong>Savings vs. Option C (group of 6): $780 total</strong>
+      </div>
+      <p><strong>The framework routing strategy:</strong> Fly into Warsaw, spend two days there, then take the Pendolino high-speed train to Krakow (2h 20m, 120-180 PLN pp booked 30 days out). This is the Poland framework&rsquo;s Version B &mdash; the open-jaw logic built into the trip architecture. You&rsquo;re not backtracking to Warsaw for a departure flight because you started there.</p>
+      <p><strong>Booking timeline for a late August trip:</strong> We&rsquo;re sitting in the 6-8 week sweet spot right now if booking in June. Set Google Flights price tracking on all four route options today. LOT tends to drop fares on Tuesday/Wednesday. If the ORD &rarr; WAW nonstop hits $650 or below, that&rsquo;s a strong buy signal &mdash; historically bottom 15% for this route in summer.</p>
+      <p><strong>Group split strategy:</strong> For a group of 6, book in three pairs. The first pair likely catches M or Q bucket at ~$660. Second pair at ~$680. Third pair might be $700-720. Average: ~$687pp instead of $720+ if booked together. That&rsquo;s $200 saved before the trip even starts.</p>
+      <p style="margin-top:10px;font-size:11px;color:var(--muted)">Every framework includes this level of routing analysis. See our full flight methodology in the <strong>How We Find the Deals</strong> section above.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- DELIVERABLE 3: GOOGLE MAPS LISTS -->
+<div class="del" onclick="this.classList.toggle('open')">
+  <div class="del-head">
+    <div class="del-i">&#128506;&#65039;</div>
+    <div class="del-mid">
+      <div class="del-h">Google Maps Lists</div>
+      <div class="del-p">18 curated lists across 12 cities. Bars, food, attractions, day trips &mdash; pinned and ready on the ground.</div>
+    </div>
+    <div class="del-arrow">&#9660;</div>
+  </div>
+  <div class="del-body"><div class="del-inner">
+    <div class="del-ex-label">Full Inventory &mdash; 18 Lists, 12 Cities</div>
+    <div class="del-ex">
+      <p>Every list is built from the same database that powers the frameworks. Spots are personally visited, rated, and organized by category. Open any list on your phone and the pins are ready to navigate to on the ground. No searching, no guessing, no &ldquo;is this place still open?&rdquo;</p>
+    </div>
+
+    <div class="del-maps">
+      <a class="del-map-city" href="https://maps.app.goo.gl/NrZtg6tUR1Rjk8oS8" target="_blank"><strong>Dublin</strong> <span>Pubs &amp; Food</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/9YLakDkjrE6jj7cQA" target="_blank"><strong>Dublin</strong> <span>Attractions</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/deRD11SQis6ZUsKL8" target="_blank"><strong>Galway</strong> <span>Full List</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/kmFjNeA6k8BHuHWT8" target="_blank"><strong>Rome</strong> <span>Food &amp; Drink</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/RAS5mqRhc6BYTa5D6" target="_blank"><strong>Rome</strong> <span>Attractions</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/bZp95gDP9VwBe6Kd7" target="_blank"><strong>Barcelona</strong> <span>Food</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/2LZGLZQEuT53NK3Z8" target="_blank"><strong>Barcelona</strong> <span>Bars</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/63o5dgY5Fr8SJUZk6" target="_blank"><strong>Barcelona</strong> <span>Attractions</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/e3pGDSj6PCcPEy8j7" target="_blank"><strong>Prague</strong> <span>Attractions</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/o7BCdPPpzPHJsEA59" target="_blank"><strong>Prague</strong> <span>Bars</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/R4TC9toa9oP5qJed8" target="_blank"><strong>Vienna</strong> <span>Bars</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/FYEJQFkTJVyqZr1x7" target="_blank"><strong>Dresden</strong> <span>Full List</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/9n9uM7NG8Sa2aA8" target="_blank"><strong>Vancouver</strong> <span>Bars</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/4moCgAkEHz5uJbQ9A" target="_blank"><strong>Vancouver</strong> <span>Attractions</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/hc199wu19C6cKj9G6" target="_blank"><strong>Jac&oacute;</strong> <span>Full List</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/ZWM8LXFGV9QpS8fB7" target="_blank"><strong>San Juan</strong> <span>Full List</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/Fr7KdvoLsnXeBV1q8" target="_blank"><strong>Seattle</strong> <span>+ Olympic</span></a>
+      <a class="del-map-city" href="https://maps.app.goo.gl/PTJn6coPBcRDKbHw5" target="_blank"><strong>Phoenix</strong> <span>+ Golf</span></a>
+    </div>
+
+    <div class="del-ex" style="margin-top:12px">
+      <div class="del-grid">
+        <div class="del-stat"><div class="del-stat-num">18</div><div class="del-stat-label">Curated Lists</div></div>
+        <div class="del-stat"><div class="del-stat-num">650+</div><div class="del-stat-label">Total Spots</div></div>
+      </div>
+      <p style="margin-top:10px">Barcelona alone has three separate lists (food, bars, attractions) covering 115 spots. Sydney has 123. Every spot has been visited, not scraped from a &ldquo;top 10&rdquo; listicle. When we add a city to a client&rsquo;s framework, these lists are included &mdash; ready to save to your phone and use immediately.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- DELIVERABLE 4: MONEY INTELLIGENCE -->
+<div class="del" onclick="this.classList.toggle('open')">
+  <div class="del-head">
+    <div class="del-i">&#128176;</div>
+    <div class="del-mid">
+      <div class="del-h">Money Intelligence</div>
+      <div class="del-p">Where the money goes, where people waste it, and how to stretch without gutting the experience.</div>
+    </div>
+    <div class="del-arrow">&#9660;</div>
+  </div>
+  <div class="del-body"><div class="del-inner">
+    <div class="del-ex-label">Real Example &mdash; Munich Oktoberfest Savings Intelligence</div>
+    <div class="del-ex">
+      <p>Oktoberfest is the perfect showcase for money intelligence because it has a defined event window, a cash-heavy economy, and a dozen ways to waste money that are completely avoidable. Here&rsquo;s what our Munich framework covers:</p>
+
+      <p><strong>Cash Strategy</strong> &mdash; The tents are largely cash-based. Use CashGroup ATMs only (Deutsche Bank, Commerzbank, HypoVereinsbank, Postbank) for zero-fee international withdrawals. When the ATM asks &ldquo;convert to USD?&rdquo; always select No &mdash; charge in EUR. Dynamic currency conversion adds 3-5% in hidden markup. On a group of 4 spending &euro;400+ in cash over a week, that&rsquo;s &euro;12-20 in pure waste.</p>
+
+      <p><strong>Transit</strong> &mdash; MVV Group Day Ticket: ~&euro;29/day for up to 5 people covering all U-Bahn, S-Bahn, trams, and buses. Individual tickets run &euro;8-12/day each &mdash; so a group of 4 on individual tickets pays &euro;32-48/day vs. &euro;29 on a group ticket. The Bayern Ticket (&euro;64 for 4 people) covers unlimited regional trains across all of Bavaria for a full day, including both day trip routes to Neuschwanstein and Salzburg.</p>
+
+      <div class="del-grid">
+        <div class="del-stat"><div class="del-stat-num">&euro;29</div><div class="del-stat-label">Group Day Ticket / 5 People</div></div>
+        <div class="del-stat"><div class="del-stat-num">&euro;64</div><div class="del-stat-label">Bayern Ticket / 4 People</div></div>
+      </div>
+
+      <p><strong>Tent Economics</strong> &mdash; A full session at Augustiner (4-6 hours, 3-4 Masskrugs, Hendl, Obatzda, pretzels, proper tipping) runs &euro;103.63pp. A half session (2-3 hours, 2 beers, lighter food) runs &euro;55-75pp. We budget three full sessions across a 5-7 day trip &mdash; not six, because depth beats breadth and your wallet agrees. Three sessions at &euro;104pp = &euro;312. Six half-sessions at &euro;65pp = &euro;390. You spend more, have worse experiences, and feel worse doing it.</p>
+
+      <p><strong>Accommodation Math</strong> &mdash; Schwan Locke aparthotel: &euro;475-600 total for two studio apartments over the stay. Sounds expensive until you compare: a standard hotel in the festival zone runs &euro;760-960 for the same dates. And the aparthotel has a kitchen, which means breakfast at the apartment instead of &euro;15-20 hotel breakfast or &euro;8-12 bakery runs. Over 5 days, apartment breakfast saves &euro;40-60pp.</p>
+
+      <p><strong>Trachten Strategy</strong> &mdash; Lederhosen from Angermaier or Moser: &euro;150-250. From second-hand shops (ReSales, Oxfam Munich): &euro;80-130. From festival stalls: &euro;60-100 for low-quality costumes that aren&rsquo;t real Trachten. The second-hand option is the sweet spot &mdash; real quality, half the price, and you&rsquo;re not throwing money at a costume you&rsquo;ll wear once.</p>
+
+      <p><strong>The all-in picture:</strong> $1,800-$2,800pp for 5-8 days including flights (ORD via Icelandair), accommodation (Schwan Locke), three tent sessions, one day trip, transit, and daily food/drink. Every number in that range is built from specific line items, not a guess.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- DELIVERABLE 5: FOLLOW-UP ACCESS (QUIZ) -->
+<div class="del" onclick="if(!event.target.closest('.quiz-wrap')){this.classList.toggle('open')}">
+  <div class="del-head">
+    <div class="del-i">&#128172;</div>
+    <div class="del-mid">
+      <div class="del-h">Personalized Recommendation</div>
+      <div class="del-p">Answer three questions. Get a specific framework recommendation and next step &mdash; not a generic sales pitch.</div>
+    </div>
+    <div class="del-arrow">&#9660;</div>
+  </div>
+  <div class="del-body"><div class="del-inner">
+    <div class="del-ex-label">Find Your Framework</div>
+    <div class="del-ex">
+      <p>We have nine frameworks built and three more in progress. Instead of guessing which one fits your group, answer three questions and we&rsquo;ll tell you exactly where to start.</p>
+    </div>
+    <div class="quiz-wrap" id="matchQuiz">
+      <div class="quiz-q">
+        <div class="quiz-label">1. What&rsquo;s the vibe?</div>
+        <div class="quiz-opts" data-q="vibe">
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="nightlife">Nightlife &amp; pubs</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="culture">Culture &amp; history</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="adventure">Adventure &amp; outdoors</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="food">Food &amp; drink</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="mix">Mix of everything</div>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-label">2. Group size?</div>
+        <div class="quiz-opts" data-q="size">
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="couple">2 people</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="small">3-4 people</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="medium">5-6 people</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="large">7+</div>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <div class="quiz-label">3. Budget per person (flights included)?</div>
+        <div class="quiz-opts" data-q="budget">
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="low">Under $1,500</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="mid">$1,500 - $2,500</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="high">$2,500 - $4,000</div>
+          <div class="quiz-opt" onclick="selectQuizOpt(this)" data-v="flex">$4,000+ / flexible</div>
+        </div>
+      </div>
+      <div class="quiz-result" id="quizResult"></div>
+    </div>
+  </div></div>
+</div>
 
 <div class="foot"><div class="foot-b">The Lads Travel Co.</div><p>&copy; 2026</p></div>
 </div>
@@ -1104,6 +1343,57 @@ function submitForm(e){
   window.open('mailto:dangelobraden43@gmail.com?subject=Lads Travel Co. — New Inquiry&body='+encodeURIComponent(body));
   form.style.display='none';
   document.getElementById('formSuccess').style.display='block';
+}
+
+// ─── MATCH QUIZ ───
+const quizState={vibe:null,size:null,budget:null};
+function selectQuizOpt(el){
+  const group=el.parentElement;
+  group.querySelectorAll('.quiz-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  const q=group.dataset.q;
+  quizState[q]=el.dataset.v;
+  if(quizState.vibe&&quizState.size&&quizState.budget)showQuizResult();
+}
+function showQuizResult(){
+  const{vibe,size,budget}=quizState;
+  const r=document.getElementById('quizResult');
+  const recs=getRecommendations(vibe,size,budget);
+  let html='<div class="quiz-result-title">Your Match</div>';
+  html+='<p><strong>'+recs.primary.name+'</strong> &mdash; '+recs.primary.why+'</p>';
+  if(recs.alt){html+='<p style="margin-top:10px"><strong>Also consider:</strong> '+recs.alt.name+' &mdash; '+recs.alt.why+'</p>';}
+  html+='<p style="margin-top:12px">'+recs.next+'</p>';
+  r.innerHTML=html;
+  r.classList.add('show');
+}
+function getRecommendations(vibe,size,budget){
+  // Primary match logic
+  if(vibe==='nightlife'){
+    if(budget==='low')return{primary:{name:'Dublin + Galway',why:'35+ pubs validated by Dawson. Flights from ORD under $500 in shoulder season. The pub crawl architecture alone is worth the framework. Budget: ~$1,200-1,800pp.'},alt:{name:'Poland (Krakow)',why:'Kazimierz nightlife district, 8-15 PLN zapiekanki at 2am, LOT nonstop from ORD at ~$680pp. Total trip: ~$1,555pp.'},next:'Both frameworks are ready now. <a href="dublin-galway.html" target="_blank">Open Dublin + Galway</a> or <a href="poland.html" target="_blank">Open Poland</a> to see what\'s inside, or scroll down to the intake form to get started.'};
+    if(budget==='mid')return{primary:{name:'Munich Oktoberfest',why:'The world\'s biggest beer festival, built around Augustiner-Br\u00e4u tent strategy. Three proper sessions beat six half-sessions. $1,800-$2,800pp all-in for a group of 4.'},alt:{name:'Barcelona + Madrid',why:'115 Barcelona spots in our database. La Rambla late-night, Gothic Quarter bars, rooftop cocktails. Open-jaw routing: fly into BCN, train to Madrid, fly home.'},next:'<a href="munich.html" target="_blank">Open Munich</a> or <a href="spain.html" target="_blank">Open Spain</a>, or scroll down to tell us more about your group.'};
+    return{primary:{name:'Munich Oktoberfest + Day Trips',why:'Full Oktoberfest experience with Neuschwanstein and Salzburg day trips on the Bayern Ticket (\u20AC64 for 4 people). Go generous tier at $2,800pp for the definitive version.'},alt:{name:'Thailand NYE',why:'Bangkok + islands for New Year\'s. Flight routing via Cathay Pacific through Hong Kong. A completely different gear.'},next:'<a href="munich.html" target="_blank">Open Munich</a> or <a href="thailand.html" target="_blank">Open Thailand</a>, or scroll down to the intake form.'};
+  }
+  if(vibe==='culture'){
+    if(budget==='low')return{primary:{name:'Poland (Krakow + Warsaw)',why:'Auschwitz-Birkenau. Wieliczka Salt Mine Miners\' Route (143 PLN pp). Nowa Huta Cold War district by Trabant. Warsaw rebuilt from wartime destruction. LOT nonstop at ~$680pp. Version B (8-day) at ~$1,850pp.'},alt:{name:'Dublin + Galway',why:'Kilkenny Castle, Cliffs of Moher day trip, Book of Kells. Ireland on a budget works because the pubs are the culture.'},next:'<a href="poland.html" target="_blank">Open Poland</a> or <a href="dublin-galway.html" target="_blank">Open Dublin + Galway</a>, or tell us more below.'};
+    if(budget==='mid')return{primary:{name:'Rome + Italy',why:'Colosseum, Vatican, Sistine Chapel, plus a Pompeii + Amalfi Coast day trip that turns a city trip into three destinations. 43 spots in our Rome database.'},alt:{name:'Prague + Vienna + Dresden',why:'75 combined spots across three of Central Europe\'s most architecturally rich cities. Christmas market season is the sweet spot.'},next:'<a href="italy.html" target="_blank">Open Italy</a> to see the framework, or scroll down to get started.'};
+    return{primary:{name:'Rome + Italy (Extended)',why:'Go deep. Vatican, Pompeii, Amalfi, Sorrento. Our day trip routing turns Rome into a multi-destination trip. At this budget, add Florence or Naples.'},alt:{name:'Iceland Ring Road',why:'Dawson drove the full Ring Road. Volcanic landscapes, waterfalls, Westman Islands. A fundamentally different kind of travel.'},next:'<a href="italy.html" target="_blank">Open Italy</a> or <a href="iceland.html" target="_blank">Open Iceland</a>, or reach out below.'};
+  }
+  if(vibe==='adventure'){
+    if(budget==='low')return{primary:{name:'Iceland',why:'Dawson\'s Ring Road framework. Oxararfoss, Eldfell volcano, Westman Islands. Budget-friendly with camping and guesthouse options. The landscape does the work.'},alt:{name:'Costa Rica (Jac\u00f3)',why:'ATV tour to the waterfall \u2014 our single best half-day experience in all travel. 28 validated spots. No passport stress (domestic flight pricing from US).'},next:'<a href="iceland.html" target="_blank">Open Iceland</a> or scroll down to tell us about your group.'};
+    return{primary:{name:'Iceland Ring Road',why:'The full loop. Waterfalls, glaciers, volcanic craters, Westman Islands ferry. Dawson validated every stop. This is the adventure framework.'},alt:{name:'Thailand',why:'Islands, temples, street food culture. Completely different adventure energy \u2014 warm water, jungle, and Bangkok chaos.'},next:'<a href="iceland.html" target="_blank">Open Iceland</a> or <a href="thailand.html" target="_blank">Open Thailand</a>, or tell us your dates below.'};
+  }
+  if(vibe==='food'){
+    if(budget==='low')return{primary:{name:'Poland (Krakow)',why:'Milk bars (bar mleczny) for lunch every day save $100/day for a group of 8. Zapiekanki from Plac Nowy at 8-15 PLN. Vodka tastings. The food scene is incredible and absurdly cheap.'},alt:{name:'Dublin + Galway',why:'Galway\'s food scene punches above its weight. 15 spots, 100% rated. Seafood chowder, oysters, and brown bread \u2014 honest food.'},next:'<a href="poland.html" target="_blank">Open Poland</a> or <a href="dublin-galway.html" target="_blank">Open Dublin</a>, or scroll down.'};
+    if(budget==='mid')return{primary:{name:'Barcelona + Madrid',why:'115 spots in Barcelona alone. Three separate Google Maps lists for food, bars, and attractions. La Boqueria, pintxos bars, vermouth culture. Open-jaw routing so you eat your way across two cities.'},alt:{name:'Rome + Italy',why:'33 rated Rome spots. Trastevere trattorias, supplì, and a Pompeii day trip that includes Sorrento limoncello.'},next:'<a href="spain.html" target="_blank">Open Spain</a> or <a href="italy.html" target="_blank">Open Italy</a>, or reach out below.'};
+    return{primary:{name:'Rome + Italy (Extended)',why:'At this budget, do the full South. Rome food scene (43 database spots), Amalfi Coast, Sorrento, and optionally Naples \u2014 the birthplace of pizza. Our Italy framework is built for exactly this.'},alt:{name:'Thailand',why:'Bangkok street food is a category of its own. Pad thai at 40 baht, night markets, rooftop bars. The food budget goes 3x further.'},next:'<a href="italy.html" target="_blank">Open Italy</a> or <a href="thailand.html" target="_blank">Open Thailand</a>, or tell us more below.'};
+  }
+  // mix / default
+  if(budget==='low'){
+    if(size==='couple'||size==='small')return{primary:{name:'Dublin + Galway',why:'The most versatile framework we have. Pubs, culture, Cliffs of Moher day trip, Kilkenny Castle. Works for any group dynamic. Flights under $500 in shoulder season.'},alt:{name:'Poland',why:'Three-city route (Krakow, Warsaw, Gdansk) at $1,555pp. Nightlife, history, food, and coast \u2014 genuine mix.'},next:'<a href="dublin-galway.html" target="_blank">Open Dublin + Galway</a> or <a href="poland.html" target="_blank">Open Poland</a>, or scroll down.'};
+    return{primary:{name:'Poland',why:'Version C (10-day) covers Krakow nightlife and culture, Warsaw history and energy, and Gdansk coast. $2,140pp all-in. Three fundamentally different cities on one route.'},alt:{name:'Dublin + Galway',why:'Hard to beat for a large group on a budget. The pub culture naturally accommodates big groups.'},next:'<a href="poland.html" target="_blank">Open Poland</a> or <a href="dublin-galway.html" target="_blank">Open Dublin</a>, or tell us about your trip.'};
+  }
+  if(budget==='mid')return{primary:{name:'Barcelona + Madrid',why:'The mix framework. 115 Barcelona spots covering nightlife, food, culture, beach, and architecture. Montserrat day trip for adventure. Open-jaw routing keeps it efficient. $1,800-2,400pp.'},alt:{name:'Munich Oktoberfest',why:'If your dates align with late September \u2014 Oktoberfest + Neuschwanstein + Salzburg is an unbeatable combination of festival, culture, and scenery.'},next:'<a href="spain.html" target="_blank">Open Spain</a> or <a href="munich.html" target="_blank">Open Munich</a>, or reach out below.'};
+  return{primary:{name:'Australia + New Zealand',why:'Brady spent six weeks in Sydney. 123 spots. Opera House, Blue Mountains, Tasmania extension. This is the big trip \u2014 the one that justifies the budget and the flight time.'},alt:{name:'Multi-City Europe',why:'At $2,500+, you can combine two frameworks. Dublin + Barcelona. Rome + Prague. We build custom multi-city routes using open-jaw flight logic.'},next:'<a href="australia-nz.html" target="_blank">Open Australia + NZ</a>, or scroll down and tell us what you\'re thinking. We\'ll build the route.'}
 }
 </script>
 </body></html>
