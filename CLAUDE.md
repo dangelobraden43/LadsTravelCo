@@ -7,6 +7,39 @@ Claude Code reads it automatically every session.
 
 ---
 
+## STATUS AS OF APRIL 9, 2026
+
+**LIVE SITE:** Deployed on Vercel via GitHub (`dangelobraden43/LadsTravelCo`). Auto-deploys on every `git push`.
+
+### Completed Today
+- Main site v4 built and deployed (`index.html`)
+- All 8 frameworks audited against quality rubric
+- Universal fixes applied across all 8 (Outfit font, OG tags, preconnect, email, insurance removed)
+- Munich, Thailand, Poland rebuilt from scratch using synthesis docs
+- Iceland: Dawson attribution fixed, Quick Read added, 4 photos embedded (Westman Islands, Oxararfoss, Eldfell overlook, Eldfell close-up)
+- Dublin, Italy, Spain, Australia: Google Maps links added, Quick Read added, First-Timers added, spot counts corrected, tour booking links fixed
+- Confidence label colors standardized across all frameworks (research = blue-grey `#8a9ab0`, validated = copper)
+- All files renamed to clean URLs
+- Research docs (docx, pdf, xlsx) gitignored to keep repo lightweight
+- Stale dates and deadlines updated across 4 files (Poland, Iceland, Munich, Charleston)
+- All placeholder framework links in `index.html` replaced with real relative paths
+- GitHub repo created and first push complete (21 files, 16,677 lines)
+- Vercel deployment live and auto-deploying
+
+### Tomorrow's Priorities
+1. Build Prague + Vienna + Dresden framework from scratch (synthesis needed — use database spots for Vienna 37, Prague 38 + personal photos: St. Vitus, Schonbrunn, Dresden square, Pilsner Urquell)
+2. Explore Vercel dashboard — custom domain, analytics, Speed Insights
+3. Begin converting main site from static HTML to React (enables v0 components, better interactivity)
+4. Set up Formspree to replace mailto on intake form
+5. Set up Cal.com booking widget
+6. Evaluate v0 by Vercel for UI component generation
+7. Explore Claude Code MCP servers (GitHub MCP already configured in `.mcp.json`)
+
+### Remaining Placeholder
+- 1 `href="#"` in `index.html` for Prague + Vienna + Dresden (no framework built yet)
+
+---
+
 ## WHO THIS IS
 
 Brady D'Angelo and Dawson. Two guys who've actually been there.
@@ -131,28 +164,33 @@ Also Validated (side-by-side cards):
 ## FILE INVENTORY
 
 ### Main Site
-- `lads-travel-co-site-v4.html` → rename to `index.html` for deployment
+- `index.html` — deployed main site (v4)
 
-### Framework HTMLs (9 + Peru = 10)
+### Framework HTMLs (9 deployed + Peru + Prague pending)
 | File | Destination | Validation | Status |
 |------|-------------|-----------|--------|
-| Dublin_Galway_Lads_Travel_Co_v2.html | Dublin + Galway | Both Lads | Needs audit |
-| Italy_2026_Lads_Travel_Co.html | Rome + Italy | Both Lads | Needs audit |
-| spain_2026_lads_travel_co (1).html | Barcelona + Madrid | Both Lads | Needs audit |
-| australia_nz_lads.html | Australia + NZ | Brady | Needs audit |
-| Iceland_2026_Lads_Travel_Co.html | Iceland | Dawson | Needs audit |
-| lads-munich-oktoberfest-2026 (1).html | Munich Oktoberfest | Research | Needs rebuild |
-| Poland_August_2026_Lads_Travel_Co.html | Poland August | Research | Needs rebuild |
-| Thailand_NYE_2026_Lads_Travel_Co (1).html | Thailand NYE | Research | Needs rebuild |
+| `dublin-galway.html` | Dublin + Galway | Both Lads | Audited + fixed |
+| `italy.html` | Rome + Italy | Both Lads | Audited + fixed |
+| `spain.html` | Barcelona + Madrid | Both Lads | Audited + fixed |
+| `australia-nz.html` | Australia + NZ | Brady | Audited + fixed |
+| `iceland.html` | Iceland | Dawson | Audited + fixed, photos embedded |
+| `munich.html` | Munich Oktoberfest | Research | Rebuilt from synthesis |
+| `poland.html` | Poland August | Research | Rebuilt from synthesis |
+| `thailand.html` | Thailand NYE | Research | Rebuilt from synthesis |
 | Peru_Trip_Guide.pdf | Machu Picchu | Brady (post-May) | Complete PDF — needs HTML build |
 | (not yet built) | Prague + Vienna + Dresden | Brady | Needs full build |
 
-### Research / Synthesis Documents
-- Lads_Travel_Co_Munich_Oktoberfest_2026_Synthesis.pdf
+### Domestic / Other Pages
+- `lads-local.html` — Michigan Intelligence
+- `charleston.html` — Charleston one-pager
+
+### Research / Synthesis Documents (gitignored — not in deployed repo)
+- Lads_Travel_Co_Munich_Oktoberfest_2026_Synthesis (1).pdf
 - Poland_2026_Master_Synthesis (1).pdf
 - Thailand_Synthesis_Master (1).pdf
 - Peru_Trip_Guide.pdf
-- Ryder_Cup_2027_Ireland_Guide (1).pdf
+- Ryder_Cup_2027_Ireland_Guide.pdf
+- Lads_LA.pdf
 - Poland_Experience_Architecture_2026 (1).docx
 - Poland_Ways_To_Save_2026 (1).docx
 - Thailand_Experience_Brief (1).docx
@@ -162,13 +200,10 @@ Also Validated (side-by-side cards):
 - Dublin_Galway_Lads_Travel_Co.docx
 - Australia_NZ_Lads_Travel_Co.docx
 - Spain_2026_Lads_Travel_Co (1).docx
+- Italy_2026_Lads_Travel_Co (1).docx
 
-### Other Assets
-- lads-local-v6 (2).html — Michigan Intelligence
-- lads-tab-standalone.html — current Lads tab (reference)
+### Other Assets (gitignored)
 - lads-database-v1.xlsx — 285 rated spots, 14 cities, 19 in pipeline
-- ladsvalidatedspotdatabasev4.pdf — 650+ spots across 20+ cities
-- charleston-one-pager.html — new domestic destination
 
 ---
 
