@@ -163,11 +163,46 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .db-city{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.5px;margin-bottom:3px}
 .db-num{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--gold);line-height:1}
 .db-sub{font-family:var(--mono);font-size:7px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}
-.tw{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:16px 18px;margin-bottom:8px;transition:border-color .2s}
+.tw{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;transition:border-color .3s,box-shadow .3s;cursor:pointer;overflow:hidden}
 .tw:hover{border-color:var(--border2)}
+.tw-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px}
+.tw-left{flex:1}
 .tw-l{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
 .tw-t{font-size:12px;color:var(--cream2);line-height:1.65;font-weight:300}
-.tw.win{border-color:var(--gold-border);background:linear-gradient(135deg,var(--gold-glow),var(--surface))}
+.tw-arrow{font-size:14px;color:var(--dim);transition:transform .3s,color .3s;flex-shrink:0;margin-left:16px}
+.tw.open .tw-arrow{transform:rotate(180deg);color:var(--gold)}
+.tw-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.tw.open .tw-body{max-height:2000px}
+.tw-inner{padding:0 20px 22px;border-top:1px solid var(--border)}
+.tw-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+@media(max-width:600px){.tw-grid{grid-template-columns:1fr}}
+.tw-stat{background:var(--elevated);border:1px solid var(--border);border-radius:4px;padding:12px 14px;text-align:center}
+.tw-stat-num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--gold);margin-bottom:3px}
+.tw-stat-label{font-family:var(--mono);font-size:7.5px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.tw-sec{margin-top:16px}
+.tw-sec-title{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--copper);margin-bottom:8px}
+.tw-sec p{font-size:12px;color:var(--cream2);line-height:1.7;font-weight:300}
+.tw-sec ul{list-style:none;padding:0}
+.tw-sec li{font-size:12px;color:var(--cream2);line-height:1.7;font-weight:300;padding:3px 0;padding-left:14px;position:relative}
+.tw-sec li::before{content:'';position:absolute;left:0;top:10px;width:5px;height:5px;border-radius:50%;background:var(--gold-border)}
+.tw-lads{margin-top:16px;padding:14px 16px;background:var(--elevated);border-left:3px solid var(--gold);border-radius:0 4px 4px 0}
+.tw-lads-label{font-family:var(--mono);font-size:7.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.tw-lads p{font-size:12.5px;color:var(--cream);line-height:1.6;font-weight:400;font-style:italic}
+.tw-wrong{margin-top:14px;padding:12px 16px;background:rgba(184,136,110,0.06);border:1px solid rgba(184,136,110,0.12);border-radius:4px}
+.tw-wrong-title{font-family:var(--mono);font-size:7.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--copper);margin-bottom:6px}
+.tw-wrong p{font-size:11.5px;color:var(--cream2);line-height:1.65;font-weight:300}
+.tw-who{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:600px){.tw-who{grid-template-columns:1fr}}
+.tw-who-box{padding:12px 14px;border-radius:4px;font-size:11px;line-height:1.6;font-weight:300}
+.tw-who-box.yes{background:rgba(201,168,76,0.06);border:1px solid var(--gold-border)}
+.tw-who-box.no{background:rgba(90,85,80,0.15);border:1px solid rgba(90,85,80,0.25)}
+.tw-who-label{font-family:var(--mono);font-size:7.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.tw-who-box.yes .tw-who-label{color:var(--gold)}
+.tw-who-box.no .tw-who-label{color:var(--muted)}
+.tw-who-box p{color:var(--cream2)}
+.tw.win{border-color:var(--gold-border);background:linear-gradient(135deg,var(--gold-glow),var(--surface));box-shadow:0 0 20px rgba(201,168,76,0.04)}
+.tw.win .tw-inner{border-top-color:var(--gold-border)}
+.tw-badge{display:inline-block;font-family:var(--mono);font-size:7px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:3px 8px;border-radius:3px;margin-bottom:8px}
 .del{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:14px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s}
 .del:hover{border-color:var(--border2)}
 .del-i{font-size:18px;flex-shrink:0;margin-top:1px}
@@ -478,10 +513,187 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 
 <div class="rule"></div>
 <div class="slabel">Travel Windows</div>
-<div class="tw"><div class="tw-l">Late November / Early December</div><div class="tw-t">Underrated value. Cheap flights, thin crowds. Return before the Dec 20th spike.</div></div>
-<div class="tw"><div class="tw-l">Late April / Early May</div><div class="tw-t">Shoulder season sweet spot. Post-Easter, pre-peak across Europe.</div></div>
-<div class="tw"><div class="tw-l">August</div><div class="tw-t">Beach destinations only. Expensive everywhere else.</div></div>
-<div class="tw win"><div class="tw-l">Late Aug / Sept Post-Labor Day &#9733;</div><div class="tw-t">The overall winner. Crowds drop, prices follow, weather still excellent.</div></div>
+<p style="font-size:12px;color:var(--cream2);line-height:1.7;font-weight:300;margin-bottom:16px">Four windows. Each one backed by fare data, crowd analysis, and weather patterns. We build every framework around these because timing is the single biggest lever you have on cost, crowds, and experience quality. Click to open.</p>
+
+<!-- WINDOW 1: Late November -->
+<div class="tw" onclick="this.classList.toggle('open')">
+  <div class="tw-head">
+    <div class="tw-left">
+      <div class="tw-l">Late November / Early December</div>
+      <div class="tw-t">The underrated one. Cheap flights, thin crowds, Christmas markets.</div>
+    </div>
+    <div class="tw-arrow">&#9660;</div>
+  </div>
+  <div class="tw-body"><div class="tw-inner">
+    <div class="tw-grid">
+      <div class="tw-stat"><div class="tw-stat-num">25-40%</div><div class="tw-stat-label">Below Peak Fares</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">Low</div><div class="tw-stat-label">Crowd Level</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">35-50&deg;F</div><div class="tw-stat-label">Avg Europe Temp</div></div>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">Why This Window Works</div>
+      <p>Transatlantic fares crater after Thanksgiving through mid-December. Airlines are desperate to fill seats during the gap between holiday travel waves. Round-trip flights from the Midwest to major European hubs consistently drop into the $400-550 range &mdash; compared to $700-900 during summer peak. The sweet spot is departing the Tuesday or Wednesday after Thanksgiving and returning before December 18th, when holiday pricing kicks in hard.</p>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">Proof from Our Frameworks</div>
+      <ul>
+        <li>Our Dublin framework includes a Christmas market version of the itinerary &mdash; Dublin&rsquo;s Christmas Funderland and Galway&rsquo;s market district are world-class in early December, and you&rsquo;re paying a fraction of what July visitors pay</li>
+        <li>Prague and Vienna are literally built for this window &mdash; Christmas markets open mid-November, and both cities hit peak atmosphere when temperatures drop. Our database has 75 combined spots across both cities</li>
+        <li>Rome in late November means no lines at the Vatican, $450 flights from ORD, and restaurant reservations that would require three weeks&rsquo; notice in June</li>
+      </ul>
+    </div>
+    <div class="tw-wrong">
+      <div class="tw-wrong-title">What People Get Wrong</div>
+      <p>They assume cold weather ruins Europe. It doesn&rsquo;t. Most European cities are built for indoor culture &mdash; pubs, restaurants, museums, markets. You&rsquo;re not going to sit on a beach in Dublin in July either. The weather objection is a cope for people who haven&rsquo;t thought through what they&rsquo;re actually doing on the trip.</p>
+    </div>
+    <div class="tw-who">
+      <div class="tw-who-box yes"><div class="tw-who-label">Best For</div><p>Culture-heavy travelers. Couples. Small groups who want city trips without fighting crowds. Anyone with flexible PTO who can skip the holiday travel rush.</p></div>
+      <div class="tw-who-box no"><div class="tw-who-label">Skip If</div><p>You want beach or outdoor adventure. You can&rsquo;t handle 4pm sunsets. You&rsquo;re bringing a large group that needs warm-weather energy to stay engaged.</p></div>
+    </div>
+    <div class="tw-lads">
+      <div class="tw-lads-label">The Lads Take</div>
+      <p>This is the window nobody talks about because travel influencers don&rsquo;t post content from 40-degree Dublin. Their loss. You&rsquo;re saving $300+ per person on flights and walking into the best pubs and restaurants in Europe without a reservation.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- WINDOW 2: Late April / Early May -->
+<div class="tw" onclick="this.classList.toggle('open')">
+  <div class="tw-head">
+    <div class="tw-left">
+      <div class="tw-l">Late April / Early May</div>
+      <div class="tw-t">The shoulder season sweet spot. Post-Easter, pre-peak across Europe.</div>
+    </div>
+    <div class="tw-arrow">&#9660;</div>
+  </div>
+  <div class="tw-body"><div class="tw-inner">
+    <div class="tw-grid">
+      <div class="tw-stat"><div class="tw-stat-num">15-30%</div><div class="tw-stat-label">Below Peak Fares</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">Medium</div><div class="tw-stat-label">Crowd Level</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">55-70&deg;F</div><div class="tw-stat-label">Avg Europe Temp</div></div>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">Why This Window Works</div>
+      <p>The two weeks after Easter through mid-May hit a pricing gap airlines haven&rsquo;t figured out how to close. Summer pricing usually kicks in around May 15th for most European routes, but the weather is already excellent by late April. You get 14-16 hours of daylight, outdoor dining is open, and accommodations are 20-35% cheaper than June. The key is booking after Easter Sunday passes &mdash; the holiday premium evaporates within days.</p>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">Proof from Our Frameworks</div>
+      <ul>
+        <li>Our Spain framework targets this window specifically &mdash; Barcelona in late April averages 65&deg;F, tapas bars have outdoor seating running, and Montserrat day trips aren&rsquo;t packed with summer tour buses. We have 115 spots in Barcelona alone; you can actually enjoy them without queueing</li>
+        <li>Rome and the Amalfi Coast open up perfectly in this window. Our Italy framework&rsquo;s Pompeii + Amalfi day trip is genuinely pleasant at 60&deg;F vs. genuinely miserable at 95&deg;F in August</li>
+        <li>Iceland&rsquo;s shoulder season starts in late April &mdash; Dawson&rsquo;s Ring Road framework notes roads reopening and waterfalls at peak flow from snowmelt, with tourist numbers at a quarter of July&rsquo;s volume</li>
+      </ul>
+    </div>
+    <div class="tw-wrong">
+      <div class="tw-wrong-title">What People Get Wrong</div>
+      <p>People wait for &ldquo;summer weather&rdquo; and end up paying $300 more per flight, booking accommodations 4 months out, and standing in 90-minute lines at the Sagrada Familia. Late April in Southern Europe is warmer than most people&rsquo;s home cities. You don&rsquo;t need July to eat dinner outside in Barcelona.</p>
+    </div>
+    <div class="tw-who">
+      <div class="tw-who-box yes"><div class="tw-who-label">Best For</div><p>Groups of 3-6 who want the full experience &mdash; outdoor dining, walking cities, day trips &mdash; without peak pricing or peak crowds. Ideal for Southern and Western Europe.</p></div>
+      <div class="tw-who-box no"><div class="tw-who-label">Skip If</div><p>You need guaranteed 80&deg;F+ beach weather. You&rsquo;re targeting Scandinavia (still cold). You&rsquo;re locked into a specific Easter travel week &mdash; that&rsquo;s still peak pricing.</p></div>
+    </div>
+    <div class="tw-lads">
+      <div class="tw-lads-label">The Lads Take</div>
+      <p>If you can swing late April, you&rsquo;re getting 90% of the summer experience at 70% of the cost. This is the window we recommend most often for first-time Europe travelers who think they need to go in June.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- WINDOW 3: August -->
+<div class="tw" onclick="this.classList.toggle('open')">
+  <div class="tw-head">
+    <div class="tw-left">
+      <div class="tw-l">August</div>
+      <div class="tw-t">Beach destinations only. Everything else is a trap.</div>
+    </div>
+    <div class="tw-arrow">&#9660;</div>
+  </div>
+  <div class="tw-body"><div class="tw-inner">
+    <div class="tw-grid">
+      <div class="tw-stat"><div class="tw-stat-num">Peak</div><div class="tw-stat-label">Fare Pricing</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">Maximum</div><div class="tw-stat-label">Crowd Level</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">85-100&deg;F</div><div class="tw-stat-label">Southern Europe</div></div>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">Why August is a Trap (For Most Destinations)</div>
+      <p>August is when every European takes their annual holiday. Every. Single. One. The entire continent is on the move. Flights from the US hit annual maximums &mdash; $800-1,100 round-trip to most European hubs from ORD/DTW. Accommodations in popular cities can run 40-60% above shoulder season rates. Rome, Barcelona, and Paris are hitting 95-100&deg;F with no relief. You&rsquo;re paying the most money to have the worst version of the experience.</p>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">The Exception: Beach + Tropical</div>
+      <ul>
+        <li>Thailand in August is monsoon season &mdash; skip it. But Costa Rica&rsquo;s Pacific coast (Jac&oacute;, our top domestic pick) has its green season with afternoon showers, lower prices, and warm water. Our database has 28 validated spots there</li>
+        <li>Australia is in winter during August &mdash; Sydney averages 62&deg;F, so this is a culture/food window, not a beach window. Our framework has 123 spots in Sydney that work year-round</li>
+        <li>If you must go in August, go where heat is the point: Greek islands, Croatia coast, or the beach destinations where you&rsquo;re in the water all day anyway</li>
+      </ul>
+    </div>
+    <div class="tw-wrong">
+      <div class="tw-wrong-title">What People Get Wrong</div>
+      <p>They book August because it&rsquo;s when they have time off, then build the destination around the dates. That&rsquo;s backwards. August in Rome means 45-minute waits at the Colosseum in 97&deg;F heat. August in Barcelona means La Rambla is shoulder-to-shoulder tourists with every restaurant running a prix fixe tourist menu. If August is your only option, pick a beach destination and own it. Don&rsquo;t try to force a city trip.</p>
+    </div>
+    <div class="tw-who">
+      <div class="tw-who-box yes"><div class="tw-who-label">Best For</div><p>Beach-only trips. Groups locked into August PTO who accept the premium and choose destinations built for heat. Costa Rica, Greek islands, Croatian coast.</p></div>
+      <div class="tw-who-box no"><div class="tw-who-label">Skip If</div><p>You want European city trips. You&rsquo;re budget-conscious. You want to actually enjoy museums, walking tours, or outdoor dining without sweating through your shirt by 10am.</p></div>
+    </div>
+    <div class="tw-lads">
+      <div class="tw-lads-label">The Lads Take</div>
+      <p>We actively steer clients away from August for European cities. Not because we&rsquo;re being difficult &mdash; because we&rsquo;ve seen the difference. The same trip in September is cheaper, cooler, and less crowded. If your group can only do August, we&rsquo;ll build you something great, but it&rsquo;s going to be a beach trip.</p>
+    </div>
+  </div></div>
+</div>
+
+<!-- WINDOW 4: Late Aug / Sept Post-Labor Day — THE WINNER -->
+<div class="tw win" onclick="this.classList.toggle('open')">
+  <div class="tw-head">
+    <div class="tw-left">
+      <div class="tw-badge">Our #1 Recommendation</div>
+      <div class="tw-l">Late August / September Post-Labor Day &#9733;</div>
+      <div class="tw-t">The overall winner. Crowds vanish, prices follow, weather stays excellent.</div>
+    </div>
+    <div class="tw-arrow">&#9660;</div>
+  </div>
+  <div class="tw-body"><div class="tw-inner">
+    <div class="tw-grid">
+      <div class="tw-stat"><div class="tw-stat-num">20-35%</div><div class="tw-stat-label">Below Peak Fares</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">Low-Med</div><div class="tw-stat-label">Crowd Level</div></div>
+      <div class="tw-stat"><div class="tw-stat-num">65-80&deg;F</div><div class="tw-stat-label">Avg Europe Temp</div></div>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">Why This Window Wins</div>
+      <p>The week after Labor Day is the single best inflection point in the travel calendar. Here&rsquo;s what happens simultaneously: American families go back to school, European holidays end, airlines drop fares to fill suddenly-empty transatlantic routes, and the weather across Southern and Central Europe is still in the 70s. It&rsquo;s the rare convergence where every variable &mdash; price, crowds, weather, availability &mdash; moves in your favor at the same time.</p>
+      <p style="margin-top:10px">Transatlantic fares from DTW and ORD to major European hubs typically drop $200-350 from their August peaks within the first week of September. Accommodation in cities like Barcelona, Rome, and Prague can be 25-40% cheaper than July-August rates. And critically, availability opens up &mdash; restaurants, tours, and experiences that require weeks of advance booking in summer become walk-in accessible.</p>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">Proof from Our Frameworks</div>
+      <ul>
+        <li><strong>Munich Oktoberfest (Sept 24-26):</strong> Our Munich framework targets the opening weekend of Oktoberfest, which falls perfectly in this window. You get the world&rsquo;s biggest beer festival, but you&rsquo;re flying on post-peak fares. The framework includes specific tent reservation strategy and accommodation booking timelines that only work because we&rsquo;re building around this window</li>
+        <li><strong>Poland (Late August):</strong> Our Poland framework targets the last week of August specifically &mdash; Krakow in late August averages 72&deg;F, domestic tourism winds down, and you&rsquo;re hitting the transition point before September when student groups return. The framework covers Krakow, Warsaw, and Gdansk with 8 spots in our database plus Auschwitz-Birkenau day trip logistics</li>
+        <li><strong>Barcelona + Madrid:</strong> Our Spain framework with 115 Barcelona spots and 55 rated destinations is built for this window. September in Barcelona means 75&deg;F beach days, rooftop bars without hour-long waits, and Sagrada Familia tickets available same-week. La Boqueria goes from tourist zoo back to actual market</li>
+        <li><strong>Dublin + Galway:</strong> Ireland in September is arguably its best month &mdash; the summer rain eases, temps hover around 60&deg;F, and the pubs haven&rsquo;t shifted to winter hours yet. Dawson hit 35+ pubs in a week in Ireland; half of them would have been standing-room-only in July</li>
+      </ul>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-title">The Data Behind the Recommendation</div>
+      <ul>
+        <li><strong>Flights:</strong> Average round-trip ORD&rarr;European hub drops from ~$850 (peak July/Aug) to ~$550-650 by mid-September. DTW shows similar patterns with slightly higher baselines. Booking 6-8 weeks out from a September departure consistently produces the best fare-to-quality ratio we&rsquo;ve tracked</li>
+        <li><strong>Accommodation:</strong> Airbnb and hotel rates in major European cities drop 25-40% after Labor Day. A 4-person apartment in Barcelona&rsquo;s Eixample that runs $280/night in August drops to $170-190 by September 10th</li>
+        <li><strong>Crowds:</strong> Major attractions see 30-50% visitor reduction in the first two weeks of September vs. August. The Vatican Museums, Park G&uuml;ell, and the Colosseum all shift from &ldquo;book 3 weeks out&rdquo; to &ldquo;book 3 days out&rdquo;</li>
+        <li><strong>Weather:</strong> Mediterranean Europe (Spain, Italy, Greece) averages 75-82&deg;F through September. Central Europe (Prague, Vienna, Munich) sits at 65-72&deg;F. Ireland and the UK are at 58-64&deg;F. All of these are more comfortable for walking cities than the 90&deg;F+ of August</li>
+      </ul>
+    </div>
+    <div class="tw-wrong">
+      <div class="tw-wrong-title">What People Get Wrong</div>
+      <p>They think September means fall, and fall means cold. In Southern Europe, September is still summer &mdash; just without the crowds. Barcelona doesn&rsquo;t dip below 70&deg;F until late October. Rome&rsquo;s outdoor dining runs through November. Even Munich during Oktoberfest opening weekend is averaging mid-60s, which is perfect for a beer tent. The other mistake: people assume &ldquo;post-Labor Day&rdquo; means limited PTO flexibility. It&rsquo;s actually easier &mdash; you&rsquo;re not competing with every other person in your office for the same summer weeks.</p>
+    </div>
+    <div class="tw-who">
+      <div class="tw-who-box yes"><div class="tw-who-label">Best For</div><p>Everyone. Seriously. Groups of any size, any budget tier, any trip style. This is our default recommendation for European city trips, and it&rsquo;s the window we plan most of our own trips around. Especially strong for first-timers who want the best possible version of their first Europe trip.</p></div>
+      <div class="tw-who-box no"><div class="tw-who-label">Skip If</div><p>You specifically need a holiday break (Thanksgiving, Christmas, spring break) or you&rsquo;re targeting Southern Hemisphere destinations where September is early spring and still building toward peak season.</p></div>
+    </div>
+    <div class="tw-lads">
+      <div class="tw-lads-label">The Lads Take</div>
+      <p>This is the window we plan our own trips around. Munich targets September 24th. Poland targets late August. There&rsquo;s a reason. When we sit down with a client and they say &ldquo;I&rsquo;m flexible on dates,&rdquo; this is where we start every single time. The math works, the weather works, and the experience is categorically better than what you&rsquo;d get eight weeks earlier for $400 more per person.</p>
+    </div>
+  </div></div>
+</div>
 
 <div class="rule"></div>
 <div class="slabel">What You Get</div>
