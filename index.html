@@ -203,6 +203,37 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 .tw.win{border-color:var(--gold-border);background:linear-gradient(135deg,var(--gold-glow),var(--surface));box-shadow:0 0 20px rgba(201,168,76,0.04)}
 .tw.win .tw-inner{border-top-color:var(--gold-border)}
 .tw-badge{display:inline-block;font-family:var(--mono);font-size:7px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:3px 8px;border-radius:3px;margin-bottom:8px}
+
+/* ═══ FLIGHT INTEL ═══ */
+.fi-wrap{margin:32px 0 8px;padding:28px 24px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;position:relative;overflow:hidden}
+.fi-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--copper),var(--gold))}
+.fi-label{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--copper);margin-bottom:6px}
+.fi-title{font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:6px}
+.fi-sub{font-size:12.5px;color:var(--cream2);line-height:1.7;font-weight:300;margin-bottom:24px}
+.fi-card{background:var(--elevated);border:1px solid var(--border);border-radius:6px;padding:20px 22px;margin-bottom:12px;transition:border-color .2s}
+.fi-card:hover{border-color:var(--border2)}
+.fi-card-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.fi-card-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-border);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fi-card-title{font-size:14px;font-weight:600}
+.fi-card-tag{font-family:var(--mono);font-size:7px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--copper);background:var(--copper-dim);padding:2px 7px;border-radius:3px;margin-left:auto;flex-shrink:0}
+.fi-card p{font-size:12px;color:var(--cream2);line-height:1.7;font-weight:300;margin-bottom:8px}
+.fi-card p:last-child{margin-bottom:0}
+.fi-card strong{color:var(--cream);font-weight:500}
+.fi-card ul{list-style:none;padding:0;margin:8px 0}
+.fi-card li{font-size:11.5px;color:var(--cream2);line-height:1.65;font-weight:300;padding:4px 0 4px 14px;position:relative}
+.fi-card li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--gold-border)}
+.fi-callout{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:600px){.fi-callout{grid-template-columns:1fr}}
+.fi-callout-box{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:14px 16px;text-align:center}
+.fi-callout-num{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.fi-callout-label{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.fi-route{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:12px 16px;margin:10px 0;font-family:var(--mono);font-size:10px;color:var(--cream2);letter-spacing:.5px;line-height:1.8}
+.fi-route strong{color:var(--gold);font-weight:600}
+.fi-divider{height:1px;background:var(--border);margin:20px 0}
+.fi-group-label{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:24px 0 14px}
+.fi-myth{background:rgba(184,136,110,0.05);border:1px solid rgba(184,136,110,0.12);border-radius:5px;padding:16px 18px;margin-bottom:10px}
+.fi-myth-q{font-size:12.5px;font-weight:500;color:var(--cream);margin-bottom:6px}
+.fi-myth-a{font-size:11.5px;color:var(--cream2);line-height:1.7;font-weight:300}
 .del{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:14px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;transition:border-color .2s}
 .del:hover{border-color:var(--border2)}
 .del-i{font-size:18px;flex-shrink:0;margin-top:1px}
@@ -693,6 +724,222 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
       <p>This is the window we plan our own trips around. Munich targets September 24th. Poland targets late August. There&rsquo;s a reason. When we sit down with a client and they say &ldquo;I&rsquo;m flexible on dates,&rdquo; this is where we start every single time. The math works, the weather works, and the experience is categorically better than what you&rsquo;d get eight weeks earlier for $400 more per person.</p>
     </div>
   </div></div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- HOW WE FIND THE DEALS                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="fi-wrap">
+<div class="fi-label">Flight Intelligence</div>
+<div class="fi-title">How We Find the Deals</div>
+<div class="fi-sub">Timing a flight isn&rsquo;t luck. It&rsquo;s understanding how airline revenue management actually works and building a system around it. Here&rsquo;s everything we use, why it works, and what most people miss. This is the same playbook behind every framework we build.</div>
+
+<div class="fi-group-label">Understanding the Machine</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">1</div>
+    <div class="fi-card-title">How Airline Pricing Actually Works</div>
+    <div class="fi-card-tag">Foundation</div>
+  </div>
+  <p>Airlines don&rsquo;t set a price for a flight. They set 15-26 prices for the same seat and release them in buckets. A Boeing 787 with 250 economy seats might have 8 seats at $420 (Y bucket), 15 at $490 (B bucket), 20 at $560 (M bucket), and so on up to $1,100+ at the top. The revenue management system opens and closes these buckets based on demand curves, days until departure, competitor pricing, and historical load factors for that route and day of week.</p>
+  <p><strong>What this means for you:</strong> Price drops aren&rsquo;t random sales. They&rsquo;re the system reopening lower buckets because demand is tracking below projections. When you see a fare drop on a Tuesday afternoon six weeks before departure, that&rsquo;s the algorithm saying &ldquo;this flight is undersold relative to where it should be.&rdquo; Understanding this is the difference between booking reactively and booking with intent.</p>
+  <p><strong>The practical move:</strong> Never book on the first search. Track a route for 3-5 days to establish a baseline. If the fare jumps $40+ overnight, a lower bucket just closed &mdash; it might reopen, or it might not. If it drops $50+, a bucket just opened &mdash; that&rsquo;s your window. Most travelers see one price and either book immediately or wait indefinitely. Both are wrong.</p>
+</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">2</div>
+    <div class="fi-card-title">The Booking Window That Actually Matters</div>
+    <div class="fi-card-tag">Timing</div>
+  </div>
+  <p>The old &ldquo;book 54 days out&rdquo; advice is dead. Post-pandemic, airlines rebuilt their revenue management models with new demand data, and the optimal booking windows shifted. For transatlantic economy from the Midwest, the data now shows two sweet spots:</p>
+  <div class="fi-callout">
+    <div class="fi-callout-box"><div class="fi-callout-num">6-10 Weeks</div><div class="fi-callout-label">Primary Sweet Spot</div></div>
+    <div class="fi-callout-box"><div class="fi-callout-num">2-3 Weeks</div><div class="fi-callout-label">Last-Minute Drops</div></div>
+  </div>
+  <p>The 6-10 week window is when airlines have enough booking data to see whether a flight is tracking above or below their demand curve, but they&rsquo;re still far enough out that unsold inventory triggers bucket reopening. The 2-3 week window is riskier &mdash; you might catch a desperate fare drop on an undersold flight, or you might find that every lower bucket is closed and you&rsquo;re paying top dollar.</p>
+  <p><strong>What changed post-pandemic:</strong> Airlines learned that leisure travelers book later than they used to, so they&rsquo;ve pushed discount bucket release dates later to match. The old model punished late bookers aggressively; the new model keeps more low-bucket inventory available into that 6-8 week range. But the flip side is that very early bookings (4-6 months out) no longer guarantee the best price &mdash; airlines now price early availability higher because they know people booking that far out are less price-sensitive.</p>
+  <p><strong>For our frameworks:</strong> We built Poland&rsquo;s late August timing around a July booking window &mdash; 6-8 weeks out from departure, right in the sweet spot. Munich Oktoberfest (September 24-26) means booking in early August. If you&rsquo;re reading this in April and planning a September trip, you&rsquo;re actually ahead of the optimal booking window, which means you can set up tracking now and buy when the bucket opens.</p>
+</div>
+
+<div class="fi-group-label">The Tools We Actually Use</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">3</div>
+    <div class="fi-card-title">Google Flights + Fare Alerts</div>
+    <div class="fi-card-tag">Primary Tool</div>
+  </div>
+  <p>Google Flights is the foundation. Not Kayak, not Skyscanner, not Hopper. Google Flights. The reason is data freshness &mdash; Google pulls directly from airline GDS (Global Distribution System) feeds and updates multiple times per hour. Third-party aggregators cache results, which means the fare you see on Kayak might be 2-6 hours stale. On a competitive transatlantic route, that&rsquo;s the difference between a $480 fare and a $620 fare.</p>
+  <p><strong>The features most people ignore:</strong></p>
+  <ul>
+    <li><strong>Flexible date grid:</strong> The calendar view showing +/- 3 days on either end. On ORD&rarr;Dublin routes, we&rsquo;ve seen $200+ variance between a Tuesday and Thursday departure in the same week. The grid makes this visible in seconds</li>
+    <li><strong>Price tracking:</strong> Set a tracked price on your exact route and dates. Google will email you when the fare changes. But here&rsquo;s what people miss: set tracking on 3-4 date variants, not just your ideal dates. The cheapest variant wins</li>
+    <li><strong>&ldquo;Explore&rdquo; mode:</strong> Enter your departure airport and leave the destination blank. Google shows you a map of the cheapest fares to every destination. We&rsquo;ve used this to redirect clients from their planned destination to a cheaper one with a similar experience &mdash; Prague instead of Vienna when the fare delta was $280 per person</li>
+    <li><strong>The &ldquo;price guarantee&rdquo; badge:</strong> Google now flags routes where their ML model predicts the fare is at or near its lowest point. It&rsquo;s not always right, but when it appears alongside your tracked price being in the bottom 20% of historical range, that&rsquo;s a strong buy signal</li>
+  </ul>
+</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">4</div>
+    <div class="fi-card-title">Error Fares + Secret Deals</div>
+    <div class="fi-card-tag">Advanced</div>
+  </div>
+  <p>Error fares are real. Airlines make pricing mistakes &mdash; currency conversion errors, missing fuel surcharges, mistyped fares filed in the ATPCO system. These show up as flights priced 40-70% below normal. Most last 2-12 hours before the airline catches it. Some get honored, some get cancelled. The DOT&rsquo;s full-fare advertising rule means airlines are supposed to honor ticketed fares, but enforcement is inconsistent.</p>
+  <p><strong>Where to find them:</strong></p>
+  <ul>
+    <li><strong>Secret Flying:</strong> Dedicated error fare aggregator. Their team monitors ATPCO filings and automated fare scrapers 24/7. Set up alerts for your departure airports (ORD and DTW specifically). We&rsquo;ve seen ORD&rarr;Barcelona error fares at $280 round-trip that held</li>
+    <li><strong>Skiplagged:</strong> Not an error fare tool &mdash; it surfaces hidden-city ticketing opportunities. A flight from DTW&rarr;Munich might cost $750, but DTW&rarr;Prague with a connection in Munich might be $520. You get off in Munich and skip the Prague leg. The catch: no checked bags (they&rsquo;ll go to Prague), you can&rsquo;t do this on the return leg, and airlines will cancel your frequent flyer account if they catch a pattern. We use this selectively for outbound legs only</li>
+    <li><strong>Google Flights + date flexibility:</strong> Sometimes what looks like a &ldquo;deal&rdquo; on aggregator sites is just normal bucket pricing on an off-peak day. Check Google Flights first to baseline the route before assuming something is an error</li>
+  </ul>
+  <p><strong>Our rule:</strong> Book error fares on a refundable credit card. If the airline cancels the ticket, you get your money back. If they honor it, you just saved $400 per person. Risk-free optionality.</p>
+</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">5</div>
+    <div class="fi-card-title">Flexible Date Searching &mdash; The Real Savings Lever</div>
+    <div class="fi-card-tag">High Impact</div>
+  </div>
+  <p>This is the single most impactful thing a group can do, and almost nobody does it properly. Moving your departure by +/- 2 days on a transatlantic route regularly saves $150-300 per person. On a group of 6, that&rsquo;s $900-1,800 &mdash; enough to fund an entire day trip or three nights of dinners.</p>
+  <div class="fi-callout">
+    <div class="fi-callout-box"><div class="fi-callout-num">$150-300</div><div class="fi-callout-label">Per Person / +/- 2 Days</div></div>
+    <div class="fi-callout-box"><div class="fi-callout-num">Tue &amp; Wed</div><div class="fi-callout-label">Cheapest Departure Days</div></div>
+  </div>
+  <p><strong>Why Tuesday/Wednesday departures win:</strong> Business travelers fly Sunday night and Monday morning (outbound) and Thursday/Friday (return). Airlines price these days higher because demand from corporate accounts is inelastic &mdash; the company is paying, so the traveler doesn&rsquo;t care about $200. Leisure travelers get punished for flying on business traveler days. A Tuesday evening departure to Europe means you land Wednesday morning, which functionally gives you the same trip as a Monday departure but at a midweek fare.</p>
+  <p><strong>Return day trick:</strong> Flying back on a Monday or Tuesday instead of Sunday saves even more. Sunday returns from Europe to the US are peak-priced because everyone wants to be home for the work week. Monday returns are consistently 15-25% cheaper on the same routes. You lose one day of your weekend, but you gain it as a cheaper, less stressful travel day with shorter security lines and emptier planes.</p>
+</div>
+
+<div class="fi-group-label">Routing Strategies</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">6</div>
+    <div class="fi-card-title">Open-Jaw Routing vs. Round Trip</div>
+    <div class="fi-card-tag">Architecture</div>
+  </div>
+  <p>A round trip forces you to return to where you started. An open-jaw lets you fly into one city and out of another &mdash; fly into Barcelona, train to Rome, fly home from Rome. Most people don&rsquo;t know this is often the same price or cheaper than a round trip, because airlines price each leg independently based on that leg&rsquo;s demand.</p>
+  <p><strong>When open-jaw saves money:</strong> When one city has significantly cheaper inbound fares and another has cheaper outbound fares. ORD&rarr;Dublin is historically cheaper than ORD&rarr;London, but London&rarr;ORD can be cheaper than Dublin&rarr;ORD because of British Airways&rsquo; hub competition. An open-jaw (ORD&rarr;Dublin, London&rarr;ORD) might beat a Dublin round trip by $80-150.</p>
+  <p><strong>How we use it in frameworks:</strong> Our Spain framework is built for open-jaw &mdash; fly into Barcelona, train to Madrid (2.5 hours, ~$40 on Renfe AVE), fly home from Madrid. This eliminates a backtrack, adds a second city, and often prices within $30 of a Barcelona round trip. Our Italy framework uses the same logic &mdash; into Rome, Pompeii/Amalfi day trip south, then potentially out of Naples or back from Rome depending on what the fares do.</p>
+</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">7</div>
+    <div class="fi-card-title">Hub Arbitrage &mdash; ORD and DTW Route Tricks</div>
+    <div class="fi-card-tag">Midwest-Specific</div>
+  </div>
+  <p>O&rsquo;Hare and Detroit Metro are two of the best-positioned airports in the Midwest for transatlantic travel, and each has specific advantages most travelers don&rsquo;t know about.</p>
+  <p><strong>ORD advantages:</strong></p>
+  <ul>
+    <li>United&rsquo;s transatlantic hub. Nonstop service to 20+ European cities. When United runs a fare sale, ORD gets the deepest discounts because they&rsquo;re protecting hub market share</li>
+    <li>Icelandair flies ORD&rarr;Reykjavik (KEF) with one-stop connections to 25+ European destinations. Their pricing model undercuts the majors by 15-25% because they&rsquo;re routing through a smaller hub with lower airport fees. Our Munich framework uses this &mdash; ORD&rarr;KEF&rarr;MUC can be $150+ cheaper than ORD&rarr;MUC nonstop on Lufthansa</li>
+    <li>Norse Atlantic (when available) and PLAY offer budget transatlantic options through KEF/OSL that traditional search engines sometimes miss. Check these carriers directly</li>
+  </ul>
+  <p><strong>DTW advantages:</strong></p>
+  <ul>
+    <li>Delta&rsquo;s second-largest hub. Nonstop to Amsterdam (KLM partnership), Paris CDG, London Heathrow, and Rome FCO seasonally</li>
+    <li>The DTW&rarr;AMS (Amsterdam) route on Delta/KLM is one of the best-priced transatlantic routes from the Midwest. Amsterdam Schiphol is a top-3 European connecting hub &mdash; from AMS you can reach any European city on KLM/SkyTeam for $40-80 on a connecting fare that&rsquo;s bundled into your transatlantic ticket</li>
+    <li>LOT Polish Airlines runs DTW&rarr;Warsaw nonstop. This is a route most people don&rsquo;t know exists. It&rsquo;s consistently $100-200 cheaper than connecting through a major hub, and Warsaw is a launchpad to all of Central/Eastern Europe. Our Poland framework is built around this route &mdash; DTW&rarr;WAW nonstop, then domestic connections or trains to Krakow and Gdansk</li>
+  </ul>
+  <div class="fi-route">
+    <strong>Framework Routes We&rsquo;ve Optimized:</strong><br>
+    Munich: ORD &rarr; KEF &rarr; MUC (Icelandair, ~$480-550 RT)<br>
+    Poland: DTW &rarr; WAW nonstop (LOT, ~$520-620 RT)<br>
+    Thailand: ORD &rarr; HKG &rarr; BKK (Cathay Pacific, ~$650-800 RT)<br>
+    Spain: ORD &rarr; BCN (United/Iberia nonstop, ~$500-650 RT)<br>
+    Ireland: ORD &rarr; DUB (Aer Lingus nonstop, ~$420-560 RT)
+  </div>
+</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">8</div>
+    <div class="fi-card-title">Group Booking Splits</div>
+    <div class="fi-card-tag">Group Travel</div>
+  </div>
+  <p>This is one of the most important things we tell groups, and almost no one knows it. <strong>Never book 6 seats on the same search.</strong></p>
+  <p>Here&rsquo;s why: When you search for 6 seats, the airline&rsquo;s system has to find 6 seats in the same fare bucket. If there are only 4 seats left at $490 (M bucket) and the next 2 would have to come from the $620 bucket (H bucket), the system prices all 6 at $620. You just paid $780 more than you needed to because of how inventory allocation works.</p>
+  <p><strong>The fix:</strong> Search and book in pairs. Two tickets at a time. The first pair gets the lowest available bucket. The second pair gets the next-lowest. Even if the third pair pays more, your average fare across all six tickets is lower than booking all six together. We&rsquo;ve seen this save $50-120 per person on transatlantic routes for groups of 4-6.</p>
+  <p><strong>The catch:</strong> You might not all get seats together. For a group of lads on a 7-hour transatlantic flight, this usually doesn&rsquo;t matter. You&rsquo;re sleeping or watching movies. Save the $300-700 as a group and put it toward the trip.</p>
+</div>
+
+<div class="fi-group-label">Money Strategies Beyond Flights</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">9</div>
+    <div class="fi-card-title">Credit Card Signup Bonuses + Referral Cascades</div>
+    <div class="fi-card-tag">Points Game</div>
+  </div>
+  <p>A single Chase Sapphire Preferred signup bonus (60,000-80,000 Ultimate Rewards points) is worth $750-1,000 in travel when transferred to airline partners. That&rsquo;s enough for a round-trip to Europe in economy through United MileagePlus or a domestic flight on Southwest. The annual fee is $95, which means the net value of the signup bonus alone is $655-905.</p>
+  <p><strong>The referral cascade for groups:</strong> Person 1 signs up, earns the bonus, then refers Person 2. Person 1 gets 15,000 referral points. Person 2 gets the full signup bonus. Person 2 refers Person 3. Repeat. For a group of 5, this generates the equivalent of one additional free round-trip flight in referral bonuses alone, on top of everyone&rsquo;s individual signup bonuses.</p>
+  <p><strong>The cards that matter for travel in 2026:</strong></p>
+  <ul>
+    <li><strong>Chase Sapphire Preferred:</strong> Best entry point. 60-80K bonus, 2x on travel/dining, transfer partners include United, Hyatt, Southwest. Hyatt transfers are the single best point-per-dollar value in the game</li>
+    <li><strong>Capital One Venture X:</strong> 75K bonus, $300 annual travel credit effectively makes the $395 fee a $95 fee. Transfer partners include Air Canada (Star Alliance access), Turkish Airlines (incredible sweet spots to Europe), and Air France/KLM</li>
+    <li><strong>Amex Gold:</strong> Not a travel card &mdash; it&rsquo;s a dining card that feeds travel. 4x on restaurants and groceries means everyday spending builds a point balance that transfers to Delta, British Airways, or ANA at strong ratios</li>
+  </ul>
+  <p><strong>Timing it:</strong> Sign up 3-4 months before your trip. Hit the minimum spend organically (don&rsquo;t manufacture spend). Transfer points to the airline partner with the best award availability for your route. Book the award flight. This works especially well for the one person in the group who&rsquo;s organizing &mdash; put the Airbnb, group dinners, and activity deposits on the new card to hit minimum spend naturally.</p>
+</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">10</div>
+    <div class="fi-card-title">Seasonal Sale Patterns</div>
+    <div class="fi-card-tag">Calendar</div>
+  </div>
+  <p>Airlines run fare sales on predictable cycles. Knowing these cycles means you can plan when to be actively searching vs. when to set alerts and wait.</p>
+  <ul>
+    <li><strong>January 2-15 (&ldquo;Travel Tuesday&rdquo; period):</strong> The single best sale window of the year. Airlines dump summer inventory at 20-40% discounts to generate early bookings for their Q2/Q3 revenue forecasts. This is when to book summer Europe trips. Almost every major carrier runs a transatlantic sale in this window</li>
+    <li><strong>Black Friday / Cyber Monday week:</strong> Real, but overhyped. The discounts are genuine (15-25% on select routes) but the route selection is narrow &mdash; airlines use this to move specific underperforming routes, not as a blanket sale. Worth checking, but don&rsquo;t hold out for it if you&rsquo;ve already found a good fare in October</li>
+    <li><strong>Tuesday/Wednesday afternoon drops:</strong> Airlines file new fares on Monday evenings. Competitors match on Tuesday. By Wednesday afternoon, the lowest matched fares are live across all carriers. This is why &ldquo;book on Tuesday&rdquo; became conventional wisdom &mdash; and it&rsquo;s still true, but the window is tighter than it used to be. Set alerts rather than manually searching every Tuesday</li>
+    <li><strong>48 hours after a competitor launches a route:</strong> When a new carrier announces service on a route (e.g., Norse Atlantic adding ORD&rarr;Berlin), existing carriers on that route drop fares within 48 hours to protect market share. These competitive responses often produce the best fares of the year on that route, and they last 1-3 weeks</li>
+  </ul>
+</div>
+
+<div class="fi-card">
+  <div class="fi-card-head">
+    <div class="fi-card-num">11</div>
+    <div class="fi-card-title">Fare Class Monitoring + Bucket Watching</div>
+    <div class="fi-card-tag">Advanced</div>
+  </div>
+  <p>This is where casual searching becomes actual intelligence. Every fare has a fare class letter (Y, B, M, H, Q, V, etc.) that tells you which bucket you&rsquo;re buying from. The letter appears in your booking confirmation and on tools like ExpertFlyer and Google&rsquo;s ITA Matrix.</p>
+  <p><strong>Why this matters:</strong> If you see the same route priced at $540 in M class today and it was $540 in Q class last week, the fare looks the same but you&rsquo;re actually in a higher (more expensive) bucket &mdash; meaning the lower buckets are closing and the price is about to jump. Conversely, if you see $540 shift from M to Q class, lower buckets are opening and the price might drop further.</p>
+  <p><strong>How to use ITA Matrix:</strong> Search your route on ITA Matrix (Google&rsquo;s underlying flight search engine, matrix.itasoftware.com). The results show fare class codes. Compare these over 2-3 searches across a week. If the fare class letter is moving down the alphabet (Y&rarr;B&rarr;M&rarr;Q), the airline is releasing cheaper inventory. If it&rsquo;s moving up, book now before the next bucket closes.</p>
+  <p><strong>ExpertFlyer alerts:</strong> Set up a fare class alert for a specific class on your route. When that bucket opens (even briefly), you get an email. This is how people catch sub-$400 fares on routes that normally price at $600+ &mdash; they&rsquo;re not searching every day, they&rsquo;re getting notified when the system makes a specific low bucket available.</p>
+</div>
+
+<div class="fi-group-label">What Most People Get Wrong</div>
+
+<div class="fi-myth">
+  <div class="fi-myth-q">&ldquo;Use a VPN to get cheaper fares by searching from another country.&rdquo;</div>
+  <div class="fi-myth-a">This worked in 2018. In 2026, major airlines and OTAs (Online Travel Agencies) use your payment card&rsquo;s billing country, not your IP location, for currency and pricing. A VPN might show you a different display currency, but the actual fare is the same when converted. There are edge cases &mdash; some smaller carriers price differently by point-of-sale country &mdash; but for the transatlantic routes we work with (United, Delta, Aer Lingus, Lufthansa, KLM), VPN shopping is a waste of time in 2026. Spend that energy on flexible dates instead.</div>
+</div>
+
+<div class="fi-myth">
+  <div class="fi-myth-q">&ldquo;Incognito mode prevents airlines from raising prices when you search repeatedly.&rdquo;</div>
+  <div class="fi-myth-a">This is the most persistent myth in travel, and it was never true. Airlines price from their GDS inventory systems, which have no awareness of your browser cookies. What people actually observed was normal fare bucket fluctuation &mdash; you searched at 2pm, saw $490, searched again at 8pm after a bucket closed, saw $560, and blamed cookies. The fare change was happening regardless of your browser mode. Search in whatever mode you want. It does not matter.</div>
+</div>
+
+<div class="fi-myth">
+  <div class="fi-myth-q">&ldquo;Book as early as possible for the best price.&rdquo;</div>
+  <div class="fi-myth-a">Pre-pandemic, this was partially true. In 2026, booking 5-6 months out for a summer Europe trip often means paying more than someone who books 7 weeks out. Airlines now use dynamic pricing models that price early demand higher because they&rsquo;ve learned that early bookers are less price-sensitive. The data consistently shows that 6-10 weeks out is the optimal transatlantic booking window. The exception: peak holiday travel (Christmas, New Year&rsquo;s) still rewards early booking because those routes genuinely sell out.</div>
+</div>
+
+<div class="fi-myth">
+  <div class="fi-myth-q">&ldquo;Budget airlines are always cheaper.&rdquo;</div>
+  <div class="fi-myth-a">A $300 &ldquo;base fare&rdquo; on a budget carrier becomes $550 after you add a carry-on ($45-75), a checked bag ($50-70), seat selection ($15-40), and the headache of flying through a secondary airport. Meanwhile, a legacy carrier with bags and seat selection included might be $520. We price the all-in cost for every framework we build. About 40% of the time, the legacy carrier is the same price or cheaper when you add everything up. The other 60%, the budget carrier wins, but rarely by as much as the headline fare suggests.</div>
+</div>
+
+<div class="fi-divider"></div>
+
+<div class="tw-lads" style="margin-top:0">
+  <div class="tw-lads-label">The Lads Take on Flight Intelligence</div>
+  <p>We&rsquo;ve booked Europe round-trips under $500 four separate times. Not because we got lucky &mdash; because we tracked fare classes, split group bookings, leveraged hub routes from ORD and DTW, timed our purchases to the booking window sweet spot, and stayed flexible on days. That&rsquo;s not insider access. It&rsquo;s a system. Every framework we build includes this same intelligence applied to that specific route, so you&rsquo;re not just getting a trip plan &mdash; you&rsquo;re getting the exact playbook for how to buy the flights.</p>
+</div>
 </div>
 
 <div class="rule"></div>
