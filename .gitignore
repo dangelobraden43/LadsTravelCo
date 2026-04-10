@@ -1,0 +1,28 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+
+# Claude Code local settings (personal, not shared)
+.claude/settings.local.json
+
+# Node modules (if any npm packages installed locally)
+node_modules/
+
+# Logs
+*.log
+
+# Backup files
+*.bak
+*.backup
+
+# Research documents (source material, not deployed)
+*.docx
+*.pdf
+*.xlsx
