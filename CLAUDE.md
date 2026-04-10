@@ -40,6 +40,57 @@ Claude Code reads it automatically every session.
 
 ---
 
+## NEXT BUILD PRIORITIES — APRIL 10, 2026
+
+### 1. TAB 2 (THE SYSTEM) IMPROVEMENTS — BUILD NOW
+
+**Travel Windows** — Make each window an expandable card with research-backed reasoning for why each window is optimal. Include data points: average fare comparisons, crowd levels, weather patterns. The emphasis on travel windows also helps organize the Lads' own trip planning.
+
+**What You Get** — Upgrade each deliverable with real examples from existing frameworks:
+- **HTML Framework:** Link to Munich, Poland, or Thailand as live examples
+- **Flight Intelligence:** Show a real example using Poland (trip in ~3 months, realistic planning timeline)
+- **Google Maps Lists:** Add organized description of all 18 existing map links by city, showing breadth of coverage
+- **Money Intelligence:** Use Oktoberfest as the example — defined event window, real savings opportunities, strong R&D showcase
+- **Follow-Up:** Rethink this section — consider building an interest capture quiz right here, improve the follow-up experience beyond just 'we answer questions'
+
+### 2. FLIGHT INTELLIGENCE FEATURE (EXPERIMENTAL) — BUILD NOW
+
+- **Concept:** Show top 5 'best deals' from ORD and DTW, updated monthly
+- **Requires:** Value metric engineering (data science work to define 'best' based on current market, historical comparisons, destination value)
+- Build an example using Poland August as the proof of concept
+- Could use a scheduled hook or manual monthly update
+- This is a differentiator — no travel consultant shows live deal intelligence
+
+### 3. TAB 3 (LADS DOMESTIC) IMPROVEMENTS — BUILD NOW
+
+All domestic destination cards need substantial expansion — full expandable cards with:
+- One photo per card (shows on expand)
+- Database spots pulled in
+- Google Maps links
+- Honest take with more depth
+- Tour links where applicable
+
+### 4. FUTURE CONCEPT — LADS ADVENTURE / WELLNESS — BUILD NOW
+
+Separate adventure/hiking vertical that could eventually become its own site or section:
+- Salkantay Trek to Machu Picchu (Brady doing May 2026)
+- Tour du Mont Blanc (bucket list)
+- Kilimanjaro
+- Everest Base Camp
+- Patagonia (Torres del Paine)
+- Norway fjords/hiking
+- All bucket list items for both Brady and Dawson
+- AllTrails links for each
+- Could include a visual map showing completed vs. planned adventures
+- Bridges the gap between travel consulting and adventure/wellness
+- Start as a section within the current site, evaluate as standalone later
+
+### 5. CONCEPT — REVISIT POST-LAUNCH
+
+Items 1-4 above are **BUILD NOW** priorities. This item is for future evaluation after launch is complete and core site is stable.
+
+---
+
 ## WHO THIS IS
 
 Brady D'Angelo and Dawson. Two guys who've actually been there.
