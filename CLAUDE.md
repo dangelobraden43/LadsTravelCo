@@ -9,18 +9,40 @@
 
 **Completed:**
 - Main site converted from static HTML to React (April 10, 2026)
-- React site uses inline Babel transpilation via unpkg CDN — future optimization: convert to Vite/Next.js build
-- 31 base64 images embedded (11 original + 18 new photos from photos/ folder + 2 SVG)
-- 18 new photos integrated: Montserrat, Pantheon, Colosseum interior, Prague aerial, Pilsner Urquell brewery, Bondi rocks, koala, Spice Alley, Costa Rica viewpoint, and more
+- Migrated from inline Babel CDN to Vite build system (April 11, 2026) — proper React compilation, instant load
+- v0 design system integrated: scroll-based architecture, pill nav, crossfading hero, filter tabs, photo-forward cards
+- 45 base64 images total (29 original + 16 new photos processed via sharp: 75MB raw → 2.3MB optimized)
 - Prague + Vienna + Dresden framework built (prague-vienna.html) — last placeholder link resolved
-- All 6 destination cards now full-size (Iceland and Prague elevated from side-by-side)
+- All 6 destination cards with filter tabs (All/Validated/Bucket List)
 - Scroll-triggered animations via Intersection Observer throughout
-- All 4 tabs complete: Destinations, System (Travel Windows, Flight Intelligence, What You Get + quiz), Domestic, The Lads
+- All sections complete: Destinations, System (Travel Windows, Flight Intelligence, What You Get + quiz), Domestic, The Lads
+- Lads Local Michigan rebuilt as featured domestic hero with 30+ spots across 5 categories
+- Cal.com booking widget live (Book a Call button in Lads section)
+- Umami analytics tracking all 12 pages
+- Formspree intake form live (endpoint xvzvekkk)
+- Brave Search MCP configured for web search in Claude Code sessions
 - Body font fixed to Outfit on 5 frameworks, confidence label colors standardized
 - Ryder Cup 2027 added to Bucket List, Charleston added to Domestic
-- Old static site archived as index-static-backup.html
+- Old static site archived as index-old-babel.html
 
 **Zero placeholder links remain.**
+
+**APRIL 11, 2026 — SHIPPED TODAY:**
+- Migrated from inline Babel to Vite build system (permanent infrastructure fix)
+- v0 design system integrated as visual blueprint
+- Cal.com booking widget live (Book a Call button)
+- Umami analytics tracking all 12 pages
+- Brave Search MCP configured for future sessions
+- 16 new photos processed and integrated (75MB raw → 2.3MB via sharp)
+- Hero carousel cycling 5 strongest shots with crossfade
+- Photo strips between sections eliminating dead space
+- Lads Local Michigan rebuilt as featured hero with 30+ spots across 5 categories
+- Domestic section restructured: Michigan hero + other destinations below
+- Stats rewritten to tell stories across all cards
+- Custom commands created: /morning, /ship, /audit-all
+- Econ research paper improved (44KB → 70KB, 5 new analytical methods)
+- Brady personal context and site vision documented in internal/brady/
+- Lads Summer Hub and AI Playbook created in internal/
 
 ---
 
