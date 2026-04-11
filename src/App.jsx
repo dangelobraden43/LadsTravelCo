@@ -1260,7 +1260,7 @@ function DomesticSection() {
                   {!d.img && <div style={{width:'100%',height:'100%',background:'linear-gradient(135deg, var(--surface), var(--elevated))',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--serif)',fontSize:'1.8rem',fontWeight:700,color:'var(--faint)'}}>{d.name.charAt(0)}</span></div>}
                   <div className="dom-card-img-overlay" />
                   <div className="dom-card-img-name">
-                    <div className="region">{d.meta.split('\u00B7')([0] || '').trim()}</div>
+                    <div className="region">{(d.meta.split('\u00B7')[0] || '').trim()}</div>
                     <div className="name">{d.name}</div>
                   </div>
                 </div>
