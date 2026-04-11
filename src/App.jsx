@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { IMAGES } from './images';
 import { NEW_IMAGES } from './images-new';
+import { BATCH3_IMAGES } from './images-batch3';
 
 /* ===== IMAGE DATA ===== */
 
@@ -108,9 +109,9 @@ const DOMESTIC = [
   {name:"Jaco, Costa Rica",meta:"Both Lads \u00B7 28 Spots",desc:"Beach Airbnb, surf lessons, and an ATV tour to a hidden waterfall that we'd rank as our single best half-day experience anywhere we've traveled.",img:"costaRicaViewpoint",links:[{t:"Book ATV Tour",u:"https://gyg.me/0vVQ5scX"},{t:"Google Maps",u:"https://maps.app.goo.gl/hc199wu19C6cKj9G6"}]},
   {name:"San Juan",meta:"Brady \u00B7 14 Spots",desc:"No passport needed. Old San Juan is walkable, the mofongo is real, and the nightlife on Calle de la Fortaleza runs until 3am.",img:"surfGroup",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/ZWM8LXFGV9QpS8fB7"}]},
   {name:"Vancouver",meta:"Brady \u00B7 22 Spots",desc:"Stanley Park, Granville Island, and sushi that rivals Tokyo. 22 spots mapped across the best food city in the Pacific Northwest.",img:"vancouver",links:[{t:"Bars & Food",u:"https://maps.app.goo.gl/9n9uM7NG8Sa2aA8"},{t:"Things to Do",u:"https://maps.app.goo.gl/4moCgAkEHz5uJbQ9A"}]},
-  {name:"Seattle + Olympic",meta:"Brady \u00B7 14 Spots",desc:"Pike Place for the morning, Capitol Hill bars at night, and a day trip to Olympic National Park that makes the whole trip worth it.",img:"olympic",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/Fr7KdvoLsnXeBV1q8"}]},
+  {name:"Seattle + Olympic",meta:"Brady \u00B7 14 Spots",desc:"Pike Place for the morning, Capitol Hill bars at night, and a day trip to Olympic National Park that makes the whole trip worth it.",img:"hohRainforest",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/Fr7KdvoLsnXeBV1q8"}]},
   {name:"Phoenix + Golf",meta:"Brady \u00B7 7 Spots",desc:"The golf trip. Shoulder season pricing in late spring or early fall cuts costs 40% and the weather's still perfect.",img:"mountainOverlook",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/PTJn6coPBcRDKbHw5"}]},
-  {name:"Smoky Mountains",meta:"Brady \u00B7 8 Spots",desc:"Cabin on the quiet side, away from Gatlinburg crowds. Go in October for fall colors that make you forget you're three hours from Nashville.",img:"smoky",links:[]},
+  {name:"Smoky Mountains",meta:"Brady \u00B7 8 Spots",desc:"Cabin on the quiet side, away from Gatlinburg crowds. Go in October for fall colors that make you forget you're three hours from Nashville.",img:"smokyRockOverlook",links:[]},
   {name:"Las Vegas",meta:"Both Lads",desc:"Best as 3\u20134 nights. Skip the strip restaurants \u2014 the off-strip food scene is where the real value hides.",img:"spiceAlley",links:[]},
   {name:"Charleston",meta:"Brady",desc:"Best food city in the South, and it's not close. King Street for cocktails, Sullivan's Island for the beach day, Husk for the dinner that sells the trip.",img:"bondiRocks",links:[{t:"One-Pager",u:"charleston.html"}]}
 ];
@@ -841,7 +842,7 @@ export default function App() {
   const [heroImg, setHeroImg] = useState(0);
   const [selectedVibe, setSelectedVibe] = useState(null);
 
-  const heroImages = [IMAGES.cliffs, NEW_IMAGES.colosseumInside, NEW_IMAGES.sagradaSunset, IMAGES.opera, NEW_IMAGES.fitzroyBeach];
+  const heroImages = [IMAGES.cliffs, NEW_IMAGES.colosseumInside, NEW_IMAGES.sagradaSunset, IMAGES.opera, NEW_IMAGES.fitzroyBeach, BATCH3_IMAGES.oahuSunset];
 
   useEffect(() => {
     const onScroll = () => {
@@ -967,15 +968,25 @@ export default function App() {
         <div style={{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:6,borderRadius:12,overflow:'hidden'}}>
           <img src={NEW_IMAGES.pantheonRome} alt="Pantheon Rome" style={{width:'100%',height:160,objectFit:'cover'}} />
           <img src={NEW_IMAGES.pragueSkyline} alt="Prague skyline" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.kilkennyCastle} alt="Kilkenny Castle" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.templeBarDublin} alt="Temple Bar Dublin" style={{width:'100%',height:160,objectFit:'cover'}} />
           <img src={NEW_IMAGES.fitzroyBeach2} alt="Fitzroy Island beach" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.montserratSpain} alt="Montserrat Spain" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.klimtKiss} alt="Klimt The Kiss Vienna" style={{width:'100%',height:160,objectFit:'cover'}} />
         </div>
       </div>
 
       {/* SYSTEM */}
       <div id="system">
         <SystemSection selectedVibe={selectedVibe} />
+      </div>
+
+      {/* PHOTO STRIP — BATCH 3 */}
+      <div style={{padding:'0 24px',maxWidth:1200,margin:'24px auto 0'}}>
+        <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 2fr',gap:6,borderRadius:12,overflow:'hidden'}}>
+          <img src={BATCH3_IMAGES.hawaiiPillbox} alt="Hawaii pillbox hike coastline" style={{width:'100%',height:180,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.dresdenFrauenkirche} alt="Dresden Frauenkirche" style={{width:'100%',height:180,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.busBarNight} alt="Bus bar string lights" style={{width:'100%',height:180,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.vividDroneHeart} alt="Vivid Sydney drone heart" style={{width:'100%',height:180,objectFit:'cover'}} />
+        </div>
       </div>
 
       {/* DOMESTIC */}
@@ -996,9 +1007,9 @@ export default function App() {
       <div style={{padding:'0 24px',maxWidth:1200,margin:'24px auto 0'}}>
         <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 2fr',gap:6,borderRadius:12,overflow:'hidden'}}>
           <img src={NEW_IMAGES.rockArchPNW} alt="Rock arch Pacific Northwest" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.pilsnerUrquell} alt="Pilsner Urquell brewery" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.koalaAustralia} alt="Koala Australia" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.spiceAlley} alt="Spice Alley Sydney" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.europeanWaterfall} alt="European waterfall" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.galwayChristmas} alt="Galway Christmas lights" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={BATCH3_IMAGES.konaBrewing} alt="Kona Brewing Hawaii" style={{width:'100%',height:160,objectFit:'cover'}} />
         </div>
       </div>
 
@@ -1580,7 +1591,7 @@ function DomesticSection() {
             {DOMESTIC.map((d,i) => (
               <div key={i} className="dom-card" onClick={() => setExpandedDom(expandedDom===i?null:i)}>
                 <div className="dom-card-img">
-                  {d.img && <img src={IMAGES[d.img] || NEW_IMAGES[d.img]} alt={d.name} />}
+                  {d.img && <img src={IMAGES[d.img] || NEW_IMAGES[d.img] || BATCH3_IMAGES[d.img]} alt={d.name} />}
                   {!d.img && <div style={{width:'100%',height:'100%',background:'linear-gradient(135deg, var(--elevated), var(--surface))',position:'relative'}}><div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--serif)',fontSize:'2.2rem',fontWeight:700,color:'var(--dim)',letterSpacing:2}}>{d.name}</span></div></div>}
                   <div className="dom-card-img-overlay" />
                   <div className="dom-card-img-name">
@@ -1778,8 +1789,11 @@ function LadsSection() {
         <Reveal delay={200}>
           <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap',margin:'48px 0'}}>
             <img src={NEW_IMAGES.pragueOldTown} alt="Lads in Prague Old Town" style={{maxHeight:200,borderRadius:8}} />
+            <img src={BATCH3_IMAGES.bradyStPeters} alt="Brady at St Peters Rome" style={{maxHeight:200,borderRadius:8}} />
             <img src={NEW_IMAGES.galwayGuinness} alt="Lads with Guinness in Galway" style={{maxHeight:200,borderRadius:8}} />
+            <img src={BATCH3_IMAGES.kangarooFeeding} alt="Feeding a kangaroo in Australia" style={{maxHeight:200,borderRadius:8}} />
             <img src={NEW_IMAGES.surfGroup} alt="Surf group in Australia" style={{maxHeight:200,borderRadius:8}} />
+            <img src={BATCH3_IMAGES.munichMarienplatz} alt="Brady at Marienplatz Munich" style={{maxHeight:200,borderRadius:8}} />
             <img src={NEW_IMAGES.schonbrunnWalk} alt="Walking into Schonbrunn Palace" style={{maxHeight:200,borderRadius:8}} />
             <img src={NEW_IMAGES.mountainOverlook} alt="Mountain overlook Costa Rica" style={{maxHeight:200,borderRadius:8}} />
           </div>
