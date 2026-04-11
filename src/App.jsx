@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { IMAGES } from './images';
+import { NEW_IMAGES } from './images-new';
 
 /* ===== IMAGE DATA ===== */
 
@@ -775,7 +776,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [heroImg, setHeroImg] = useState(0);
 
-  const heroImages = [IMAGES.cliffs, IMAGES.colosseum, IMAGES.sagrada, IMAGES.opera];
+  const heroImages = [IMAGES.cliffs, NEW_IMAGES.colosseumInside, NEW_IMAGES.sagradaSunset, IMAGES.opera, NEW_IMAGES.fitzroyBeach];
 
   useEffect(() => {
     const onScroll = () => {
@@ -877,6 +878,17 @@ export default function App() {
         <DestinationsSection />
       </div>
 
+      {/* PHOTO STRIP */}
+      <div style={{padding:'0 24px',maxWidth:1200,margin:'0 auto'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:6,borderRadius:12,overflow:'hidden'}}>
+          <img src={NEW_IMAGES.sistineChapel} alt="Sistine Chapel" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.schonbrunn} alt="Schonbrunn Palace" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.kilkennyCastle} alt="Kilkenny Castle" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.vividSydney} alt="Vivid Sydney" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.olympicDeer} alt="Olympic National Park" style={{width:'100%',height:160,objectFit:'cover'}} />
+        </div>
+      </div>
+
       {/* SYSTEM */}
       <div id="system">
         <SystemSection />
@@ -885,6 +897,15 @@ export default function App() {
       {/* DOMESTIC */}
       <div id="domestic">
         <DomesticSection />
+      </div>
+
+      {/* PHOTO STRIP 2 */}
+      <div style={{padding:'0 24px',maxWidth:1200,margin:'0 auto'}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 2fr 1fr',gap:6,borderRadius:12,overflow:'hidden'}}>
+          <img src={NEW_IMAGES.glendalough} alt="Glendalough Ireland" style={{width:'100%',height:200,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.bondiCoastal} alt="Bondi coastal walk" style={{width:'100%',height:200,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.castelSantAngelo} alt="Castel Sant'Angelo Rome" style={{width:'100%',height:200,objectFit:'cover'}} />
+        </div>
       </div>
 
       {/* LADS */}
@@ -957,11 +978,11 @@ function DestinationsSection() {
                     </div>
                     <div className="dest-card-highlights">
                       {dest.stats.slice(0, i === 0 ? 4 : 3).map((s,j) => (
-                        <span key={j} className="dest-card-tag">{s.n} {s.l.split(' ').slice(0,3).join(' ')}</span>
+                        <span key={j} className="dest-card-tag">{s.n} {s.l}</span>
                       ))}
                     </div>
                     <div className="dest-card-cta">
-                      <span>View Framework</span> <span>&#8594;</span>
+                      <span>Explore Framework</span> <span>→</span>
                     </div>
                   </div>
                 </a>
@@ -1257,7 +1278,7 @@ function DomesticSection() {
               <div key={i} className="dom-card" onClick={() => setExpandedDom(expandedDom===i?null:i)}>
                 <div className="dom-card-img">
                   {d.img && <img src={IMAGES[d.img]} alt={d.name} />}
-                  {!d.img && <div style={{width:'100%',height:'100%',background:'linear-gradient(135deg, var(--surface), var(--elevated))',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--serif)',fontSize:'1.8rem',fontWeight:700,color:'var(--faint)'}}>{d.name.charAt(0)}</span></div>}
+                  {!d.img && <div style={{width:'100%',height:'100%',background:'linear-gradient(135deg, var(--elevated), var(--surface))',position:'relative'}}><div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--serif)',fontSize:'2.2rem',fontWeight:700,color:'var(--dim)',letterSpacing:2}}>{d.name}</span></div></div>}
                   <div className="dom-card-img-overlay" />
                   <div className="dom-card-img-name">
                     <div className="region">{(d.meta.split('\u00B7')[0] || '').trim()}</div>
@@ -1453,9 +1474,11 @@ function LadsSection() {
         {/* Photos */}
         <Reveal delay={200}>
           <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap',margin:'48px 0'}}>
-            <img src={IMAGES.bradyStatue} alt="Brady" style={{maxHeight:200,borderRadius:8}} />
-            <img src={IMAGES.ladsVienna} alt="Lads Vienna" style={{maxHeight:200,borderRadius:8}} />
-            <img src={IMAGES.franklinBus} alt="Franklin Bus" style={{maxHeight:200,borderRadius:8}} />
+            <img src={IMAGES.bradyStatue} alt="Brady in Rome" style={{maxHeight:200,borderRadius:8}} />
+            <img src={NEW_IMAGES.galwayGuinness} alt="Lads with Guinness in Galway" style={{maxHeight:200,borderRadius:8}} />
+            <img src={NEW_IMAGES.dublinLads} alt="Three lads in Dublin" style={{maxHeight:200,borderRadius:8}} />
+            <img src={IMAGES.ladsVienna} alt="Lads on Vienna U-Bahn" style={{maxHeight:200,borderRadius:8}} />
+            <img src={IMAGES.franklinBus} alt="Franklin bus bar Sydney" style={{maxHeight:200,borderRadius:8}} />
           </div>
         </Reveal>
 
