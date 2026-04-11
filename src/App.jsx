@@ -905,9 +905,9 @@ export default function App() {
           </div>
         ))}
         <div className="hero-content">
-          <div className="hero-label">Personal Travel Consulting</div>
+          <div className="hero-label">Free Personal Travel Consulting Through 2026</div>
           <h1>Travel Like<br/><em>You Know Someone</em></h1>
-          <p className="hero-sub">Two friends. 20+ cities. Four continents. We built a database of 650+ personally validated spots and a six-agent AI system to plan your perfect trip.</p>
+          <p className="hero-sub">Two friends. 20+ cities. Four continents. Every trip we plan through 2026 is free. We're building something real and we want you to be part of it.</p>
           <div className="hero-buttons">
             <button className="btn-primary-pill" onClick={() => scrollTo('adventure')}>Choose Your Adventure</button>
             <button className="btn-ghost-pill" onClick={() => scrollTo('destinations')}>Browse Destinations</button>
@@ -945,9 +945,9 @@ export default function App() {
       <section style={{padding:'48px 24px',textAlign:'center',background:'linear-gradient(180deg, var(--bg) 0%, var(--surface) 50%, var(--bg) 100%)'}}>
         <Reveal>
           <div style={{maxWidth:520,margin:'0 auto'}}>
-            <div className="section-label" style={{textAlign:'center',marginBottom:8}}>Coming Soon</div>
-            <h2 style={{fontFamily:'var(--serif)',fontSize:'clamp(1.4rem, 3vw, 1.8rem)',fontWeight:600,marginBottom:8}}>Launching Full Consulting <em>Fall 2026</em></h2>
-            <p style={{fontSize:14,color:'var(--muted)',marginBottom:24}}>Drop your email for early access. First clients get priority booking and founding-member pricing.</p>
+            <div className="section-label" style={{textAlign:'center',marginBottom:8}}>Free Through 2026</div>
+            <h2 style={{fontFamily:'var(--serif)',fontSize:'clamp(1.4rem, 3vw, 1.8rem)',fontWeight:600,marginBottom:8}}>Free personal travel consulting. <em>Seriously.</em></h2>
+            <p style={{fontSize:14,color:'var(--muted)',marginBottom:24}}>Every trip we plan through 2026 is free. Drop your email and we'll reach out to start planning yours.</p>
             <form action="https://formspree.io/f/xvzvekkk" method="POST" style={{display:'flex',gap:8,maxWidth:420,margin:'0 auto',flexWrap:'wrap',justifyContent:'center'}}>
               <input type="hidden" name="_subject" value="Early Access Signup" />
               <input type="email" name="email" required placeholder="your@email.com" style={{flex:'1 1 240px',padding:'10px 16px',borderRadius:8,border:'1px solid var(--border2)',background:'var(--surface)',color:'var(--cream)',fontSize:14,fontFamily:'var(--sans)',outline:'none'}} />
@@ -965,11 +965,11 @@ export default function App() {
       {/* PHOTO STRIP */}
       <div style={{padding:'0 24px',maxWidth:1200,margin:'0 auto'}}>
         <div style={{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:6,borderRadius:12,overflow:'hidden'}}>
-          <img src={NEW_IMAGES.sistineChapel} alt="Sistine Chapel" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.schonbrunn} alt="Schonbrunn Palace" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.pantheonRome} alt="Pantheon Rome" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.pragueSkyline} alt="Prague skyline" style={{width:'100%',height:160,objectFit:'cover'}} />
           <img src={NEW_IMAGES.kilkennyCastle} alt="Kilkenny Castle" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.vividSydney} alt="Vivid Sydney" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.olympicDeer} alt="Olympic National Park" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.fitzroyBeach2} alt="Fitzroy Island beach" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.montserratSpain} alt="Montserrat Spain" style={{width:'100%',height:160,objectFit:'cover'}} />
         </div>
       </div>
 
@@ -986,9 +986,19 @@ export default function App() {
       {/* PHOTO STRIP 2 */}
       <div style={{padding:'0 24px',maxWidth:1200,margin:'0 auto'}}>
         <div style={{display:'grid',gridTemplateColumns:'1fr 2fr 1fr',gap:6,borderRadius:12,overflow:'hidden'}}>
-          <img src={NEW_IMAGES.glendalough} alt="Glendalough Ireland" style={{width:'100%',height:200,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.bondiCoastal} alt="Bondi coastal walk" style={{width:'100%',height:200,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.castelSantAngelo} alt="Castel Sant'Angelo Rome" style={{width:'100%',height:200,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.dresdenPalace} alt="Dresden Palace" style={{width:'100%',height:200,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.bondiRocks} alt="Bondi coastal rocks" style={{width:'100%',height:200,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.colosseumInside2} alt="Inside the Colosseum" style={{width:'100%',height:200,objectFit:'cover'}} />
+        </div>
+      </div>
+
+      {/* PHOTO STRIP 3 */}
+      <div style={{padding:'0 24px',maxWidth:1200,margin:'24px auto 0'}}>
+        <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 2fr',gap:6,borderRadius:12,overflow:'hidden'}}>
+          <img src={NEW_IMAGES.rockArchPNW} alt="Rock arch Pacific Northwest" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.pilsnerUrquell} alt="Pilsner Urquell brewery" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.koalaAustralia} alt="Koala Australia" style={{width:'100%',height:160,objectFit:'cover'}} />
+          <img src={NEW_IMAGES.spiceAlley} alt="Spice Alley Sydney" style={{width:'100%',height:160,objectFit:'cover'}} />
         </div>
       </div>
 
@@ -996,6 +1006,40 @@ export default function App() {
       <div id="lads">
         <LadsSection />
       </div>
+
+      {/* GIVING BACK */}
+      <section className="section" style={{borderTop:'1px solid var(--border)'}}>
+        <div className="section-inner">
+          <Reveal>
+            <div className="section-header" style={{textAlign:'center'}}>
+              <div className="section-label" style={{textAlign:'center'}}>Giving Back</div>
+              <div className="section-title" style={{textAlign:'center'}}>Free Through 2026.<br/><span className="muted">Donations Go to Causes We Care About.</span></div>
+              <p className="section-desc" style={{margin:'12px auto 0',textAlign:'center'}}>Through 2026, every trip we plan is free. Any donations go directly to causes we care about — matched to the travel season that inspires them.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:16,marginTop:40}}>
+              {[
+                {window:'Late Aug / Sep',cause:'Breast Cancer Research',why:'October awareness approaching',icon:'\uD83C\uDF80'},
+                {window:'Nov / Dec',cause:"Mott Children's Hospital",why:'Holiday giving season',icon:'\u2764\uFE0F'},
+                {window:'Apr / May',cause:'Protecting Our Parks',why:'Earth Day, spring outdoors',icon:'\uD83C\uDF32'},
+                {window:'Jul / Aug',cause:'Sports Science Medical Research',why:'Summer athletics season',icon:'\u26BD'},
+                {window:'Rotating',cause:'Current Events',why:'Responding to what matters now',icon:'\uD83C\uDF0D'}
+              ].map((c,i) => (
+                <div key={i} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'20px 16px',textAlign:'center'}}>
+                  <div style={{fontSize:28,marginBottom:8}}>{c.icon}</div>
+                  <div style={{fontFamily:'var(--mono)',fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',marginBottom:6}}>{c.window}</div>
+                  <div style={{fontFamily:'var(--serif)',fontSize:'1.05rem',fontWeight:600,marginBottom:4}}>{c.cause}</div>
+                  <div style={{fontSize:12,color:'var(--dim)'}}>{c.why}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+          <Reveal delay={200}>
+            <p style={{textAlign:'center',fontSize:13,color:'var(--dim)',marginTop:32,maxWidth:480,margin:'32px auto 0'}}>This isn't a marketing angle. It's year zero. Free service, real charity, build the portfolio, prove the system. Paid consulting launches 2027.</p>
+          </Reveal>
+        </div>
+      </section>
 
       {/* FOOTER */}
       <footer className="site-footer">
@@ -1733,11 +1777,11 @@ function LadsSection() {
         {/* Photos */}
         <Reveal delay={200}>
           <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap',margin:'48px 0'}}>
-            <img src={IMAGES.bradyStatue} alt="Brady in Rome" style={{maxHeight:200,borderRadius:8}} />
+            <img src={NEW_IMAGES.pragueOldTown} alt="Lads in Prague Old Town" style={{maxHeight:200,borderRadius:8}} />
             <img src={NEW_IMAGES.galwayGuinness} alt="Lads with Guinness in Galway" style={{maxHeight:200,borderRadius:8}} />
-            <img src={NEW_IMAGES.dublinLads} alt="Three lads in Dublin" style={{maxHeight:200,borderRadius:8}} />
-            <img src={IMAGES.ladsVienna} alt="Lads on Vienna U-Bahn" style={{maxHeight:200,borderRadius:8}} />
-            <img src={IMAGES.franklinBus} alt="Franklin bus bar Sydney" style={{maxHeight:200,borderRadius:8}} />
+            <img src={NEW_IMAGES.surfGroup} alt="Surf group in Australia" style={{maxHeight:200,borderRadius:8}} />
+            <img src={NEW_IMAGES.schonbrunnWalk} alt="Walking into Schonbrunn Palace" style={{maxHeight:200,borderRadius:8}} />
+            <img src={NEW_IMAGES.mountainOverlook} alt="Mountain overlook Costa Rica" style={{maxHeight:200,borderRadius:8}} />
           </div>
         </Reveal>
 
@@ -1774,7 +1818,7 @@ function LadsSection() {
                   <div className="intake-icon"><IconSend /></div>
                   <div>
                     <div style={{fontWeight:600,fontSize:15}}>Start Your Journey</div>
-                    <div style={{fontSize:12,color:'var(--muted)'}}>Tell us about your dream trip</div>
+                    <div style={{fontSize:12,color:'var(--muted)'}}>No cost through 2026. Seriously. We're building something and we want you to be part of it.</div>
                   </div>
                 </div>
                 <div className="intake-grid">

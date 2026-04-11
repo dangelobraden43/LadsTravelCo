@@ -58,6 +58,24 @@
 - LinkedIn launch post drafted (internal/brady/linkedin-launch-post.md)
 - Affiliate setup guide created (internal/brady/affiliate-setup.md) — Booking.com, Viator, GYG
 
+**APRIL 11, 2026 — SESSION 3 (Strategic Repositioning):**
+- Business model shifted: all services free through 2026, affiliate revenue only, paid consulting launches 2027
+- Giving Back section added to main site: 5 charity causes matched to travel windows, donations go 100% to charity
+- Hero label updated: "Free Personal Travel Consulting Through 2026"
+- Email capture updated: reflects free model, no "launching" language
+- Intake form messaging updated: "No cost through 2026. Seriously."
+- Photo strips refreshed with batch 2 photos: Pantheon, Prague skyline, Fitzroy beach, Montserrat, Dresden, Bondi, Colosseum interior, rock arch PNW, Pilsner Urquell, koala, Spice Alley
+- Added third photo strip between domestic and Lads sections
+- Lads section photo row refreshed: Prague Old Town, surf group, Schonbrunn walk, mountain overlook
+- Vibe selector verified: 6 vibes, all destination mappings logical, every destination in at least one vibe
+- internal/brady/CONTEXT.md updated with 6-MONTH FREE MODEL section
+
+---
+
+## BUSINESS MODEL (Updated April 11, 2026)
+
+**Free through 2026.** No consulting fees. No payments. Revenue from affiliate links only (Booking.com, Viator, GetYourGuide). Any donations go 100% to charity matched to travel windows. Paid consulting ($200-500/framework) launches 2027.
+
 ---
 
 ## PERSONAL CONTEXT & 3-WEEK SPRINT
@@ -291,11 +309,11 @@ Cliffs of Moher: viator.com/tours/Galway/...d5156-8625P1 · Wicklow+Kilkenny: gy
 
 ---
 
-## REVENUE (Not Finalized)
+## REVENUE
 
-Consulting fee ($200-500/framework) · Affiliate (Viator/GYG at 8%) · Rewards optimization add-on · Group coordination margin · Study abroad advising
+**2026 (Year 0):** Free service. Affiliate revenue only (Booking.com, Viator/GYG at 8%). Donations go 100% to charity.
 
-Not the summer priority. Ready for fall push.
+**2027 (Year 1):** Consulting fee ($200-500/framework) · Affiliate (Viator/GYG at 8%) · Rewards optimization add-on · Group coordination margin · Study abroad advising
 
 ---
 
