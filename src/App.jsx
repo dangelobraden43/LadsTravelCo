@@ -115,6 +115,70 @@ const DOMESTIC = [
   {name:"Charleston",meta:"Brady",desc:"Best food city in the South, and it's not close. King Street for cocktails, Sullivan's Island for the beach day, Husk for the dinner that sells the trip.",links:[{t:"One-Pager",u:"charleston.html"}]}
 ];
 
+/* ===== VIBE DATA ===== */
+const VIBES = [
+  {
+    id: 'send-it', label: 'Send It',
+    tagline: 'Group adventure, nightlife, festivals',
+    icon: '\u26A1',
+    destinations: ['Dublin + Galway', 'Barcelona + Madrid'],
+    bucketList: ['Munich Oktoberfest', 'Poland August', 'Thailand NYE'],
+    domestic: ['Las Vegas'],
+    quizVibe: 'nightlife',
+    color: '#c9a84c'
+  },
+  {
+    id: 'take-it-in', label: 'Take It All In',
+    tagline: 'History, architecture, cultural depth',
+    icon: '\uD83C\uDFDB\uFE0F',
+    destinations: ['Prague + Vienna + Dresden', 'Rome + Italy', 'Barcelona + Madrid'],
+    bucketList: ['Pilsenfest + Prague', 'Camp Nou Reopening'],
+    domestic: [],
+    quizVibe: 'culture',
+    color: '#b8886e'
+  },
+  {
+    id: 'unplug', label: 'Unplug',
+    tagline: 'Beaches, relaxation, disconnect',
+    icon: '\uD83C\uDF34',
+    destinations: ['Australia + NZ'],
+    bucketList: ['Thailand NYE'],
+    domestic: ['Jaco, Costa Rica', 'Smoky Mountains', 'Charleston'],
+    quizVibe: 'mix',
+    color: '#5a9aad'
+  },
+  {
+    id: 'push-limits', label: 'Push Your Limits',
+    tagline: 'Trekking, altitude, endurance',
+    icon: '\u26F0\uFE0F',
+    destinations: ['Iceland'],
+    bucketList: ['Tour du Mont Blanc'],
+    domestic: ['Jaco, Costa Rica', 'Seattle + Olympic', 'Smoky Mountains'],
+    quizVibe: 'adventure',
+    color: '#7aaa6e'
+  },
+  {
+    id: 'show-everything', label: 'Show Them Everything',
+    tagline: 'Family travel, variety, a bit of it all',
+    icon: '\uD83C\uDF0D',
+    destinations: ['Australia + NZ', 'Dublin + Galway', 'Barcelona + Madrid'],
+    bucketList: ['Ryder Cup 2027'],
+    domestic: ['Vancouver', 'San Juan'],
+    quizVibe: 'mix',
+    color: '#c26e52'
+  },
+  {
+    id: 'just-us', label: 'Just Us',
+    tagline: 'Romantic, couples, intimate',
+    icon: '\u2728',
+    destinations: ['Rome + Italy', 'Iceland', 'Prague + Vienna + Dresden'],
+    bucketList: [],
+    domestic: ['Charleston', 'Smoky Mountains', 'Vancouver'],
+    quizVibe: 'food',
+    color: '#c9a84c'
+  }
+];
+
 /* ===== MAIN APP ===== */
 
 /* ===== QUIZ RECS ===== */
@@ -775,6 +839,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('destinations');
   const [scrolled, setScrolled] = useState(false);
   const [heroImg, setHeroImg] = useState(0);
+  const [selectedVibe, setSelectedVibe] = useState(null);
 
   const heroImages = [IMAGES.cliffs, NEW_IMAGES.colosseumInside, NEW_IMAGES.sagradaSunset, IMAGES.opera, NEW_IMAGES.fitzroyBeach];
 
@@ -844,8 +909,8 @@ export default function App() {
           <h1>Travel Like<br/><em>You Know Someone</em></h1>
           <p className="hero-sub">Two friends. 20+ cities. Four continents. We built a database of 650+ personally validated spots and a six-agent AI system to plan your perfect trip.</p>
           <div className="hero-buttons">
-            <button className="btn-primary-pill" onClick={() => scrollTo('destinations')}>Explore Destinations</button>
-            <button className="btn-ghost-pill" onClick={() => scrollTo('system')}>See How It Works</button>
+            <button className="btn-primary-pill" onClick={() => scrollTo('adventure')}>Choose Your Adventure</button>
+            <button className="btn-ghost-pill" onClick={() => scrollTo('destinations')}>Browse Destinations</button>
           </div>
           <div className="hero-stats">
             <div className="hero-stat">
@@ -862,7 +927,7 @@ export default function App() {
             </div>
           </div>
         </div>
-        <div className="hero-scroll" onClick={() => scrollTo('destinations')}>
+        <div className="hero-scroll" onClick={() => scrollTo('adventure')}>
           <span>Scroll to explore</span>
           <span>↓</span>
         </div>
@@ -873,9 +938,12 @@ export default function App() {
         </div>
       </section>
 
+      {/* CHOOSE YOUR ADVENTURE */}
+      <VibeSelector selectedVibe={selectedVibe} onSelect={(v) => setSelectedVibe(selectedVibe === v ? null : v)} scrollTo={scrollTo} />
+
       {/* DESTINATIONS */}
       <div id="destinations">
-        <DestinationsSection />
+        <DestinationsSection selectedVibe={selectedVibe} />
       </div>
 
       {/* PHOTO STRIP */}
@@ -891,7 +959,7 @@ export default function App() {
 
       {/* SYSTEM */}
       <div id="system">
-        <SystemSection />
+        <SystemSection selectedVibe={selectedVibe} />
       </div>
 
       {/* DOMESTIC */}
@@ -928,12 +996,65 @@ export default function App() {
   );
 }
 
+/* ===== VIBE SELECTOR ===== */
+function VibeSelector({ selectedVibe, onSelect, scrollTo }) {
+  return (
+    <section className="vibe-section" id="adventure">
+      <div className="section-inner">
+        <Reveal>
+          <div className="vibe-header">
+            <div className="section-label">Choose Your Adventure</div>
+            <div className="section-title">What kind of trip<br/><em>are you looking for?</em></div>
+            <p className="section-desc">Pick your vibe and we'll show you where to start. Every destination stays visible — we just surface the ones that fit.</p>
+          </div>
+        </Reveal>
+        <div className="vibe-grid">
+          {VIBES.map((vibe, i) => (
+            <Reveal key={vibe.id} delay={i * 60}>
+              <button
+                className={`vibe-card ${selectedVibe === vibe.id ? 'selected' : ''}`}
+                onClick={() => { const isSelecting = selectedVibe !== vibe.id; onSelect(vibe.id); if (isSelecting) setTimeout(() => scrollTo('destinations'), 400); }}
+                style={{'--vibe-color': vibe.color}}
+              >
+                <div className="vibe-card-icon">{vibe.icon}</div>
+                <div className="vibe-card-label">{vibe.label}</div>
+                <div className="vibe-card-tagline">{vibe.tagline}</div>
+                <div className="vibe-card-count">
+                  {vibe.destinations.length + vibe.bucketList.length} trips
+                </div>
+                {selectedVibe === vibe.id && (
+                  <div className="vibe-card-active">Selected</div>
+                )}
+              </button>
+            </Reveal>
+          ))}
+        </div>
+        <div style={{textAlign:'center', opacity: selectedVibe ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: selectedVibe ? 'auto' : 'none'}}>
+          <button className="vibe-clear" onClick={() => onSelect(selectedVibe)}>
+            Clear selection — show all destinations
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ===== DESTINATIONS SECTION ===== */
-function DestinationsSection() {
+function DestinationsSection({ selectedVibe }) {
   const [filter, setFilter] = useState('all');
-  const validated = DESTINATIONS;
-  const research = BUCKET_LIST.filter(b => b.link);
-  const researchBuilding = BUCKET_LIST.filter(b => !b.link);
+
+  const activeVibe = VIBES.find(v => v.id === selectedVibe);
+  const vibeDestNames = activeVibe ? activeVibe.destinations : [];
+  const vibeBucketNames = activeVibe ? activeVibe.bucketList : [];
+
+  // Reorder: matching destinations first, then the rest
+  const validated = selectedVibe
+    ? [...DESTINATIONS.filter(d => vibeDestNames.includes(d.name)), ...DESTINATIONS.filter(d => !vibeDestNames.includes(d.name))]
+    : DESTINATIONS;
+
+  const sortedBucket = selectedVibe
+    ? [...BUCKET_LIST.filter(b => vibeBucketNames.includes(b.name)), ...BUCKET_LIST.filter(b => !vibeBucketNames.includes(b.name))]
+    : BUCKET_LIST;
 
   return (
     <section className="section">
@@ -964,9 +1085,12 @@ function DestinationsSection() {
                 </div>
               </div>
             )}
-            <div className="dest-grid">
-              {validated.map((dest, i) => (
-                <a key={i} href={dest.link} target="_blank" rel="noopener noreferrer" className="dest-card" style={{textDecoration:'none'}}>
+            <div className={`dest-grid ${selectedVibe ? 'vibe-active' : ''}`}>
+              {validated.map((dest, i) => {
+                const isMatch = selectedVibe && vibeDestNames.includes(dest.name);
+                const isDimmed = selectedVibe && !vibeDestNames.includes(dest.name);
+                return (
+                <a key={dest.name} href={dest.link} target="_blank" rel="noopener noreferrer" className={`dest-card ${isMatch ? 'vibe-match' : ''} ${isDimmed ? 'vibe-dim' : ''}`} style={{textDecoration:'none'}}>
                   <img src={IMAGES[dest.img]} alt={dest.name} />
                   <div className="dest-card-overlay" />
                   <div className="dest-card-badge"><IconMapPin /> <span>{dest.stats[0].n} {dest.stats[0].l.split(' ')[0]}</span></div>
@@ -981,12 +1105,14 @@ function DestinationsSection() {
                         <span key={j} className="dest-card-tag">{s.n} {s.l}</span>
                       ))}
                     </div>
+                    {isMatch && <div className="vibe-match-label">Matches your vibe</div>}
                     <div className="dest-card-cta">
                       <span>Explore Framework</span> <span>→</span>
                     </div>
                   </div>
                 </a>
-              ))}
+                );
+              })}
             </div>
           </Reveal>
         )}
@@ -1005,8 +1131,11 @@ function DestinationsSection() {
                 </div>
               )}
               <div style={{display:'grid',gridTemplateColumns:'repeat(3, 1fr)',gap:16}}>
-                {BUCKET_LIST.map((b,i) => (
-                  <div key={i} className="dest-card" style={{aspectRatio:'4/5',minHeight:0,background:'var(--surface)'}}>
+                {sortedBucket.map((b,i) => {
+                  const isBucketMatch = selectedVibe && vibeBucketNames.includes(b.name);
+                  const isBucketDim = selectedVibe && !vibeBucketNames.includes(b.name);
+                  return (
+                  <div key={b.name} className={`dest-card ${isBucketMatch ? 'vibe-match' : ''} ${isBucketDim ? 'vibe-dim' : ''}`} style={{aspectRatio:'4/5',minHeight:0,background:'var(--surface)'}}>
                     <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg, var(--surface), var(--elevated))'}} />
                     <div className="dest-card-overlay" style={{background:'linear-gradient(transparent 40%, rgba(20,18,16,0.9) 85%)'}} />
                     <div className="dest-card-badge research">{b.status==='ready'?'Framework Ready':'Building'}</div>
@@ -1022,7 +1151,8 @@ function DestinationsSection() {
                       )}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </Reveal>
@@ -1050,16 +1180,26 @@ function DestinationsSection() {
 }
 
 /* ===== SYSTEM SECTION ===== */
-function SystemSection() {
+function SystemSection({ selectedVibe }) {
   const [activeStep, setActiveStep] = useState(0);
   const [openWindow, setOpenWindow] = useState(null);
   const [openFlight, setOpenFlight] = useState(null);
   const [openMyth, setOpenMyth] = useState(null);
   const [openDeliverable, setOpenDeliverable] = useState(null);
   const [activeDeliverable, setActiveDeliverable] = useState(0);
+
+  // Pre-select quiz vibe from adventure selector
+  const vibeMapping = VIBES.find(v => v.id === selectedVibe);
   const [quizVibe, setQuizVibe] = useState(null);
   const [quizGroup, setQuizGroup] = useState(null);
   const [quizBudget, setQuizBudget] = useState(null);
+
+  // Sync quiz vibe when adventure vibe changes
+  useEffect(() => {
+    if (vibeMapping) {
+      setQuizVibe(vibeMapping.quizVibe);
+    }
+  }, [selectedVibe]);
 
   const toggleWindow = (i) => setOpenWindow(openWindow === i ? null : i);
   const toggleFlight = (i) => setOpenFlight(openFlight === i ? null : i);
