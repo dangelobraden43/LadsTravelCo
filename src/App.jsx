@@ -106,13 +106,13 @@ const DB_SPOTS = [
 
 const DOMESTIC = [
   {name:"Jaco, Costa Rica",meta:"Both Lads \u00B7 28 Spots",desc:"Beach Airbnb, surf lessons, and an ATV tour to a hidden waterfall that we'd rank as our single best half-day experience anywhere we've traveled.",img:"costaRicaViewpoint",links:[{t:"Book ATV Tour",u:"https://gyg.me/0vVQ5scX"},{t:"Google Maps",u:"https://maps.app.goo.gl/hc199wu19C6cKj9G6"}]},
-  {name:"San Juan",meta:"Brady \u00B7 14 Spots",desc:"No passport needed. Old San Juan is walkable, the mofongo is real, and the nightlife on Calle de la Fortaleza runs until 3am.",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/ZWM8LXFGV9QpS8fB7"}]},
+  {name:"San Juan",meta:"Brady \u00B7 14 Spots",desc:"No passport needed. Old San Juan is walkable, the mofongo is real, and the nightlife on Calle de la Fortaleza runs until 3am.",img:"surfGroup",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/ZWM8LXFGV9QpS8fB7"}]},
   {name:"Vancouver",meta:"Brady \u00B7 22 Spots",desc:"Stanley Park, Granville Island, and sushi that rivals Tokyo. 22 spots mapped across the best food city in the Pacific Northwest.",img:"vancouver",links:[{t:"Bars & Food",u:"https://maps.app.goo.gl/9n9uM7NG8Sa2aA8"},{t:"Things to Do",u:"https://maps.app.goo.gl/4moCgAkEHz5uJbQ9A"}]},
   {name:"Seattle + Olympic",meta:"Brady \u00B7 14 Spots",desc:"Pike Place for the morning, Capitol Hill bars at night, and a day trip to Olympic National Park that makes the whole trip worth it.",img:"olympic",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/Fr7KdvoLsnXeBV1q8"}]},
-  {name:"Phoenix + Golf",meta:"Brady \u00B7 7 Spots",desc:"The golf trip. Shoulder season pricing in late spring or early fall cuts costs 40% and the weather's still perfect.",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/PTJn6coPBcRDKbHw5"}]},
+  {name:"Phoenix + Golf",meta:"Brady \u00B7 7 Spots",desc:"The golf trip. Shoulder season pricing in late spring or early fall cuts costs 40% and the weather's still perfect.",img:"mountainOverlook",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/PTJn6coPBcRDKbHw5"}]},
   {name:"Smoky Mountains",meta:"Brady \u00B7 8 Spots",desc:"Cabin on the quiet side, away from Gatlinburg crowds. Go in October for fall colors that make you forget you're three hours from Nashville.",img:"smoky",links:[]},
-  {name:"Las Vegas",meta:"Both Lads",desc:"Best as 3\u20134 nights. Skip the strip restaurants \u2014 the off-strip food scene is where the real value hides.",links:[]},
-  {name:"Charleston",meta:"Brady",desc:"Best food city in the South, and it's not close. King Street for cocktails, Sullivan's Island for the beach day, Husk for the dinner that sells the trip.",links:[{t:"One-Pager",u:"charleston.html"}]}
+  {name:"Las Vegas",meta:"Both Lads",desc:"Best as 3\u20134 nights. Skip the strip restaurants \u2014 the off-strip food scene is where the real value hides.",img:"spiceAlley",links:[]},
+  {name:"Charleston",meta:"Brady",desc:"Best food city in the South, and it's not close. King Street for cocktails, Sullivan's Island for the beach day, Husk for the dinner that sells the trip.",img:"bondiRocks",links:[{t:"One-Pager",u:"charleston.html"}]}
 ];
 
 /* ===== VIBE DATA ===== */
@@ -1580,7 +1580,7 @@ function DomesticSection() {
             {DOMESTIC.map((d,i) => (
               <div key={i} className="dom-card" onClick={() => setExpandedDom(expandedDom===i?null:i)}>
                 <div className="dom-card-img">
-                  {d.img && <img src={IMAGES[d.img]} alt={d.name} />}
+                  {d.img && <img src={IMAGES[d.img] || NEW_IMAGES[d.img]} alt={d.name} />}
                   {!d.img && <div style={{width:'100%',height:'100%',background:'linear-gradient(135deg, var(--elevated), var(--surface))',position:'relative'}}><div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--serif)',fontSize:'2.2rem',fontWeight:700,color:'var(--dim)',letterSpacing:2}}>{d.name}</span></div></div>}
                   <div className="dom-card-img-overlay" />
                   <div className="dom-card-img-name">
