@@ -1209,26 +1209,54 @@ function SystemSection() {
 /* ===== DOMESTIC SECTION ===== */
 function DomesticSection() {
   const [expandedDom, setExpandedDom] = useState(null);
-  const [michRegion, setMichRegion] = useState('annArbor');
+  const [michCategory, setMichCategory] = useState('food');
 
-  const michData = {
-    annArbor: [
-      {name:"Zingerman's Deli",type:"Food",note:"The Reuben. That's it."},
-      {name:"Frita Batidos",type:"Food",note:"Cuban street food, best burger in town"},
-      {name:"HOMES Brewery",type:"Drinks",note:"Korean-fusion brewery, unreal"},
-      {name:"The Blind Pig",type:"Music",note:"Where Nirvana played before fame"},
+  const michCategories = [
+    {id:'food', label:'Food', icon:'\uD83C\uDF7D\uFE0F'},
+    {id:'breweries', label:'Breweries', icon:'\uD83C\uDF7A'},
+    {id:'outdoors', label:'Outdoors', icon:'\u26F0\uFE0F'},
+    {id:'daytrips', label:'Day Trips', icon:'\uD83D\uDE97'},
+    {id:'hidden', label:'Hidden Gems', icon:'\u2728'},
+  ];
+
+  const michSpots = {
+    food: [
+      {name:"Zingerman's Deli", area:"Ann Arbor", note:"The Reuben changed the way we think about sandwiches. Not cheap, not sorry.", badge:"Brady"},
+      {name:"Frita Batidos", area:"Ann Arbor", note:"Cuban street food. The burger is the move, but the batido makes the meal.", badge:"Brady"},
+      {name:"Dearborn Arab Food District", area:"Detroit", note:"Best Middle Eastern food outside the Middle East. This isn't an exaggeration.", badge:"Brady"},
+      {name:"Eastern Market", area:"Detroit", note:"Saturday mornings only. Get there by 8am or don't bother.", badge:"Brady"},
+      {name:"Cherry Republic", area:"Traverse City", note:"Everything cherry, and unironically all of it is good.", badge:"Brady"},
+      {name:"Grand Traverse Pie Co.", area:"Traverse City", note:"Cherry crumb pie. Order two \u2014 one for the road.", badge:"Brady"},
+      {name:"The Chop House", area:"Ann Arbor", note:"Gameday dinner spot. Get a reservation or eat standing.", badge:"Brady"},
     ],
-    detroit: [
-      {name:"Dearborn Arab food",type:"Food",note:"Best Middle Eastern outside the Middle East"},
-      {name:"Eastern Market",type:"Food",note:"Saturday mornings only"},
-      {name:"The Belt",type:"Art",note:"Hidden alley art district"},
-      {name:"Batch Brewing",type:"Drinks",note:"Corktown's best kept secret"},
+    breweries: [
+      {name:"Founders Brewing", area:"Grand Rapids", note:"KBS is the crown jewel, but All Day IPA is why you come back. Beer City USA starts here.", badge:"Brady"},
+      {name:"HOMES Brewery", area:"Ann Arbor", note:"Korean-fusion brewery. The food is as good as the beer. Unreal concept.", badge:"Brady"},
+      {name:"Batch Brewing", area:"Detroit", note:"Corktown's best kept secret. Small batches, no hype, great beer.", badge:"Brady"},
+      {name:"Short's Brewing", area:"Bellaire", note:"Up north institution. Soft Parade is a Michigan summer in a glass.", badge:"Brady"},
+      {name:"Bell's Brewery", area:"Kalamazoo", note:"Two Hearted and Oberon. That's the whole pitch.", badge:"Dawson"},
+      {name:"Brewery Vivant", area:"Grand Rapids", note:"Belgian-style in a converted funeral chapel. The space alone is worth the trip.", badge:"Brady"},
     ],
-    traverseCity: [
-      {name:"Cherry Republic",type:"Food",note:"Everything cherry, unironically good"},
-      {name:"Sleeping Bear Dunes",type:"Nature",note:"Most beautiful place in Michigan"},
-      {name:"Mission Peninsula",type:"Wine",note:"Underrated wine region"},
-    ]
+    outdoors: [
+      {name:"Sleeping Bear Dunes", area:"Traverse City", note:"Most beautiful place in Michigan, full stop. The Pierce Stocking Scenic Drive is free and stunning.", badge:"Brady"},
+      {name:"Pictured Rocks", area:"Upper Peninsula", note:"Kayak the shoreline. The colors in the rock face don't look real. Book guides early.", badge:"Brady"},
+      {name:"Nordhouse Dunes", area:"Ludington", note:"Backpack to a beach campsite on Lake Michigan. No cars, no buildings, just sand and water.", badge:"Brady"},
+      {name:"Mission Peninsula", area:"Traverse City", note:"Underrated wine region. Drive the peninsula, stop at 3-4 wineries, end at the lighthouse.", badge:"Brady"},
+      {name:"Torch Lake", area:"Up North", note:"The Caribbean of the Midwest. Not a joke \u2014 the water is actually turquoise in July.", badge:"Brady"},
+    ],
+    daytrips: [
+      {name:"Ann Arbor Football Saturday", area:"Ann Arbor", note:"The Big House holds 107,000 people. Get there at 8am for tailgating. Zingerman's first, campus walk, then the game.", badge:"Brady"},
+      {name:"Saugatuck + Douglas", area:"Lakeshore", note:"Art galleries, Oval Beach, and small-town Lake Michigan vibes. 2 hours from GR, perfect day trip.", badge:"Brady"},
+      {name:"Mackinac Island", area:"Northern Michigan", note:"No cars allowed. Fudge shops and bike rentals. Touristy but worth it once.", badge:"Brady"},
+      {name:"Holland Tulip Festival", area:"Holland", note:"May only. Dutch heritage, 5 million tulips, and Windmill Island. Genuinely special.", badge:"Brady"},
+    ],
+    hidden: [
+      {name:"The Blind Pig", area:"Ann Arbor", note:"Where Nirvana played before they were Nirvana. Small venue, great sound, historic.", badge:"Brady"},
+      {name:"The Belt", area:"Detroit", note:"Hidden alley art district between two buildings downtown. Walk through it, then hit the bars on either side.", badge:"Brady"},
+      {name:"Tunnel of Trees", area:"Harbor Springs", note:"M-119 in October. 20 miles of canopy road along Lake Michigan. Best fall drive in the state.", badge:"Brady"},
+      {name:"Third Man Records", area:"Detroit", note:"Jack White's pressing plant and record store. They press vinyl in front of you.", badge:"Brady"},
+      {name:"Kitch-iti-kipi", area:"Upper Peninsula", note:"Michigan's largest freshwater spring. Crystal clear, 40 feet deep, you can see the bottom. Free.", badge:"Brady"},
+    ],
   };
 
   return (
@@ -1240,38 +1268,113 @@ function DomesticSection() {
               <div className="section-label">Domestic</div>
               <div className="section-title">Closer to Home.<br/><span className="muted">Still Curated.</span></div>
             </div>
-            <p className="section-desc" style={{maxWidth:400}}>US and North American destinations with the same level of detail as our international trips.</p>
+            <p className="section-desc" style={{maxWidth:400}}>US and North American destinations with the same depth as our international frameworks.</p>
           </div>
         </Reveal>
 
-        {/* Michigan Intelligence */}
+        {/* ===== LADS LOCAL MICHIGAN — HERO FEATURE ===== */}
         <Reveal delay={100}>
-          <div className="mich-panel">
-            <div className="mich-header">
-              <div style={{width:36,height:36,borderRadius:'50%',background:'var(--gold-dim)',border:'1px solid var(--gold-border)',display:'flex',alignItems:'center',justifyContent:'center'}}><IconMapPin /></div>
-              <div>
-                <div style={{fontWeight:600,fontSize:15}}>Michigan Local Intel</div>
-                <div style={{fontSize:12,color:'var(--muted)'}}>Home turf expertise</div>
+          <div style={{
+            background:'linear-gradient(135deg, #0a1f14, #122a1c, #0d2618)',
+            borderRadius:'var(--radius)',
+            overflow:'hidden',
+            marginBottom:48,
+            border:'1px solid rgba(45,122,66,0.2)'
+          }}>
+            {/* Michigan Hero Header */}
+            <div style={{padding:'40px 36px 0'}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
+                <div style={{width:40,height:40,borderRadius:'50%',background:'rgba(45,122,66,0.2)',border:'1px solid rgba(45,122,66,0.35)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>
+                  {'\uD83C\uDF32'}
+                </div>
+                <div>
+                  <div style={{fontFamily:'var(--serif)',fontSize:'1.6rem',fontWeight:700,color:'#e8f0e8'}}>Lads Local</div>
+                  <div style={{fontSize:12,color:'rgba(200,230,200,0.5)',letterSpacing:2,textTransform:'uppercase'}}>Michigan Intelligence</div>
+                </div>
+              </div>
+              <p style={{fontSize:14,color:'rgba(200,230,200,0.7)',lineHeight:1.7,maxWidth:600,marginBottom:6}}>
+                Home turf. We grew up here, went to school here, know every brewery, every trail, and every shortcut.
+                This is the same depth as our international frameworks \u2014 but for the state we actually live in.
+              </p>
+              <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:24}}>
+                <span style={{padding:'4px 14px',borderRadius:'var(--radius-full)',fontSize:11,fontWeight:500,background:'rgba(45,122,66,0.2)',color:'#7ac490',border:'1px solid rgba(45,122,66,0.3)'}}>46 spots validated</span>
+                <span style={{padding:'4px 14px',borderRadius:'var(--radius-full)',fontSize:11,fontWeight:500,background:'rgba(45,122,66,0.2)',color:'#7ac490',border:'1px solid rgba(45,122,66,0.3)'}}>8 regions covered</span>
+                <span style={{padding:'4px 14px',borderRadius:'var(--radius-full)',fontSize:11,fontWeight:500,background:'rgba(45,122,66,0.2)',color:'#7ac490',border:'1px solid rgba(45,122,66,0.3)'}}>Free resource</span>
               </div>
             </div>
-            <div className="mich-tabs">
-              {[{id:'annArbor',label:'Ann Arbor'},{id:'detroit',label:'Detroit'},{id:'traverseCity',label:'Traverse City'}].map(r => (
-                <button key={r.id} className={`mich-tab ${michRegion===r.id?'active':''}`} onClick={() => setMichRegion(r.id)}>{r.label}</button>
+
+            {/* Category Tabs */}
+            <div style={{padding:'0 36px 16px',display:'flex',gap:6,flexWrap:'wrap'}}>
+              {michCategories.map(c => (
+                <button key={c.id}
+                  onClick={() => setMichCategory(c.id)}
+                  style={{
+                    padding:'8px 18px',
+                    borderRadius:'var(--radius-full)',
+                    border: michCategory===c.id ? '1px solid rgba(45,122,66,0.5)' : '1px solid rgba(255,255,255,0.08)',
+                    background: michCategory===c.id ? 'rgba(45,122,66,0.25)' : 'rgba(255,255,255,0.04)',
+                    color: michCategory===c.id ? '#7ac490' : 'rgba(200,230,200,0.5)',
+                    fontSize:12, fontWeight:500, fontFamily:'var(--sans)',
+                    cursor:'pointer', transition:'all 0.2s',
+                    display:'flex', alignItems:'center', gap:6,
+                  }}
+                >
+                  <span>{c.icon}</span> {c.label}
+                </button>
               ))}
             </div>
-            {michData[michRegion].map((spot,i) => (
-              <div key={i} className="mich-spot">
-                <div>
-                  <div className="mich-spot-name">{spot.name}</div>
-                  <div className="mich-spot-note">{spot.note}</div>
+
+            {/* Spots */}
+            <div style={{padding:'0 36px 32px'}}>
+              {michSpots[michCategory].map((spot, i) => (
+                <div key={i} style={{
+                  display:'flex', justifyContent:'space-between', alignItems:'flex-start',
+                  padding:'14px 16px', marginBottom:6,
+                  borderRadius:'var(--radius-sm)',
+                  background:'rgba(255,255,255,0.03)',
+                  border:'1px solid rgba(255,255,255,0.05)',
+                }}>
+                  <div style={{flex:1}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                      <span style={{fontSize:14,fontWeight:600,color:'#e8f0e8'}}>{spot.name}</span>
+                      <span style={{fontSize:10,color:'rgba(200,230,200,0.35)'}}>{spot.area}</span>
+                    </div>
+                    <div style={{fontSize:13,color:'rgba(200,230,200,0.55)',marginTop:3,lineHeight:1.5}}>{spot.note}</div>
+                  </div>
+                  <span style={{
+                    padding:'3px 10px', borderRadius:4, fontSize:10, fontWeight:500, flexShrink:0, marginLeft:12,
+                    background: spot.badge==='Dawson' ? 'rgba(90,154,173,0.15)' : 'rgba(184,136,110,0.15)',
+                    color: spot.badge==='Dawson' ? 'var(--teal)' : 'var(--copper)',
+                  }}>{spot.badge}</span>
                 </div>
-                <span className="mich-spot-type">{spot.type}</span>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* CTA */}
+            <div style={{padding:'0 36px 32px',display:'flex',gap:12,flexWrap:'wrap'}}>
+              <a href="lads-local.html" target="_blank" rel="noopener noreferrer"
+                style={{
+                  padding:'10px 24px', borderRadius:'var(--radius-full)',
+                  background:'rgba(45,122,66,0.3)', color:'#7ac490',
+                  border:'1px solid rgba(45,122,66,0.4)',
+                  fontSize:13, fontWeight:500, fontFamily:'var(--sans)',
+                  textDecoration:'none', transition:'all 0.2s',
+                  display:'inline-flex', alignItems:'center', gap:8,
+                }}>
+                Open Full Michigan Guide {'\u2192'}
+              </a>
+            </div>
           </div>
         </Reveal>
 
-        {/* Domestic Grid */}
+        {/* ===== OTHER DOMESTIC DESTINATIONS ===== */}
+        <Reveal delay={100}>
+          <div style={{marginBottom:24}}>
+            <div className="section-label">More Destinations</div>
+            <div className="section-title" style={{fontSize:'clamp(1.4rem, 3vw, 1.8rem)'}}>US & North America</div>
+          </div>
+        </Reveal>
+
         <Reveal delay={200}>
           <div className="domestic-grid">
             {DOMESTIC.map((d,i) => (
