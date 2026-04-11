@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Charleston — The Lads Travel Co.">
+<meta property="og:description" content="One-pager for Charleston — curated spots and trip planning from The Lads Travel Co.">
+<meta property="og:type" content="website">
+<title>Charleston — The Lads Travel Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── RESET & BASE ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --indigo:       #1E2D4A;
+  --indigo-mid:   #2A3D5E;
+  --indigo-card:  #243352;
+  --indigo-light: #344F78;
+  --terra:        #C4714E;
+  --terra-lt:     #D48B6A;
+  --terra-dim:    rgba(196,113,78,0.18);
+  --sage:         #7A8F5F;
+  --sage-lt:      #9AAD78;
+  --cream:        #F0EBE1;
+  --cream-dim:    #C8BFB0;
+  --white:        #FFFFFF;
+  --text-body:    #D4CAB8;
+  --text-dim:     #8A9AB8;
+  --green:        #5A9E6F;
+  --amber:        #C49A3C;
+  --red-local:    #B85555;
+  --border:       rgba(255,255,255,0.07);
+  --card-border:  rgba(255,255,255,0.09);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--indigo);
+  color: var(--cream);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
+.serif        { font-family: 'Cormorant Garamond', serif; }
+.eyebrow      { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--terra-lt); }
+.section-label{ font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--text-dim); }
+em            { font-style: italic; }
+
+/* ─── UTILITY ────────────────────────────────────────────────── */
+.terra  { color: var(--terra-lt); }
+.sage   { color: var(--sage-lt); }
+.dim    { color: var(--text-dim); }
+
+/* ─── LAYOUT WRAPPER ─────────────────────────────────────────── */
+.wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 0 80px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  padding: 56px 24px 40px;
+  background:
+    linear-gradient(175deg, #2A3D5E 0%, #1E2D4A 55%, #17243B 100%);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,113,78,.14) 0%, transparent 68%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--terra) 40%, var(--sage) 70%, transparent 100%);
+  opacity: .5;
+}
+.hero-eyebrow {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--terra-lt);
+  margin-bottom: 10px;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: .95;
+  color: var(--cream);
+  margin-bottom: 6px;
+  letter-spacing: -.01em;
+}
+.hero-title em {
+  color: var(--terra-lt);
+  font-style: italic;
+  font-weight: 400;
+}
+.hero-dates {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--cream-dim);
+  margin-bottom: 20px;
+  letter-spacing: .01em;
+}
+.hero-tagline {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 320px;
+}
+.hero-tagline strong { color: var(--cream); font-weight: 500; }
+
+/* ════════════════════════════════════════════════════════════════
+   DAY STRIP
+════════════════════════════════════════════════════════════════ */
+.day-strip-wrap {
+  background: var(--indigo-mid);
+  border-bottom: 1px solid var(--border);
+  padding: 0 8px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,.4);
+}
+.day-strip {
+  display: flex;
+  overflow-x: auto;
+  gap: 2px;
+  padding: 10px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.day-strip::-webkit-scrollbar { display: none; }
+
+.day-pill {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .18s ease, transform .12s ease;
+  text-decoration: none;
+  min-width: 52px;
+}
+.day-pill:hover { background: rgba(255,255,255,.06); transform: translateY(-1px); }
+.day-pill.active { background: var(--terra); }
+.day-pill.active .dp-num,
+.day-pill.active .dp-label { color: var(--white); }
+
+.dp-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.dp-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   NON-NEGOTIABLES BANNER
+════════════════════════════════════════════════════════════════ */
+.nonneg {
+  margin: 0;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--indigo-mid) 0%, var(--indigo-card) 100%);
+  border-bottom: 1px solid var(--border);
+}
+.nonneg-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--terra-lt);
+  margin-bottom: 14px;
+}
+.nonneg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.nonneg-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.nonneg-item.full { grid-column: 1 / -1; }
+.nonneg-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.nonneg-text {}
+.nonneg-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 1px;
+}
+.nonneg-sub {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SECTION STRUCTURE
+════════════════════════════════════════════════════════════════ */
+.section {
+  padding: 28px 24px 0;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.section-icon { font-size: 18px; }
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: -.01em;
+  line-height: 1;
+}
+.section-title em { color: var(--terra-lt); font-style: italic; font-weight: 400; }
+.section-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* ─── DAY ANCHORS ────────────────────────────────────────────── */
+.day-anchor {
+  padding: 20px 24px 0;
+}
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.day-num-badge {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--terra-lt);
+  line-height: 1;
+  width: 44px;
+  flex-shrink: 0;
+}
+.day-info {}
+.day-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.2;
+}
+.day-theme {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-dim);
+}
+.day-divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--terra) 0%, transparent 100%);
+  opacity: .3;
+  margin-bottom: 14px;
+}
+
+/* ─── TIME BLOCKS ────────────────────────────────────────────── */
+.time-block {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+.tb-time {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--terra-lt);
+  letter-spacing: .04em;
+  width: 44px;
+  flex-shrink: 0;
+  padding-top: 3px;
+  text-align: right;
+}
+.tb-content {}
+.tb-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.3;
+  margin-bottom: 1px;
+}
+.tb-note {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RESTAURANT CARDS
+════════════════════════════════════════════════════════════════ */
+.cards { display: flex; flex-direction: column; gap: 10px; }
+
+.rcard {
+  background: var(--indigo-card);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .18s;
+}
+.rcard::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 10px 0 0 10px;
+}
+.rcard.local::before    { background: var(--green); }
+.rcard.mixed::before    { background: var(--amber); }
+.rcard.tourist::before  { background: var(--red-local); }
+.rcard:hover { border-color: rgba(196,113,78,.35); }
+
+.rcard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.rcard-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.2;
+}
+.rcard-price {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sage-lt);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.rcard-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.rcard-hood {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  letter-spacing: .03em;
+}
+.meta-dot { width: 2px; height: 2px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
+.vibe-tag {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--terra-lt);
+  background: var(--terra-dim);
+  border: 1px solid rgba(196,113,78,.2);
+  border-radius: 3px;
+  padding: 1px 6px;
+}
+.rcard-note {
+  font-size: 12px;
+  color: var(--text-body);
+  line-height: 1.55;
+}
+.rcard-note strong { color: var(--cream); font-weight: 600; }
+
+.rcard-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+.tag {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.tag-res  { background: rgba(196,113,78,.14); color: var(--terra-lt); border: 1px solid rgba(196,113,78,.25); }
+.tag-hh   { background: rgba(196,154,60,.14); color: #D4AA5A; border: 1px solid rgba(196,154,60,.25); }
+.tag-walk { background: rgba(90,158,111,.14); color: #7ACA96; border: 1px solid rgba(90,158,111,.25); }
+.tag-day  { background: rgba(122,143,95,.14); color: var(--sage-lt); border: 1px solid rgba(122,143,95,.25); }
+.tag-star { background: rgba(196,113,78,.22); color: #FFCC88; border: 1px solid rgba(196,113,78,.4); }
+.tag-alert{ background: rgba(184,85,85,.14); color: #E09090; border: 1px solid rgba(184,85,85,.25); }
+
+.must-flag {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: 13px;
+}
+
+/* ─── LOCAL SCALE LEGEND ─────────────────────────────────────── */
+.scale-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.scale-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+.scale-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BAR SECTION CARDS
+════════════════════════════════════════════════════════════════ */
+.bar-group { margin-bottom: 20px; }
+.bar-group-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--sage-lt);
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+
+/* ─── CRAWL SEQUENCE ─────────────────────────────────────────── */
+.crawl-card {
+  background: var(--indigo-card);
+  border: 1px solid var(--card-border);
+  border-top: 2px solid var(--terra);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.crawl-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+.crawl-title em { color: var(--terra-lt); }
+.crawl-stops {}
+.crawl-stop {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+.cs-time {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--terra-lt);
+  width: 40px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.cs-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+.cs-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--terra);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.cs-line {
+  width: 1px;
+  flex: 1;
+  min-height: 18px;
+  background: linear-gradient(180deg, var(--terra) 0%, transparent 100%);
+  opacity: .25;
+}
+.cs-info {}
+.cs-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 1px;
+}
+.cs-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ATTRACTIONS
+════════════════════════════════════════════════════════════════ */
+.attr-card {
+  background: var(--indigo-card);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.attr-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.attr-body {}
+.attr-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+.attr-drive {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--terra-lt);
+  margin-bottom: 5px;
+  letter-spacing: .03em;
+}
+.attr-note {
+  font-size: 12px;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+.attr-note strong { color: var(--cream); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════════════════
+   DO THIS / NOT THAT
+════════════════════════════════════════════════════════════════ */
+.dnot-card {
+  background: var(--indigo-card);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.dnot-question {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--cream-dim);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.dnot-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.dnot-do, .dnot-not {
+  border-radius: 7px;
+  padding: 10px 12px;
+}
+.dnot-do   { background: rgba(90,158,111,.1); border: 1px solid rgba(90,158,111,.2); }
+.dnot-not  { background: rgba(184,85,85,.08); border: 1px solid rgba(184,85,85,.18); }
+.dnot-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.dnot-do .dnot-label   { color: #7ACA96; }
+.dnot-not .dnot-label  { color: #E09090; }
+.dnot-val {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+.dnot-reason {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   KING STREET SHOPPING
+════════════════════════════════════════════════════════════════ */
+.shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.shop-card {
+  background: var(--indigo-card);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.shop-cat {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--terra-lt);
+  margin-bottom: 6px;
+}
+.shop-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+.shop-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.shop-card.full { grid-column: 1 / -1; }
+
+/* ════════════════════════════════════════════════════════════════
+   KIAWAH LOGISTICS STRIP
+════════════════════════════════════════════════════════════════ */
+.logistics-strip {
+  margin: 28px 24px 0;
+  background: var(--indigo-mid);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.ls-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.ls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ls-item {}
+.ls-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--terra-lt);
+  letter-spacing: .03em;
+  margin-bottom: 1px;
+}
+.ls-val {
+  font-size: 12px;
+  color: var(--cream);
+  font-weight: 500;
+  line-height: 1.35;
+}
+.ls-sub {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.35;
+}
+
+/* ─── SPACER ─────────────────────────────────────────────────── */
+.spacer { height: 24px; }
+.spacer-sm { height: 14px; }
+
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 32px 24px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+.footer-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--terra-lt);
+  margin-bottom: 4px;
+}
+.footer-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: .06em;
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rcard, .attr-card, .dnot-card, .crawl-card, .shop-card {
+  animation: fadeUp .3s ease both;
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">Personal Travel Guide · Kiawah Island Base</div>
+  <div class="hero-title">Charles<em>ton</em></div>
+  <div class="hero-dates">6-Night Trip Guide · Spring 2026</div>
+  <div class="hero-tagline">
+    <strong>The Holy City</strong> — antebellum streets, Michelin kitchens,
+    rooftops over the harbor, and ten miles of Atlantic shoreline twenty minutes from your door.
+    This is the week.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     DAY STRIP
+════════════════════════════════════════════════════════════════ -->
+<div class="day-strip-wrap">
+  <div class="day-strip" id="dayStrip">
+    <a class="day-pill" href="#day1"><div class="dp-num">1</div><div class="dp-label">Sat 21</div></a>
+    <a class="day-pill" href="#day2"><div class="dp-num">2</div><div class="dp-label">Sun 22</div></a>
+    <a class="day-pill" href="#day3"><div class="dp-num">3</div><div class="dp-label">Mon 23</div></a>
+    <a class="day-pill" href="#day4"><div class="dp-num">4</div><div class="dp-label">Tue 24</div></a>
+    <a class="day-pill" href="#day5"><div class="dp-num">5</div><div class="dp-label">Wed 25</div></a>
+    <a class="day-pill" href="#day6"><div class="dp-num">6</div><div class="dp-label">Thu 26</div></a>
+    <a class="day-pill" href="#day7"><div class="dp-num">7</div><div class="dp-label">Fri 27</div></a>
+    <a class="day-pill" href="#dinners" style="border-left:1px solid rgba(255,255,255,.1); margin-left:4px;"><div class="dp-num" style="font-size:13px; margin-top:2px;">🍽</div><div class="dp-label">Dinners</div></a>
+    <a class="day-pill" href="#bars"><div class="dp-num" style="font-size:13px; margin-top:2px;">🍸</div><div class="dp-label">Bars</div></a>
+    <a class="day-pill" href="#attractions"><div class="dp-num" style="font-size:13px; margin-top:2px;">🗺</div><div class="dp-label">Sites</div></a>
+    <a class="day-pill" href="#decisions"><div class="dp-num" style="font-size:13px; margin-top:2px;">💡</div><div class="dp-label">Decide</div></a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     NON-NEGOTIABLES
+════════════════════════════════════════════════════════════════ -->
+<div class="nonneg">
+  <div class="nonneg-label">★ The Five Non-Negotiables</div>
+  <div class="nonneg-grid">
+    <div class="nonneg-item">
+      <div class="nonneg-icon">⭐</div>
+      <div class="nonneg-text">
+        <div class="nonneg-title">Michelin Tier</div>
+        <div class="nonneg-sub">Vern's, Malagón & Chubby Fish — the three that define Charleston right now</div>
+      </div>
+    </div>
+    <div class="nonneg-item">
+      <div class="nonneg-icon">🍸</div>
+      <div class="nonneg-text">
+        <div class="nonneg-title">Rooftop Nights</div>
+        <div class="nonneg-sub">Vendue sunset, Satellite Bar skyline — two separate nights</div>
+      </div>
+    </div>
+    <div class="nonneg-item">
+      <div class="nonneg-icon">🏛</div>
+      <div class="nonneg-text">
+        <div class="nonneg-title">Charleston Festival</div>
+        <div class="nonneg-sub">Running all week · private homes, gardens, Gullah music</div>
+      </div>
+    </div>
+    <div class="nonneg-item">
+      <div class="nonneg-icon">🏖</div>
+      <div class="nonneg-text">
+        <div class="nonneg-title">Kiawah Beach Day</div>
+        <div class="nonneg-sub">Day 5 · rest, bikes, ten miles of shoreline</div>
+      </div>
+    </div>
+    <div class="nonneg-item full">
+      <div class="nonneg-icon">🛍</div>
+      <div class="nonneg-text">
+        <div class="nonneg-title">King Street</div>
+        <div class="nonneg-sub">Day 3 · boutiques, vintage, City Market, and the cocktail corridor — all one long, walkable pass</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     DAY-BY-DAY
+════════════════════════════════════════════════════════════════ -->
+
+<!-- DAY 1 -->
+<div id="day1" class="day-anchor">
+  <div class="day-header">
+    <div class="day-num-badge">1</div>
+    <div class="day-info">
+      <div class="day-date">Saturday, March 21</div>
+      <div class="day-theme">Arrival · Kiawah · First Exhale</div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+  <div class="time-block">
+    <div class="tb-time">Arvo</div>
+    <div class="tb-content">
+      <div class="tb-title">Arrive · Check In · Walk the Beach</div>
+      <div class="tb-note">Leave phones in the room for an hour. The shoreline does the work.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">Sunset</div>
+    <div class="tb-content">
+      <div class="tb-title">Bike to the Western Tip</div>
+      <div class="tb-note">Kiawah faces southwest — the sunsets over the Atlantic are rare on the East Coast. Rental bikes from the resort desk.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">7pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Dinner: The Lost Isle · Johns Island</div>
+      <div class="tb-note">Southern Living Restaurant of the Year 2025. 15 min from Kiawah. Walk-in only — arrive by 6:30pm. 🟢 Deep local.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 2 -->
+<div id="day2" class="day-anchor" style="padding-top:24px;">
+  <div class="day-header">
+    <div class="day-num-badge">2</div>
+    <div class="day-info">
+      <div class="day-date">Sunday, March 22</div>
+      <div class="day-theme">The Holy City · History · Charleston Festival</div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+  <div class="time-block">
+    <div class="tb-time">9:30am</div>
+    <div class="tb-content">
+      <div class="tb-title">The Battery + Rainbow Row</div>
+      <div class="tb-note">Start here. 35 min drive downtown. Park at Aquarium Wharf garage (24 Calhoun St). Walk south — best light of the day.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">11am</div>
+    <div class="tb-content">
+      <div class="tb-title">The Charleston Festival · Morning Tour</div>
+      <div class="tb-note">Check TheCharlestonFestivalSC.org for Sunday's schedule. House & garden tours run all day. Book tickets online — some sell out.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">1pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Lunch: Fleet Landing · Waterfront</div>
+      <div class="tb-note">Free parking nearby. Shrimp & grits, harbor views. Weekend brunch 11am–3pm.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">5pm</div>
+    <div class="tb-content">
+      <div class="tb-title">★ Sunset: The Rooftop at The Vendue</div>
+      <div class="tb-note">Harbor + Ravenel Bridge views. Walk straight up — no reservations, no cover. Order The Rooftop cocktail.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">7:30pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Dinner: 82 Queen</div>
+      <div class="tb-note">Refined Lowcountry, beautiful courtyard. Bourbon-BBQ shrimp & grits. Reserve ahead.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 3 -->
+<div id="day3" class="day-anchor" style="padding-top:24px;">
+  <div class="day-header">
+    <div class="day-num-badge">3</div>
+    <div class="day-info">
+      <div class="day-date">Monday, March 23</div>
+      <div class="day-theme">King Street · Shopping · Cocktail Corridor</div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+  <div class="time-block">
+    <div class="tb-time">10am</div>
+    <div class="tb-content">
+      <div class="tb-title">Babas on Cannon · Coffee First</div>
+      <div class="tb-note">39 Cannon St. Iced peanut mocha. The neighborhood starts its day here. Returns at 4pm for aperitivo. 🟢</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">10:30am</div>
+    <div class="tb-content">
+      <div class="tb-title">Upper King Boutiques + Vintage</div>
+      <div class="tb-note">Worthwhile · Hampden · Second Seams (best vintage) · Flutter. Walk King St south.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">12:30pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Lunch: Millers All Day · King Street</div>
+      <div class="tb-note">Best-value sit-down on King. Shrimp & grits, biscuits, she-crab soup under $20. Walk-in.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">2pm</div>
+    <div class="tb-content">
+      <div class="tb-title">City Market · Sweetgrass Baskets</div>
+      <div class="tb-note">A Gullah tradition centuries old. Prices are high because the craft is rare and the makers are the real thing.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">4pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Happy Hour: Babas aperitivo → Prohibition → Graft Wine</div>
+      <div class="tb-note">Babas aperitivo Fri–Sat 4–10pm. Prohibition (547 King): arrive before 11pm to skip cover. Graft (700b King): 40+ wines by glass.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">6:30pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Dinner: Husk · 76 Queen St</div>
+      <div class="tb-note">Wood-fired Southern, locally-sourced, daily menu. A Charleston institution. Book 2+ weeks ahead. 🟡</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 4 -->
+<div id="day4" class="day-anchor" style="padding-top:24px;">
+  <div class="day-header">
+    <div class="day-num-badge">4</div>
+    <div class="day-info">
+      <div class="day-date">Tuesday, March 24</div>
+      <div class="day-theme">Michelin Night · Fine Dining · Upper King</div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+  <div class="time-block">
+    <div class="tb-time">9:30am</div>
+    <div class="tb-content">
+      <div class="tb-title">Magnolia Plantation & Gardens</div>
+      <div class="tb-note">3550 Ashley River Rd · 45 min from Kiawah. Azaleas in full bloom. America's oldest public gardens. Allow 2 hrs.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">Noon</div>
+    <div class="tb-content">
+      <div class="tb-title">★ Michelin Lunch: Malagón · 33 Spring St</div>
+      <div class="tb-note">⭐ Michelin star. Spanish tapas. Arrive at noon when they open — bar walk-in only. Fried rabbit, crab arros, la bomba. ~$40/head. 🟢</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">4pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Pre-Dinner: Seahorse</div>
+      <div class="tb-note">Jewel box cocktail bar next to Chubby Fish. Limited seats — arrive early. 🟢</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">7pm</div>
+    <div class="tb-content">
+      <div class="tb-title">★ Dinner: Vern's · 41 Bogard St A</div>
+      <div class="tb-note">⭐ Michelin star. Allium butter sourdough, raw tuna, housemade pasta. <strong>Book 3–4 weeks out. Call directly.</strong> 🟢</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">9:30pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Nightcap: Last Saint or Annex</div>
+      <div class="tb-note">Last Saint: AD's most beautiful bar in SC. Annex: custom cocktails, no menu. Both are the right end to this night. 🟢</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 5 -->
+<div id="day5" class="day-anchor" style="padding-top:24px;">
+  <div class="day-header">
+    <div class="day-num-badge">5</div>
+    <div class="day-info">
+      <div class="day-date">Wednesday, March 25</div>
+      <div class="day-theme">★ Kiawah Beach Day · Recovery · No Car</div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+  <div class="time-block">
+    <div class="tb-time">Morning</div>
+    <div class="tb-content">
+      <div class="tb-title">Bike the Island Trails</div>
+      <div class="tb-note">30+ miles of paved paths through maritime forest. Deer, shorebirds, no agenda.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">Midday</div>
+    <div class="tb-content">
+      <div class="tb-title">Beach · Shelling · Low Tide Flats</div>
+      <div class="tb-note">Check tide app night before. Low tide = massive tidal flats and the best shelling on the East Coast.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">Arvo</div>
+    <div class="tb-content">
+      <div class="tb-title">Night Heron Park · Kayak or Paddleboard</div>
+      <div class="tb-note">On-island rental. Lagoon system is quiet and scenic. Alligators on the banks — keep respectful distance.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">7pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Dinner: Waterman Grille · Bohicket Marina</div>
+      <div class="tb-note">10 min drive. Low-key oysters, cold beer, waterfront dock. The right energy for a rest day close.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 6 -->
+<div id="day6" class="day-anchor" style="padding-top:24px;">
+  <div class="day-header">
+    <div class="day-num-badge">6</div>
+    <div class="day-info">
+      <div class="day-date">Thursday, March 26</div>
+      <div class="day-theme">★ Chubby Fish · Bar Crawl · Live Music</div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+  <div class="time-block">
+    <div class="tb-time">4:45pm</div>
+    <div class="tb-content">
+      <div class="tb-title">★ Queue: Chubby Fish · 265 Coming St</div>
+      <div class="tb-note">Doors open 5pm. No reservations exist. Groups of 6 wait 45–60 min. Have drinks at Seahorse next door while you wait — they'll bring them to you on the sidewalk.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">5pm</div>
+    <div class="tb-content">
+      <div class="tb-title">★ Dinner: Chubby Fish</div>
+      <div class="tb-note">NYT top 50, Michelin recommended, Eater All-Time 38. Daily catch menu. Caviar sandwiches. Order everything. This is the dinner of the trip. 🟢</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">8:30pm</div>
+    <div class="tb-content">
+      <div class="tb-title">★ Rooftop: Satellite Bar · 495 King St</div>
+      <div class="tb-note">360° skyline views. No cover, no reservations. Elegant casual dress. Arrive by 8:30 before it fills. Age 23+ after 9pm.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">9:30pm</div>
+    <div class="tb-content">
+      <div class="tb-title">Live Music: Charleston Music Hall or Tin Roof</div>
+      <div class="tb-note">Check charlestoncitypaper.com/music day before. Tin Roof: live bands most Thursdays from 9pm, no cover.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 7 -->
+<div id="day7" class="day-anchor" style="padding-top:24px;">
+  <div class="day-header">
+    <div class="day-num-badge">7</div>
+    <div class="day-info">
+      <div class="day-date">Friday, March 27</div>
+      <div class="day-theme">Final Morning · Last Bites · Depart</div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+  <div class="time-block">
+    <div class="tb-time">9am</div>
+    <div class="tb-content">
+      <div class="tb-title">Brunch: Poogan's Porch · 72 Queen St</div>
+      <div class="tb-note">Charleston institution since 1976. Tasso ham shrimp & grits, biscuits, she-crab soup. Book the 9am slot 1 week ahead. 🟡</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">10:30am</div>
+    <div class="tb-content">
+      <div class="tb-title">Welton's Bakeshop + City Market</div>
+      <div class="tb-note">Pastries and coffee. Last sweetgrass baskets. Charleston Cooks (194 E. Bay) for pantry gifts home.</div>
+    </div>
+  </div>
+  <div class="time-block">
+    <div class="tb-time">Noon</div>
+    <div class="tb-content">
+      <div class="tb-title">Drive Back to Kiawah · Pack · Depart</div>
+      <div class="tb-note">CHS airport 50–55 min from Kiawah. Allow 90 min before domestic flights. ⚠️ March 28 Bridge Run: if departing Saturday AM, avoid Coleman Blvd in Mt. Pleasant before 9am.</div>
+    </div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     KIAWAH LOGISTICS
+════════════════════════════════════════════════════════════════ -->
+<div class="logistics-strip">
+  <div class="ls-title">🏝 Kiawah Logistics at a Glance</div>
+  <div class="ls-grid">
+    <div class="ls-item">
+      <div class="ls-label">Drive Downtown</div>
+      <div class="ls-val">35–45 min</div>
+      <div class="ls-sub">Bohicket Rd → Hwy 17 N</div>
+    </div>
+    <div class="ls-item">
+      <div class="ls-label">Best Parking</div>
+      <div class="ls-val">Aquarium Wharf</div>
+      <div class="ls-sub">24 Calhoun St · $2/hr</div>
+    </div>
+    <div class="ls-item">
+      <div class="ls-label">Airport (CHS)</div>
+      <div class="ls-val">50–55 min</div>
+      <div class="ls-sub">Via Hwy 17 → I-526 E</div>
+    </div>
+    <div class="ls-item">
+      <div class="ls-label">Free Downtown Shuttle</div>
+      <div class="ls-val">DASH Trolley</div>
+      <div class="ls-sub">King St + Meeting St corridors</div>
+    </div>
+    <div class="ls-item">
+      <div class="ls-label">Folly Beach</div>
+      <div class="ls-val">40 min</div>
+      <div class="ls-sub">Via Maybank Hwy</div>
+    </div>
+    <div class="ls-item">
+      <div class="ls-label">Magnolia Plantation</div>
+      <div class="ls-val">45 min</div>
+      <div class="ls-sub">Via Ashley River Rd</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     DINNERS
+════════════════════════════════════════════════════════════════ -->
+<div id="dinners" class="section">
+  <div class="section-head">
+    <div class="section-icon">🍽</div>
+    <div>
+      <div class="section-title">Where to <em>Eat Tonight</em></div>
+      <div class="section-note">Ranked by occasion — Michelin tier first, then by night</div>
+    </div>
+  </div>
+
+  <div class="scale-legend">
+    <div class="scale-item"><div class="scale-dot" style="background:var(--green)"></div>Deep Local</div>
+    <div class="scale-item"><div class="scale-dot" style="background:var(--amber)"></div>Mixed</div>
+    <div class="scale-item"><div class="scale-dot" style="background:var(--red-local)"></div>Tourist-Heavy</div>
+    <div class="scale-item" style="color:var(--terra-lt); font-size:10.5px; font-weight:600;">★ Must-Do</div>
+  </div>
+
+  <div class="cards">
+
+    <div class="rcard local">
+      <div class="must-flag">★</div>
+      <div class="rcard-top">
+        <div class="rcard-name">Chubby Fish</div>
+        <div class="rcard-price">$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟢 Elliotborough · 265 Coming St</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Michelin Rec · Daily Catch</span>
+      </div>
+      <div class="rcard-note">
+        NYT top 50, Eater All-Time 38. <strong>The dinner of the trip.</strong> Caviar sandwiches, seasonal crudo, local catch. Menu changes daily.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-star">★ The One</span>
+        <span class="tag tag-walk">No reservations — queue 4:45pm</span>
+        <span class="tag tag-day">Day 6 · Thu Mar 26</span>
+      </div>
+    </div>
+
+    <div class="rcard local">
+      <div class="must-flag">★</div>
+      <div class="rcard-top">
+        <div class="rcard-name">Vern's ⭐</div>
+        <div class="rcard-price">$$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟢 Elliotborough · 41 Bogard St A</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Michelin Star · American Contemporary</span>
+      </div>
+      <div class="rcard-note">
+        Husband-wife team. <strong>Allium butter sourdough, raw yellowfin tuna, housemade pasta.</strong> Seasonal, intimate, coveted. One of Charleston's first Michelin stars.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-res">Book 3–4 weeks · call directly</span>
+        <span class="tag tag-day">Day 4 · Tue Mar 24</span>
+        <span class="tag tag-alert">Fallback: Wild Common ⭐ $95/pp tasting</span>
+      </div>
+    </div>
+
+    <div class="rcard local">
+      <div class="must-flag">★</div>
+      <div class="rcard-top">
+        <div class="rcard-name">Malagón ⭐</div>
+        <div class="rcard-price">$$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟢 Spring St · 33 Spring St</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Michelin Star · Spanish Tapas</span>
+      </div>
+      <div class="rcard-note">
+        Chef Juan Cassalett's Michelin-starred tapas. <strong>Arrive at noon — bar walk-in only.</strong> Fried rabbit, la bomba, crab arros. ~$40/head. The best Michelin value in the city.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-walk">Bar walk-in · arrive at noon opening</span>
+        <span class="tag tag-day">Day 4 lunch · Tue Mar 24</span>
+      </div>
+    </div>
+
+    <div class="rcard mixed">
+      <div class="rcard-top">
+        <div class="rcard-name">Husk</div>
+        <div class="rcard-price">$$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟡 Downtown · 76 Queen St</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Michelin Rec · Southern Heritage</span>
+      </div>
+      <div class="rcard-note">
+        Menu changes daily — shrimp & grits on heavy rotation. Locally-sourced everything. A Charleston institution with genuine James Beard Award heritage.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-res">Reserve 2+ weeks · OpenTable</span>
+        <span class="tag tag-day">Day 3 · Mon Mar 23</span>
+      </div>
+    </div>
+
+    <div class="rcard mixed">
+      <div class="rcard-top">
+        <div class="rcard-name">82 Queen</div>
+        <div class="rcard-price">$$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟡 Historic District · 82 Queen St</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Refined Lowcountry · Courtyard</span>
+      </div>
+      <div class="rcard-note">
+        White tablecloth, beautiful garden courtyard. <strong>Shrimp & grits: bourbon-BBQ sauce, applewood bacon, cheddar, scallions.</strong> Good for a first-night special occasion feel.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-res">Reserve 1–2 weeks</span>
+        <span class="tag tag-day">Day 2 · Sun Mar 22</span>
+      </div>
+    </div>
+
+    <div class="rcard local">
+      <div class="rcard-top">
+        <div class="rcard-name">Poogan's Porch</div>
+        <div class="rcard-price">$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟡 Historic District · 72 Queen St</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Brunch · Traditional Lowcountry</span>
+      </div>
+      <div class="rcard-note">
+        Since 1976. Victorian house, resident ghost. <strong>The most traditional shrimp & grits in the city</strong> — Adluh grits, tasso ham, Duke's pimento cheese, brown gravy.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-res">Reserve brunch slot 1 wk out</span>
+        <span class="tag tag-day">Day 7 brunch · Fri Mar 27</span>
+      </div>
+    </div>
+
+    <div class="rcard local">
+      <div class="rcard-top">
+        <div class="rcard-name">The Lost Isle</div>
+        <div class="rcard-price">$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟢 Johns Island · 2657 Maybank Hwy</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Coastal Southern · Arrival Night</span>
+      </div>
+      <div class="rcard-note">
+        Southern Living Restaurant of the Year 2025. 15 min from Kiawah. Walk-in only — arrive by 6:30pm. The right low-key opener to a big week.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-walk">Walk-in · arrive by 6:30pm</span>
+        <span class="tag tag-day">Day 1 · Sat Mar 21</span>
+      </div>
+    </div>
+
+    <div class="rcard mixed">
+      <div class="rcard-top">
+        <div class="rcard-name">Fleet Landing</div>
+        <div class="rcard-price">$$</div>
+      </div>
+      <div class="rcard-meta">
+        <span class="rcard-hood">🟡 Waterfront · 1 Arsenal St</span>
+        <span class="meta-dot"></span>
+        <span class="vibe-tag">Waterfront · Shrimp &amp; Grits · Lunch</span>
+      </div>
+      <div class="rcard-note">
+        Best waterfront setting of any restaurant on this list. <strong>Free parking.</strong> Jumbo shrimp, Andouille, tasso gravy. Brunch weekends 11am–3pm.
+      </div>
+      <div class="rcard-tags">
+        <span class="tag tag-walk">Walk-in · arrive before 1pm</span>
+        <span class="tag tag-day">Day 2 lunch · Sun Mar 22</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     BARS
+════════════════════════════════════════════════════════════════ -->
+<div id="bars" class="section" style="padding-top:32px;">
+  <div class="section-head">
+    <div class="section-icon">🍸</div>
+    <div>
+      <div class="section-title">Bars &amp; <em>Nights Out</em></div>
+      <div class="section-note">Sequenced crawls + individual picks</div>
+    </div>
+  </div>
+
+  <!-- CRAWL 1 -->
+  <div class="crawl-card">
+    <div class="crawl-title">Night 2 · <em>The Sunset Crawl</em> · Sun Mar 22</div>
+    <div class="crawl-stops">
+      <div class="crawl-stop">
+        <div class="cs-time">5pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div><div class="cs-line"></div></div>
+        <div class="cs-info"><div class="cs-name">★ The Vendue Rooftop</div><div class="cs-desc">19 Vendue Range · Harbor + Ravenel Bridge · Walk up · No cover · Order The Rooftop cocktail</div></div>
+      </div>
+      <div class="crawl-stop">
+        <div class="cs-time">7pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div><div class="cs-line"></div></div>
+        <div class="cs-info"><div class="cs-name">The Griffon</div><div class="cs-desc">18 Vendue Range · British pub below the rooftop · Dollar bills on the ceiling · Reuben sandwich</div></div>
+      </div>
+      <div class="crawl-stop">
+        <div class="cs-time">8pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div></div>
+        <div class="cs-info"><div class="cs-name">82 Queen (dinner)</div><div class="cs-desc">10-min walk · reserve ahead</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRAWL 2 -->
+  <div class="crawl-card">
+    <div class="crawl-title">Night 4 · <em>The Michelin Evening</em> · Tue Mar 24</div>
+    <div class="crawl-stops">
+      <div class="crawl-stop">
+        <div class="cs-time">4pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div><div class="cs-line"></div></div>
+        <div class="cs-info"><div class="cs-name">Seahorse</div><div class="cs-desc">Spring St · Jewel box cocktail bar next to Chubby Fish · Limited seats · Arrive early · 🟢</div></div>
+      </div>
+      <div class="crawl-stop">
+        <div class="cs-time">7pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div><div class="cs-line"></div></div>
+        <div class="cs-info"><div class="cs-name">★ Vern's ⭐</div><div class="cs-desc">Michelin star dinner — book weeks ahead · 41 Bogard St A</div></div>
+      </div>
+      <div class="crawl-stop">
+        <div class="cs-time">9:30pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div></div>
+        <div class="cs-info"><div class="cs-name">Last Saint or Annex</div><div class="cs-desc">Last Saint: walk-in · AD's most beautiful bar in SC · Annex: no-menu, custom cocktails, reserve ahead</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRAWL 3 -->
+  <div class="crawl-card">
+    <div class="crawl-title">Night 6 · <em>The Full Night</em> · Thu Mar 26</div>
+    <div class="crawl-stops">
+      <div class="crawl-stop">
+        <div class="cs-time">4:45pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div><div class="cs-line"></div></div>
+        <div class="cs-info"><div class="cs-name">★ Chubby Fish Queue</div><div class="cs-desc">265 Coming St · Seahorse next door for drinks while waiting · They'll bring cocktails to the sidewalk</div></div>
+      </div>
+      <div class="crawl-stop">
+        <div class="cs-time">8:30pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div><div class="cs-line"></div></div>
+        <div class="cs-info"><div class="cs-name">★ Satellite Bar</div><div class="cs-desc">495 King St · 360° skyline views · No cover · Elegant casual · Age 23+ after 9pm</div></div>
+      </div>
+      <div class="crawl-stop">
+        <div class="cs-time">9:30pm</div>
+        <div class="cs-dot-col"><div class="cs-dot"></div></div>
+        <div class="cs-info"><div class="cs-name">Live Music</div><div class="cs-desc">Charleston Music Hall (37 John St) or Tin Roof · Check charlestoncitypaper.com/music</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HAPPY HOURS -->
+  <div class="bar-group">
+    <div class="bar-group-label">Happy Hours Worth Planning Around</div>
+    <div class="cards">
+
+      <div class="rcard local">
+        <div class="rcard-top">
+          <div class="rcard-name">Babas on Cannon</div>
+          <div class="rcard-price">$</div>
+        </div>
+        <div class="rcard-meta">
+          <span class="rcard-hood">🟢 Cannonborough · 39 Cannon St</span>
+          <span class="meta-dot"></span>
+          <span class="vibe-tag">Aperitivo Hour</span>
+        </div>
+        <div class="rcard-note">All-day café by morning, neighborhood gathering place by evening. <strong>Best-value aperitivo hour in the city.</strong></div>
+        <div class="rcard-tags">
+          <span class="tag tag-hh">Fri–Sat aperitivo 4–10pm</span>
+          <span class="tag tag-walk">Walk-in</span>
+        </div>
+      </div>
+
+      <div class="rcard mixed">
+        <div class="rcard-top">
+          <div class="rcard-name">Little Palm at The Ryder</div>
+          <div class="rcard-price">$$</div>
+        </div>
+        <div class="rcard-meta">
+          <span class="rcard-hood">🟡 Upper King · The Ryder Hotel</span>
+          <span class="meta-dot"></span>
+          <span class="vibe-tag">Poolside · DJ Courtyard</span>
+        </div>
+        <div class="rcard-note">Surf-inspired cocktails that deliver on the hype. The Backyard courtyard and DJ on weekends.</div>
+        <div class="rcard-tags">
+          <span class="tag tag-hh">Happy hour cocktails $8–12</span>
+          <span class="tag tag-walk">Walk-in</span>
+        </div>
+      </div>
+
+      <div class="rcard local">
+        <div class="rcard-top">
+          <div class="rcard-name">Graft Wine Shop & Bar</div>
+          <div class="rcard-price">$$</div>
+        </div>
+        <div class="rcard-meta">
+          <span class="rcard-hood">🟢 Upper King · 700b King St</span>
+          <span class="meta-dot"></span>
+          <span class="vibe-tag">Natural Wine · No Pretension</span>
+        </div>
+        <div class="rcard-note">40+ wines by the glass. Cheese, meats, tinned seafood. Staff will guide. <strong>Good Neighbor Sunday</strong> = parking lot party.</div>
+        <div class="rcard-tags">
+          <span class="tag tag-hh">Happy hour pricing — confirm at door</span>
+          <span class="tag tag-walk">Walk-in · patio overflow</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOCAL DIVES -->
+  <div class="bar-group">
+    <div class="bar-group-label">The Real Charleston — Dive Bars & Local Pubs</div>
+    <div class="cards">
+
+      <div class="rcard local">
+        <div class="must-flag">★</div>
+        <div class="rcard-top">
+          <div class="rcard-name">Moe's Crosstown Tavern</div>
+          <div class="rcard-price">$</div>
+        </div>
+        <div class="rcard-meta">
+          <span class="rcard-hood">🟢 Rutledge Ave · 714 Rutledge Ave</span>
+          <span class="meta-dot"></span>
+          <span class="vibe-tag">True Neighborhood Bar</span>
+        </div>
+        <div class="rcard-note"><strong>The most authentically local bar in this guide.</strong> Frequented by F&B industry workers. Outstanding sandwiches. A genuine neighborhood bar in a tourist city.</div>
+        <div class="rcard-tags"><span class="tag tag-walk">Walk-in anytime</span></div>
+      </div>
+
+      <div class="rcard local">
+        <div class="rcard-top">
+          <div class="rcard-name">Recovery Room Tavern</div>
+          <div class="rcard-price">$</div>
+        </div>
+        <div class="rcard-meta">
+          <span class="rcard-hood">🟢 King Street · 685 King St</span>
+          <span class="meta-dot"></span>
+          <span class="vibe-tag">Dive · #1 PBR Seller in the US</span>
+        </div>
+        <div class="rcard-note">Cheap beer, karaoke nights, zero pretension. Theme nights most weekends. The ideal late-night bookend after dinner.</div>
+        <div class="rcard-tags"><span class="tag tag-walk">Walk-in · cover sometimes weekends</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     ATTRACTIONS WORTH THE DRIVE
+════════════════════════════════════════════════════════════════ -->
+<div id="attractions" class="section" style="padding-top:32px;">
+  <div class="section-head">
+    <div class="section-icon">🗺</div>
+    <div>
+      <div class="section-title">Worth <em>the Drive</em></div>
+      <div class="section-note">Drive times from Kiawah Island</div>
+    </div>
+  </div>
+
+  <div class="attr-card">
+    <div class="attr-icon">🏛</div>
+    <div class="attr-body">
+      <div class="attr-name">★ The Charleston Festival</div>
+      <div class="attr-drive">Running all week · March 18–April 11 · Various locations</div>
+      <div class="attr-note">Now in its 79th year — private home & garden tours, Gullah music, historian talks, boat tours, landmark after-hours events. <strong>Book tickets online at TheCharlestonFestivalSC.org</strong> — some house tours sell out days in advance. Free lectures mixed in alongside ticketed events.</div>
+    </div>
+  </div>
+
+  <div class="attr-card">
+    <div class="attr-icon">🌸</div>
+    <div class="attr-body">
+      <div class="attr-name">Magnolia Plantation & Gardens</div>
+      <div class="attr-drive">45 min from Kiawah · 3550 Ashley River Rd</div>
+      <div class="attr-note">America's oldest public gardens. <strong>Azaleas in full bloom in late March</strong> — one of the most visually dramatic natural displays in the South. Allow 2 hrs. Combo ticket (grounds + nature tram) is the best value. Opens 9am.</div>
+    </div>
+  </div>
+
+  <div class="attr-card">
+    <div class="attr-icon">⚓</div>
+    <div class="attr-body">
+      <div class="attr-name">The Battery + White Point Garden</div>
+      <div class="attr-drive">35 min from Kiawah · South of Broad · Free</div>
+      <div class="attr-note">The defining Charleston image. Antebellum mansions, harbor views, cannon memorials. <strong>Best morning light of any landmark in the city.</strong> Walk east along East Bay for Rainbow Row immediately after.</div>
+    </div>
+  </div>
+
+  <div class="attr-card">
+    <div class="attr-icon">🎭</div>
+    <div class="attr-body">
+      <div class="attr-name">Dock Street Theatre + French Quarter</div>
+      <div class="attr-drive">35 min from Kiawah · French Quarter</div>
+      <div class="attr-note">Oldest working theatre in the U.S. Check what's playing this week. The surrounding French Quarter — Huguenot Church, cobblestone Chalmers Street — is the most architecturally dense and atmospheric neighborhood in Charleston, especially at night.</div>
+    </div>
+  </div>
+
+  <div class="attr-card">
+    <div class="attr-icon">🌿</div>
+    <div class="attr-body">
+      <div class="attr-name">Middleton Place</div>
+      <div class="attr-drive">45 min from Kiawah · Ashley River Rd (Hwy 61)</div>
+      <div class="attr-note">America's oldest formal landscaped gardens. Drive Ashley River Road itself — <strong>one of the most beautiful stretches of road in the Lowcountry</strong>, live oaks draped with Spanish moss the whole way. Pair with Magnolia on the same morning.</div>
+    </div>
+  </div>
+
+  <div class="attr-card">
+    <div class="attr-icon">🏺</div>
+    <div class="attr-body">
+      <div class="attr-name">Boone Hall Plantation</div>
+      <div class="attr-drive">60 min from Kiawah · Mount Pleasant</div>
+      <div class="attr-note">One of America's oldest active plantations with <strong>serious, substantive programming on the African American experience and Gullah culture</strong>. Not a light visit — meaningful. Avenue of Oaks is one of the most photographed entrances in the South.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     DO THIS / NOT THAT
+════════════════════════════════════════════════════════════════ -->
+<div id="decisions" class="section" style="padding-top:32px;">
+  <div class="section-head">
+    <div class="section-icon">💡</div>
+    <div>
+      <div class="section-title">Do This, <em>Not That</em></div>
+      <div class="section-note">Resolving the common tradeoffs before they become arguments</div>
+    </div>
+  </div>
+
+  <div class="dnot-card">
+    <div class="dnot-question">"Where should we eat shrimp & grits?"</div>
+    <div class="dnot-row">
+      <div class="dnot-do">
+        <div class="dnot-label">✓ Do This</div>
+        <div class="dnot-val">Poogan's Porch</div>
+        <div class="dnot-reason">Traditional, local-beloved, 1976 institution. Brown gravy, tasso ham, Adluh grits. The real version.</div>
+      </div>
+      <div class="dnot-not">
+        <div class="dnot-label">✗ Skip</div>
+        <div class="dnot-val">Random King St storefronts</div>
+        <div class="dnot-reason">Tourist-facing shrimp & grits that look great on menus but disappoint on the plate.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dnot-card">
+    <div class="dnot-question">"Which rooftop bar do we hit?"</div>
+    <div class="dnot-row">
+      <div class="dnot-do">
+        <div class="dnot-label">✓ Do Both</div>
+        <div class="dnot-val">Vendue (Day 2) + Satellite Bar (Day 6)</div>
+        <div class="dnot-reason">They're different experiences: Vendue is harbor + sunset, Satellite is skyline + late night. Both in the plan.</div>
+      </div>
+      <div class="dnot-not">
+        <div class="dnot-label">✗ Skip</div>
+        <div class="dnot-val">Élevé at Grand Bohemian</div>
+        <div class="dnot-reason">Hotel-crowd energy and tourist pricing. Fine, but third-best of the three by a margin.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dnot-card">
+    <div class="dnot-question">"Should we try to get into Chubby Fish or just go somewhere easier?"</div>
+    <div class="dnot-row">
+      <div class="dnot-do">
+        <div class="dnot-label">✓ Do This</div>
+        <div class="dnot-val">Queue at 4:45pm, Thursday</div>
+        <div class="dnot-reason">NYT top 50, Eater All-Time 38. Drink at Seahorse while you wait. The wait is the price of admission to the best meal in Charleston right now.</div>
+      </div>
+      <div class="dnot-not">
+        <div class="dnot-label">✗ Don't</div>
+        <div class="dnot-val">Go somewhere "easier" instead</div>
+        <div class="dnot-reason">The easier option will be fine. You'll talk about Chubby Fish for years. Easy fades.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dnot-card">
+    <div class="dnot-question">"Should we go to Folly Beach or Sullivan's Island for a day?"</div>
+    <div class="dnot-row">
+      <div class="dnot-do">
+        <div class="dnot-label">✓ Neither</div>
+        <div class="dnot-val">Use Kiawah Beach (Day 5)</div>
+        <div class="dnot-reason">You're already on one of the best beaches on the East Coast. Day 5 is the beach day. Ten miles of undeveloped shoreline — Folly can't compete.</div>
+      </div>
+      <div class="dnot-not">
+        <div class="dnot-label">✗ Unless</div>
+        <div class="dnot-val">Sullivan's for The Obstinate Daughter</div>
+        <div class="dnot-reason">If the group wants a Michelin-recommended dinner with a beach town drive, Sullivan's Island is worth it for the restaurant alone.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dnot-card">
+    <div class="dnot-question">"Which cocktail bar is worth a reservation?"</div>
+    <div class="dnot-row">
+      <div class="dnot-do">
+        <div class="dnot-label">✓ Reserve</div>
+        <div class="dnot-val">Annex</div>
+        <div class="dnot-reason">No printed menu — bartender builds from your preferences. Tiny, extraordinary, impossible to replicate. Worth the advance booking effort.</div>
+      </div>
+      <div class="dnot-not">
+        <div class="dnot-label">✗ Don't Bother Reserving</div>
+        <div class="dnot-val">Last Saint, Graft, Prohibition</div>
+        <div class="dnot-reason">All walk-in friendly. Last Saint in particular — just go. The room is the experience.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dnot-card">
+    <div class="dnot-question">"Is the Charleston Festival actually worth our time?"</div>
+    <div class="dnot-row">
+      <div class="dnot-do">
+        <div class="dnot-label">✓ Yes — This One</div>
+        <div class="dnot-val">One house & garden tour, Day 2</div>
+        <div class="dnot-reason">79 years running. Private access to antebellum homes and gardens that are never otherwise open. Book one Sunday tour and let the rest of the day flow around it.</div>
+      </div>
+      <div class="dnot-not">
+        <div class="dnot-label">✗ Don't Over-Schedule</div>
+        <div class="dnot-val">Multiple tours back-to-back</div>
+        <div class="dnot-reason">One tour is magical. Three tours is homework. Pick the one that sounds best and leave the rest of the day open.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     KING STREET SHOPPING
+════════════════════════════════════════════════════════════════ -->
+<div id="shopping" class="section" style="padding-top:32px;">
+  <div class="section-head">
+    <div class="section-icon">🛍</div>
+    <div>
+      <div class="section-title">King <em>Street</em></div>
+      <div class="section-note">Day 3 · Mon Mar 23 · Work north to south</div>
+    </div>
+  </div>
+
+  <div class="shop-grid">
+    <div class="shop-card">
+      <div class="shop-cat">Best Boutique</div>
+      <div class="shop-name">Hampden Clothing</div>
+      <div class="shop-note">314 King St · Contemporary fashion, curated and edited. Best women's boutique in the city.</div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-cat">Best Boutique</div>
+      <div class="shop-name">Worthwhile</div>
+      <div class="shop-note">268 King St · Lifestyle and apparel with local sensibility. A King Street institution.</div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-cat">Best Vintage</div>
+      <div class="shop-name">Second Seams</div>
+      <div class="shop-note">412 King St · Best vintage curation on the peninsula. Quality over quantity.</div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-cat">Eclectic Vintage</div>
+      <div class="shop-name">Flutter</div>
+      <div class="shop-note">656 King St · Eclectic vintage, accessories. True Upper King character.</div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-cat">Local Artisan</div>
+      <div class="shop-name">City Market Baskets</div>
+      <div class="shop-note">Market District · Sweetgrass basket weavers. A Gullah tradition centuries old — prices are high because the craft is rare and the makers are the real thing.</div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-cat">Gifts Home</div>
+      <div class="shop-name">Charleston Cooks</div>
+      <div class="shop-note">194 E. Bay St · Lowcountry pantry staples, local cookbooks, kitchen tools. Best food gift in the city.</div>
+    </div>
+    <div class="shop-card full">
+      <div class="shop-cat">The Sequence · Day 3</div>
+      <div class="shop-name">How to Walk King Street</div>
+      <div class="shop-note">Park at Marion Square (360 Calhoun St). Start at Babas for coffee. Work Upper King south: boutiques → vintage → Millers All Day for lunch → continue south to City Market → end at Charleston Cooks. Then happy hour back up King.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-title">Have a wonderful week.</div>
+  <div class="footer-sub">Charleston, SC · Personal Travel Guide</div>
+  <p style="margin-top:12px;"><a href="mailto:dangelobraden43@gmail.com" style="color:var(--terra,#C4714E);font-size:12px;text-decoration:none;border-bottom:1px solid rgba(196,113,78,0.3);padding-bottom:2px;">dangelobraden43@gmail.com</a></p>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+  // Highlight active day pill based on scroll position
+  const pills = document.querySelectorAll('.day-pill');
+  const sections = ['day1','day2','day3','day4','day5','day6','day7'];
+
+  function updateActivePill() {
+    let active = null;
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      if (el.getBoundingClientRect().top <= 120) active = id;
+    }
+    pills.forEach(p => {
+      const href = p.getAttribute('href').replace('#','');
+      p.classList.toggle('active', href === active);
+    });
+  }
+
+  window.addEventListener('scroll', updateActivePill, { passive: true });
+  updateActivePill();
+</script>
+
+</body>
+</html>

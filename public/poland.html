@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poland August 2026 — The Lads Travel Co.</title>
+<meta property="og:title" content="Poland August — The Lads Travel Co.">
+<meta property="og:description" content="Framework for Poland August 2026 — Krakow, Warsaw, Gdansk, and research-based cost models.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: #12110f;
+  color: #e8dcc8;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+::selection {
+  background: rgba(201, 168, 76, 0.25);
+  color: #e8dcc8;
+}
+
+/* ========== TYPOGRAPHY ========== */
+h1, h2, h3, h4 {
+  font-family: 'EB Garamond', serif;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #e8dcc8;
+}
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); }
+h2 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin-bottom: 1rem; }
+h3 { font-size: clamp(1.3rem, 2.5vw, 1.7rem); margin-bottom: 0.75rem; }
+h4 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+p { margin-bottom: 1rem; color: #e8dcc8; }
+a { color: #c9a84c; text-decoration: none; transition: color 0.2s ease; }
+a:hover { color: #e8dcc8; }
+strong { font-weight: 600; color: #e8dcc8; }
+
+.label, .meta-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.meta-label { color: #8a7e68; }
+
+/* ========== LAYOUT ========== */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.section {
+  padding: 5rem 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+.section:last-of-type { border-bottom: none; }
+
+/* ========== SECTION LABEL ========== */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #5a5548;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+/* ========== SECTION DIVIDER ========== */
+.section-divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, #c9a84c, rgba(201, 168, 76, 0.1));
+  margin: 2rem 0;
+  border: none;
+}
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 50% 40%, rgba(201, 168, 76, 0.04), transparent),
+    radial-gradient(ellipse 800px 600px at 30% 60%, rgba(160, 120, 80, 0.03), transparent),
+    radial-gradient(ellipse 500px 300px at 70% 70%, rgba(201, 168, 76, 0.02), transparent);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #12110f);
+  pointer-events: none;
+}
+.hero-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 2rem;
+  position: relative;
+}
+.hero-brand::before,
+.hero-brand::after {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 1px;
+  background: rgba(201, 168, 76, 0.3);
+  vertical-align: middle;
+  margin: 0 1rem;
+}
+.hero h1 {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #8a7e68;
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  position: relative;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  justify-content: center;
+  position: relative;
+}
+.hero-meta-item {
+  text-align: center;
+}
+.hero-meta-item .meta-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #5a5548;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+}
+.hero-meta-item .meta-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  color: #e8dcc8;
+}
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.3;
+}
+.hero-scroll-hint span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #5a5548;
+}
+.hero-scroll-hint svg {
+  width: 16px;
+  height: 16px;
+  stroke: #5a5548;
+  fill: none;
+  stroke-width: 1.5;
+  animation: scrollBounce 2s ease infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ========== NAVIGATION ========== */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  background: rgba(18, 17, 15, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+  padding: 0;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+.nav-bar.visible {
+  transform: translateY(0);
+}
+.nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c9a84c;
+}
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a5548;
+  transition: color 0.2s ease;
+}
+.nav-links a:hover {
+  color: #c9a84c;
+}
+
+/* ========== QUICK READ ========== */
+.quick-read-box {
+  background: #1a1815;
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 6px;
+  padding: 2.5rem;
+  position: relative;
+}
+.quick-read-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #c9a84c, rgba(201, 168, 76, 0.05));
+  border-radius: 6px 6px 0 0;
+}
+.quick-read-box p {
+  color: #8a7e68;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+.quick-read-box p:last-child { margin-bottom: 0; }
+.quick-read-budget {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.08);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #c9a84c;
+  letter-spacing: 0.02em;
+}
+
+/* ========== RESEARCH NOTE ========== */
+.research-note {
+  background: rgba(138, 154, 176, 0.06);
+  border-left: 3px solid #8a9ab0;
+  border-radius: 0 6px 6px 0;
+  padding: 1.75rem 2rem;
+  margin-top: 2rem;
+}
+.research-note p {
+  color: #8a9ab0;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+.research-note .note-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #8a9ab0;
+  display: block;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+}
+
+/* ========== VERSION SELECTOR ========== */
+.version-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+.version-tab {
+  flex: 1;
+  padding: 1.15rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #5a5548;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+}
+.version-tab:hover {
+  color: #8a7e68;
+  background: rgba(201, 168, 76, 0.02);
+}
+.version-tab.active {
+  color: #c9a84c;
+  border-bottom-color: #c9a84c;
+  background: rgba(201, 168, 76, 0.03);
+}
+.version-tab .tab-sub {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+  opacity: 0.5;
+}
+.version-panel {
+  display: none;
+  animation: fadeIn 0.35s ease;
+}
+.version-panel.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== VERSION SUMMARY ========== */
+.version-summary {
+  background: #1a1815;
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  border-radius: 6px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.version-summary-item {
+  flex: 1;
+  min-width: 120px;
+}
+.version-summary-item .vs-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #5a5548;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.version-summary-item .vs-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.1rem;
+  color: #c9a84c;
+}
+
+/* ========== DAY CARDS ========== */
+.day-card {
+  background: #1a1815;
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  border-radius: 6px;
+  padding: 2rem 2rem 2rem 2rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.day-card:hover {
+  border-color: rgba(201, 168, 76, 0.2);
+  background: #1c1916;
+}
+.day-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: rgba(201, 168, 76, 0.15);
+  border-radius: 6px 0 0 6px;
+  transition: background 0.3s ease;
+}
+.day-card:hover::before {
+  background: rgba(201, 168, 76, 0.4);
+}
+.day-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.day-card h4 {
+  color: #e8dcc8;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+.day-card p {
+  color: #8a7e68;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.75;
+}
+.day-card p:last-child { margin-bottom: 0; }
+.day-highlight {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a07850;
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(160, 120, 80, 0.08);
+  border-radius: 3px;
+}
+.day-card-muted {
+  background: rgba(18, 17, 15, 0.6);
+  border-color: rgba(201, 168, 76, 0.04);
+}
+.day-card-muted::before {
+  background: rgba(138, 154, 176, 0.2);
+}
+.day-card-muted h4 {
+  color: #8a7e68;
+}
+
+/* ========== KAZIMIERZ EVENING ========== */
+.kazimierz-section {
+  position: relative;
+}
+.kazimierz-section::before {
+  content: '';
+  position: absolute;
+  inset: -3rem -2rem;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(201, 168, 76, 0.04), transparent),
+    radial-gradient(ellipse 80% 40% at 20% 80%, rgba(160, 120, 80, 0.02), transparent);
+  pointer-events: none;
+  border-radius: 16px;
+}
+.kazimierz-intro {
+  max-width: 640px;
+  margin-bottom: 2.5rem;
+}
+.kazimierz-intro p {
+  color: #8a7e68;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+.venue-card {
+  background: #23201b;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 6px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.venue-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201, 168, 76, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.venue-card-texture {
+  height: 100px;
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(201, 168, 76, 0.015) 4px, rgba(201, 168, 76, 0.015) 8px),
+    repeating-linear-gradient(-45deg, transparent, transparent 6px, rgba(160, 120, 80, 0.01) 6px, rgba(160, 120, 80, 0.01) 12px),
+    linear-gradient(180deg, rgba(201, 168, 76, 0.06), rgba(35, 32, 27, 0.8));
+  display: flex;
+  align-items: flex-end;
+  padding: 0.75rem 1.5rem;
+  position: relative;
+}
+.venue-card-texture::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, #23201b);
+}
+.venue-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5a5548;
+  position: relative;
+  z-index: 1;
+}
+.venue-card-body {
+  padding: 1.5rem 1.75rem 1.75rem;
+}
+.venue-card-body h4 {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.25rem;
+  color: #c9a84c;
+  margin-bottom: 0.75rem;
+}
+.venue-card-body p {
+  color: #8a7e68;
+  font-size: 0.88rem;
+  margin-bottom: 0;
+  line-height: 1.75;
+}
+.venue-card-sequence {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #a07850;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ========== AUSCHWITZ SECTION ========== */
+.auschwitz-section {
+  background: rgba(18, 17, 15, 0.5);
+}
+.auschwitz-section h2 {
+  color: #8a7e68;
+  font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+}
+.auschwitz-section h3 {
+  color: #8a7e68;
+}
+.auschwitz-section .section-label {
+  color: #3a3830;
+}
+.protocol-list {
+  list-style: none;
+  padding: 0;
+}
+.protocol-list li {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.04);
+  color: #8a7e68;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  line-height: 1.75;
+}
+.protocol-list li:last-child { border-bottom: none; }
+.protocol-marker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: #5a5548;
+  flex-shrink: 0;
+  margin-top: 0.4rem;
+  opacity: 0.6;
+}
+
+/* ========== INFO CARDS ========== */
+.info-card {
+  background: #1a1815;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  border-radius: 6px;
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+  transition: border-color 0.3s ease;
+}
+.info-card:hover {
+  border-color: rgba(201, 168, 76, 0.18);
+}
+.info-card h4 {
+  color: #c9a84c;
+  margin-bottom: 0.75rem;
+}
+.info-card p {
+  color: #8a7e68;
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+.info-card p:last-child { margin-bottom: 0; }
+.info-card-detail {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: #5a5548;
+  display: block;
+  margin-top: 0.75rem;
+}
+
+/* ========== PLACEHOLDER CARDS (dark textured, no images) ========== */
+.placeholder-card {
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(201, 168, 76, 0.012) 6px, rgba(201, 168, 76, 0.012) 12px),
+    repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(160, 120, 80, 0.008) 8px, rgba(160, 120, 80, 0.008) 16px),
+    linear-gradient(135deg, #1a1815 0%, #1e1b16 50%, #1a1815 100%);
+  border: 1px solid rgba(201, 168, 76, 0.06);
+  border-radius: 6px;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+.placeholder-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(201, 168, 76, 0.02), transparent);
+  pointer-events: none;
+}
+.placeholder-card span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5a5548;
+  position: relative;
+}
+.placeholder-card .ph-sub {
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: #3a3830;
+}
+
+/* ========== CITY PLACEHOLDER GRID ========== */
+.city-placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+/* ========== TABLES ========== */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 6px;
+  border: 1px solid rgba(201, 168, 76, 0.08);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  background: #1a1815;
+}
+thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5a5548;
+  text-align: left;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+  white-space: nowrap;
+  background: rgba(201, 168, 76, 0.02);
+}
+tbody td {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.05);
+  color: #8a7e68;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody td:first-child {
+  color: #e8dcc8;
+  font-weight: 500;
+}
+tbody tr:hover td {
+  background: rgba(201, 168, 76, 0.02);
+}
+.table-total td {
+  border-top: 2px solid rgba(201, 168, 76, 0.15);
+  color: #c9a84c !important;
+  font-weight: 600;
+  background: rgba(201, 168, 76, 0.03);
+}
+
+/* ========== DANGER CALLOUT (strip clubs) ========== */
+.danger-callout {
+  background: rgba(199, 90, 58, 0.05);
+  border: 1px solid rgba(199, 90, 58, 0.15);
+  border-left: 4px solid #c75a3a;
+  border-radius: 0 6px 6px 0;
+  padding: 2rem 2rem;
+  margin: 1.5rem 0;
+  position: relative;
+}
+.danger-callout::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -4px;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #c75a3a, rgba(199, 90, 58, 0.5));
+  border-radius: 4px 0 0 4px;
+}
+.danger-callout .danger-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c75a3a;
+  display: block;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(199, 90, 58, 0.12);
+}
+.danger-callout p {
+  color: #c75a3a;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.75;
+  opacity: 0.9;
+}
+.danger-callout p:last-child { margin-bottom: 0; }
+
+/* ========== NUMBERED LIST ========== */
+.numbered-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: item;
+}
+.numbered-list li {
+  counter-increment: item;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+  color: #8a7e68;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  line-height: 1.75;
+}
+.numbered-list li:last-child { border-bottom: none; }
+.numbered-list li::before {
+  content: counter(item, decimal-leading-zero);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #c9a84c;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  opacity: 0.5;
+}
+.numbered-list li strong { color: #e8dcc8; }
+
+/* ========== CHECKLIST ========== */
+.checklist {
+  list-style: none;
+  padding: 0;
+}
+.checklist li {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+  color: #8a7e68;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  display: inline-block;
+  margin-right: 0.75rem;
+  min-width: 110px;
+  padding: 0.15rem 0.4rem;
+  background: rgba(201, 168, 76, 0.06);
+  border-radius: 3px;
+}
+.checklist-urgent {
+  color: #c75a3a !important;
+  background: rgba(199, 90, 58, 0.08) !important;
+}
+
+/* ========== ACCOMMODATION GRID ========== */
+.accom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+/* ========== CONFIDENCE LABEL ========== */
+.confidence-label {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #8a9ab0;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid rgba(138, 154, 176, 0.2);
+  border-radius: 3px;
+  margin-bottom: 1rem;
+  background: rgba(138, 154, 176, 0.04);
+}
+
+/* ========== STAT BOXES ========== */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.stat-box {
+  flex: 1;
+  min-width: 140px;
+  background: #1a1815;
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  border-radius: 6px;
+  padding: 1.25rem;
+  text-align: center;
+}
+.stat-box .stat-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.6rem;
+  color: #c9a84c;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.stat-box .stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5a5548;
+}
+
+/* ========== ROUTE LINE ========== */
+.route-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+.route-city {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  padding: 0.4rem 0.8rem;
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 4px;
+}
+.route-arrow {
+  color: #5a5548;
+  font-size: 0.8rem;
+}
+
+/* ========== SCROLL TO TOP ========== */
+.scroll-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  background: #23201b;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.scroll-top.visible { opacity: 1; visibility: visible; }
+.scroll-top:hover {
+  border-color: #c9a84c;
+  background: #2a2620;
+  transform: translateY(-2px);
+}
+.scroll-top svg {
+  width: 16px;
+  height: 16px;
+  stroke: #c9a84c;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* ========== FOOTER ========== */
+.footer {
+  padding: 5rem 0 3rem;
+  text-align: center;
+  border-top: 1px solid rgba(201, 168, 76, 0.08);
+  position: relative;
+}
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+}
+.footer-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin-bottom: 1rem;
+}
+.footer p {
+  color: #5a5548;
+  font-size: 0.85rem;
+}
+.footer a {
+  color: #8a7e68;
+  transition: color 0.2s ease;
+}
+.footer a:hover { color: #c9a84c; }
+.footer-divider {
+  width: 30px;
+  height: 1px;
+  background: rgba(201, 168, 76, 0.15);
+  margin: 1.5rem auto;
+}
+
+/* ========== MOBILE ========== */
+@media (max-width: 600px) {
+  .hero {
+    min-height: 90vh;
+    padding: 3rem 1.25rem;
+  }
+  .hero-brand::before,
+  .hero-brand::after { display: none; }
+  .hero-meta {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .hero-scroll-hint { display: none; }
+  .section { padding: 3.5rem 0; }
+  .container { padding: 0 1.25rem; }
+  .quick-read-box { padding: 1.75rem; }
+  .venue-grid { grid-template-columns: 1fr; }
+  .accom-grid { grid-template-columns: 1fr; }
+  .version-tab {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  .version-tab .tab-sub { display: none; }
+  .version-summary {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .day-card { padding: 1.5rem; }
+  .info-card { padding: 1.5rem; }
+  .venue-card-body { padding: 1.25rem; }
+  .danger-callout { padding: 1.5rem; }
+  .research-note { padding: 1.25rem 1.5rem; }
+  table { font-size: 0.8rem; }
+  thead th, tbody td { padding: 0.6rem 0.75rem; }
+  .checklist-phase {
+    display: block;
+    margin-bottom: 0.35rem;
+    margin-right: 0;
+  }
+  .nav-links { display: none; }
+  .stat-row { flex-direction: column; }
+  .stat-box { min-width: 100%; }
+  .route-line { flex-direction: column; gap: 0.35rem; }
+  .route-arrow { transform: rotate(90deg); }
+  .city-placeholder-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  .venue-grid { grid-template-columns: 1fr 1fr; }
+  .city-placeholder-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== NAVIGATION ==================== -->
+<nav class="nav-bar" id="navBar">
+  <div class="nav-inner">
+    <span class="nav-brand">The Lads Travel Co.</span>
+    <ul class="nav-links">
+      <li><a href="#quick-read">Quick Read</a></li>
+      <li><a href="#itinerary">Itinerary</a></li>
+      <li><a href="#kazimierz">Kazimierz</a></li>
+      <li><a href="#costs">Costs</a></li>
+      <li><a href="#safety">Safety</a></li>
+      <li><a href="#booking">Booking</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-brand">THE LADS TRAVEL CO.</div>
+  <h1>Poland August 2026</h1>
+  <p class="hero-subtitle">Research-based framework. Krakow &rarr; Warsaw &rarr; Gdansk. Three versions, one south-to-north route.</p>
+
+  <div class="route-line" style="margin-bottom: 3rem;">
+    <span class="route-city">Krakow</span>
+    <span class="route-arrow">&rarr;</span>
+    <span class="route-city">Warsaw</span>
+    <span class="route-arrow">&rarr;</span>
+    <span class="route-city">Gdansk</span>
+  </div>
+
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="meta-label">Window</span>
+      <span class="meta-value">Aug 15&ndash;31</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="meta-label">Group</span>
+      <span class="meta-value">4&ndash;8</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="meta-label">Flights</span>
+      <span class="meta-value">ORD via LOT</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="meta-label">Versions</span>
+      <span class="meta-value">6 / 8 / 10-day</span>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </div>
+</section>
+
+<!-- ==================== QUICK READ ==================== -->
+<section class="section" id="quick-read">
+  <div class="container">
+    <span class="section-label">Quick Read</span>
+    <div class="quick-read-box">
+      <p>Research-based framework for Poland in August 2026. Three versions built around the same south-to-north route: Version A is Krakow only (6 days), Version B adds Warsaw (8 days), Version C adds Gdansk and the Solidarity Anniversary (10 days). LOT flies non-stop ORD&rarr;WAR at ~$680 pp open-jaw. Kazimierz is where you stay in Krakow &mdash; not Old Town. Auschwitz is non-negotiable. Wieliczka's Miners' Route is the one worth doing. Milk Bars for lunch every day save $100/day for a group of 8.</p>
+      <div class="quick-read-budget">Budget: ~$1,555 pp mid-range (Version A, 6-day) to ~$2,140 pp (Version C, 10-day), flights included.</div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="stat-value">$1,555</span>
+        <span class="stat-label">Version A (6-Day)</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value">$1,850</span>
+        <span class="stat-label">Version B (8-Day)</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value">$2,140</span>
+        <span class="stat-label">Version C (10-Day)</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value">$680</span>
+        <span class="stat-label">Flights (ORD-WAR)</span>
+      </div>
+    </div>
+
+    <!-- Research Note -->
+    <div class="research-note">
+      <span class="note-label">Research-Based Framework</span>
+      <p>Brady has not visited Poland. This framework was built using six specialized research agents covering logistics, accommodations, food and drink, nightlife, cultural sites, and cost modeling. All recommendations carry research-based confidence. Prices, venue details, and logistics have been cross-referenced across multiple current sources but should be verified closer to travel dates.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CITY PLACEHOLDERS ==================== -->
+<section class="section" id="cities">
+  <div class="container">
+    <span class="section-label">Three Cities</span>
+    <h2>South to North</h2>
+    <p style="color:#8a7e68;">The route follows Poland's spine. Krakow for culture and nightlife, Warsaw for history and energy, Gdansk for the coast and Solidarity.</p>
+
+    <div class="city-placeholder-grid">
+      <div class="placeholder-card">
+        <span>Krakow</span>
+        <span class="ph-sub">Kazimierz District</span>
+      </div>
+      <div class="placeholder-card">
+        <span>Warsaw</span>
+        <span class="ph-sub">Srodmiescie</span>
+      </div>
+      <div class="placeholder-card">
+        <span>Gdansk</span>
+        <span class="ph-sub">Old Town / Shipyard</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== VERSION SELECTOR + ITINERARIES ==================== -->
+<section class="section" id="itinerary">
+  <div class="container">
+    <span class="section-label">Experience Sequence</span>
+    <h2>Day by Day</h2>
+    <p style="color:#8a7e68; margin-bottom: 2rem;">Three versions of the same south-to-north route. Each version builds on the previous one. Select a version to see the full day-by-day sequence.</p>
+
+    <div class="version-tabs">
+      <button class="version-tab" data-version="a" onclick="switchVersion('a')">
+        6-Day Krakow
+        <span class="tab-sub">Version A</span>
+      </button>
+      <button class="version-tab active" data-version="b" onclick="switchVersion('b')">
+        8-Day + Warsaw
+        <span class="tab-sub">Version B</span>
+      </button>
+      <button class="version-tab" data-version="c" onclick="switchVersion('c')">
+        10-Day + Gdansk
+        <span class="tab-sub">Version C</span>
+      </button>
+    </div>
+
+    <!-- ===== VERSION A ===== -->
+    <div class="version-panel" id="version-a">
+      <span class="confidence-label">Version A &mdash; 6-Day Krakow Only</span>
+
+      <div class="version-summary">
+        <div class="version-summary-item">
+          <span class="vs-label">Duration</span>
+          <span class="vs-value">6 Days / 5 Nights</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Cities</span>
+          <span class="vs-value">Krakow</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Ground Cost</span>
+          <span class="vs-value">~$875 pp</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Total w/ Flights</span>
+          <span class="vs-value">~$1,555 pp</span>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 01 &mdash; Arrival</span>
+        <h4>Arrive KRK &mdash; Settle Into Kazimierz</h4>
+        <p>Arrive Krakow. Uber or Bolt to Kazimierz apartment (25 min, 50-70 PLN). Biedronka run to stock the kitchen &mdash; water, beer, breakfast basics. First meal: zapiekanka from the Okraglak building on Plac Nowy, 8-15 PLN each. Evening drinks at Alchemia. No agenda. Just land.</p>
+        <span class="day-highlight">Kazimierz &mdash; First Night</span>
+      </div>
+
+      <div class="day-card day-card-muted">
+        <span class="day-number">Day 02 &mdash; Auschwitz</span>
+        <h4>Auschwitz-Birkenau (Full Day)</h4>
+        <p>Private van to Auschwitz-Birkenau, depart by 8:30 AM (75 min each way). Guided educator tour at both sites, 3.5-5 hours. Return for quiet dinner. Not a night out.</p>
+        <span class="day-highlight">Full Day &mdash; See Booking Protocol</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 03 &mdash; Salt Mine + Recovery</span>
+        <h4>Wieliczka Salt Mine &mdash; Kazimierz Recovery</h4>
+        <p>Morning: Wieliczka Miners' Route at Regis Shaft. Haul brine, check methane, operate period equipment. Two hours underground, 143 PLN pp, requires 2-week advance booking. Afternoon recovery in Kazimierz &mdash; cafes, street art, slow pace. Evening at Singer or HEVRE.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 04 &mdash; Nowa Huta + Nightlife</span>
+        <h4>Nowa Huta Trabant Tour &mdash; Vodka &mdash; Nightlife</h4>
+        <p>Morning: Nowa Huta Trabant tour through the Cold War-era planned socialist district in a vintage car. Afternoon: vodka tasting &mdash; genuine education in the spirit. Evening: William Rabbit and Co for cocktails, then Plac Nowy at 2am. The right ending to every Krakow night.</p>
+        <span class="day-highlight">Best Night Out &mdash; Peak Kazimierz</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 05 &mdash; Day Trip</span>
+        <h4>Tatras Day Trip or Dunajec River Gorge</h4>
+        <p>Group decides: Zakopane and the Tatras (Krupowki Street, oscypek cheese, Morskie Oko lake hike if fit), or Dunajec River gorge raft through the Pieniny Mountains on the Slovak border. Both are full-day commitments, 2 hours each way. Either way, you leave Krakow and come back tired.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 06 &mdash; Departure</span>
+        <h4>Depart Krakow</h4>
+        <p>Pack out the apartment. Fly WAR&rarr;ORD via LOT, or Pendolino to Warsaw (2h 20m) if departing from WAW. Allow 3 hours at Chopin for check-in.</p>
+      </div>
+    </div>
+
+    <!-- ===== VERSION B ===== -->
+    <div class="version-panel active" id="version-b">
+      <span class="confidence-label">Version B &mdash; 8-Day Krakow + Warsaw</span>
+
+      <div class="version-summary">
+        <div class="version-summary-item">
+          <span class="vs-label">Duration</span>
+          <span class="vs-value">8 Days / 7 Nights</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Cities</span>
+          <span class="vs-value">Krakow + Warsaw</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Ground Cost</span>
+          <span class="vs-value">~$1,170 pp</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Total w/ Flights</span>
+          <span class="vs-value">~$1,850 pp</span>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 01 &mdash; Arrival</span>
+        <h4>Arrive KRK &mdash; Settle Into Kazimierz</h4>
+        <p>Arrive Krakow John Paul II Airport. Uber or Bolt to Kazimierz apartment &mdash; 25 minutes, 50-70 PLN. Check in, drop bags. First priority: Biedronka run to stock the kitchen. Water, beer, bread, cheese, breakfast basics.</p>
+        <p>First meal: zapiekanka from the Okraglak building on Plac Nowy. Open-faced baguettes, 8-15 PLN each. Evening drinks at Alchemia. No agenda. Just land.</p>
+        <span class="day-highlight">Kazimierz &mdash; First Night</span>
+      </div>
+
+      <div class="day-card day-card-muted">
+        <span class="day-number">Day 02 &mdash; Auschwitz</span>
+        <h4>Auschwitz-Birkenau (Full Day)</h4>
+        <p>Private van to Auschwitz-Birkenau. Depart by 8:30 AM. Guided educator tour at both sites. Allow 3.5-5 hours. Return to Krakow for quiet dinner. Not a night out. The group needs space to process.</p>
+        <span class="day-highlight">Full Day &mdash; See Booking Protocol</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 03 &mdash; Salt Mine + Recovery</span>
+        <h4>Wieliczka Salt Mine &mdash; Kazimierz Recovery</h4>
+        <p>Morning: Wieliczka Salt Mine, Miners' Route at Regis Shaft. Two hours underground, hauling brine and checking methane. 143 PLN pp, requires 2-week advance booking. Afternoon recovery in Kazimierz &mdash; cafes, street art, slow pace. Evening at Singer or HEVRE.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 04 &mdash; Nowa Huta + Nightlife</span>
+        <h4>Nowa Huta Trabant Tour &mdash; Vodka &mdash; Nightlife</h4>
+        <p>Morning: Nowa Huta Trabant tour &mdash; Cold War-era planned socialist district in a vintage car. Afternoon: vodka tasting. Evening: William Rabbit and Co for cocktails, then the inevitable drift to Plac Nowy at 2am. Last Krakow night &mdash; make it count.</p>
+        <span class="day-highlight">Last Night in Krakow</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 05 &mdash; Warsaw Transit</span>
+        <h4>Pendolino to Warsaw &mdash; Vistula Boulevards</h4>
+        <p>Pendolino from Krakow Glowny to Warsaw Centralna (2h 20m, 120-180 PLN pp booked 30 days out). Srodmiescie apartment check-in. Different energy than Krakow &mdash; modern European capital, rebuilt from total wartime destruction.</p>
+        <p>Evening walk along the Vistula Boulevards. Drinks at Cud nad Wisla &mdash; riverside bar on the west bank, locals only at sunset.</p>
+        <span class="day-highlight">City Shift &mdash; Krakow to Warsaw</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 06 &mdash; History + Praga</span>
+        <h4>Warsaw Rising Museum &mdash; Praga District</h4>
+        <p>Warsaw Rising Museum (Wednesday or Friday, 35 PLN). The most important museum in Warsaw &mdash; the 1944 Uprising lasted 63 days and resulted in near-total destruction of the city. Afternoon in Praga district &mdash; the raw, unpolished east bank. Rooftop bars in the evening near the Palace of Culture.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 07 &mdash; Old Town + Powisle</span>
+        <h4>Old Town &mdash; Royal Route &mdash; Powisle</h4>
+        <p>Old Town and Royal Route in the morning &mdash; UNESCO site rebuilt from rubble after 1945, walkable in 90 minutes. Powisle neighborhood cafes in the afternoon. Pre-departure evening &mdash; keep it easy.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 08 &mdash; Departure</span>
+        <h4>Fly WAW &rarr; ORD</h4>
+        <p>Depart Warsaw Chopin Airport. LOT non-stop to O'Hare. Allow 3 hours for check-in and security. Uber from Srodmiescie to Chopin is roughly 30-45 PLN.</p>
+      </div>
+    </div>
+
+    <!-- ===== VERSION C ===== -->
+    <div class="version-panel" id="version-c">
+      <span class="confidence-label">Version C &mdash; 10-Day Full Route + Gdansk</span>
+
+      <div class="version-summary">
+        <div class="version-summary-item">
+          <span class="vs-label">Duration</span>
+          <span class="vs-value">10 Days / 9 Nights</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Cities</span>
+          <span class="vs-value">Krakow + Warsaw + Gdansk</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Ground Cost</span>
+          <span class="vs-value">~$1,460 pp</span>
+        </div>
+        <div class="version-summary-item">
+          <span class="vs-label">Total w/ Flights</span>
+          <span class="vs-value">~$2,140 pp</span>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 01 &mdash; Arrival</span>
+        <h4>Arrive KRK &mdash; Settle Into Kazimierz</h4>
+        <p>Arrive Krakow. Kazimierz apartment check-in. Biedronka run to stock the kitchen. First meal: zapiekanka from the Okraglak building on Plac Nowy. Evening drinks at Alchemia. No agenda. Just land.</p>
+        <span class="day-highlight">Kazimierz &mdash; First Night</span>
+      </div>
+
+      <div class="day-card day-card-muted">
+        <span class="day-number">Day 02 &mdash; Auschwitz</span>
+        <h4>Auschwitz-Birkenau (Full Day)</h4>
+        <p>Private van to Auschwitz-Birkenau. Full day. Guided educator tour at both sites. Allow 3.5-5 hours. Return for quiet dinner. Not a night out.</p>
+        <span class="day-highlight">Full Day &mdash; See Booking Protocol</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 03 &mdash; Salt Mine + Recovery</span>
+        <h4>Wieliczka Salt Mine &mdash; Kazimierz Recovery</h4>
+        <p>Morning: Wieliczka Salt Mine, Miners' Route at Regis Shaft. Afternoon recovery in Kazimierz. Evening at Singer or HEVRE.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 04 &mdash; Nowa Huta + Nightlife</span>
+        <h4>Nowa Huta Trabant Tour &mdash; Vodka &mdash; Nightlife</h4>
+        <p>Morning: Nowa Huta Trabant tour. Afternoon: vodka tasting. Evening: William Rabbit and Co for cocktails, then Plac Nowy at 2am. Last Krakow night.</p>
+        <span class="day-highlight">Last Night in Krakow</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 05 &mdash; Warsaw Transit</span>
+        <h4>Pendolino to Warsaw &mdash; Vistula Boulevards</h4>
+        <p>Pendolino to Warsaw (2h 20m). Srodmiescie apartment check-in. Evening walk along the Vistula Boulevards. Drinks at Cud nad Wisla &mdash; riverside bar, locals only at sunset.</p>
+        <span class="day-highlight">City Shift &mdash; Krakow to Warsaw</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 06 &mdash; History + Praga</span>
+        <h4>Warsaw Rising Museum &mdash; Praga District</h4>
+        <p>Warsaw Rising Museum (Wednesday or Friday, 35 PLN). The most important museum in Warsaw. Afternoon in Praga district &mdash; the raw, unpolished east bank. Rooftop bars in the evening.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 07 &mdash; Gdansk Transit</span>
+        <h4>Pendolino to Gdansk &mdash; 100cznia Shipyard</h4>
+        <p>Pendolino north to Gdansk (2h 45m, 140-200 PLN pp). Old Town apartment check-in &mdash; rebuilt Hanseatic architecture on the Motlawa River, completely different aesthetic from Krakow or Warsaw. Evening at 100cznia &mdash; bar and cultural space inside the old Gdansk Shipyard where Solidarity began in 1980.</p>
+        <span class="day-highlight">City Shift &mdash; Warsaw to Gdansk</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 08 &mdash; Solidarity + WWII</span>
+        <h4>European Solidarity Centre &mdash; WWII Museum</h4>
+        <p>European Solidarity Centre (3 hours minimum) &mdash; the definitive museum of the movement that ended communism in Europe. WWII Museum in the afternoon &mdash; Gdansk (then Danzig) is where WWII began on September 1, 1939. Evening on Ulica Elektrykow &mdash; the shipyard district's bar street. More Berlin than Krakow.</p>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 09 &mdash; Sopot + Concert</span>
+        <h4>Sopot Day Trip &mdash; Solidarity Anniversary Concert</h4>
+        <p>SKM commuter rail to Sopot (25 min). Beach clubs, the longest wooden pier in Europe (511m), a completely different energy. Return for the Solidarity Anniversary concert at the Shipyard. August 31 marks the signing of the Gdansk Agreement. Free entry, outdoor venue.</p>
+        <span class="day-highlight">Solidarity Anniversary &mdash; August 31</span>
+      </div>
+
+      <div class="day-card">
+        <span class="day-number">Day 10 &mdash; Anniversary + Departure</span>
+        <h4>Solidarity Anniversary Morning &mdash; Depart</h4>
+        <p>Morning ceremony at Gate No. 2 (10:30 AM) &mdash; the gate where Lech Walesa climbed the fence in 1980. Lunch at Montownia Food Hall. Fly or train to Warsaw, then WAW&rarr;ORD.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== KAZIMIERZ EVENING ARCHITECTURE ==================== -->
+<section class="section" id="kazimierz">
+  <div class="container kazimierz-section">
+    <span class="section-label">Kazimierz Evening Architecture</span>
+    <h2>The Krakow Night, Mapped</h2>
+    <div class="kazimierz-intro">
+      <p>Kazimierz is not a nightlife district. It is a neighborhood that happens to have the best bars in Poland. The Jewish Quarter turned creative district, where 400-year-old synagogues sit next to ruin bars and the candlelight is not decorative &mdash; it is the actual lighting. The sequence matters. Start at Alchemia, end at Plac Nowy. Everything in between is negotiable.</p>
+    </div>
+
+    <div class="venue-grid">
+      <div class="venue-card">
+        <div class="venue-card-texture">
+          <span class="venue-type">Bar</span>
+        </div>
+        <div class="venue-card-body">
+          <span class="venue-card-sequence">Start Here &mdash; Every Night</span>
+          <h4>Alchemia</h4>
+          <p>First-night bar, every visit. Candlelit, labyrinthine, progressive live music in the basement on weekends. The front room feels like a 19th-century apothecary. The back room feels like a dungeon someone forgot to close. The kind of place where you sit down at 9 and realize it is midnight. Multiple rooms, each with a different mood. Not expensive &mdash; beer runs 10-14 PLN.</p>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-card-texture">
+          <span class="venue-type">Bar / Dance</span>
+        </div>
+        <div class="venue-card-body">
+          <span class="venue-card-sequence">After Midnight</span>
+          <h4>Singer</h4>
+          <p>Tables become dance floors after 1am. Named for the sewing machine tables that serve as your bar surface. Gypsy jazz some nights, chaos every night. The line between bar and party dissolves around midnight and does not come back. Small enough that the energy is inescapable. Not for a quiet drink. Perfect for a loud one.</p>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-card-texture">
+          <span class="venue-type">Bar / Architecture</span>
+        </div>
+        <div class="venue-card-body">
+          <span class="venue-card-sequence">Alternative to Singer</span>
+          <h4>HEVRE</h4>
+          <p>Former synagogue, architecturally striking. The space alone is worth the visit &mdash; multi-level, carefully lit, a different energy than the ruin bars around it. Not the cheapest option in the district, but the interior justifies the premium. Good cocktails, interesting crowd, the kind of bar where the building is doing most of the work.</p>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-card-texture">
+          <span class="venue-type">Cocktails</span>
+        </div>
+        <div class="venue-card-body">
+          <span class="venue-card-sequence">One Night &mdash; Worth the Spend</span>
+          <h4>William Rabbit and Co</h4>
+          <p>Speakeasy. Best cocktails in the district. The kind of bar where the bartender asks what you like, what spirits you prefer, and builds something custom. Not cheap by Polish standards &mdash; cocktails run 30-45 PLN &mdash; but still half of what the same quality costs in Chicago or New York. Allocate one evening here.</p>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-card-texture">
+          <span class="venue-type">Late Night Food</span>
+        </div>
+        <div class="venue-card-body">
+          <span class="venue-card-sequence">The Right Ending &mdash; Every Night</span>
+          <h4>Plac Nowy at 2am</h4>
+          <p>Zapiekanka from the Okraglak building. Open-faced baguettes with whatever you want on them, assembled by people who have been doing this at 2am for decades. The round building in the center of Plac Nowy has windows on every side selling these until the early morning hours. 8-15 PLN. The right ending to every Krakow night. Not optional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== AUSCHWITZ BOOKING PROTOCOL ==================== -->
+<section class="section auschwitz-section" id="auschwitz">
+  <div class="container">
+    <span class="section-label">Auschwitz Booking Protocol</span>
+    <h2>Auschwitz-Birkenau</h2>
+    <p style="color:#5a5548; font-size:0.9rem; margin-bottom: 2.5rem;">Handled with the weight it deserves. The guided educator tour is mandatory for first-timers. This section is deliberately restrained.</p>
+
+    <ul class="protocol-list">
+      <li>
+        <span class="protocol-marker">01</span>
+        <span>The booking portal opens at exactly noon CET on the 90th day before your planned visit. English-language guided educator tour slots sell out within hours. Set an alarm. Have the group leader ready at the computer at 11:55 CET. This is not flexible.</span>
+      </li>
+      <li>
+        <span class="protocol-marker">02</span>
+        <span>Schedule as Day 2, not Day 1. You need a full day of adjustment before this visit. Jet lag and Auschwitz do not mix. The framework places it on Day 2 for this reason.</span>
+      </li>
+      <li>
+        <span class="protocol-marker">03</span>
+        <span>Private van transport from Krakow, 80-120 PLN for the entire group (not per person). Do not take the public bus &mdash; you want control over your departure time, and you will not want to wait at a bus stop after this visit.</span>
+      </li>
+      <li>
+        <span class="protocol-marker">04</span>
+        <span>Allow 3.5-5 hours for both Auschwitz I and Birkenau. The guided tour covers Auschwitz I first (roughly 2 hours), then the shuttle to Birkenau (runs continuously, 5-minute ride). Birkenau is open and exposed &mdash; bring water in summer, a jacket in cooler months.</span>
+      </li>
+      <li>
+        <span class="protocol-marker">05</span>
+        <span>Quiet dinner afterward. This is not a night out. The group will need space to process what they saw. Do not plan evening activities. Choose a calm restaurant in Kazimierz, eat, and call it a night.</span>
+      </li>
+      <li>
+        <span class="protocol-marker">06</span>
+        <span>Day 3 is deliberately lighter &mdash; Wieliczka Salt Mine in the morning (physical but not emotionally heavy), Kazimierz recovery in the afternoon. Recovery from the previous day is built into the framework structure.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== WIELICZKA SALT MINE ==================== -->
+<section class="section" id="wieliczka">
+  <div class="container">
+    <span class="section-label">Wieliczka Salt Mine</span>
+    <h2>Miners' Route, Not Tourist Route</h2>
+    <span class="confidence-label">Research-Based</span>
+
+    <div class="placeholder-card" style="margin-top: 1.5rem; height: 120px;">
+      <span>Wieliczka Salt Mine</span>
+      <span class="ph-sub">Regis Shaft &mdash; Miners' Route</span>
+    </div>
+
+    <div class="info-card">
+      <h4>The Miners' Route at Regis Shaft</h4>
+      <p>Both the Tourist Route and Miners' Route cost 143 PLN pp. The Tourist Route is an underground cathedral walk &mdash; impressive architecture, chapel carved from salt, genuinely beautiful, but entirely passive. You walk in a group, you look, you leave.</p>
+      <p>The Miners' Route at Regis Shaft requires 2-week advance booking and involves actually working in the mine: hauling brine buckets, checking methane levels with flame safety lamps, operating period equipment, navigating by headlamp through unlit chambers. Two hours underground, 20 participants maximum per group.</p>
+      <p>For fit mid-20s men, the Miners' Route is the only version worth doing. Book through the official Wieliczka website. Morning slots recommended &mdash; the afternoon is Kazimierz recovery time.</p>
+      <span class="info-card-detail">143 PLN pp &bull; 2-week advance booking &bull; Regis Shaft &bull; 2 hours underground</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ACCOMMODATION ==================== -->
+<section class="section" id="accommodation">
+  <div class="container">
+    <span class="section-label">Accommodation</span>
+    <h2>Where to Base</h2>
+    <span class="confidence-label">Research-Based</span>
+
+    <div class="accom-grid" style="margin-top: 1.5rem;">
+      <div class="info-card">
+        <h4>Krakow &mdash; Kazimierz</h4>
+        <p>15-25% cheaper than Old Town. Street art, ruin bars, genuine cafes. Not where stag parties congregate &mdash; that is Old Town and the Main Square corridor. Kazimierz is the Jewish Quarter turned creative district, and it is where locals actually drink.</p>
+        <span class="info-card-detail">$80-150/night apartment &bull; Jozefa, Meiselsa, or Miodowa streets</span>
+      </div>
+
+      <div class="info-card">
+        <h4>Warsaw &mdash; Srodmiescie</h4>
+        <p>Warsaw is not walkable like Krakow. Central location in Srodmiescie saves on Uber. $140-220/night for an apartment. Proximity to Centrum metro station matters more than aesthetics.</p>
+        <span class="info-card-detail">$140-220/night apartment &bull; Near Centrum Metro</span>
+      </div>
+
+      <div class="info-card">
+        <h4>Gdansk &mdash; Old Town / Granary Island</h4>
+        <p>Book first due to Solidarity Anniversary pressure on inventory. Verify the map pin &mdash; some "Old Town" listings are in outer districts 20+ minutes from center. Granary Island is the newer development with cleaner apartments, walkable to everything.</p>
+        <span class="info-card-detail">$120-200/night apartment &bull; Book earliest of all three cities</span>
+      </div>
+    </div>
+
+    <div class="research-note" style="margin-top: 2rem;">
+      <span class="note-label">Apartment Format Note</span>
+      <p>At 5-6 people, apartment format is clearly superior to hotels &mdash; kitchen, common space, lower per-person cost, and the ability to stock breakfast and water. At 7-8, you need a legitimate 4-bedroom apartment or two coordinated units in the same building. Do not try to fit 8 into a 3-bedroom. The common space disappears and everyone is miserable by Day 3.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FLIGHTS ==================== -->
+<section class="section" id="flights">
+  <div class="container">
+    <span class="section-label">Flights</span>
+    <h2>LOT Non-Stop ORD to WAR</h2>
+    <span class="confidence-label">Research-Based</span>
+
+    <div class="info-card" style="margin-top: 1.5rem;">
+      <h4>~$680 pp Open-Jaw</h4>
+      <p>LOT Polish Airlines flies non-stop from O'Hare to Warsaw Chopin. Open-jaw routing: fly into Krakow (KRK), fly out of Warsaw (WAW) &mdash; or out of Gdansk (GDN) for Version C. Avoids backtracking, saves a full travel day. LOT is Star Alliance &mdash; United status applies for lounge access.</p>
+      <span class="info-card-detail">LOT Polish Airlines &bull; Star Alliance &bull; Non-stop from ORD</span>
+    </div>
+
+    <div class="info-card">
+      <h4>Timing and Booking Strategy</h4>
+      <p>Wednesday August 26 departure saves $150-200 pp versus Friday. Book in two groups of 4 &mdash; airlines price larger group bookings higher. Two separate bookings of 4 consistently prices lower than one of 8.</p>
+      <span class="info-card-detail">Book Apr-May 2026 &bull; Groups of 4 &bull; Wednesday departure preferred</span>
+    </div>
+
+    <div class="info-card">
+      <h4>Economy Saver vs. Standard</h4>
+      <p>Economy Saver has no checked bag. Upgrading to Standard at purchase costs $40-60 less than adding a bag post-purchase. Just buy Standard.</p>
+      <span class="info-card-detail">Economy Standard recommended &bull; $40-60 savings vs. adding bag later</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOD AND DRINK STRATEGY ==================== -->
+<section class="section" id="food">
+  <div class="container">
+    <span class="section-label">Food and Drink Strategy</span>
+    <h2>How to Eat and Drink in Poland</h2>
+    <span class="confidence-label">Research-Based</span>
+    <p style="color:#8a7e68; margin-top: 0.5rem;">Poland is one of the most affordable food and drink destinations in Europe. The strategy is not about being cheap &mdash; it is about redirecting budget from overpriced tourist traps to the things that actually matter.</p>
+
+    <div class="info-card" style="margin-top: 1.5rem;">
+      <h4>Milk Bars (Bar Mleczny)</h4>
+      <p>State-subsidised cafeterias. $5-7 pp for soup, main course, and a drink. Traditional Polish home cooking &mdash; pierogi, bigos, zurek, kotlet schabowy. Eat lunch here every day and save ~$100/day for a group of 8 versus restaurant dining.</p>
+      <span class="info-card-detail">$5-7 pp per meal &bull; Every city &bull; Lunch daily</span>
+    </div>
+
+    <div class="info-card">
+      <h4>Pre-Gaming Strategy (4/8 Bar Model)</h4>
+      <p>Bania Luka: beer at ~11 PLN. Pijalnia Wodki i Piwa: vodka shots 5-8 PLN. Start every night here before main venues. Savings: 160-240 PLN pp per night. Over 6 nights: $240-360 per person saved.</p>
+      <span class="info-card-detail">Beer ~11 PLN &bull; Vodka shots 5-8 PLN &bull; $240-360 saved over 6 nights</span>
+    </div>
+
+    <div class="info-card">
+      <h4>Apartment Kitchen</h4>
+      <p>Biedronka or Lidl for breakfast saves 25-40 PLN pp/day. Water: 0.50-1 PLN at the store vs 8-12 PLN at restaurants. Over 10 days for 8 people, water alone saves $160-220. Every PLN saved on breakfast is a PLN for the Trabant tour or cocktail bar.</p>
+      <span class="info-card-detail">25-40 PLN/day saved on breakfast &bull; Biedronka or Lidl</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ATM AND SCAM AVOIDANCE ==================== -->
+<section class="section" id="safety">
+  <div class="container">
+    <span class="section-label">ATM and Scam Avoidance</span>
+    <h2>Money, Scams, and What to Avoid</h2>
+    <span class="confidence-label">Research-Based</span>
+
+    <div class="info-card" style="margin-top: 1.5rem;">
+      <h4>ATMs &mdash; Bank Only</h4>
+      <p>Use ATMs from: PKO Bank Polski, Bank Pekao, mBank, ING. That is the complete list. Euronet and Planet Cash control 70% of tourist-area ATMs and charge 50%+ higher fees through hidden conversion margins. They look legitimate. They are not. Decline the "accept our exchange rate" screen.</p>
+      <p>A Charles Schwab debit card reimburses all ATM fees worldwide. If anyone has a Schwab account, they are the designated ATM person.</p>
+      <span class="info-card-detail">PKO &bull; Pekao &bull; mBank &bull; ING &mdash; nothing else</span>
+    </div>
+
+    <div class="info-card">
+      <h4>Dynamic Currency Conversion (DCC)</h4>
+      <p>When a terminal asks "pay in PLN or USD?" &mdash; always PLN. Choosing USD triggers DCC at a 5-10% markup. Over 10 days with 8 people, DCC costs the group $500+. Every terminal will offer this. Always PLN.</p>
+      <span class="info-card-detail">Always PLN &bull; Never USD &bull; $500+ group savings over 10 days</span>
+    </div>
+
+    <!-- STRIP CLUB DANGER CALLOUT -->
+    <div class="danger-callout">
+      <span class="danger-label">Non-Negotiable Avoidance &mdash; Strip Clubs</span>
+      <p>Documented spiking with benzodiazepines. Biometric authorization on phones used to approve charges while incapacitated. Individual charges exceeding $10,000 are common and well-documented.</p>
+      <p>US banks deny fraud claims because the transactions are biometrically authorized &mdash; your fingerprint or Face ID was used while you were drugged. The bank sees a legitimate biometric approval and closes the case.</p>
+      <p>There are no safe strip clubs in Krakow or Warsaw for foreign groups. The promoters on the street are part of the operation. This is not a "be careful" situation. This is a "do not go under any circumstances" situation.</p>
+    </div>
+
+    <div class="info-card">
+      <h4>Drunk Tank (Izba Wytrzezwien)</h4>
+      <p>Public intoxication is a removal offense. Police take you to a sobering station, you stay overnight, and you pay 400-450 PLN ($100-115) before release. Use Uber or Bolt for all late-night movement. Both apps work in all three cities.</p>
+      <span class="info-card-detail">400-450 PLN per person &bull; Overnight hold &bull; Uber/Bolt for all late-night transit</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== COST MODEL ==================== -->
+<section class="section" id="costs">
+  <div class="container">
+    <span class="section-label">Cost Model</span>
+    <h2>What This Trip Costs</h2>
+    <span class="confidence-label">Research-Based</span>
+
+    <p style="color:#8a7e68; margin-top: 0.5rem; margin-bottom: 0.25rem;">Mid-range estimates. Group of 8, apartment accommodation, Milk Bar lunches, pre-gaming strategy. Per person, per day.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Daily Cost (pp)</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Accommodation</td>
+            <td>$18</td>
+            <td>Apartment split 8 ways</td>
+          </tr>
+          <tr>
+            <td>Food</td>
+            <td>$40</td>
+            <td>Kitchen breakfast, Milk Bar lunch, dinner out</td>
+          </tr>
+          <tr>
+            <td>Nightlife</td>
+            <td>$45</td>
+            <td>Pre-gaming + 2-3 venues</td>
+          </tr>
+          <tr>
+            <td>Transport</td>
+            <td>$10</td>
+            <td>Tram, Uber, metro</td>
+          </tr>
+          <tr>
+            <td>Activities</td>
+            <td>$25</td>
+            <td>Museums, tours, mines</td>
+          </tr>
+          <tr>
+            <td>Incidentals</td>
+            <td>$8</td>
+            <td>SIM, tips, misc</td>
+          </tr>
+          <tr class="table-total">
+            <td>Daily Total</td>
+            <td>~$146</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="section-divider">
+
+    <h3 style="margin-top: 2rem;">Trip Totals by Version</h3>
+    <p style="color:#8a7e68; font-size: 0.88rem;">Per person, mid-range, group of 8. Flights are LOT ORD-WAR open-jaw at ~$680 pp.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Days</th>
+            <th>Cities</th>
+            <th>Ground (pp)</th>
+            <th>+ Flights</th>
+            <th>Total (pp)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Version A</td>
+            <td>6</td>
+            <td>Krakow</td>
+            <td>~$875</td>
+            <td>~$680</td>
+            <td>~$1,555</td>
+          </tr>
+          <tr>
+            <td>Version B</td>
+            <td>8</td>
+            <td>Krakow + Warsaw</td>
+            <td>~$1,170</td>
+            <td>~$680</td>
+            <td>~$1,850</td>
+          </tr>
+          <tr>
+            <td>Version C</td>
+            <td>10</td>
+            <td>Krakow + Warsaw + Gdansk</td>
+            <td>~$1,460</td>
+            <td>~$680</td>
+            <td>~$2,140</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="research-note" style="margin-top: 2rem;">
+      <span class="note-label">Cost Model Assumptions</span>
+      <p>These estimates assume mid-range spending with the savings strategies described in this framework (kitchen breakfasts, Milk Bar lunches, pre-gaming). A group that eats every meal at restaurants and starts every night at tourist venues will spend 30-50% more. A group that goes fully budget (hostel dorms, no cocktail bars, limited activities) could reduce ground costs by 25-30%. The model targets the realistic middle for a group of mid-20s professionals.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WHAT FIRST-TIMERS GET WRONG ==================== -->
+<section class="section" id="mistakes">
+  <div class="container">
+    <span class="section-label">What First-Timers Get Wrong</span>
+    <h2>Eight Mistakes That Cost Real Money</h2>
+    <ol class="numbered-list">
+      <li><strong>Using Euronet ATMs</strong> &mdash; 50%+ higher fees than bank ATMs, everywhere in tourist areas. Walk past them to PKO, Pekao, mBank, or ING.</li>
+      <li><strong>Accepting USD at terminals</strong> &mdash; DCC costs 5-10% on every transaction. Always choose PLN. Over 10 days with 8 people, this mistake costs $500+.</li>
+      <li><strong>Following strip club promoters</strong> &mdash; documented drink spiking, $10,000+ biometric fraud charges. US banks deny claims. No safe venues exist for foreign groups.</li>
+      <li><strong>Basing in Krakow Old Town</strong> &mdash; stag party corridor, 15-25% more expensive than Kazimierz. Kazimierz is 10 minutes on foot and a different world.</li>
+      <li><strong>Skipping Auschwitz</strong> &mdash; the experience most groups who skip it wish they had done. Book the guided educator tour. Schedule as Day 2.</li>
+      <li><strong>Eating in tourist zones</strong> &mdash; walk two blocks and the same dish costs 50% less. Milk Bars: $5-7 pp, genuinely good traditional Polish food.</li>
+      <li><strong>Using tourist-area currency exchanges</strong> &mdash; use Kantor offices on side streets, not kiosks on main squares. Rate difference can be 8-12%.</li>
+      <li><strong>Getting the drunk tank</strong> &mdash; public intoxication is a removal offense at 400-450 PLN per person plus overnight detention. Uber or Bolt for all late-night transit.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== BOOKING CHECKLIST ==================== -->
+<section class="section" id="booking">
+  <div class="container">
+    <span class="section-label">Booking Checklist</span>
+    <h2>When to Book What</h2>
+    <ul class="checklist">
+      <li>
+        <span class="checklist-phase checklist-urgent">Book Now</span>
+        Gdansk accommodation &mdash; Solidarity Anniversary creates serious inventory pressure. Do not wait.
+      </li>
+      <li>
+        <span class="checklist-phase">Do First</span>
+        Credit card cascade (travel card with no FTF + Schwab debit). Confirm group size. Lock Krakow apartment in Kazimierz.
+      </li>
+      <li>
+        <span class="checklist-phase">Book Now</span>
+        LOT flights (two groups of 4). Warsaw accommodation. Wieliczka Miners' Route reservation.
+      </li>
+      <li>
+        <span class="checklist-phase">At 90 Days</span>
+        Auschwitz tickets &mdash; portal opens at noon CET exactly. English-language guided slots sell out within hours. Set an alarm.
+      </li>
+      <li>
+        <span class="checklist-phase">At 30 Days</span>
+        PKP rail tickets (Pendolino). Warsaw Rising Museum tickets (Wednesday or Friday).
+      </li>
+      <li>
+        <span class="checklist-phase">Pre-Departure</span>
+        Jakdojade app, Uber/Bolt setup, Schwab debit card activation, offline Google Maps.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-brand">THE LADS TRAVEL CO.</div>
+    <p>Research-based trip planning. 650+ spots rated across 20 cities.</p>
+    <div class="footer-divider"></div>
+    <p style="margin-top: 0;"><a href="mailto:dangelobraden43@gmail.com">dangelobraden43@gmail.com</a></p>
+  </div>
+</footer>
+
+<!-- ==================== SCROLL TO TOP ==================== -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+(function() {
+  // Version Selector
+  window.switchVersion = function(v) {
+    var tabs = document.querySelectorAll('.version-tab');
+    var panels = document.querySelectorAll('.version-panel');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('active');
+    }
+    for (var j = 0; j < panels.length; j++) {
+      panels[j].classList.remove('active');
+    }
+    document.querySelector('[data-version="' + v + '"]').classList.add('active');
+    document.getElementById('version-' + v).classList.add('active');
+  };
+
+  // Scroll to Top Button
+  var scrollBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 600) {
+      scrollBtn.classList.add('visible');
+    } else {
+      scrollBtn.classList.remove('visible');
+    }
+  });
+
+  // Sticky Navigation
+  var navBar = document.getElementById('navBar');
+  var heroHeight = document.querySelector('.hero').offsetHeight;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > heroHeight - 50) {
+      navBar.classList.add('visible');
+    } else {
+      navBar.classList.remove('visible');
+    }
+  });
+
+  // Smooth scroll for nav links
+  var navLinks = document.querySelectorAll('.nav-links a');
+  for (var k = 0; k < navLinks.length; k++) {
+    navLinks[k].addEventListener('click', function(e) {
+      e.preventDefault();
+      var targetId = this.getAttribute('href').substring(1);
+      var targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        var offset = targetEl.getBoundingClientRect().top + window.scrollY - 60;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thailand NYE 2026–27 — The Lads Travel Co.</title>
+<meta property="og:title" content="Thailand NYE — The Lads Travel Co.">
+<meta property="og:description" content="Framework for Thailand NYE 2026 — Bangkok, Koh Phangan, Krabi, and research-based planning.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0e0e0c;
+  --surface: #181814;
+  --elevated: #222220;
+  --gold: #c9a84c;
+  --amber: #b89050;
+  --cream: #e8dcc8;
+  --muted: #8a7e68;
+  --dim: #5a5548;
+  --border: rgba(201, 168, 76, 0.12);
+  --border-accent: rgba(201, 168, 76, 0.25);
+  --research: #8a9ab0;
+  --font-display: 'EB Garamond', Georgia, serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section + .section { border-top: 1px solid var(--border); }
+
+/* ── Typography ── */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; line-height: 1.25; }
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--cream); }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--cream); margin-bottom: 32px; }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); color: var(--cream); margin-bottom: 16px; }
+h4 { font-size: 1.1rem; color: var(--gold); margin-bottom: 12px; }
+
+p { margin-bottom: 16px; color: var(--cream); }
+p.muted { color: var(--muted); }
+
+a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--cream); }
+
+strong { font-weight: 500; color: var(--cream); }
+
+/* ── Label ── */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.label-gold { color: var(--gold); }
+.label-research { color: var(--research); }
+.label-muted { color: var(--muted); }
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 40%, rgba(201, 168, 76, 0.04) 0%, transparent 70%),
+    linear-gradient(180deg, transparent 60%, var(--bg) 100%);
+  pointer-events: none;
+}
+.hero-brand {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  position: relative;
+}
+.hero h1 { margin-bottom: 24px; position: relative; }
+.hero-subtitle {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  position: relative;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  position: relative;
+}
+.hero-meta-item {
+  text-align: center;
+}
+.hero-meta-item .label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--dim);
+}
+.hero-meta-item .value {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--cream);
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.card-elevated {
+  background: var(--elevated);
+  border: 1px solid var(--border-accent);
+}
+
+/* ── Anchor Card (Haad Rin) ── */
+.card-anchor {
+  background: var(--elevated);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  padding: 40px;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: 0 0 40px rgba(201, 168, 76, 0.06);
+}
+.card-anchor::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--gold);
+  border-radius: 6px 0 0 6px;
+}
+
+/* ── Research Callout ── */
+.callout-research {
+  background: var(--surface);
+  border: 1px solid rgba(138, 154, 176, 0.2);
+  border-left: 3px solid var(--research);
+  border-radius: 4px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+.callout-research p { color: var(--research); margin-bottom: 0; }
+.callout-research .label { color: var(--research); margin-bottom: 8px; display: block; }
+
+/* ── Tables ── */
+.table-wrap { overflow-x: auto; margin-bottom: 24px; -webkit-overflow-scrolling: touch; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+thead th {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--cream);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(201, 168, 76, 0.03); }
+.td-label { color: var(--muted); font-weight: 400; }
+.td-gold { color: var(--gold); font-weight: 500; }
+.td-savings { color: #6aab6a; font-weight: 500; }
+
+/* ── Placeholder Cards (dark textured, no images) ── */
+.placeholder-card {
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(201,168,76,0.02) 10px, rgba(201,168,76,0.02) 11px),
+    var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.placeholder-card span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ── Day Sequence ── */
+.day-block { margin-bottom: 20px; padding-left: 20px; border-left: 2px solid var(--border); }
+.day-block:hover { border-left-color: var(--border-accent); }
+.day-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.day-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--cream); margin-bottom: 6px; }
+.day-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 0; }
+
+/* ── Numbered List ── */
+.numbered-list { counter-reset: item; list-style: none; padding: 0; }
+.numbered-list li {
+  counter-increment: item;
+  padding: 16px 0 16px 48px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  color: var(--cream);
+  font-size: 0.92rem;
+}
+.numbered-list li:last-child { border-bottom: none; }
+.numbered-list li::before {
+  content: counter(item);
+  position: absolute;
+  left: 0; top: 16px;
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+}
+.numbered-list li strong { color: var(--cream); }
+
+/* ── Checklist ── */
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  padding: 10px 0 10px 28px;
+  position: relative;
+  color: var(--cream);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 15px;
+  width: 10px; height: 10px;
+  border: 1px solid var(--dim);
+  border-radius: 2px;
+}
+.checklist-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: inline-block;
+  margin-right: 8px;
+}
+.checklist-label-urgent { color: var(--gold); }
+
+/* ── Grid ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+
+/* ── Stat Box ── */
+.stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; }
+.stat-value { font-family: var(--font-display); font-size: 1.4rem; color: var(--gold); display: block; margin-bottom: 4px; }
+.stat-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
+
+/* ── Scroll to Top ── */
+.scroll-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s, background 0.2s;
+  z-index: 100;
+}
+.scroll-top.visible { opacity: 1; visibility: visible; }
+.scroll-top:hover { background: var(--surface); border-color: var(--gold); }
+.scroll-top svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 2; }
+
+/* ── Footer ── */
+.footer {
+  padding: 60px 0;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.footer-brand {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.footer p { color: var(--muted); font-size: 0.88rem; margin-bottom: 8px; }
+.footer a { color: var(--gold); }
+
+/* ── Cost Highlight ── */
+.cost-highlight {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.cost-highlight .cost-range {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 4px;
+}
+.cost-highlight .cost-desc {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Section Anchor Links ── */
+.section-anchor { color: var(--dim); font-size: 0.8rem; text-decoration: none; }
+.section-anchor:hover { color: var(--gold); }
+
+/* ── Trip Version Tabs ── */
+.trip-versions { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+.trip-tab {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.trip-tab:hover { border-color: var(--border-accent); color: var(--cream); }
+.trip-tab.active { border-color: var(--gold); color: var(--gold); background: var(--elevated); }
+.trip-content { display: none; }
+.trip-content.active { display: block; }
+
+/* ── Sub-section spacing ── */
+.sub-section { margin-bottom: 48px; }
+.sub-section:last-child { margin-bottom: 0; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .section { padding: 56px 0; }
+  .container { padding: 0 16px; }
+  .card, .card-anchor { padding: 24px; }
+  .card-anchor { padding: 28px; }
+  .hero { min-height: 90vh; padding: 60px 16px; }
+  .hero-meta { gap: 20px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .hero-meta-item { min-width: 120px; }
+  table { font-size: 0.8rem; }
+  thead th, tbody td { padding: 10px 12px; }
+  .scroll-top { bottom: 20px; right: 20px; width: 38px; height: 38px; }
+  h2 { margin-bottom: 24px; }
+  .day-block { padding-left: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-brand">THE LADS TRAVEL CO.</div>
+  <h1>Thailand NYE 2026–27</h1>
+  <p class="hero-subtitle">Research-based framework. Bangkok &rarr; Koh Phangan &rarr; Krabi. Built around New Year's Eve at Haad Rin.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="label">Window</span>
+      <span class="value">Dec 26 – Jan 11</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">Anchor</span>
+      <span class="value">NYE Haad Rin</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">Group</span>
+      <span class="value">4–8</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">Flights</span>
+      <span class="value">ORD via Cathay Pacific</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- QUICK READ -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="quick-read">
+  <div class="container">
+    <span class="label label-gold">Quick Read</span>
+    <h2 style="margin-top: 8px;">The Framework at a Glance</h2>
+
+    <p>Research-based framework for NYE 2026-27 in Thailand. The entire trip is built around one fixed point: Haad Rin Beach on December 31. 30,000+ people, fireworks, fire shows, competing sound systems. Entry is free. Bangkok is the opening act (2 nights), Koh Phangan is the anchor (4 nights including NYE), Krabi is the closing act (1-3 nights). Stay in Ban Tai, not Haad Rin &mdash; same party, better room, $240/person cheaper. Three trip versions: 7, 8, or 10 days.</p>
+
+    <div class="cost-highlight">
+      <span class="cost-range">$1,150 – $1,700</span>
+      <span class="cost-desc">Per person, 7-day lean to standard, flights included. ORD via Cathay Pacific.</span>
+    </div>
+
+    <div class="grid-3">
+      <div class="stat-box">
+        <span class="stat-value">2</span>
+        <span class="stat-label">Nights Bangkok</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value">4</span>
+        <span class="stat-label">Nights Koh Phangan</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value">1–3</span>
+        <span class="stat-label">Nights Krabi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- RESEARCH NOTE -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="research-note">
+  <div class="container">
+    <div class="callout-research">
+      <span class="label label-research">Research-Based Framework</span>
+      <p>Brady has not visited Thailand. All recommendations in this framework are sourced from six specialized research agents. Pricing is directional as of April 2026.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- HAAD RIN NYE — THE ANCHOR -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="haad-rin">
+  <div class="container">
+    <span class="label label-gold">The Anchor Event</span>
+    <h2 style="margin-top: 8px;">Haad Rin NYE</h2>
+
+    <div class="card-anchor">
+      <h3>December 31 — Sunrise Beach</h3>
+      <p>30,000+ people on Sunrise Beach. Fireworks at midnight. Fire shows, fire skipping ropes, competing sound systems lining the sand. Entry is 100% free &mdash; any site selling "Haad Rin NYE tickets" is a scam.</p>
+
+      <h4>Strategy</h4>
+      <p>Stay in Ban Tai. Leave at 9-10 PM by songthaew (100 THB each way). Arrive as the beach hits its stride. Budget 1,500-2,500 THB/person for the night.</p>
+
+      <h4>Safety</h4>
+      <p>Fire ropes are the #1 injury source &mdash; do not jump them. Wear shoes (broken glass debris across the sand). Bring only your phone, cash, and your hostel address written down. Leave passports, cards, and anything you cannot afford to lose at the hostel.</p>
+    </div>
+
+    <h3>Ban Tai vs Haad Rin: Cost Comparison</h3>
+    <p class="muted" style="font-size: 0.88rem; margin-bottom: 16px;">The math is decisive. Same party, different base.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Ban Tai</th>
+            <th>Haad Rin</th>
+            <th>Difference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-label">Accommodation (4 nights)</td>
+            <td>$240/person</td>
+            <td>$480+/person</td>
+            <td class="td-savings">-$240</td>
+          </tr>
+          <tr>
+            <td class="td-label">Transport to party</td>
+            <td>$11/person</td>
+            <td>$0</td>
+            <td>+$11</td>
+          </tr>
+          <tr>
+            <td class="td-label">Net saving per person</td>
+            <td colspan="2"></td>
+            <td class="td-savings">~$218</td>
+          </tr>
+          <tr>
+            <td class="td-label">Net saving, group of 8</td>
+            <td colspan="2"></td>
+            <td class="td-savings">~$2,176 – $2,744</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- EXPERIENCE SEQUENCE -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="experience">
+  <div class="container">
+    <span class="label label-research">Day-by-Day</span>
+    <h2 style="margin-top: 8px;">Experience Sequence</h2>
+
+    <div class="trip-versions">
+      <button class="trip-tab active" data-trip="7day">7-Day Core</button>
+      <button class="trip-tab" data-trip="8day">8-Day</button>
+      <button class="trip-tab" data-trip="10day">10-Day</button>
+    </div>
+
+    <!-- 7-Day -->
+    <div class="trip-content active" id="trip-7day">
+      <div class="day-block">
+        <div class="day-label">Day 1 — Dec 26</div>
+        <div class="day-title">Arrive BKK</div>
+        <p class="day-desc">Land in Bangkok. Rattanakosin district. Chinatown/Yaowarat for dinner. Khao San Road to close the night.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 2 — Dec 27</div>
+        <div class="day-title">Bangkok Temples + Muay Thai</div>
+        <p class="day-desc">Grand Palace at 8:15 AM (before the crowds). Wat Pho and a traditional massage. Wat Arun at sunset. Rajadamnern Muay Thai in the evening.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 3 — Dec 28</div>
+        <div class="day-title">Transfer to Koh Phangan</div>
+        <p class="day-desc">Domestic flight to Koh Samui + ferry to Koh Phangan. Arrive Ban Tai. Orientation and settle in.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 4 — Dec 30</div>
+        <div class="day-title">North Coast Beaches</div>
+        <p class="day-desc">Haad Khom, Haad Salad. Pre-party energy building across the island. Save energy for tomorrow.</p>
+      </div>
+      <div class="day-block" style="border-left-color: var(--gold);">
+        <div class="day-label" style="color: var(--gold);">Day 5 — Dec 31 — NYE</div>
+        <div class="day-title">Haad Rin</div>
+        <p class="day-desc">Rest. Eat well. Hydrate. Leave Ban Tai at 9-10 PM by songthaew. Haad Rin Sunrise Beach. Fireworks at midnight. Fire shows. 30,000+ people.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 6 — Jan 1</div>
+        <div class="day-title">Recovery + Bottle Beach</div>
+        <p class="day-desc">Recovery morning. Bottle Beach day trip &mdash; boat access only, pristine, the island empties as others leave.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 7 — Jan 2</div>
+        <div class="day-title">Fly Home via BKK</div>
+        <p class="day-desc">Transfer back to Bangkok. Connect to international departure.</p>
+      </div>
+    </div>
+
+    <!-- 8-Day -->
+    <div class="trip-content" id="trip-8day">
+      <p style="margin-bottom: 24px;">Adds 1 night in Krabi/Ao Nang after Koh Phangan.</p>
+      <div class="day-block">
+        <div class="day-label">Days 1–6</div>
+        <div class="day-title">Same as 7-Day Core</div>
+        <p class="day-desc">Bangkok (2 nights), Koh Phangan (4 nights including NYE), recovery + Bottle Beach.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 7</div>
+        <div class="day-title">Krabi / Ao Nang</div>
+        <p class="day-desc">Transfer to Krabi. Railay Beach half-day by long-tail boat. Ao Nang evening.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 8</div>
+        <div class="day-title">Fly Home via BKK</div>
+        <p class="day-desc">Domestic flight Krabi to Bangkok. Connect to international departure.</p>
+      </div>
+    </div>
+
+    <!-- 10-Day -->
+    <div class="trip-content" id="trip-10day">
+      <p style="margin-bottom: 24px;">Adds Bang Krachao in Bangkok + 3 full nights in Krabi.</p>
+      <div class="day-block">
+        <div class="day-label">Days 1–2</div>
+        <div class="day-title">Bangkok</div>
+        <p class="day-desc">Same as 7-Day Core. Grand Palace, Wat Pho, Wat Arun, Yaowarat, Muay Thai.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 3</div>
+        <div class="day-title">Bang Krachao + Transfer</div>
+        <p class="day-desc">Morning at Bang Krachao &mdash; Bangkok's green lung, cycling through jungle trails. Afternoon transfer to Koh Phangan.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Days 4–7</div>
+        <div class="day-title">Koh Phangan + NYE</div>
+        <p class="day-desc">Same as 7-Day Core. North coast beaches, NYE at Haad Rin, recovery + Bottle Beach.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Days 8–10</div>
+        <div class="day-title">Krabi — 3 Nights</div>
+        <p class="day-desc">Hong Islands private long-tail boat trip. Rock climbing at Railay. Tiger Cave Temple (1,237 steps). Ao Nang evenings.</p>
+      </div>
+      <div class="day-block">
+        <div class="day-label">Day 11</div>
+        <div class="day-title">Fly Home via BKK</div>
+        <p class="day-desc">Domestic flight Krabi to Bangkok. Connect to international departure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- ACCOMMODATION -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="accommodation">
+  <div class="container">
+    <span class="label label-research">Where to Stay</span>
+    <h2 style="margin-top: 8px;">Accommodation</h2>
+
+    <div class="sub-section">
+      <div class="placeholder-card"><span>Bangkok — Rattanakosin</span></div>
+      <h3>Bangkok — Rattanakosin (Old Town)</h3>
+      <p><strong>2 nights.</strong> Walking distance to Grand Palace, Wat Pho, Wat Arun. MRT Blue Line extension to Sanam Chai removed the transit isolation that used to make this area inconvenient. Hostel private rooms run $20-40/person/night.</p>
+    </div>
+
+    <div class="sub-section">
+      <div class="placeholder-card"><span>Koh Phangan — Ban Tai</span></div>
+      <h3>Koh Phangan — Ban Tai</h3>
+      <p><strong>4 nights. NOT Haad Rin.</strong> The math is decisive. Format threshold: at 4 people, hostels work. At 6+, a villa becomes cheaper per person AND eliminates the mandatory NYE gala dinner surcharge ($43-114/person). Book NOW &mdash; non-refundable.</p>
+
+      <div class="callout-research">
+        <span class="label label-research">Mandatory NYE Gala Dinner Trap</span>
+        <p>Many properties add a $43-114/person non-optional dinner surcharge on December 31. You cannot opt out. Villas and family-run guesthouses do not impose this. Factor it into your comparison or avoid it entirely.</p>
+      </div>
+
+      <div class="callout-research" style="margin-top: 16px;">
+        <span class="label label-research">Airbnb / OTA Inventory Note</span>
+        <p>If Ban Tai hostels appear sold out online, email the property directly. Many hold back NYE inventory from platforms to avoid commission fees.</p>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="placeholder-card"><span>Krabi — Ao Nang</span></div>
+      <h3>Krabi — Ao Nang</h3>
+      <p><strong>Not Krabi Town.</strong> 1 night on the 8-day version, 3 nights on the 10-day. No booking urgency &mdash; Krabi does not have the same NYE demand pressure as Koh Phangan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- FLIGHTS -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="flights">
+  <div class="container">
+    <span class="label label-research">Getting There</span>
+    <h2 style="margin-top: 8px;">Flights</h2>
+
+    <div class="sub-section">
+      <h3>International</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Route</th>
+              <th>Airline</th>
+              <th>Price (RT)</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ORD &rarr; HKG &rarr; BKK</td>
+              <td class="td-gold">Cathay Pacific</td>
+              <td>$800 – $986</td>
+              <td>19h 50m</td>
+            </tr>
+            <tr>
+              <td>ORD &rarr; DOH &rarr; BKK</td>
+              <td>Qatar Airways</td>
+              <td>$850 – $1,050</td>
+              <td>~20h</td>
+            </tr>
+            <tr>
+              <td>DTW fallback</td>
+              <td>Various</td>
+              <td colspan="2">Adds $175 – $262/person</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted" style="font-size: 0.88rem;"><strong style="color: var(--gold);">Book July-August 2026.</strong> Last realistic window for competitive fares on peak-season NYE routes.</p>
+    </div>
+
+    <div class="sub-section">
+      <h3>Domestic</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Route</th>
+              <th>Price</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BKK &rarr; KSM (Koh Samui)</td>
+              <td>$40 – $80</td>
+              <td>Book from DMK, not BKK</td>
+            </tr>
+            <tr>
+              <td>KBV (Krabi) &rarr; BKK</td>
+              <td>$35 – $65</td>
+              <td>AirAsia / VietJet</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted" style="font-size: 0.88rem;">AirAsia and VietJet enforce a strict 7kg carry-on limit. Book domestic flights at the same time as international &mdash; $40 fares become $200+ if you wait.</p>
+    </div>
+
+    <div class="sub-section">
+      <h3>Booking Strategy</h3>
+      <p>Split the group into 2 groups of 4 on separate devices. Airlines increase price as seats fill on the same search session.</p>
+
+      <div class="callout-research">
+        <span class="label label-research">Stopover Programs</span>
+        <p>Qatar offers a Doha stopover program. Cathay offers a Hong Kong stopover. Both are near-zero cost ways to add a second destination to the trip. Worth evaluating at booking time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- FOOD STRATEGY -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="food">
+  <div class="container">
+    <span class="label label-research">Eating Well, Spending Less</span>
+    <h2 style="margin-top: 8px;">Food Strategy</h2>
+
+    <h3>Tourist Premium Table</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dish</th>
+            <th>Local Price (THB)</th>
+            <th>Tourist Price (THB)</th>
+            <th>Premium</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pad Thai</td>
+            <td>50 – 65</td>
+            <td>120 – 180</td>
+            <td class="td-gold">~140%</td>
+          </tr>
+          <tr>
+            <td>Tom Yum</td>
+            <td>70 – 90</td>
+            <td>180 – 250</td>
+            <td class="td-gold">~150%</td>
+          </tr>
+          <tr>
+            <td>Som Tam</td>
+            <td>40 – 60</td>
+            <td>90 – 140</td>
+            <td class="td-gold">~125%</td>
+          </tr>
+          <tr>
+            <td>Mango Sticky Rice</td>
+            <td>60 – 80</td>
+            <td>120 – 180</td>
+            <td class="td-gold">~100%</td>
+          </tr>
+          <tr>
+            <td>Large Beer (7-Eleven)</td>
+            <td>55 – 65</td>
+            <td>55 – 65</td>
+            <td class="td-savings">0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>The Rule</h4>
+    <p>Walk two sois back from any tourist strip. The same dish at half the price. Terminal 21 Pier 21 food court in Bangkok serves full meals for 60-100 THB.</p>
+
+    <p>On Koh Phangan, self-cater breakfast from 7-Eleven &mdash; saves 150-300 THB/person/morning. Redirect the savings to better dinners.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- ATM AND SCAM AVOIDANCE -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="scams">
+  <div class="container">
+    <span class="label label-research">Money + Scams</span>
+    <h2 style="margin-top: 8px;">ATM and Scam Avoidance</h2>
+
+    <div class="sub-section">
+      <h3>ATM Strategy</h3>
+      <p>Every ATM withdrawal incurs a 220 THB fee (~$6 USD) plus your US bank's foreign transaction fee ($3-5). The solution: open a Schwab or Fidelity account before departure &mdash; both offer 100% ATM fee reimbursement worldwide.</p>
+      <p><strong>Always choose THB when the ATM asks.</strong> Choosing USD triggers Dynamic Currency Conversion (DCC), which costs 5-10% on every transaction. Use Bangkok Bank, KBank, or SCB ATMs.</p>
+    </div>
+
+    <div class="sub-section">
+      <h3>Grand Palace Redirect Scam</h3>
+      <p>Someone approaches and says the palace is "closed for a royal ceremony" &mdash; it almost never is. The redirect sends you to a tuk-tuk and then a gem shop where prices are fabricated. Walk directly to Mani Noppharat Gate and verify for yourself.</p>
+    </div>
+
+    <div class="sub-section">
+      <h3>NYE Ticket Scam</h3>
+      <p>Entry to Haad Rin on New Year's Eve is 100% free. Any website, tout, or hostel selling "entry tickets" or "VIP access" to the beach party is running a scam. There are no tickets because there is no gate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- COST MODEL -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="cost">
+  <div class="container">
+    <span class="label label-research">Budget</span>
+    <h2 style="margin-top: 8px;">Cost Model</h2>
+
+    <p class="muted" style="margin-bottom: 8px; font-size: 0.88rem;">Per person, 7-day trip, group of 4. All figures in USD.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Lean</th>
+            <th>Standard</th>
+            <th>Generous</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-label">Bangkok accommodation (2 nights)</td>
+            <td>$40 – $60</td>
+            <td>$60 – $100</td>
+            <td>$100 – $160</td>
+          </tr>
+          <tr>
+            <td class="td-label">Koh Phangan accommodation (4 nights)</td>
+            <td>$80 – $140</td>
+            <td>$140 – $240</td>
+            <td>$240 – $400</td>
+          </tr>
+          <tr>
+            <td class="td-label">Food + drink (7 days)</td>
+            <td>$105 – $175</td>
+            <td>$175 – $245</td>
+            <td>$245 – $385</td>
+          </tr>
+          <tr>
+            <td class="td-label">Domestic flights</td>
+            <td>$40 – $80</td>
+            <td>$60 – $100</td>
+            <td>$80 – $120</td>
+          </tr>
+          <tr>
+            <td class="td-label">Activities + temples</td>
+            <td>$28 – $40</td>
+            <td>$48 – $64</td>
+            <td>$81 – $109</td>
+          </tr>
+          <tr>
+            <td class="td-label">Transport (local)</td>
+            <td>$30 – $40</td>
+            <td>$50 – $60</td>
+            <td>$70 – $80</td>
+          </tr>
+          <tr>
+            <td class="td-label">NYE night budget</td>
+            <td>$30 – $40</td>
+            <td>$50 – $60</td>
+            <td>$90 – $100</td>
+          </tr>
+          <tr style="border-top: 2px solid var(--border-accent);">
+            <td><strong>In-Country Total</strong></td>
+            <td class="td-gold"><strong>$353 – $575</strong></td>
+            <td class="td-gold"><strong>$583 – $869</strong></td>
+            <td class="td-gold"><strong>$906 – $1,354</strong></td>
+          </tr>
+          <tr>
+            <td class="td-label">International flights (ORD)</td>
+            <td>$800 – $986</td>
+            <td>$800 – $986</td>
+            <td>$800 – $986</td>
+          </tr>
+          <tr style="background: rgba(201,168,76,0.04);">
+            <td><strong>Full 7-Day Total</strong></td>
+            <td class="td-gold"><strong>$1,153 – $1,561</strong></td>
+            <td class="td-gold"><strong>$1,383 – $1,855</strong></td>
+            <td class="td-gold"><strong>$1,706 – $2,340</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout-research" style="margin-top: 24px;">
+      <span class="label label-research">Pricing Note</span>
+      <p>All pricing is directional, based on research as of April 2026. Actual costs will depend on booking timing, group size, and exchange rates. The lean-to-standard range ($1,150-$1,700) represents the realistic window for most groups.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- WHAT FIRST-TIMERS GET WRONG -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="mistakes">
+  <div class="container">
+    <span class="label label-gold">Learn From Others</span>
+    <h2 style="margin-top: 8px;">What First-Timers Get Wrong</h2>
+
+    <ol class="numbered-list">
+      <li><strong>Staying in Haad Rin for NYE</strong> &mdash; same party from Ban Tai, $240/person cheaper. The songthaew costs $3 each way.</li>
+      <li><strong>Booking "Oktoberfest-style entry tickets" for Haad Rin</strong> &mdash; entry is 100% free. There is no gate, no wristband, no ticket. Anyone selling one is running a scam.</li>
+      <li><strong>Renting a scooter without experience</strong> &mdash; steep sandy roads, poor lighting, alcohol. Scooter accidents are the #1 hospital visit source for tourists on Koh Phangan.</li>
+      <li><strong>Eating on the main tourist strip</strong> &mdash; walk 2 sois back, same dish at 50% the price. The food is often better too.</li>
+      <li><strong>Choosing USD at ATMs</strong> &mdash; Dynamic Currency Conversion costs 5-10% on every transaction. Always choose THB.</li>
+      <li><strong>Booking domestic flights after international</strong> &mdash; a $40 fare becomes $200+ as dates fill. Book both at the same time.</li>
+      <li><strong>Falling for the Grand Palace redirect scam</strong> &mdash; palace is almost never closed. Walk directly to Mani Noppharat Gate.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- BOOKING CHECKLIST -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section" id="checklist">
+  <div class="container">
+    <span class="label label-gold">Action Items</span>
+    <h2 style="margin-top: 8px;">Booking Checklist</h2>
+
+    <ul class="checklist">
+      <li>
+        <span class="checklist-label checklist-label-urgent">Book Now</span>
+        Koh Phangan Ban Tai accommodation (NYE inventory disappears fast)
+      </li>
+      <li>
+        <span class="checklist-label">July – August 2026</span>
+        International flights (Cathay Pacific ORD &rarr; HKG &rarr; BKK)
+      </li>
+      <li>
+        <span class="checklist-label">July – August 2026</span>
+        Domestic flights (BKK &rarr; KSM, KBV &rarr; BKK)
+      </li>
+      <li>
+        <span class="checklist-label">July – August 2026</span>
+        Bangkok accommodation (Rattanakosin area)
+      </li>
+      <li>
+        <span class="checklist-label">Before Departure</span>
+        Open Schwab or Fidelity account for ATM fee reimbursement
+      </li>
+      <li>
+        <span class="checklist-label">Before Departure</span>
+        Purchase AIS eSIM for Thailand data
+      </li>
+      <li>
+        <span class="checklist-label">Before Departure</span>
+        Complete TDAC (Thailand Digital Arrival Card)
+      </li>
+      <li>
+        <span class="checklist-label">30 Days Before</span>
+        Grand Palace tickets (if pre-booking available)
+      </li>
+      <li>
+        <span class="checklist-label">30 Days Before</span>
+        Jeh O Chula Fast Pass (Bangkok late-night restaurant)
+      </li>
+      <li>
+        <span class="checklist-label">10 Days Before</span>
+        Rajadamnern Muay Thai tickets
+      </li>
+      <li>
+        <span class="checklist-label">7 Days Before Phangan</span>
+        Lomprayah ferry booking (Koh Samui to Koh Phangan)
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════ -->
+<footer class="footer" id="footer">
+  <div class="container">
+    <div class="footer-brand">THE LADS TRAVEL CO.</div>
+    <p>Research-based trip planning. 650+ spots rated across 20 cities.</p>
+    <p><a href="mailto:dangelobraden43@gmail.com">dangelobraden43@gmail.com</a></p>
+  </div>
+</footer>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<script>
+// ── Scroll to Top ──
+(function() {
+  var btn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 600) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  });
+  btn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+// ── Trip Version Tabs ──
+(function() {
+  var tabs = document.querySelectorAll('.trip-tab');
+  var contents = document.querySelectorAll('.trip-content');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var target = this.getAttribute('data-trip');
+
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      contents.forEach(function(c) { c.classList.remove('active'); });
+
+      this.classList.add('active');
+      document.getElementById('trip-' + target).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

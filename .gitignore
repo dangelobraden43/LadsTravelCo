@@ -30,3 +30,20 @@ node_modules/
 # Local folders (not deployed)
 photos/
 internal/
+dist/
+
+# Build artifacts
+dist/
+
+# Temp build files
+testing/preserved_data.txt
+testing/v0_*.jsx
+testing/v0_*.css
+testing/v0_*.js
+
+# v0 export (Next.js source, not deployed)
+testing/b_NUquevGyH7/
+testing/b_NUquevGyH7U.zip
+
+# Old babel backup
+index-old-babel.html
