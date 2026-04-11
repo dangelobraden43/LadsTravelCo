@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lads-travel-co.vercel.app/sitemap.xml

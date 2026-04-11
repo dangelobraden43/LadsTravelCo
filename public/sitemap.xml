@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://lads-travel-co.vercel.app/</loc><priority>1.0</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/dublin-galway</loc><priority>0.8</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/italy</loc><priority>0.8</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/spain</loc><priority>0.8</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/australia-nz</loc><priority>0.8</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/iceland</loc><priority>0.8</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/prague-vienna</loc><priority>0.8</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/munich</loc><priority>0.7</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/poland</loc><priority>0.7</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/thailand</loc><priority>0.7</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/lads-local</loc><priority>0.7</priority></url>
+  <url><loc>https://lads-travel-co.vercel.app/charleston</loc><priority>0.6</priority></url>
+</urlset>

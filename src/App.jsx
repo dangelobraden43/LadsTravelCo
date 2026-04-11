@@ -941,6 +941,22 @@ export default function App() {
       {/* CHOOSE YOUR ADVENTURE */}
       <VibeSelector selectedVibe={selectedVibe} onSelect={(v) => setSelectedVibe(selectedVibe === v ? null : v)} scrollTo={scrollTo} />
 
+      {/* EARLY ACCESS EMAIL CAPTURE */}
+      <section style={{padding:'48px 24px',textAlign:'center',background:'linear-gradient(180deg, var(--bg) 0%, var(--surface) 50%, var(--bg) 100%)'}}>
+        <Reveal>
+          <div style={{maxWidth:520,margin:'0 auto'}}>
+            <div className="section-label" style={{textAlign:'center',marginBottom:8}}>Coming Soon</div>
+            <h2 style={{fontFamily:'var(--serif)',fontSize:'clamp(1.4rem, 3vw, 1.8rem)',fontWeight:600,marginBottom:8}}>Launching Full Consulting <em>Fall 2026</em></h2>
+            <p style={{fontSize:14,color:'var(--muted)',marginBottom:24}}>Drop your email for early access. First clients get priority booking and founding-member pricing.</p>
+            <form action="https://formspree.io/f/xvzvekkk" method="POST" style={{display:'flex',gap:8,maxWidth:420,margin:'0 auto',flexWrap:'wrap',justifyContent:'center'}}>
+              <input type="hidden" name="_subject" value="Early Access Signup" />
+              <input type="email" name="email" required placeholder="your@email.com" style={{flex:'1 1 240px',padding:'10px 16px',borderRadius:8,border:'1px solid var(--border2)',background:'var(--surface)',color:'var(--cream)',fontSize:14,fontFamily:'var(--sans)',outline:'none'}} />
+              <button type="submit" className="btn-primary-pill" style={{whiteSpace:'nowrap'}}>Get Early Access</button>
+            </form>
+          </div>
+        </Reveal>
+      </section>
+
       {/* DESTINATIONS */}
       <div id="destinations">
         <DestinationsSection selectedVibe={selectedVibe} />
@@ -1722,6 +1738,14 @@ function LadsSection() {
             <img src={NEW_IMAGES.dublinLads} alt="Three lads in Dublin" style={{maxHeight:200,borderRadius:8}} />
             <img src={IMAGES.ladsVienna} alt="Lads on Vienna U-Bahn" style={{maxHeight:200,borderRadius:8}} />
             <img src={IMAGES.franklinBus} alt="Franklin bus bar Sydney" style={{maxHeight:200,borderRadius:8}} />
+          </div>
+        </Reveal>
+
+        {/* Study Abroad */}
+        <Reveal delay={150}>
+          <div style={{textAlign:'center',marginTop:48,padding:'24px 16px',background:'var(--surface)',borderRadius:12,border:'1px solid var(--border)'}}>
+            <p style={{fontFamily:'var(--serif)',fontSize:'1.1rem',fontWeight:600,marginBottom:8}}>Heading Abroad for School?</p>
+            <p style={{fontSize:13,color:'var(--muted)',maxWidth:500,margin:'0 auto'}}>Brady was a peer advisor at GVSU's Padnos International Center before his Sydney study abroad. Students heading abroad — reach out, we share what we know for free.</p>
           </div>
         </Reveal>
 

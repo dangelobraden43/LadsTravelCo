@@ -11,7 +11,7 @@
 - Main site converted from static HTML to React (April 10, 2026)
 - Migrated from inline Babel CDN to Vite build system (April 11, 2026) — proper React compilation, instant load
 - v0 design system integrated: scroll-based architecture, pill nav, crossfading hero, filter tabs, photo-forward cards
-- 45 base64 images total (29 original + 16 new photos processed via sharp: 75MB raw → 2.3MB optimized)
+- 60 base64 images total (29 original + 16 batch 1 + 15 batch 2 processed via sharp)
 - Prague + Vienna + Dresden framework built (prague-vienna.html) — last placeholder link resolved
 - All 6 destination cards with filter tabs (All/Validated/Bucket List)
 - Scroll-triggered animations via Intersection Observer throughout
@@ -43,6 +43,20 @@
 - Econ research paper improved (44KB → 70KB, 5 new analytical methods)
 - Brady personal context and site vision documented in internal/brady/
 - Lads Summer Hub and AI Playbook created in internal/
+
+**APRIL 11, 2026 — SESSION 2 (Fix-First + Improvements):**
+- Full health check: 10 items audited, zero FAILs, foundation solid
+- vercel.json: added cleanUrls for clean URL routing (/dublin instead of /dublin-galway.html)
+- sitemap.xml + robots.txt added to public/
+- OG meta tags completed (added og:url)
+- Microsoft Clarity placeholder comment added to index.html + all 11 framework HTMLs
+- Email capture section added between hero and destinations (Fall 2026 early access, wired to Formspree)
+- Study abroad paragraph added to Lads section (GVSU Padnos International Center reference)
+- Icelandair stopover callout added to iceland.html (up to 7 days free on transatlantic routes)
+- Ryder Cup 2027 callout added to dublin-galway.html (Adare Manor, Sep 26-Oct 3 2027)
+- 15 new photos processed via sharp (800px, q80, 2MB total) and added to images-new.js
+- LinkedIn launch post drafted (internal/brady/linkedin-launch-post.md)
+- Affiliate setup guide created (internal/brady/affiliate-setup.md) — Booking.com, Viator, GYG
 
 ---
 
