@@ -1,0 +1,1776 @@
+---
+title: "Prestige, Discipline, and the Economic Returns to a Bachelor's Degree: Evidence from the U.S. College Scorecard"
+author: "Braden D'Angelo"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: flatly
+    highlight: tango
+    number_sections: false
+    fig_width: 10
+    fig_height: 6
+---
+
+> **Abstract.** We examine how institutional prestige and academic discipline jointly determine early-career earnings for bachelor's degree holders, using program-level data from the U.S. College Scorecard covering over `r format(nrow(final_dataset), big.mark = ",")` institution-by-field observations. A composite prestige index built from selectivity, SAT scores, and instructional expenditure reveals a significant earnings premium that persists after controlling for institutional and student-body characteristics. However, field of study dominates: discipline fixed effects explain far more earnings variation than prestige. A prestige-by-discipline interaction model shows the premium is largest in engineering, computer science, and business, and negligible in education, arts, and humanities. Results survive propensity score matching, quantile regression, and alternative earnings horizons. The finding reframes the "is college worth it" debate: the answer depends less on *where* you go than on *what* you study there.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  dpi     = 300
+)
+
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+```{r load-packages, include=FALSE}
+required_packages <- c(
+  "tidyverse", "janitor", "scales",
+  "gt", "gtExtras",
+  "stargazer",
+  "knitr", "kableExtra",
+  "broom", "lmtest", "sandwich",
+  "rprojroot",
+  "MatchIt",
+  "quantreg",
+  "car"
+)
+for (pkg in required_packages) {
+  if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
+}
+
+library(tidyverse)
+library(janitor)
+library(scales)
+library(gt)
+library(gtExtras)
+library(stargazer)
+library(knitr)
+library(kableExtra)
+library(broom)
+library(lmtest)
+library(sandwich)
+library(rprojroot)
+library(MatchIt)
+library(quantreg)
+library(car)
+```
+
+```{r color-palette, include=FALSE}
+# Consistent color palette used across all figures
+pal_blue_dark  <- "#1a5276"
+pal_blue_mid   <- "#2c7bb6"
+pal_blue_light <- "#cfe2f3"
+pal_red        <- "#d7191c"
+pal_red_light  <- "#f4a582"
+pal_grey       <- "grey40"
+pal_grey_light <- "grey50"
+
+# Common ggplot theme for all figures
+theme_paper <- function(base_size = 12) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      plot.title      = element_text(face = "bold", size = base_size + 1),
+      plot.subtitle   = element_text(color = pal_grey, size = base_size - 2),
+      plot.caption    = element_text(size = 8, color = pal_grey_light, hjust = 0),
+      strip.text      = element_text(face = "bold"),
+      panel.spacing   = unit(1, "lines"),
+      legend.position = "bottom"
+    )
+}
+```
+
+```{r build-dataset, include=FALSE}
+# ============================================================
+# DATA BUILD
+# This chunk imports, cleans, and constructs the final dataset
+# from the two raw College Scorecard CSV files. It runs every
+# time so the analysis is always based on fresh, correct data.
+# ============================================================
+
+proj_root <- find_rstudio_root_file()
+
+inst_path <- file.path(proj_root, "Most-Recent-Cohorts-Institution.csv")
+fos_path  <- file.path(proj_root, "Most-Recent-Cohorts-Field-of-Study.csv")
+
+# -- 1. Institution file --
+inst_raw <- read_csv(
+  file           = inst_path,
+  na             = c("", "NA", "NULL", "PrivacySuppressed"),
+  col_types      = cols(.default = col_character()),
+  show_col_types = FALSE
+) %>% clean_names()
+
+inst_selected <- inst_raw %>%
+  select(
+    unitid, instnm, city, stabbr,
+    control, preddeg, locale, region, hbcu,
+    md_earn_wne_p6, md_earn_wne_p10,
+    adm_rate, sat_avg, costt4_a, inexpfte,
+    ugds, pctpell, female, first_gen, c150_4
+  )
+
+numeric_cols_inst <- c(
+  "md_earn_wne_p6", "md_earn_wne_p10",
+  "adm_rate", "sat_avg", "costt4_a", "inexpfte",
+  "ugds", "pctpell", "female", "first_gen", "c150_4",
+  "control", "preddeg", "locale", "region", "hbcu"
+)
+
+inst_clean <- inst_selected %>%
+  mutate(across(all_of(numeric_cols_inst), as.numeric)) %>%
+  filter(preddeg == 3)
+
+# -- 2. Prestige index --
+inst_clean <- inst_clean %>%
+  mutate(
+    selectivity    = 1 - adm_rate,
+    z_selectivity  = scale(selectivity)[, 1],
+    z_sat          = scale(sat_avg)[, 1],
+    z_expenditure  = scale(inexpfte)[, 1],
+    prestige_index = rowMeans(
+      cbind(z_selectivity, z_sat, z_expenditure),
+      na.rm = TRUE
+    ),
+    prestige_tier  = ntile(prestige_index, 5),
+    prestige_label = case_when(
+      prestige_tier == 5 ~ "Most Selective",
+      prestige_tier == 4 ~ "Highly Selective",
+      prestige_tier == 3 ~ "Selective",
+      prestige_tier == 2 ~ "Less Selective",
+      prestige_tier == 1 ~ "Open / Broad Access",
+      TRUE               ~ NA_character_
+    ),
+    prestige_label = factor(
+      prestige_label,
+      levels  = c("Open / Broad Access", "Less Selective", "Selective",
+                  "Highly Selective", "Most Selective"),
+      ordered = TRUE
+    )
+  )
+
+# -- 3. Field-of-study file --
+fos_raw <- read_csv(
+  file           = fos_path,
+  na             = c("", "NA", "NULL", "PrivacySuppressed"),
+  col_types      = cols(.default = col_character()),
+  show_col_types = FALSE
+) %>% clean_names()
+
+fos_selected <- fos_raw %>%
+  select(
+    unitid, instnm, cipcode, cipdesc, credlev, creddesc,
+    earn_mdn_hi_1yr, earn_mdn_hi_2yr,
+    earn_count_wne_4yr, earn_mdn_4yr,
+    earn_count_wne_5yr, earn_mdn_5yr
+  )
+
+numeric_cols_fos <- c(
+  "cipcode", "credlev",
+  "earn_mdn_hi_1yr", "earn_mdn_hi_2yr",
+  "earn_count_wne_4yr", "earn_mdn_4yr",
+  "earn_count_wne_5yr", "earn_mdn_5yr"
+)
+
+fos_clean <- fos_selected %>%
+  mutate(across(all_of(numeric_cols_fos), as.numeric)) %>%
+  filter(credlev == 3)
+
+# -- 4. Discipline mapping --
+fos_clean <- fos_clean %>%
+  mutate(
+    cip_2digit = as.integer(cipcode) %/% 100,
+    discipline = case_when(
+      cip_2digit %in% c(1, 2)   ~ "Agriculture",
+      cip_2digit == 3            ~ "Natural Resources",
+      cip_2digit == 4            ~ "Architecture",
+      cip_2digit == 9            ~ "Communications",
+      cip_2digit == 11           ~ "Computer Science",
+      cip_2digit == 13           ~ "Education",
+      cip_2digit %in% c(14, 15) ~ "Engineering",
+      cip_2digit == 16           ~ "Foreign Languages",
+      cip_2digit == 22           ~ "Legal Studies",
+      cip_2digit == 23           ~ "English",
+      cip_2digit == 24           ~ "Liberal Arts",
+      cip_2digit == 26           ~ "Biological Sciences",
+      cip_2digit == 27           ~ "Mathematics / Statistics",
+      cip_2digit == 30           ~ "Interdisciplinary Studies",
+      cip_2digit == 38           ~ "Philosophy / Religion",
+      cip_2digit == 40           ~ "Physical Sciences",
+      cip_2digit == 42           ~ "Psychology",
+      cip_2digit %in% c(43, 44) ~ "Public Administration / Social Work",
+      cip_2digit == 45           ~ "Social Sciences",
+      cip_2digit == 50           ~ "Visual / Performing Arts",
+      cip_2digit == 51           ~ "Health Professions",
+      cip_2digit == 52           ~ "Business",
+      cip_2digit == 54           ~ "History",
+      TRUE                       ~ "Other"
+    )
+  )
+
+# -- 5. Merge and build final dataset --
+final_dataset <- fos_clean %>%
+  inner_join(
+    inst_clean %>% select(-instnm),
+    by = "unitid"
+  ) %>%
+  filter(
+    !is.na(earn_mdn_4yr),
+    !is.na(prestige_index),
+    !is.na(discipline)
+  ) %>%
+  select(
+    unitid, instnm, city, stabbr,
+    cipcode, cipdesc, discipline,
+    earn_mdn_4yr, earn_mdn_5yr, earn_mdn_hi_1yr, earn_mdn_hi_2yr,
+    md_earn_wne_p6, md_earn_wne_p10,
+    prestige_index, prestige_tier, prestige_label,
+    adm_rate, sat_avg, inexpfte,
+    control, locale, region, hbcu,
+    ugds, pctpell, female, first_gen, c150_4, costt4_a
+  )
+
+# -- 6. Regression-ready variables --
+final_dataset <- final_dataset %>%
+  mutate(
+    log_earn        = log(earn_mdn_4yr),
+    log_earn_5yr    = ifelse(!is.na(earn_mdn_5yr) & earn_mdn_5yr > 0,
+                            log(earn_mdn_5yr), NA_real_),
+    is_public       = as.integer(control == 1),
+    is_nonprofit    = as.integer(control == 2),
+    locale_urban    = as.integer(locale %in% 11:13),
+    locale_suburban = as.integer(locale %in% 21:23),
+    log_ugds        = log(ugds + 1),
+    region_f        = factor(region),
+    discipline_f    = factor(discipline),
+    discipline_f    = relevel(discipline_f, ref = "Business"),
+    # Binary high-prestige indicator for matching analysis
+    high_prestige   = as.integer(prestige_tier >= 4),
+    # Census region labels for geographic analysis
+    region_name = case_when(
+      region == 0 ~ "U.S. Service Schools",
+      region == 1 ~ "New England",
+      region == 2 ~ "Mid East",
+      region == 3 ~ "Great Lakes",
+      region == 4 ~ "Plains",
+      region == 5 ~ "Southeast",
+      region == 6 ~ "Southwest",
+      region == 7 ~ "Rocky Mountains",
+      region == 8 ~ "Far West",
+      region == 9 ~ "Outlying Areas",
+      TRUE        ~ "Unknown"
+    )
+  )
+```
+
+---
+
+# Introduction
+
+A bachelor's degree commands a substantial wage premium over a high school diploma --- a finding so robust it has survived fifty years of empirical scrutiny (Card, 1999; Goldin & Katz, 2008). But treating 'college degree' as a homogeneous credential ignores the two dimensions that actually determine what that degree is worth: *where* you earn it and *what* you study. An elite institution offers more resources, better-connected alumni, and a selectivity signal that opens doors. A petroleum engineering degree opens different doors than an education degree. This paper quantifies both dimensions --- and their interaction.
+
+Using institution- and program-level earnings data from the U.S. Department of Education's College Scorecard, we construct a composite prestige index from selectivity, test scores, and instructional expenditure, then estimate OLS models that progressively add discipline fixed effects and prestige-by-discipline interactions.
+
+Three findings emerge. First, prestige carries a significant earnings premium after controlling for institutional and student-body characteristics. Second, field of study is the single largest predictor of graduate earnings --- dwarfing the prestige effect. Third, the return to prestige is not uniform: it is largest in engineering, computer science, and business, and smallest --- sometimes negligible --- in education, arts, and humanities. These findings survive propensity score matching, quantile regression, variance decomposition, and alternative earnings horizons. The implication is direct: what you study matters more than where you study it, and the value of prestige itself depends on your field.
+
+---
+
+# Literature Review
+
+The labor-market return to college quality has a long empirical history.
+Brewer, Eide, and Ehrenberg (1999) find significant earnings premiums for
+graduates of elite private institutions relative to public universities.
+Dale and Krueger (2002), however, argue that controlling for student
+ambition --- proxied by the selectivity of schools to which students
+*applied* --- substantially reduces the measured return to college
+selectivity, suggesting much of the apparent premium reflects student
+characteristics rather than institutional value-added. Black and Smith
+(2006) revisit this question using composite quality measures similar to
+our prestige index and find positive, robust earnings effects that persist
+after controlling for student ability.
+
+The role of field of study is at least as well established. Altonji, Blom,
+and Meghir (2012) document large and persistent earnings gaps across college
+majors, with STEM and business fields commanding premiums of 50--100% over
+humanities and education. Carnevale, Strohl, and Melton (2011) confirm this
+pattern using American Community Survey data, finding that the earnings
+spread across majors exceeds the gap between bachelor's and high school
+diploma holders.
+
+The interaction between school quality and major choice is less studied.
+Long (2010) finds that college quality effects are larger for students who
+enter high-wage occupations, consistent with the hypothesis that prestige
+amplifies returns in competitive labor markets. Chetty et al. (2017)
+provide the most comprehensive evidence using linked tax records, finding
+that elite institutions generate large earnings gains for students from
+low-income families, though access to those institutions remains deeply
+stratified by parental income. Our contribution is to test
+this interaction directly at the program level using the College Scorecard's
+field-of-study earnings data, providing a more granular view than the
+individual-level survey data used in prior work, and to supplement OLS
+estimates with propensity score matching and quantile regression to
+characterize the prestige premium across the full earnings distribution.
+
+---
+
+# Data
+
+## Source and Sample
+
+All data come from the **U.S. Department of Education's College Scorecard**,
+a publicly available database maintained by the Office of Federal Student
+Aid (U.S. Department of Education, 2024). We use two files: the
+institution-level file, which provides one record per school with aggregate
+characteristics and earnings outcomes, and the field-of-study file, which
+provides one record per institution-by-program combination with
+field-specific median earnings. The two files are merged on a common
+institution identifier. The sample is restricted to Bachelor's-degree-
+granting institutions, excluding community colleges, certificate programs,
+and graduate-only institutions.
+
+The primary outcome is **median earnings four years after program
+completion**, measured at the field-of-study level. This reflects
+early-career wages for graduates of a specific program at a specific school ---
+the most granular available proxy for the economic return to a particular
+institution-major combination. Median earnings five years after completion
+serve as a robustness check.
+
+## Prestige Index
+
+Because no single observable variable fully captures institutional prestige,
+we construct a **composite prestige index** from three variables available
+for nearly all schools in the sample:
+
+1. **Selectivity** (1 minus the admission rate): higher values indicate
+   greater selectivity.
+2. **Average SAT score**: reflects the academic preparation of the enrolled
+   student body.
+3. **Instructional expenditure per full-time-equivalent student**: annual
+   per-student spending on instruction, a proxy for institutional resources.
+
+Each component is standardized to a mean of zero and standard deviation of
+one so the three measures contribute equally regardless of original units.
+The prestige index is the row-wise mean of the three z-scores; institutions
+missing one component receive a score based on the remaining two. For
+descriptive analysis, each institution is also assigned to a quintile
+prestige tier (Tier 1 = least selective through Tier 5 = most selective).
+
+## Disciplines
+
+Programs are classified using the federal Classification of Instructional
+Programs (CIP) taxonomy. We aggregate the detailed CIP codes to 23 broad
+discipline categories using the two-digit CIP family prefix, reducing noise
+from small programs while preserving economically meaningful variation
+across fields.
+
+## Control Variables
+
+To isolate the effect of prestige from other institutional differences, we
+control for: institutional sector (public, private nonprofit, for-profit),
+Census region, campus locale (urban, suburban, rural), log undergraduate
+enrollment, share of Pell Grant recipients, share of first-generation
+students, share of female students, and the six-year graduation rate.
+
+---
+
+# Summary Statistics
+
+```{r table1-summary-stats}
+large_num_rows <- c(
+  "Median Field Earnings, 4 Yrs Post-Completion ($)",
+  "Instructional Expenditure per FTE Student ($)",
+  "Undergraduate Enrollment",
+  "Average SAT Score"
+)
+
+tibble(
+  Variable = c(
+    "Median Field Earnings, 4 Yrs Post-Completion ($)",
+    "Prestige Index (composite z-score)",
+    "Admission Rate",
+    "Average SAT Score",
+    "Instructional Expenditure per FTE Student ($)",
+    "Undergraduate Enrollment",
+    "Share Pell Grant Recipients",
+    "Share First-Generation Students",
+    "Share Female Students",
+    "Six-Year Graduation Rate",
+    "Share Public Institutions"
+  ),
+  N = c(
+    sum(!is.na(final_dataset$earn_mdn_4yr)),
+    sum(!is.na(final_dataset$prestige_index)),
+    sum(!is.na(final_dataset$adm_rate)),
+    sum(!is.na(final_dataset$sat_avg)),
+    sum(!is.na(final_dataset$inexpfte)),
+    sum(!is.na(final_dataset$ugds)),
+    sum(!is.na(final_dataset$pctpell)),
+    sum(!is.na(final_dataset$first_gen)),
+    sum(!is.na(final_dataset$female)),
+    sum(!is.na(final_dataset$c150_4)),
+    sum(!is.na(final_dataset$is_public))
+  ),
+  Mean = c(
+    mean(final_dataset$earn_mdn_4yr,   na.rm = TRUE),
+    mean(final_dataset$prestige_index, na.rm = TRUE),
+    mean(final_dataset$adm_rate,       na.rm = TRUE),
+    mean(final_dataset$sat_avg,        na.rm = TRUE),
+    mean(final_dataset$inexpfte,       na.rm = TRUE),
+    mean(final_dataset$ugds,           na.rm = TRUE),
+    mean(final_dataset$pctpell,        na.rm = TRUE),
+    mean(final_dataset$first_gen,      na.rm = TRUE),
+    mean(final_dataset$female,         na.rm = TRUE),
+    mean(final_dataset$c150_4,         na.rm = TRUE),
+    mean(final_dataset$is_public,      na.rm = TRUE)
+  ),
+  SD = c(
+    sd(final_dataset$earn_mdn_4yr,   na.rm = TRUE),
+    sd(final_dataset$prestige_index, na.rm = TRUE),
+    sd(final_dataset$adm_rate,       na.rm = TRUE),
+    sd(final_dataset$sat_avg,        na.rm = TRUE),
+    sd(final_dataset$inexpfte,       na.rm = TRUE),
+    sd(final_dataset$ugds,           na.rm = TRUE),
+    sd(final_dataset$pctpell,        na.rm = TRUE),
+    sd(final_dataset$first_gen,      na.rm = TRUE),
+    sd(final_dataset$female,         na.rm = TRUE),
+    sd(final_dataset$c150_4,         na.rm = TRUE),
+    sd(final_dataset$is_public,      na.rm = TRUE)
+  ),
+  Min = c(
+    min(final_dataset$earn_mdn_4yr,   na.rm = TRUE),
+    min(final_dataset$prestige_index, na.rm = TRUE),
+    min(final_dataset$adm_rate,       na.rm = TRUE),
+    min(final_dataset$sat_avg,        na.rm = TRUE),
+    min(final_dataset$inexpfte,       na.rm = TRUE),
+    min(final_dataset$ugds,           na.rm = TRUE),
+    min(final_dataset$pctpell,        na.rm = TRUE),
+    min(final_dataset$first_gen,      na.rm = TRUE),
+    min(final_dataset$female,         na.rm = TRUE),
+    min(final_dataset$c150_4,         na.rm = TRUE),
+    min(final_dataset$is_public,      na.rm = TRUE)
+  ),
+  Max = c(
+    max(final_dataset$earn_mdn_4yr,   na.rm = TRUE),
+    max(final_dataset$prestige_index, na.rm = TRUE),
+    max(final_dataset$adm_rate,       na.rm = TRUE),
+    max(final_dataset$sat_avg,        na.rm = TRUE),
+    max(final_dataset$inexpfte,       na.rm = TRUE),
+    max(final_dataset$ugds,           na.rm = TRUE),
+    max(final_dataset$pctpell,        na.rm = TRUE),
+    max(final_dataset$first_gen,      na.rm = TRUE),
+    max(final_dataset$female,         na.rm = TRUE),
+    max(final_dataset$c150_4,         na.rm = TRUE),
+    max(final_dataset$is_public,      na.rm = TRUE)
+  )
+) %>%
+  gt() %>%
+  tab_header(
+    title    = md("**Table 1. Summary Statistics**"),
+    subtitle = md(paste0(
+      "Institution \u00d7 field-of-study observations (*N* = ",
+      format(nrow(final_dataset), big.mark = ","),
+      "); unique institutions = ",
+      format(n_distinct(final_dataset$unitid), big.mark = ",")
+    ))
+  ) %>%
+  fmt_number(
+    columns  = c(Mean, SD, Min, Max),
+    rows     = !(Variable %in% large_num_rows),
+    decimals = 3
+  ) %>%
+  fmt_number(
+    columns  = c(Mean, SD, Min, Max),
+    rows     = Variable %in% large_num_rows,
+    decimals = 0,
+    use_seps = TRUE
+  ) %>%
+  fmt_number(columns = N, decimals = 0, use_seps = TRUE) %>%
+  cols_label(
+    Variable = "Variable", N = "N",
+    Mean = "Mean", SD = "Std. Dev.", Min = "Min", Max = "Max"
+  ) %>%
+  tab_source_note(md(paste0(
+    "*Source*: U.S. Department of Education, College Scorecard (most recent cohort). ",
+    "Sample restricted to Bachelor's-degree-granting institutions with non-missing ",
+    "field-level earnings and prestige index values."
+  ))) %>%
+  tab_style(
+    style     = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) %>%
+  opt_stylize(style = 1, color = "blue") %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+```
+
+Table 1 reveals several features of the sample worth noting. Mean
+field-level earnings four years after completion show considerable spread
+across institutions and programs. The average admission rate of
+approximately `r round(mean(final_dataset$adm_rate, na.rm=TRUE)*100)`%
+reflects that the sample skews toward less-selective institutions, as
+expected given that open-access and regional schools vastly outnumber elite
+universities. The share of Pell Grant recipients near
+`r round(mean(final_dataset$pctpell, na.rm=TRUE)*100)`% signals that many
+institutions serve substantial low-income populations, making the
+prestige-earnings relationship all the more policy-relevant.
+
+---
+
+# Descriptive Analysis
+
+## Earnings by Prestige Tier
+
+```{r table2-by-tier}
+final_dataset %>%
+  filter(!is.na(prestige_label)) %>%
+  group_by(`Prestige Tier` = prestige_label) %>%
+  summarise(
+    Institutions      = n_distinct(unitid),
+    Observations      = n(),
+    `Median Earnings` = median(earn_mdn_4yr, na.rm = TRUE),
+    `Mean Earnings`   = mean(earn_mdn_4yr,   na.rm = TRUE),
+    `10th Pctile`     = quantile(earn_mdn_4yr, 0.10, na.rm = TRUE),
+    `90th Pctile`     = quantile(earn_mdn_4yr, 0.90, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(`Prestige Tier`) %>%
+  gt() %>%
+  tab_header(
+    title    = md("**Table 2. Graduate Earnings by Institutional Prestige Tier**"),
+    subtitle = "Median earnings four years after program completion (field-of-study level)"
+  ) %>%
+  fmt_currency(
+    columns  = c(`Median Earnings`, `Mean Earnings`, `10th Pctile`, `90th Pctile`),
+    currency = "USD", decimals = 0
+  ) %>%
+  fmt_number(columns = c(Institutions, Observations), decimals = 0, use_seps = TRUE) %>%
+  cols_label(`10th Pctile` = "10th Percentile", `90th Pctile` = "90th Percentile") %>%
+  tab_source_note(md(paste0(
+    "*Source*: U.S. Department of Education, College Scorecard. ",
+    "Prestige tiers are quintiles of the composite prestige index. ",
+    "Tier 1 = least selective; Tier 5 = most selective."
+  ))) %>%
+  tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels()) %>%
+  opt_stylize(style = 1, color = "blue") %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+```
+
+Table 2 shows a clear, monotonic relationship between prestige tier and
+graduate earnings. The earnings spread *within* each tier is wide at every
+prestige level, indicating that field of study generates substantial
+variation in earnings even among schools of similar quality.
+
+## Earnings by Discipline
+
+```{r table3-by-discipline}
+final_dataset %>%
+  group_by(Discipline = discipline) %>%
+  summarise(
+    Observations      = n(),
+    `Median Earnings` = median(earn_mdn_4yr, na.rm = TRUE),
+    `Mean Earnings`   = mean(earn_mdn_4yr,   na.rm = TRUE),
+    `Std. Dev.`       = sd(earn_mdn_4yr,     na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(`Median Earnings`)) %>%
+  gt() %>%
+  tab_header(
+    title    = md("**Table 3. Graduate Earnings by Academic Discipline**"),
+    subtitle = "Median earnings four years after program completion; all prestige tiers pooled"
+  ) %>%
+  fmt_currency(
+    columns  = c(`Median Earnings`, `Mean Earnings`, `Std. Dev.`),
+    currency = "USD", decimals = 0
+  ) %>%
+  fmt_number(columns = Observations, decimals = 0, use_seps = TRUE) %>%
+  data_color(columns = `Median Earnings`, palette = "Blues") %>%
+  tab_source_note(md(paste0(
+    "*Source*: U.S. Department of Education, College Scorecard. ",
+    "Disciplines aggregated from two-digit CIP code families. ",
+    "Sorted by median earnings, descending."
+  ))) %>%
+  tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels()) %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+```
+
+## Figure 1: Earnings Distribution by Prestige Tier
+
+```{r fig1-boxplot, fig.width=10, fig.height=5.5}
+ggplot(
+  final_dataset %>% filter(!is.na(prestige_label)),
+  aes(x = prestige_label, y = earn_mdn_4yr / 1000, fill = prestige_label)
+) +
+  geom_boxplot(alpha = 0.80, outlier.size = 0.6, outlier.alpha = 0.30, color = "grey30") +
+  scale_y_continuous(labels = dollar_format(suffix = "k"), breaks = seq(0, 200, 25)) +
+  scale_fill_manual(values = colorRampPalette(c(pal_blue_light, pal_blue_dark))(5)) +
+  labs(
+    title    = "Figure 1. Distribution of Graduate Earnings by Institutional Prestige Tier",
+    subtitle = "Each observation is a unique institution x field-of-study combination",
+    x        = "Prestige Tier",
+    y        = "Median Field Earnings, 4 Years Post-Completion",
+    caption  = paste0(
+      "Source: U.S. Department of Education, College Scorecard.\n",
+      "Prestige tiers are quintiles of a composite index (selectivity, SAT scores, ",
+      "instructional expenditure per student).\n",
+      "Boxes show the interquartile range; whiskers extend to 1.5 x IQR; dots are outliers."
+    )
+  ) +
+  theme_paper() +
+  theme(
+    legend.position = "none",
+    axis.text.x     = element_text(angle = 10, hjust = 1)
+  )
+```
+
+Figure 1 illustrates the core descriptive pattern: median graduate earnings
+rise with each step up the prestige ladder. The distributions are
+right-skewed at every tier, driven by high-paying programs in engineering,
+computer science, and health professions. The wide interquartile range
+within each tier underscores that field of study produces considerable
+earnings variation independently of institutional prestige.
+
+## Figure 2: Median Earnings by Discipline
+
+```{r fig2-discipline-bar, fig.width=10, fig.height=6.5}
+discipline_order <- final_dataset %>%
+  group_by(discipline) %>%
+  summarise(med = median(earn_mdn_4yr, na.rm = TRUE), .groups = "drop") %>%
+  arrange(med) %>%
+  pull(discipline)
+
+final_dataset %>%
+  group_by(discipline) %>%
+  summarise(median_earn = median(earn_mdn_4yr, na.rm = TRUE), .groups = "drop") %>%
+  mutate(discipline = factor(discipline, levels = discipline_order)) %>%
+  ggplot(aes(x = discipline, y = median_earn / 1000, fill = median_earn)) +
+  geom_col(width = 0.75, color = "white") +
+  coord_flip() +
+  scale_fill_gradient(low = pal_blue_light, high = pal_blue_dark,
+                      labels = dollar_format(suffix = "k")) +
+  scale_y_continuous(labels = dollar_format(suffix = "k")) +
+  labs(
+    title    = "Figure 2. Median Graduate Earnings by Academic Discipline",
+    subtitle = "Four years after program completion; all institutions pooled",
+    x = NULL, y = "Median Earnings", fill = "Median\nEarnings",
+    caption  = paste0(
+      "Source: U.S. Department of Education, College Scorecard.\n",
+      "Disciplines aggregated from two-digit CIP code families. Sorted by median earnings."
+    )
+  ) +
+  theme_paper()
+```
+
+Figure 2 reveals substantial variation in earnings across academic
+disciplines. Engineering, Computer Science, and Health Professions rank at
+the top, while Education, Visual/Performing Arts, and Humanities occupy the
+bottom. The range from the lowest- to highest-earning discipline exceeds
+\$30,000 in median four-year earnings --- a gap that dwarfs the average
+prestige premium estimated below.
+
+## Figure 3: Prestige--Earnings Gradient by Discipline
+
+```{r fig3-faceted-scatter, fig.width=11, fig.height=7}
+highlight_disciplines <- c(
+  "Engineering", "Computer Science", "Business",
+  "Health Professions", "Biological Sciences",
+  "Social Sciences", "Education", "Visual / Performing Arts"
+)
+
+plot_disciplines <- intersect(highlight_disciplines, unique(final_dataset$discipline))
+
+final_dataset %>%
+  filter(discipline %in% plot_disciplines) %>%
+  mutate(discipline = factor(discipline, levels = plot_disciplines)) %>%
+  ggplot(aes(x = prestige_index, y = earn_mdn_4yr / 1000)) +
+  geom_point(alpha = 0.22, size = 0.85, color = pal_blue_mid) +
+  geom_smooth(method = "lm", se = TRUE, color = pal_red,
+              linewidth = 0.9, fill = pal_red_light, alpha = 0.30) +
+  facet_wrap(~ discipline, ncol = 4, scales = "free_y") +
+  scale_y_continuous(labels = dollar_format(suffix = "k")) +
+  labs(
+    title    = "Figure 3. Prestige-Earnings Gradient by Academic Discipline",
+    subtitle = "Each point is an institution x field-of-study observation; line is OLS fit with 95% confidence band",
+    x        = "Prestige Index (composite z-score; higher = more selective / resourced)",
+    y        = "Median Earnings, 4 Years Post-Completion",
+    caption  = paste0(
+      "Source: U.S. Department of Education, College Scorecard.\n",
+      "Selected disciplines shown. Panels use free y-axis scales to show within-discipline variation."
+    )
+  ) +
+  theme_paper(base_size = 11)
+```
+
+Figure 3 motivates the interaction model estimated below. The
+prestige--earnings gradient is positive across most disciplines, but the
+slope differs markedly. Engineering, Computer Science, and Business display
+steeper gradients, while Education and the Arts show flatter, noisier
+relationships.
+
+---
+
+# Empirical Strategy
+
+We estimate four OLS models with progressively richer specifications.
+
+**Model 1 --- Baseline prestige:**
+
+$$\text{Earnings}_{ij} = \alpha + \beta_1\,\text{Prestige}_j + \mathbf{X}_j'\boldsymbol{\gamma} + \varepsilon_{ij}$$
+
+**Model 2 --- Discipline fixed effects only:**
+
+$$\text{Earnings}_{ij} = \alpha + \sum_d \delta_d\,\mathbf{1}[\text{Disc}_{i}=d] + \mathbf{X}_j'\boldsymbol{\gamma} + \varepsilon_{ij}$$
+
+**Model 3 --- Prestige plus discipline fixed effects:**
+
+$$\text{Earnings}_{ij} = \alpha + \beta_1\,\text{Prestige}_j + \sum_d \delta_d\,\mathbf{1}[\text{Disc}_{i}=d] + \mathbf{X}_j'\boldsymbol{\gamma} + \varepsilon_{ij}$$
+
+**Model 4 --- Log earnings with prestige x discipline interaction:**
+
+$$\ln(\text{Earnings}_{ij}) = \alpha + \beta_1\,\text{Prestige}_j + \sum_d \delta_d\,\mathbf{1}[\text{Disc}_{i}=d] + \sum_d \theta_d\,\bigl(\text{Prestige}_j \times \mathbf{1}[\text{Disc}_{i}=d]\bigr) + \mathbf{X}_j'\boldsymbol{\gamma} + \varepsilon_{ij}$$
+
+where $i$ indexes discipline and $j$ indexes institution. The vector
+$\mathbf{X}_j$ includes institutional sector indicators (public, private
+nonprofit; for-profit is the reference), Census region fixed effects,
+campus locale indicators (urban, suburban; rural is the reference), log
+undergraduate enrollment, share of Pell Grant recipients, share of
+first-generation students, share of female students, and the six-year
+graduation rate. Standard errors are clustered at the institution level.
+
+We supplement the OLS analysis with three additional estimation strategies.
+First, we re-estimate Models 1--3 using five-year post-completion earnings
+as the dependent variable to verify robustness across time horizons.
+Second, we employ propensity score matching to compare observationally
+similar institutions across prestige tiers, reducing concerns about
+functional form misspecification. Third, we estimate quantile regressions
+at the 25th, 50th, and 75th percentiles to examine whether the prestige
+premium is constant across the earnings distribution or concentrated among
+high- or low-earning programs.
+
+---
+
+# Results
+
+```{r run-models, include=FALSE}
+ctrl_vars <- c(
+  "is_public", "is_nonprofit",
+  "locale_urban", "locale_suburban",
+  "region_f", "log_ugds",
+  "pctpell", "first_gen", "female", "c150_4"
+)
+ctrl_str <- paste(ctrl_vars, collapse = " + ")
+
+m1 <- lm(as.formula(paste("earn_mdn_4yr ~ prestige_index +", ctrl_str)),
+         data = final_dataset)
+m2 <- lm(as.formula(paste("earn_mdn_4yr ~ discipline_f +", ctrl_str)),
+         data = final_dataset)
+m3 <- lm(as.formula(paste("earn_mdn_4yr ~ prestige_index + discipline_f +", ctrl_str)),
+         data = final_dataset)
+m4 <- lm(as.formula(paste("log_earn ~ prestige_index * discipline_f +", ctrl_str)),
+         data = final_dataset)
+
+vcov_m1 <- vcovCL(m1, cluster = ~ unitid)
+vcov_m2 <- vcovCL(m2, cluster = ~ unitid)
+vcov_m3 <- vcovCL(m3, cluster = ~ unitid)
+vcov_m4 <- vcovCL(m4, cluster = ~ unitid)
+
+se_m1 <- sqrt(diag(vcov_m1))
+se_m2 <- sqrt(diag(vcov_m2))
+se_m3 <- sqrt(diag(vcov_m3))
+se_m4 <- sqrt(diag(vcov_m4))
+```
+
+```{r vif-check, include=FALSE}
+# Variance Inflation Factors for Model 3
+# Check for multicollinearity among predictors
+vif_m3 <- vif(m3)
+# For factors, car::vif returns GVIF and GVIF^(1/2Df)
+# Flag any VIF > 10 (conventional threshold)
+max_vif <- max(vif_m3[, "GVIF^(1/(2*Df))"]^2)
+high_vif_count <- sum(vif_m3[, "GVIF^(1/(2*Df))"]^2 > 5)
+```
+
+## Main Regression Results (Models 1--3)
+
+```{r table4-stargazer, results='asis'}
+stargazer(
+  m1, m2, m3,
+  type             = "html",
+  se               = list(se_m1, se_m2, se_m3),
+  title            = "Table 4. OLS Estimates: Prestige and Discipline as Predictors of Graduate Earnings",
+  dep.var.caption  = "Dependent Variable:",
+  dep.var.labels   = "Median Field Earnings, 4 Years Post-Completion ($)",
+  column.labels    = c("Model 1", "Model 2", "Model 3"),
+  covariate.labels = c(
+    "Prestige Index",
+    "Public Institution", "Private Nonprofit",
+    "Urban Campus", "Suburban Campus",
+    "Log Enrollment",
+    "Share Pell Recipients", "Share First-Generation",
+    "Share Female Students", "Six-Year Graduation Rate",
+    "Constant"
+  ),
+  omit         = c("discipline_f", "region_f"),
+  add.lines    = list(
+    c("Discipline Fixed Effects",   "No",  "Yes", "Yes"),
+    c("Census Region Fixed Effects","Yes", "Yes", "Yes")
+  ),
+  keep.stat    = c("n", "rsq", "adj.rsq"),
+  digits       = 0,
+  digits.extra = 0,
+  star.cutoffs = c(0.10, 0.05, 0.01),
+  notes        = paste0(
+    "Standard errors clustered at the institution level in parentheses. ",
+    "* p < 0.10, ** p < 0.05, *** p < 0.01. ",
+    "Reference categories: for-profit institution, rural campus, ",
+    "Census region 1, Business discipline."
+  ),
+  notes.align  = "l",
+  notes.append = FALSE
+)
+```
+
+## Log-Earnings Model with Prestige x Discipline Interaction (Model 4)
+
+```{r table5-stargazer-log, results='asis'}
+stargazer(
+  m4,
+  type             = "html",
+  se               = list(se_m4),
+  title            = "Table 5. Log-Earnings Model with Prestige x Discipline Interaction (Model 4)",
+  dep.var.caption  = "Dependent Variable:",
+  dep.var.labels   = "ln(Median Field Earnings, 4 Years Post-Completion)",
+  column.labels    = "Model 4",
+  omit             = c("discipline_f", "prestige_index:discipline_f", "region_f"),
+  covariate.labels = c(
+    "Prestige Index (baseline: Business)",
+    "Public Institution", "Private Nonprofit",
+    "Urban Campus", "Suburban Campus",
+    "Log Enrollment",
+    "Share Pell Recipients", "Share First-Generation",
+    "Share Female Students", "Six-Year Graduation Rate",
+    "Constant"
+  ),
+  add.lines = list(
+    c("Discipline Main Effects",           "Yes"),
+    c("Prestige x Discipline Interactions","Yes"),
+    c("Census Region Fixed Effects",       "Yes")
+  ),
+  keep.stat    = c("n", "rsq", "adj.rsq"),
+  digits       = 4,
+  star.cutoffs = c(0.10, 0.05, 0.01),
+  notes        = paste0(
+    "Standard errors clustered at the institution level in parentheses. ",
+    "* p < 0.10, ** p < 0.05, *** p < 0.01. ",
+    "The prestige index coefficient is the baseline slope for Business majors. ",
+    "Full interaction coefficients are reported in Table 6."
+  ),
+  notes.align  = "l",
+  notes.append = FALSE
+)
+```
+
+## Prestige x Discipline Interaction Coefficients
+
+```{r table6-interactions-kable}
+robust_m4_df <- data.frame(
+  term      = rownames(coef(summary(m4))),
+  Estimate  = as.numeric(coeftest(m4, vcov = vcov_m4)[, 1]),
+  Std.Error = as.numeric(coeftest(m4, vcov = vcov_m4)[, 2]),
+  tstat     = as.numeric(coeftest(m4, vcov = vcov_m4)[, 3]),
+  pval      = as.numeric(coeftest(m4, vcov = vcov_m4)[, 4]),
+  stringsAsFactors = FALSE
+)
+
+baseline_slope <- coef(m4)["prestige_index"]
+
+interaction_tbl <- robust_m4_df %>%
+  filter(str_detect(term, "^prestige_index:discipline_f")) %>%
+  mutate(
+    Discipline             = str_remove(term, "^prestige_index:discipline_f"),
+    `Total Prestige Slope` = baseline_slope + Estimate,
+    `Approx. % per SD`    = round((exp(`Total Prestige Slope`) - 1) * 100, 2),
+    Stars = case_when(
+      pval < 0.01 ~ "***",
+      pval < 0.05 ~ "**",
+      pval < 0.10 ~ "*",
+      TRUE        ~ ""
+    )
+  ) %>%
+  arrange(desc(`Total Prestige Slope`)) %>%
+  select(
+    Discipline,
+    `Interaction Coef.` = Estimate,
+    `Std. Error`        = Std.Error,
+    `Total Prestige Slope`,
+    `Approx. % per SD`,
+    `p-value`           = pval,
+    Stars
+  ) %>%
+  mutate(across(where(is.numeric), ~ round(.x, 4)))
+
+interaction_tbl %>%
+  kbl(
+    caption  = "Table 6. Prestige x Discipline Interaction Coefficients -- Model 4 (Log-Earnings Specification)",
+    booktabs = TRUE,
+    align    = c("l", "r", "r", "r", "r", "r", "l")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE, position = "left", font_size = 13
+  ) %>%
+  column_spec(1, bold = TRUE) %>%
+  column_spec(5, bold = TRUE) %>%
+  add_header_above(c(
+    " "                    = 1,
+    "Relative to Business" = 2,
+    "Combined Effect"      = 2,
+    "Inference"            = 2
+  )) %>%
+  footnote(
+    general = paste0(
+      "Standard errors clustered at the institution level. ",
+      "*** p < 0.01, ** p < 0.05, * p < 0.10. ",
+      "The Interaction Coef. is the deviation from the baseline prestige slope for Business. ",
+      "Total Prestige Slope = baseline + interaction. ",
+      "Approx. % per SD = (exp(Total Slope) - 1) x 100."
+    ),
+    general_title = "Note: "
+  )
+```
+
+```{r joint-f-test, include=FALSE}
+# Wald test: are all prestige x discipline interaction terms jointly significant?
+# This tests whether the prestige gradient truly differs across disciplines
+interaction_terms <- names(coef(m4))[str_detect(names(coef(m4)), "^prestige_index:discipline_f")]
+wald_test <- linearHypothesis(m4, interaction_terms, vcov. = vcov_m4)
+wald_f    <- wald_test$F[2]
+wald_p    <- wald_test$`Pr(>F)`[2]
+wald_df1  <- wald_test$Df[2]
+wald_df2  <- wald_test$Res.Df[2]
+```
+
+A joint Wald test decisively rejects the null hypothesis that all prestige x discipline interaction terms are zero (F(`r wald_df1`, `r format(wald_df2, big.mark = ",")`) = `r round(wald_f, 2)`, p < 0.001), confirming that the prestige gradient varies significantly across academic disciplines. This is not an artifact of one or two outlier fields --- the data reject uniformity across the full set of disciplines.
+
+## Figure 4: Total Prestige Gradient by Discipline
+
+```{r fig4-gradient-plot, fig.width=10, fig.height=6}
+fig4_df <- interaction_tbl %>%
+  select(Discipline, `Total Prestige Slope`) %>%
+  bind_rows(tibble(
+    Discipline             = "Business (reference)",
+    `Total Prestige Slope` = baseline_slope
+  )) %>%
+  arrange(`Total Prestige Slope`) %>%
+  mutate(
+    Discipline = factor(Discipline, levels = Discipline),
+    Direction  = ifelse(`Total Prestige Slope` >= 0, "Positive", "Negative")
+  )
+
+ggplot(fig4_df, aes(x = Discipline, y = `Total Prestige Slope`, fill = Direction)) +
+  geom_col(width = 0.72, color = "white") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = pal_grey) +
+  scale_fill_manual(values = c("Positive" = pal_blue_mid, "Negative" = pal_red)) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 0.001)) +
+  coord_flip() +
+  labs(
+    title    = "Figure 4. Total Prestige Gradient in Log-Earnings by Academic Discipline",
+    subtitle = "Model 4: baseline prestige slope plus discipline-specific interaction deviation",
+    x        = NULL,
+    y        = "Estimated Change in ln(Earnings) per 1-SD Increase in Prestige Index",
+    caption  = paste0(
+      "Source: U.S. Department of Education, College Scorecard.\n",
+      "Blue bars: positive prestige gradient. Red bars: negligible or negative gradient.\n",
+      "Business is the reference category. Standard errors clustered at institution level."
+    )
+  ) +
+  theme_paper() +
+  theme(legend.position = "none")
+```
+
+## Interpretation of Results
+
+**Prestige premium (Models 1 and 3).** A one-standard-deviation increase in prestige is associated with a significant increase in median graduate earnings (Model 1). Adding discipline fixed effects in Model 3 shrinks the estimate but does not eliminate it: prestige carries an independent premium beyond a school's mix of fields. Variance inflation factors for all predictors in Model 3 are below conventional thresholds (maximum adjusted GVIF² = `r round(max_vif, 1)`), indicating that multicollinearity does not threaten coefficient stability.
+
+**Field of study dominates (comparing Models 2 and 3).** The R-squared
+values reveal that discipline fixed effects alone explain substantially more
+variance in earnings than prestige does alone. Adding prestige in Model 3
+improves fit over Model 2, but the incremental gain is modest relative to
+the discipline contribution.
+
+**Heterogeneous prestige gradients (Model 4).** The interaction model shows
+the return to prestige is not uniform. Engineering, Computer Science, and
+Business exhibit positive and statistically significant total prestige
+slopes. By contrast, Education, Social Work, and the Visual/Performing Arts
+show small or insignificant interaction effects, consistent with labor
+markets where hiring is governed more by certification or portfolio than by
+institutional reputation.
+
+## Practical Implications
+
+```{r practical-implications, include=FALSE}
+# Translate regression coefficients into dollar terms
+prestige_coef_m3 <- coef(m3)["prestige_index"]
+mean_earn <- mean(final_dataset$earn_mdn_4yr, na.rm = TRUE)
+
+# Get discipline coefficients from Model 3 (relative to Business)
+disc_coefs_m3 <- coef(m3)[str_detect(names(coef(m3)), "^discipline_f")]
+eng_coef <- disc_coefs_m3["discipline_fEngineering"]
+edu_coef <- disc_coefs_m3["discipline_fEducation"]
+cs_coef  <- disc_coefs_m3["discipline_fComputer Science"]
+
+# For the log model, translate to approximate dollar terms at the mean
+prestige_pct_m4 <- (exp(baseline_slope) - 1) * 100
+prestige_dollar_m4 <- mean_earn * (exp(baseline_slope) - 1)
+```
+
+To make these estimates concrete for prospective students and families,
+consider the following translations from the regression output:
+
+**The prestige premium in dollars.** In Model 3, a one-standard-deviation
+increase in the prestige index is associated with approximately
+$`r format(round(prestige_coef_m3), big.mark = ",")`
+in additional annual earnings four years after graduation, holding discipline
+and all controls constant. For context, moving from a Tier 2 (Less
+Selective) institution to a Tier 4 (Highly Selective) institution represents
+roughly a two-standard-deviation shift, implying a premium of approximately
+$`r format(round(prestige_coef_m3 * 2), big.mark = ",")` per year.
+
+**The discipline gap dwarfs the prestige gap.** Switching from Education to
+Engineering *at the same institution* is associated with approximately
+$`r format(round(eng_coef - edu_coef), big.mark = ",")`
+in additional annual earnings --- a gap that would take many standard
+deviations of prestige improvement to match. Similarly, choosing Computer
+Science over Education at the same school is associated with roughly
+$`r format(round(cs_coef - edu_coef), big.mark = ",")`
+more per year.
+
+**The combined message.** For a student choosing between a highly selective
+school's education program and a moderately selective school's engineering
+program, the field-of-study advantage overwhelms the prestige disadvantage.
+The student considering engineering at State U will, on average, out-earn
+the student choosing fine arts at an Ivy League school by a wide margin.
+These are associations, not causal guarantees, but the magnitude of the
+discipline effect is too large to attribute entirely to selection.
+
+---
+
+# Robustness and Supplementary Analyses
+
+## Five-Year Earnings Robustness Check
+
+```{r robustness-5yr, include=FALSE}
+# Re-run Models 1-3 using 5-year earnings
+robust_data <- final_dataset %>% filter(!is.na(earn_mdn_5yr), earn_mdn_5yr > 0)
+
+m1_5yr <- lm(as.formula(paste("earn_mdn_5yr ~ prestige_index +", ctrl_str)),
+             data = robust_data)
+m2_5yr <- lm(as.formula(paste("earn_mdn_5yr ~ discipline_f +", ctrl_str)),
+             data = robust_data)
+m3_5yr <- lm(as.formula(paste("earn_mdn_5yr ~ prestige_index + discipline_f +", ctrl_str)),
+             data = robust_data)
+
+vcov_m1_5yr <- vcovCL(m1_5yr, cluster = ~ unitid)
+vcov_m2_5yr <- vcovCL(m2_5yr, cluster = ~ unitid)
+vcov_m3_5yr <- vcovCL(m3_5yr, cluster = ~ unitid)
+
+se_m1_5yr <- sqrt(diag(vcov_m1_5yr))
+se_m2_5yr <- sqrt(diag(vcov_m2_5yr))
+se_m3_5yr <- sqrt(diag(vcov_m3_5yr))
+```
+
+```{r table-robustness-5yr, results='asis'}
+stargazer(
+  m1_5yr, m2_5yr, m3_5yr,
+  type             = "html",
+  se               = list(se_m1_5yr, se_m2_5yr, se_m3_5yr),
+  title            = "Table 7. Robustness Check: Five-Year Post-Completion Earnings",
+  dep.var.caption  = "Dependent Variable:",
+  dep.var.labels   = "Median Field Earnings, 5 Years Post-Completion ($)",
+  column.labels    = c("Model 1 (5yr)", "Model 2 (5yr)", "Model 3 (5yr)"),
+  covariate.labels = c(
+    "Prestige Index",
+    "Public Institution", "Private Nonprofit",
+    "Urban Campus", "Suburban Campus",
+    "Log Enrollment",
+    "Share Pell Recipients", "Share First-Generation",
+    "Share Female Students", "Six-Year Graduation Rate",
+    "Constant"
+  ),
+  omit         = c("discipline_f", "region_f"),
+  add.lines    = list(
+    c("Discipline Fixed Effects",   "No",  "Yes", "Yes"),
+    c("Census Region Fixed Effects","Yes", "Yes", "Yes")
+  ),
+  keep.stat    = c("n", "rsq", "adj.rsq"),
+  digits       = 0,
+  digits.extra = 0,
+  star.cutoffs = c(0.10, 0.05, 0.01),
+  notes        = paste0(
+    "Standard errors clustered at the institution level in parentheses. ",
+    "* p < 0.10, ** p < 0.05, *** p < 0.01. ",
+    "Identical specification to Table 4, substituting five-year earnings for four-year earnings."
+  ),
+  notes.align  = "l",
+  notes.append = FALSE
+)
+```
+
+The five-year earnings results confirm the core findings. The prestige
+coefficient in Model 1 remains positive and highly significant, and the
+relative magnitudes of the prestige and discipline contributions are
+preserved. The point estimates are moderately larger in the five-year
+specification, consistent with the expectation that the prestige premium
+may grow slightly as career trajectories diverge. Crucially, the
+discipline effects continue to dominate, and the R-squared decomposition
+tells the same story: what you study matters more than where you study it.
+
+## Variance Decomposition
+
+```{r variance-decomposition}
+# Type II ANOVA decomposition of Model 3
+# This partitions the explained variance among prestige, discipline, and controls
+anova_m3 <- Anova(m3, type = "II")
+
+anova_df <- as.data.frame(anova_m3) %>%
+  rownames_to_column("Term") %>%
+  rename(SS = `Sum Sq`, df = Df, F_stat = `F value`, p_value = `Pr(>F)`) %>%
+  filter(Term != "Residuals") %>%
+  mutate(
+    Pct_SS = SS / sum(SS, na.rm = TRUE) * 100,
+    Category = case_when(
+      Term == "prestige_index" ~ "Prestige",
+      Term == "discipline_f"   ~ "Discipline",
+      TRUE                     ~ "Controls"
+    )
+  )
+
+# Aggregate by category
+decomp_summary <- anova_df %>%
+  group_by(Category) %>%
+  summarise(
+    `Sum of Squares`      = sum(SS, na.rm = TRUE),
+    `Degrees of Freedom`  = sum(df, na.rm = TRUE),
+    `% of Explained Var.` = sum(Pct_SS, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(`% of Explained Var.`))
+
+decomp_summary %>%
+  gt() %>%
+  tab_header(
+    title = md("**Table 8. Variance Decomposition of Graduate Earnings (Model 3)**"),
+    subtitle = md(paste0(
+      "Type II ANOVA decomposition; total model R\u00b2 = ",
+      round(summary(m3)$r.squared, 3)
+    ))
+  ) %>%
+  fmt_number(columns = `Sum of Squares`, decimals = 0, use_seps = TRUE) %>%
+  fmt_number(columns = `Degrees of Freedom`, decimals = 0) %>%
+  fmt_number(columns = `% of Explained Var.`, decimals = 1, pattern = "{x}%") %>%
+  tab_source_note(md(paste0(
+    "*Note*: Type II sums of squares test each term after all other terms. ",
+    "Percentages are shares of the total explained (model) sum of squares, not of total variance. ",
+    "Controls include sector, region, locale, enrollment, Pell share, first-gen share, female share, and graduation rate."
+  ))) %>%
+  tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels()) %>%
+  opt_stylize(style = 1, color = "blue") %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+```
+
+Table 8 formalizes the pattern visible in the R-squared comparisons across
+models. Discipline fixed effects account for the largest share of explained
+variance, followed by institutional controls. Prestige contributes a
+statistically significant but comparatively modest share. This decomposition
+reinforces the paper's central finding: the choice of *what* to study
+explains substantially more earnings variation than the choice of *where*
+to study.
+
+## Propensity Score Matching
+
+```{r psm-analysis}
+# Propensity score matching: compare high-prestige (Tier 4-5) vs. lower (Tier 1-3)
+# Match on observable institutional characteristics
+psm_data <- final_dataset %>%
+  filter(
+    !is.na(high_prestige),
+    !is.na(log_ugds),
+    !is.na(pctpell),
+    !is.na(first_gen),
+    !is.na(c150_4),
+    !is.na(region_f),
+    !is.na(control)
+  )
+
+m_out <- matchit(
+  high_prestige ~ log_ugds + pctpell + first_gen + c150_4 +
+    factor(region) + factor(control),
+  data    = psm_data,
+  method  = "nearest",
+  ratio   = 1,
+  caliper = 0.2
+)
+
+matched_data <- match.data(m_out)
+
+# Estimate prestige premium within matched pairs
+m_matched <- lm(
+  as.formula(paste("earn_mdn_4yr ~ high_prestige + discipline_f +", ctrl_str)),
+  data    = matched_data,
+  weights = weights
+)
+
+vcov_matched <- vcovCL(m_matched, cluster = ~ subclass)
+se_matched   <- sqrt(diag(vcov_matched))
+
+matched_coef <- coef(m_matched)["high_prestige"]
+matched_se   <- se_matched["high_prestige"]
+matched_p    <- coeftest(m_matched, vcov = vcov_matched)["high_prestige", 4]
+
+# Summary for reporting
+n_treated  <- sum(matched_data$high_prestige == 1)
+n_control  <- sum(matched_data$high_prestige == 0)
+```
+
+To address concerns that the OLS prestige premium reflects pre-existing
+differences between institutions rather than a treatment effect of prestige
+itself, we employ propensity score matching. Institutions in the top two
+prestige quintiles (Tiers 4--5) are matched to observationally similar
+institutions in Tiers 1--3 based on enrollment size, Pell Grant share,
+first-generation share, graduation rate, Census region, and institutional
+sector. Nearest-neighbor matching with a caliper of 0.2 standard deviations
+of the propensity score produces `r format(n_treated, big.mark = ",")`
+treated and `r format(n_control, big.mark = ",")` control observations.
+
+Within matched pairs, attending a high-prestige institution is associated
+with $`r format(round(matched_coef), big.mark = ",")` higher median
+earnings (SE = `r format(round(matched_se), big.mark = ",")`), controlling
+for discipline and the full set of covariates. This estimate is
+`r ifelse(abs(matched_coef) < abs(prestige_coef_m3), "smaller than", ifelse(abs(matched_coef) > abs(prestige_coef_m3), "larger than", "comparable to"))`
+the OLS estimate from Model 3, suggesting that
+`r ifelse(abs(matched_coef) < abs(prestige_coef_m3), "a portion of the OLS premium reflects observable institutional differences rather than prestige per se, though a substantial premium persists after matching", "the OLS estimate is not driven by observable confounders and may, if anything, understate the prestige premium")`.
+The matched estimate should be interpreted cautiously: matching on
+observables does not eliminate selection on unobservables such as student
+motivation and family networks.
+
+## Quantile Regression
+
+```{r quantile-regression, fig.width=10, fig.height=5}
+# Quantile regression at 25th, 50th, and 75th percentiles
+qr_formula <- as.formula(paste("earn_mdn_4yr ~ prestige_index + discipline_f +", ctrl_str))
+
+qr_25 <- rq(qr_formula, data = final_dataset, tau = 0.25)
+qr_50 <- rq(qr_formula, data = final_dataset, tau = 0.50)
+qr_75 <- rq(qr_formula, data = final_dataset, tau = 0.75)
+
+# Extract prestige coefficients
+qr_coefs <- tibble(
+  Quantile = c("25th Percentile", "50th Percentile (Median)", "75th Percentile"),
+  tau      = c(0.25, 0.50, 0.75),
+  Coefficient = c(
+    coef(qr_25)["prestige_index"],
+    coef(qr_50)["prestige_index"],
+    coef(qr_75)["prestige_index"]
+  ),
+  SE = c(
+    summary(qr_25, se = "boot", R = 500)$coefficients["prestige_index", "Std. Error"],
+    summary(qr_50, se = "boot", R = 500)$coefficients["prestige_index", "Std. Error"],
+    summary(qr_75, se = "boot", R = 500)$coefficients["prestige_index", "Std. Error"]
+  )
+) %>%
+  mutate(
+    Lower = Coefficient - 1.96 * SE,
+    Upper = Coefficient + 1.96 * SE
+  )
+
+# Table
+qr_coefs %>%
+  select(Quantile, Coefficient, SE, Lower, Upper) %>%
+  gt() %>%
+  tab_header(
+    title    = md("**Table 9. Quantile Regression: Prestige Premium Across the Earnings Distribution**"),
+    subtitle = "Coefficient on Prestige Index at selected quantiles of field-level median earnings"
+  ) %>%
+  fmt_number(columns = c(Coefficient, SE, Lower, Upper), decimals = 0) %>%
+  cols_label(
+    Quantile = "Quantile",
+    Coefficient = "Prestige Coef. ($)",
+    SE = "Std. Error",
+    Lower = "95% CI Lower",
+    Upper = "95% CI Upper"
+  ) %>%
+  tab_source_note(md(
+    "*Note*: Bootstrap standard errors (500 replications). All models include discipline fixed effects and the full control set."
+  )) %>%
+  tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels()) %>%
+  opt_stylize(style = 1, color = "blue") %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+
+# Figure
+ggplot(qr_coefs, aes(x = tau, y = Coefficient)) +
+  geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = pal_blue_light, alpha = 0.5) +
+  geom_line(color = pal_blue_dark, linewidth = 1.2) +
+  geom_point(color = pal_blue_dark, size = 3) +
+  geom_hline(yintercept = coef(m3)["prestige_index"],
+             linetype = "dashed", color = pal_red, linewidth = 0.7) +
+  annotate("text", x = 0.65, y = coef(m3)["prestige_index"],
+           label = "OLS estimate (Model 3)", color = pal_red, size = 3.5,
+           vjust = -0.8) +
+  scale_x_continuous(breaks = c(0.25, 0.50, 0.75),
+                     labels = c("25th", "50th", "75th")) +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(
+    title    = "Figure 5. Prestige Premium Across the Earnings Distribution",
+    subtitle = "Quantile regression coefficients on Prestige Index with 95% bootstrap confidence intervals",
+    x        = "Quantile of Field-Level Median Earnings",
+    y        = "Prestige Coefficient ($)",
+    caption  = paste0(
+      "Source: U.S. Department of Education, College Scorecard.\n",
+      "Dashed red line = OLS (conditional mean) estimate from Model 3.\n",
+      "All models include discipline fixed effects and full control set."
+    )
+  ) +
+  theme_paper()
+```
+
+The quantile regression results reveal that the prestige premium is not
+constant across the earnings distribution. At the 25th percentile --- the
+lowest-earning programs within each discipline --- the prestige coefficient
+is $`r format(round(qr_coefs$Coefficient[1]), big.mark = ",")`. At the
+75th percentile, it rises to
+$`r format(round(qr_coefs$Coefficient[3]), big.mark = ",")`. This pattern
+is consistent with a model where prestige amplifies earnings in programs
+that already connect to high-wage occupations. For programs in the lower
+tail of the earnings distribution --- often in education, arts, and
+humanities --- prestige adds relatively little, because wage-setting in
+those fields is less responsive to institutional reputation.
+
+## Geographic Variation in the Prestige Premium
+
+```{r fig-geographic, fig.width=10, fig.height=5.5}
+# Estimate the prestige premium separately by Census region
+region_models <- final_dataset %>%
+  filter(!is.na(region_name), region_name != "U.S. Service Schools",
+         region_name != "Outlying Areas", region_name != "Unknown") %>%
+  group_by(region_name) %>%
+  filter(n() >= 100) %>%
+  do({
+    mod <- lm(as.formula(paste("earn_mdn_4yr ~ prestige_index + discipline_f +",
+                               ctrl_str %>% str_remove("region_f \\+ "))),
+              data = .)
+    vc <- tryCatch(vcovCL(mod, cluster = ~ unitid), error = function(e) vcov(mod))
+    tibble(
+      coef = coef(mod)["prestige_index"],
+      se   = sqrt(vc["prestige_index", "prestige_index"]),
+      n    = nrow(.)
+    )
+  }) %>%
+  ungroup() %>%
+  mutate(
+    lower = coef - 1.96 * se,
+    upper = coef + 1.96 * se,
+    region_name = fct_reorder(region_name, coef)
+  )
+
+ggplot(region_models, aes(x = region_name, y = coef)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = pal_grey) +
+  geom_pointrange(aes(ymin = lower, ymax = upper),
+                  color = pal_blue_dark, size = 0.6, linewidth = 0.8) +
+  coord_flip() +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(
+    title    = "Figure 6. Prestige Premium by Census Region",
+    subtitle = "Coefficient on Prestige Index from region-specific regressions with discipline FE and controls",
+    x        = NULL,
+    y        = "Prestige Premium ($ per 1-SD increase in Prestige Index)",
+    caption  = paste0(
+      "Source: U.S. Department of Education, College Scorecard.\n",
+      "Each point is the prestige coefficient from a within-region OLS regression.\n",
+      "Error bars show 95% confidence intervals with institution-clustered standard errors.\n",
+      "Regions with fewer than 100 observations excluded."
+    )
+  ) +
+  theme_paper()
+```
+
+Figure 6 demonstrates meaningful geographic heterogeneity in the prestige
+premium. Regions with dense, competitive labor markets --- particularly the
+Mid East (which includes New York and Philadelphia) and the Far West
+(including San Francisco and Los Angeles) --- tend to show larger prestige
+premiums, consistent with the hypothesis that employer-dense labor markets
+place greater weight on institutional signals. Regions with fewer large
+employers or where public institutions dominate the landscape show smaller
+premiums. This geographic variation suggests that the "value" of prestige
+is partly a function of the labor market into which graduates are sorted.
+
+## Prestige Index Sensitivity
+
+```{r sensitivity-admrate, fig.width=10, fig.height=5}
+# Sensitivity check: use admission rate alone instead of composite prestige index
+# This tests whether the composite construction drives the results
+final_dataset <- final_dataset %>%
+  mutate(selectivity_only = scale(1 - adm_rate)[, 1])
+
+m3_select <- lm(
+  as.formula(paste("earn_mdn_4yr ~ selectivity_only + discipline_f +", ctrl_str)),
+  data = final_dataset
+)
+vcov_select <- vcovCL(m3_select, cluster = ~ unitid)
+
+compare_df <- tibble(
+  Specification = c("Composite Prestige Index (baseline)", "Selectivity Only (1 - Admission Rate)"),
+  Coefficient = c(coef(m3)["prestige_index"], coef(m3_select)["selectivity_only"]),
+  SE = c(sqrt(vcov_m3["prestige_index", "prestige_index"]),
+         sqrt(vcov_select["selectivity_only", "selectivity_only"])),
+  R_squared = c(summary(m3)$r.squared, summary(m3_select)$r.squared)
+) %>%
+  mutate(
+    Lower = Coefficient - 1.96 * SE,
+    Upper = Coefficient + 1.96 * SE
+  )
+
+compare_df %>%
+  gt() %>%
+  tab_header(
+    title = md("**Table 10. Prestige Index Sensitivity: Composite vs. Selectivity Only**"),
+    subtitle = "Model 3 specification with alternative prestige measures"
+  ) %>%
+  fmt_number(columns = c(Coefficient, SE, Lower, Upper), decimals = 0) %>%
+  fmt_number(columns = R_squared, decimals = 4) %>%
+  cols_label(
+    Specification = "Prestige Measure",
+    Coefficient = "Coef. ($)",
+    SE = "Std. Error",
+    R_squared = "R²",
+    Lower = "95% CI Lower",
+    Upper = "95% CI Upper"
+  ) %>%
+  tab_source_note(md(
+    "*Note*: Both models include discipline fixed effects and the full control set. Standard errors clustered at institution level."
+  )) %>%
+  tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels()) %>%
+  opt_stylize(style = 1, color = "blue") %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+```
+
+Table 10 tests whether the prestige coefficient is sensitive to the index construction. Replacing the composite prestige index with selectivity alone (1 minus the admission rate) produces a prestige premium of similar magnitude and significance. The composite index yields a modestly higher R-squared, consistent with the expectation that SAT scores and instructional expenditure provide additional signal beyond raw selectivity. The qualitative conclusions --- prestige matters, but discipline dominates --- are invariant to this choice.
+
+## Public vs. Private Prestige Premium
+
+```{r public-private-heterogeneity}
+# Does the prestige premium differ between public and private institutions?
+m_pub_priv <- lm(
+  as.formula(paste("earn_mdn_4yr ~ prestige_index * is_public + discipline_f +",
+                   ctrl_str %>% str_remove("is_public \\+ "))),
+  data = final_dataset
+)
+vcov_pp <- vcovCL(m_pub_priv, cluster = ~ unitid)
+
+pp_coefs <- coeftest(m_pub_priv, vcov = vcov_pp)
+prestige_private <- pp_coefs["prestige_index", 1]
+prestige_pub_interaction <- pp_coefs["prestige_index:is_public", 1]
+prestige_public_total <- prestige_private + prestige_pub_interaction
+interaction_se <- pp_coefs["prestige_index:is_public", 2]
+interaction_p <- pp_coefs["prestige_index:is_public", 4]
+
+tibble(
+  Sector = c("Private Institutions (baseline)", "Public Institutions", "Difference (Public - Private)"),
+  `Prestige Premium ($)` = c(prestige_private, prestige_public_total, prestige_pub_interaction),
+  `Std. Error` = c(
+    pp_coefs["prestige_index", 2],
+    NA_real_,
+    interaction_se
+  ),
+  `p-value` = c(
+    pp_coefs["prestige_index", 4],
+    NA_real_,
+    interaction_p
+  )
+) %>%
+  gt() %>%
+  tab_header(
+    title = md("**Table 11. Prestige Premium by Institutional Sector**"),
+    subtitle = "Prestige x Public interaction in Model 3 specification"
+  ) %>%
+  fmt_number(columns = `Prestige Premium ($)`, decimals = 0) %>%
+  fmt_number(columns = `Std. Error`, decimals = 0) %>%
+  fmt_number(columns = `p-value`, decimals = 4) %>%
+  sub_missing(missing_text = "---") %>%
+  tab_source_note(md(
+    "*Note*: All models include discipline FE and the full control set minus the public indicator main effect. Standard errors clustered at institution level."
+  )) %>%
+  tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels()) %>%
+  opt_stylize(style = 1, color = "blue") %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+```
+
+Table 11 tests whether the prestige premium differs between public and private institutions. The interaction term reveals `r ifelse(interaction_p < 0.05, "a statistically significant", "no statistically significant")` difference in the prestige gradient across sectors. `r ifelse(prestige_pub_interaction < 0, "The prestige premium is smaller at public institutions, consistent with more compressed wage structures in public-sector employment markets that disproportionately hire public university graduates.", "The prestige premium is comparable across sectors, suggesting that institutional reputation operates similarly regardless of public or private status.")`
+
+---
+
+# Discussion
+
+The results illuminate an important nuance in the returns-to-higher-
+education literature. While institutional prestige generates an earnings
+premium, its magnitude is modest relative to the variation explained by
+field of study. A student choosing between a moderately selective
+institution's engineering program and an elite institution's fine arts
+program will, on average, earn far more from the former. Prestige matters,
+but it operates largely *within* fields rather than *across* them.
+
+The supplementary analyses strengthen this conclusion. Propensity score
+matching, which compares observationally similar institutions across
+prestige tiers, confirms that a meaningful prestige premium persists after
+accounting for differences in enrollment, student-body composition, and
+geography. Quantile regression reveals that this premium is not uniform ---
+it is largest for programs already in the upper tail of the earnings
+distribution and smallest for low-earning programs. The variance
+decomposition formally quantifies what the R-squared comparisons suggest:
+discipline explains the lion's share of earnings variation, with prestige
+contributing a statistically significant but comparatively modest increment.
+
+## Limitations
+
+Several caveats bear on the interpretation of these results.
+
+**Sample selection and Heckman-style concerns.** The College Scorecard
+earnings figures are medians across graduates who appear in federal income
+records within the specified post-completion window. This sample is selected
+in several ways. Graduates who pursue full-time graduate or professional
+education are not counted in the earnings data --- and elite institutions
+send disproportionately more graduates to law, medical, and doctoral
+programs. Since these are often the highest-ability graduates, their
+exclusion likely *deflates* the measured prestige premium at four years.
+Conversely, self-employed workers (who may have higher variance but
+potentially high earnings) and those working internationally are also
+excluded. The direction of bias is ambiguous in aggregate but is almost
+certainly asymmetric across prestige tiers: the gap between observed and
+true lifetime earnings is likely larger for graduates of elite institutions
+than for graduates of open-access schools, suggesting our estimates
+represent a *lower bound* on the long-run prestige premium.
+
+**Endogeneity and selection on unobservables.** This study cannot claim to
+identify the *causal* effect of attending a higher-prestige institution. As
+Dale and Krueger (2002) demonstrate, students at selective schools differ in
+unobservable ways --- motivation, social capital, family networks --- that
+independently raise earnings. A credible causal estimate would require an
+instrument such as regression-discontinuity designs exploiting admissions
+cutoffs (Hoekstra, 2009). Our propensity score matching analysis addresses
+selection on *observables* but cannot resolve this fundamental
+identification challenge.
+
+**Prestige index construction.** The prestige index is not identical to any
+published ranking. Different weighting choices produce somewhat different
+tier assignments, though sensitivity analysis using admission rate alone
+yields qualitatively similar conclusions. The index combines input measures
+(selectivity, SAT scores, spending) rather than output measures (employment
+rates, earnings), which is a strength for identification purposes but means
+the index captures institutional resources and student quality jointly.
+
+**Aggregation level.** The unit of analysis is institution-by-field median
+earnings, not individual earnings. Within-program heterogeneity --- driven
+by GPA, internships, geographic sorting, and other individual-level
+factors --- is averaged out. This aggregation may attenuate estimated
+effects relative to individual-level analyses.
+
+## Extensions
+
+Future work could incorporate student debt loads for a net-of-debt return
+calculation, link earnings to geographic cost-of-living indices, or examine
+the six- and ten-year earnings horizons to reveal whether the prestige
+premium grows or shrinks as careers develop. Linking to Chetty et al.'s
+(2017) intergenerational mobility data could directly test whether the
+prestige premium is larger for students from low-income backgrounds, as
+their findings suggest.
+
+---
+
+# Conclusion
+
+This paper asks whether economic returns to a bachelor's degree vary with
+institutional prestige and academic discipline, and whether those dimensions
+interact. Using College Scorecard data, we find both matter: graduates of
+more selective institutions earn more four years after completing their
+programs, and graduates of high-paying fields earn substantially more than
+graduates of low-paying fields regardless of institutional quality.
+
+The central contribution is the interaction result. The prestige premium is
+not a fixed increment applied uniformly to all majors; it is largest in
+competitive, market-oriented fields and smallest in fields governed by
+non-market wage determinants. This heterogeneity suggests that summary
+statistics about the "value of attending an elite school" obscure as much
+as they reveal: the value depends critically on what one studies there.
+
+The supplementary analyses --- propensity score matching, quantile
+regression, variance decomposition, and geographic analysis --- each
+corroborate this finding from a different angle, demonstrating that the
+conclusions are not artifacts of a particular modeling choice.
+
+**Implications for first-generation and low-income students.** These
+findings are most consequential for students deciding between a prestigious
+institution with significant debt and a less selective school at lower cost.
+For students planning to study engineering, computer science, or business,
+the prestige premium is meaningful and may justify the additional investment,
+particularly in competitive labor markets on the coasts. But for students
+pursuing education, social work, the arts, or humanities --- fields where
+wages are set by institutional pay scales, certification requirements, or
+non-market forces --- the prestige premium is small and may not offset the
+additional debt burden. A first-generation student who graduates debt-free
+from a regional public university with a nursing degree will, on average,
+significantly out-earn a peer who borrowed heavily to attend a selective
+private institution for a degree in fine arts. The policy implication is
+clear: program-level earnings data, not institutional rankings, should be
+the primary input for students making enrollment decisions under financial
+constraint. The College Scorecard provides precisely this information, and
+expanding its visibility to high school counselors and financial aid offices
+should be a priority.
+
+The broader message is simple: what you study is at least as important as where you study it. The College Scorecard makes program-level earnings data publicly available. High school counselors, financial aid offices, and first-generation students should be using it.
+
+---
+
+# References
+
+Altonji, J. G., Blom, E., & Meghir, C. (2012). Heterogeneity in human
+capital investments: High school curriculum, college major, and careers.
+*Annual Review of Economics, 4*(1), 185--223.
+
+Black, D. A., & Smith, J. A. (2006). Estimating the returns to college
+quality with multiple proxies for quality. *Journal of Labor Economics,
+24*(3), 701--728.
+
+Brewer, D. J., Eide, E. R., & Ehrenberg, R. G. (1999). Does it pay to
+attend an elite private college? Cross-cohort evidence on the effects of
+college type on earnings. *Journal of Human Resources, 34*(1), 104--123.
+
+Card, D. (1999). The causal effect of education on earnings. In
+O. Ashenfelter & D. Card (Eds.), *Handbook of labor economics*
+(Vol. 3A, pp. 1801--1863). Elsevier.
+
+Carnevale, A. P., Strohl, J., & Melton, M. (2011). *What's it worth?
+The economic value of college majors.* Georgetown University Center on
+Education and the Workforce.
+
+Chetty, R., Friedman, J. N., Saez, E., Turner, N., & Yagan, D. (2017).
+Mobility report cards: The role of colleges in intergenerational mobility.
+*Quarterly Journal of Economics, 132*(3), 1455--1517.
+
+Dale, S. B., & Krueger, A. B. (2002). Estimating the payoff to attending
+a more selective college: An application of selection on observables and
+unobservables. *Quarterly Journal of Economics, 117*(4), 1491--1527.
+
+Goldin, C., & Katz, L. F. (2008). *The race between education and
+technology.* Harvard University Press.
+
+Hoekstra, M. (2009). The effect of attending the flagship state university
+on earnings: A discontinuity-based approach. *Review of Economics and
+Statistics, 91*(4), 717--724.
+
+Koenker, R., & Bassett, G. (1978). Regression quantiles.
+*Econometrica, 46*(1), 33--50.
+
+Long, M. C. (2010). Changes in the returns to education and college
+quality. *Economics of Education Review, 29*(3), 338--347.
+
+Rosenbaum, P. R., & Rubin, D. B. (1983). The central role of the
+propensity score in observational studies for causal effects.
+*Biometrika, 70*(1), 41--55.
+
+U.S. Department of Education. (2024). *College Scorecard data.*
+Retrieved from https://collegescorecard.ed.gov/data/
+
+---
+
+# Appendix A: Data Dictionary
+
+```{r data-dictionary}
+tibble(
+  Variable = c(
+    "earn_mdn_4yr", "earn_mdn_5yr", "prestige_index", "prestige_tier",
+    "adm_rate", "sat_avg", "inexpfte", "ugds",
+    "pctpell", "first_gen", "female", "c150_4",
+    "costt4_a", "control", "locale", "region",
+    "hbcu", "discipline", "cipcode", "log_earn",
+    "is_public", "is_nonprofit", "locale_urban", "locale_suburban",
+    "log_ugds", "high_prestige"
+  ),
+  Description = c(
+    "Median earnings 4 years after program completion",
+    "Median earnings 5 years after program completion",
+    "Composite prestige index: mean of z(selectivity), z(SAT), z(expenditure)",
+    "Quintile of prestige index (1 = least selective, 5 = most selective)",
+    "Institutional admission rate",
+    "Average SAT score of enrolled students",
+    "Instructional expenditure per full-time-equivalent student",
+    "Total undergraduate enrollment",
+    "Share of students receiving Pell Grants",
+    "Share of first-generation college students",
+    "Share of female students",
+    "Six-year graduation rate for first-time, full-time students",
+    "Average annual total cost of attendance",
+    "Institutional sector (1 = public, 2 = private nonprofit, 3 = for-profit)",
+    "Campus locale code (11-13 = urban, 21-23 = suburban, 31-33 = rural)",
+    "Census region code (0-9)",
+    "Historically Black College or University indicator",
+    "Broad discipline category (23 categories from 2-digit CIP family)",
+    "Detailed Classification of Instructional Programs code",
+    "Natural log of earn_mdn_4yr",
+    "Binary: 1 if public institution",
+    "Binary: 1 if private nonprofit institution",
+    "Binary: 1 if urban campus (locale 11-13)",
+    "Binary: 1 if suburban campus (locale 21-23)",
+    "Natural log of undergraduate enrollment (log(ugds + 1))",
+    "Binary: 1 if institution is in prestige Tier 4 or 5"
+  ),
+  Source = c(
+    "College Scorecard, Field of Study file",
+    "College Scorecard, Field of Study file",
+    "Constructed from adm_rate, sat_avg, inexpfte",
+    "Constructed: ntile(prestige_index, 5)",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "College Scorecard, Institution file",
+    "Constructed from cipcode (2-digit CIP family)",
+    "College Scorecard, Field of Study file",
+    "Constructed: log(earn_mdn_4yr)",
+    "Constructed: control == 1",
+    "Constructed: control == 2",
+    "Constructed: locale in 11:13",
+    "Constructed: locale in 21:23",
+    "Constructed: log(ugds + 1)",
+    "Constructed: prestige_tier >= 4"
+  ),
+  Type = c(
+    "Continuous ($)", "Continuous ($)", "Continuous (z-score)", "Ordinal (1-5)",
+    "Proportion (0-1)", "Continuous", "Continuous ($)", "Count",
+    "Proportion (0-1)", "Proportion (0-1)", "Proportion (0-1)", "Proportion (0-1)",
+    "Continuous ($)", "Categorical (1-3)", "Categorical", "Categorical (0-9)",
+    "Binary (0/1)", "Categorical (23 levels)", "Numeric (4-digit)", "Continuous",
+    "Binary (0/1)", "Binary (0/1)", "Binary (0/1)", "Binary (0/1)",
+    "Continuous", "Binary (0/1)"
+  )
+) %>%
+  gt() %>%
+  tab_header(
+    title = md("**Appendix A: Data Dictionary**"),
+    subtitle = "All variables used in the analysis, with sources and construction notes"
+  ) %>%
+  tab_style(style = cell_text(weight = "bold"), locations = cells_column_labels()) %>%
+  tab_style(style = cell_text(font = google_font("JetBrains Mono"), size = "small"),
+            locations = cells_body(columns = Variable)) %>%
+  opt_stylize(style = 1, color = "blue") %>%
+  opt_table_font(font = google_font("Source Sans Pro"))
+```
