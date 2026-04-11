@@ -1459,6 +1459,22 @@ function LadsSection() {
           </div>
         </Reveal>
 
+        {/* Book a Call */}
+        <Reveal delay={150}>
+          <div style={{textAlign:'center',marginTop:48,marginBottom:32}}>
+            <p style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:600,marginBottom:8}}>Want to talk first?</p>
+            <p style={{fontSize:13,color:'var(--muted)',marginBottom:20}}>Book a free 15-minute intro call. No commitment, no pressure.</p>
+            <button
+              className="btn-primary-pill"
+              data-cal-link="braden-dangelo/secret"
+              data-cal-namespace="secret"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+            >
+              Book a Call
+            </button>
+          </div>
+        </Reveal>
+
         {/* Intake Form */}
         <Reveal delay={200}>
           <div style={{marginTop:48}}>
