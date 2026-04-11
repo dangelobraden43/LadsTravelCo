@@ -26,3 +26,8 @@ node_modules/
 *.docx
 *.pdf
 *.xlsx
+
+# Local folders (not deployed)
+photos/
+internal/
+testing/
