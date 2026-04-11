@@ -23,7 +23,8 @@
   --bg-hover: #342D26;
   --text-primary: #F5E6D0;
   --text-secondary: #C4B5A0;
-  --text-muted: #8a9ab0;
+  --text-muted: #8a8070;
+  --research: #8a9ab0;
   --gold: #D4A039;
   --gold-dim: rgba(212, 160, 57, 0.15);
   --gold-glow: rgba(212, 160, 57, 0.08);
@@ -51,7 +52,7 @@ html {
 body {
   background: var(--bg-deep);
   color: var(--text-primary);
-  font-family: var(--font-serif);
+  font-family: 'Outfit', sans-serif;
   font-size: 18px;
   line-height: 1.7;
   min-height: 100vh;
@@ -398,7 +399,7 @@ section:last-child {
 
 .callout-research {
   background: rgba(138, 126, 112, 0.08);
-  border-left: 3px solid var(--text-muted);
+  border-left: 3px solid var(--research);
 }
 
 .callout-voice {
@@ -412,7 +413,7 @@ section:last-child {
 
 .callout-brady .callout-voice { color: var(--amber); }
 .callout-dawson .callout-voice { color: var(--burgundy); }
-.callout-research .callout-voice { color: var(--text-muted); }
+.callout-research .callout-voice { color: var(--research); }
 
 .callout p {
   font-size: 17px;
