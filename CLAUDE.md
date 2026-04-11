@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE CODE MASTER CONTEXT
-## Last Updated: April 10, 2026
+## Last Updated: April 11, 2026
 
 ---
 
@@ -21,6 +21,62 @@
 - Old static site archived as index-static-backup.html
 
 **Zero placeholder links remain.**
+
+---
+
+## PERSONAL CONTEXT & 3-WEEK SPRINT
+
+### Personal Context
+
+Brady has ~3 weeks before Ford Motor Company starts (May 18, 2026). This is the most open schedule he'll have for the foreseeable future.
+
+- **Peru trip May 3-13** with roommate. Salkantay Trek to Machu Picchu. First case study for the site. Already fully planned (Peru_Trip_Guide.pdf).
+- **After May 18:** Evenings and weekends only around Ford graduate program.
+- **Poland trip August 2026** — bucket list framework becomes validated.
+- **M.S. Applied Statistics graduation May 2027.**
+- **Origin story:** The motivation for building this began winter 2025-26 when Brady broke his hand surfing in Costa Rica, which created extra free time from not being able to work out. That window became the 20-day build sprint.
+
+### 3-Week Sprint Priorities (April 10 - May 3)
+
+**Focus:** Get the website and all subworkflows as polished and automated as possible so everything runs over the summer and is ready to be picked up seriously in fall 2026.
+
+**Week 1 — Operational Setup:**
+1. Formspree (replace mailto on intake form)
+2. Cal.com booking widget
+3. Umami analytics
+4. React site visual refinement based on Brady's feedback (fonts, photos, spacing)
+5. Convert Babel CDN to Vite build (eliminates 1-2s load delay)
+
+**Week 2 — Content & Visual Polish:**
+1. Integrate remaining photos into React site and frameworks
+2. Refine Tab 1 destinations (better hero images, elevated Iceland + Prague cards)
+3. Refine Tab 2 system (more interactive depth, progressive disclosure)
+4. Bulk up Tab 3 domestic cards with expandable content and photos
+
+**Week 3 — Pre-Departure Lockdown:**
+1. Full end-to-end test of every page, link, form, and booking widget
+2. Verify automation: Formspree delivers, Cal.com syncs, Umami tracks
+3. Final audit of all frameworks
+4. Lock the site so it runs all summer without intervention
+
+### Post-Peru Plan
+
+- Domain purchase and DNS setup happen AFTER returning from Peru (not before)
+- Build Peru HTML framework from trip photos and notes
+- Site "launch" is post-Peru — share the URL publicly for the first time
+- Summer: site runs on autopilot. Brady improves when inspired. Dawson contributes when he travels. Stew networks in Chicago.
+- Fall 2026: The real push begins with client acquisition and marketing.
+
+### What Claude Code Should Prioritize
+
+When Brady sits down for a session, prioritize in this order:
+
+1. **Automation and operational setup** (things that run without humans)
+2. **Visual and content improvements** to the React site
+3. **Framework builds or upgrades**
+4. **Experimental features** (flight intelligence, rewards optimization)
+
+Never prioritize visual tweaks over operational infrastructure.
 
 ---
 
@@ -229,3 +285,21 @@ Not the summer priority. Ready for fall push.
 - Always distinguish personal validation (copper) from research (blue-grey)
 - Always prioritize mobile responsiveness
 - Quality over deadline. Nothing ships until it's right.
+
+---
+
+## CLAUDE CODE USAGE
+
+### Effort Levels
+- **`/effort high`** — Framework builds, site architecture changes, multi-file refactors, new features, anything touching the React app structure
+- **`/effort low`** — Quick lookups, reading files, answering questions about the codebase, small text edits, git operations
+
+### Custom Commands
+- **`/morning`** — Reads CLAUDE.md + CONTEXT.md + SITE_VISION.md, outputs today's top 3 priorities based on sprint week
+- **`/ship`** — Shows diff, suggests commit message, waits for confirmation before committing and pushing
+- **`/audit-all`** — Runs audit against all 11 framework HTML files, outputs single summary table
+
+### Context Management
+- Run `/compact` proactively when working on large files (index.html is 2400+ lines)
+- If a session involves multiple framework edits, compact between frameworks
+- Long sessions: compact after every major milestone before starting the next task
