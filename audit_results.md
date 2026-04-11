@@ -3,6 +3,34 @@
 
 ---
 
+## POST-REACT CONVERSION STATUS — April 10, 2026
+
+**React site is live.** The main site (index.html) was converted from static HTML to a React application on April 10, 2026. Deployed via Vercel auto-deploy.
+
+**What's confirmed working:**
+- All 4 tabs render correctly (Destinations, The System, Lads Domestic, The Lads)
+- 31 base64 images embedded and loading (11 original + 18 new photos + 2 SVG)
+- All 12 framework links functional (dublin-galway, italy, spain, australia-nz, iceland, prague-vienna, munich, poland, thailand, lads-local, charleston + prague-vienna NEW)
+- Zero placeholder `href="#"` links remain
+- Interactive quiz functional with 20 recommendation outcomes
+- Scroll-triggered animations via Intersection Observer
+- Intake form submits via mailto to dangelobraden43@gmail.com
+- All Google Maps links (26), tour booking links (4) preserved
+- Mobile responsive
+
+**New photos integrated (18):**
+Montserrat monastery, Tossa de Mar beach, Bondi rocks group, Fitzroy Island beach, Brady at Pantheon, Brady in Colosseum interior, Brady with Roman statue, Prague Old Town Square aerial, Lads at Prague Old Town, Lads at Pilsner Urquell, Lads on Vienna U-Bahn, koala, Spice Alley Sydney, surf group, Costa Rica mountain viewpoint, Costa Rica nightlife, Franklin bus bar Sydney, Door Knock bar Sydney
+
+**Remaining optimization items:**
+1. Convert from inline Babel transpilation (CDN) to proper Vite/Next.js build — eliminates ~1MB CDN dependency and 1-2 second compilation delay on first load
+2. Additional photo integration as more photos are added to photos/ folder
+3. Continued visual refinement — font sizing, spacing, animation timing
+4. Formspree integration to replace mailto on intake form
+5. Cal.com booking widget integration
+6. Umami analytics setup
+
+---
+
 ## 1. Munich Oktoberfest — NEEDS REBUILD
 
 ### CRITICAL

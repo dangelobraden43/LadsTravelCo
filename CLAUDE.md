@@ -8,17 +8,19 @@
 **Live Site:** Deployed on Vercel via GitHub (dangelobraden43/LadsTravelCo). Auto-deploys on every `git push origin main`.
 
 **Completed:**
-- Main site v4 (index.html) — 4-tab structure, live and deployed
-- 8 frameworks audited, universal issues fixed, 3 rebuilt from scratch
-- All files renamed to clean URLs, research docs gitignored
-- Claude Code fully configured with 5 skills, settings, MCP config
-- Travel Windows rebuilt into deep expandable research cards (Tab 2)
-- How We Find the Deals — 11-card flight intelligence section (Tab 2)
-- What You Get rebuilt with live framework examples + interactive quiz (Tab 2)
-- All stale dates and deadlines updated across frameworks
-- Iceland photos embedded, confidence label colors standardized
+- Main site converted from static HTML to React (April 10, 2026)
+- React site uses inline Babel transpilation via unpkg CDN — future optimization: convert to Vite/Next.js build
+- 31 base64 images embedded (11 original + 18 new photos from photos/ folder + 2 SVG)
+- 18 new photos integrated: Montserrat, Pantheon, Colosseum interior, Prague aerial, Pilsner Urquell brewery, Bondi rocks, koala, Spice Alley, Costa Rica viewpoint, and more
+- Prague + Vienna + Dresden framework built (prague-vienna.html) — last placeholder link resolved
+- All 6 destination cards now full-size (Iceland and Prague elevated from side-by-side)
+- Scroll-triggered animations via Intersection Observer throughout
+- All 4 tabs complete: Destinations, System (Travel Windows, Flight Intelligence, What You Get + quiz), Domestic, The Lads
+- Body font fixed to Outfit on 5 frameworks, confidence label colors standardized
+- Ryder Cup 2027 added to Bucket List, Charleston added to Domestic
+- Old static site archived as index-static-backup.html
 
-**Remaining Placeholder:** 1 `href="#"` in index.html for Prague + Vienna + Dresden (no framework built yet).
+**Zero placeholder links remain.**
 
 ---
 
@@ -120,28 +122,35 @@ Bios, mission, build story, intake form, contact
 
 ## FILE INVENTORY
 
-### Deployed (11 HTML)
-`index.html` · `dublin-galway.html` · `italy.html` · `spain.html` · `australia-nz.html` · `iceland.html` · `munich.html` · `poland.html` · `thailand.html` · `lads-local.html` · `charleston.html`
+### Deployed (12 HTML + React main)
+`index.html` (React app) · `dublin-galway.html` · `italy.html` · `spain.html` · `australia-nz.html` · `iceland.html` · `munich.html` · `poland.html` · `thailand.html` · `prague-vienna.html` · `lads-local.html` · `charleston.html`
+
+### Archived
+- `index-static-backup.html` — original static site, preserved for rollback
 
 ### Not Yet Built
-- **Prague + Vienna + Dresden** — DB: 38+37+13 spots. Photos available. HIGH priority.
 - **Peru / Machu Picchu** — PDF complete. After May trip.
 - **Ryder Cup 2027 Ireland** — PDF complete. Bucket list build.
 
 ### Project Structure
 ```
 lads-travel-co/
+├── index.html              ← React app (live)
+├── index-static-backup.html ← old static site (archived)
 ├── CLAUDE.md
-├── AUDIT_RESULTS.md
+├── audit_results.md
+├── prague-vienna.html       ← NEW framework
 ├── .gitignore
 ├── .mcp.json
 ├── .claude/
 │   ├── settings.json
 │   └── skills/ (deploy, audit, optimize, links, build)
-├── photos/          ← gitignored
-├── internal/        ← gitignored
-├── testing/         ← gitignored
-└── [11 HTML files]
+├── testing/
+│   ├── lads-react-v1.jsx   ← React source
+│   └── preview.html        ← browser preview
+├── photos/                  ← gitignored, 140+ images
+├── internal/                ← gitignored, build scripts
+└── [11 framework HTML files]
 ```
 
 ---
