@@ -654,6 +654,485 @@ body::after {
   font-size: 10px; color: var(--dim);
   letter-spacing: 1px;
 }
+
+/* ===== TRAVEL WINDOWS ===== */
+.tw-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.tw-card:hover { border-color: var(--border2); }
+.tw-card.tw-gold { border-left: 3px solid var(--gold); }
+.tw-card-header {
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.tw-card-header-left {
+  flex: 1;
+}
+.tw-window-name {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.tw-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 300;
+  font-style: italic;
+}
+.tw-chevron {
+  font-size: 18px;
+  color: var(--dim);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.tw-chevron.open { transform: rotate(180deg); }
+.tw-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.tw-body.open { max-height: 3000px; }
+.tw-body-inner {
+  padding: 0 28px 28px;
+}
+.tw-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+@media(max-width:640px) { .tw-stats { grid-template-columns: 1fr; } }
+.tw-stat {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+}
+.tw-stat-num {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.tw-stat-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.tw-section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 20px 0 8px;
+}
+.tw-text {
+  font-size: 14px;
+  color: var(--cream2);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+.tw-best-skip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+@media(max-width:640px) { .tw-best-skip { grid-template-columns: 1fr; } }
+.tw-best, .tw-skip {
+  background: var(--elevated);
+  border-radius: 6px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.tw-best-title, .tw-skip-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.tw-best-title { color: #3a8a5c; }
+.tw-skip-title { color: #a05050; }
+.tw-best-list, .tw-skip-list {
+  font-size: 13px;
+  color: var(--cream2);
+  line-height: 1.7;
+  font-weight: 300;
+}
+.tw-lads-take {
+  border-left: 3px solid var(--copper);
+  padding: 16px 20px;
+  background: var(--copper-dim);
+  border-radius: 0 6px 6px 0;
+  margin-top: 16px;
+}
+.tw-lads-take-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 6px;
+}
+.tw-lads-take-text {
+  font-size: 14px;
+  color: var(--cream);
+  opacity: 0.85;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.tw-winner-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  padding: 4px 12px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+/* ===== FLIGHT INTELLIGENCE ===== */
+.fi-group-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.fi-group-label:first-of-type { margin-top: 24px; }
+.fi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.fi-card:hover { border-color: var(--border2); }
+.fi-card-header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.fi-card-num {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.4;
+  min-width: 28px;
+}
+.fi-card-title {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.fi-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.fi-body.open { max-height: 4000px; }
+.fi-body-inner {
+  padding: 0 24px 24px;
+  padding-left: 52px;
+}
+.fi-text {
+  font-size: 14px;
+  color: var(--cream2);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+.fi-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.fi-table th {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.fi-table td {
+  padding: 8px 12px;
+  color: var(--cream2);
+  border-bottom: 1px solid var(--border);
+  font-weight: 300;
+}
+.fi-myth-card {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-left: 3px solid #a05050;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.fi-myth-card:hover { border-color: var(--border2); }
+.fi-myth-header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fi-myth-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #a05050;
+  margin-bottom: 4px;
+}
+.fi-myth-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.fi-myth-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.fi-myth-body.open { max-height: 2000px; }
+.fi-myth-body-inner {
+  padding: 0 24px 24px;
+}
+
+/* ===== WHAT YOU GET ===== */
+.wyg-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.wyg-card:hover { border-color: var(--border2); }
+.wyg-header {
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.wyg-num {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.25;
+  min-width: 36px;
+}
+.wyg-header-text { flex: 1; }
+.wyg-title {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.wyg-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 300;
+}
+.wyg-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.wyg-body.open { max-height: 5000px; }
+.wyg-body-inner {
+  padding: 0 28px 28px;
+  padding-left: 64px;
+}
+.wyg-text {
+  font-size: 14px;
+  color: var(--cream2);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+.wyg-example {
+  border-left: 3px solid var(--gold-border);
+  padding: 16px 20px;
+  background: var(--gold-glow);
+  border-radius: 0 6px 6px 0;
+  margin: 16px 0;
+}
+.wyg-example-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.wyg-example-text {
+  font-size: 13px;
+  color: var(--cream2);
+  line-height: 1.7;
+  font-weight: 300;
+}
+.wyg-maps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+@media(max-width:768px) { .wyg-maps-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:480px) { .wyg-maps-grid { grid-template-columns: 1fr; } }
+.wyg-map-link {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--cream2);
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: block;
+  text-align: center;
+}
+.wyg-map-link:hover {
+  border-color: var(--gold-border);
+  color: var(--gold);
+  background: var(--gold-dim);
+}
+
+/* ===== QUIZ ===== */
+.quiz-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 32px;
+  margin-top: 16px;
+}
+.quiz-question {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.quiz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.quiz-option {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--cream2);
+  padding: 10px 18px;
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.quiz-option:hover {
+  border-color: var(--gold-border);
+  color: var(--gold);
+}
+.quiz-option.selected {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  color: var(--gold);
+}
+.quiz-result {
+  background: var(--elevated);
+  border: 1px solid var(--gold-border);
+  border-radius: 8px;
+  padding: 28px;
+  margin-top: 20px;
+}
+.quiz-result-title {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.quiz-result-why {
+  font-size: 14px;
+  color: var(--cream2);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.quiz-result-alt {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+  font-weight: 300;
+}
+.quiz-result-alt strong {
+  color: var(--cream2);
+  font-weight: 500;
+}
+.quiz-reset {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+.quiz-reset:hover { color: var(--cream); border-color: var(--border2); }
 </style>
 </head>
 <body>
@@ -962,6 +1441,50 @@ function DestCard({ dest, expanded, toggle }) {
 
 /* ===== TAB 2: THE SYSTEM ===== */
 function SystemTab() {
+  const [openWindow, setOpenWindow] = useState(null);
+  const [openFlight, setOpenFlight] = useState(null);
+  const [openMyth, setOpenMyth] = useState(null);
+  const [openDeliverable, setOpenDeliverable] = useState(null);
+  const [quizVibe, setQuizVibe] = useState(null);
+  const [quizGroup, setQuizGroup] = useState(null);
+  const [quizBudget, setQuizBudget] = useState(null);
+
+  const toggleWindow = (i) => setOpenWindow(openWindow === i ? null : i);
+  const toggleFlight = (i) => setOpenFlight(openFlight === i ? null : i);
+  const toggleMyth = (i) => setOpenMyth(openMyth === i ? null : i);
+  const toggleDeliverable = (i) => setOpenDeliverable(openDeliverable === i ? null : i);
+  const resetQuiz = () => { setQuizVibe(null); setQuizGroup(null); setQuizBudget(null); };
+
+  const getRecommendation = () => {
+    if (!quizVibe || !quizBudget) return null;
+    const key = quizVibe + '_' + quizBudget;
+    const recs = {
+      nightlife_low: { pick: "Dublin + Galway", why: "Cheapest validated nightlife city in our portfolio. 35+ pubs documented, three timing versions, and flights from ORD under $500 in shoulder season. Temple Bar is overpriced but the spots we send you to aren't.", alt: "Poland August", altWhy: "Krakow's nightlife district is world-class and even cheaper.", link: "dublin-galway.html" },
+      nightlife_mid: { pick: "Munich Oktoberfest", why: "Event-driven nightlife at its peak. Augustiner-Brau tent strategy, Glockenbachviertel base, and a complete cost model for groups of 4-10. This is the one trip where the party IS the culture.", alt: "Barcelona + Madrid", altWhy: "100+ validated spots and Dawson's Madrid nightlife knowledge.", link: "munich.html" },
+      nightlife_high: { pick: "Thailand NYE", why: "Full Moon Party on Koh Phangan, rooftop bars in Bangkok, beach clubs in Krabi. Cathay Pacific via Hong Kong. This is the bucket-list nightlife trip — 10 to 16 days of it.", alt: "Barcelona + Madrid", altWhy: "If Southeast Asia feels too far, Barcelona's nightlife runs until 6am.", link: "thailand.html" },
+      nightlife_flex: { pick: "Thailand NYE", why: "Full Moon Party on Koh Phangan, rooftop bars in Bangkok, beach clubs in Krabi. Cathay Pacific via Hong Kong. This is the bucket-list nightlife trip — 10 to 16 days of it.", alt: "Barcelona + Madrid", altWhy: "If Southeast Asia feels too far, Barcelona's nightlife runs until 6am.", link: "thailand.html" },
+      culture_low: { pick: "Prague + Vienna + Dresden", why: "Best value culture cities in Europe. St. Vitus Cathedral, Schonbrunn Palace, Pilsner Urquell brewery, and the Dresden Hofkirche — all on a budget that makes Western Europe look embarrassing. 75+ spots across three cities.", alt: "Dublin + Galway", altWhy: "Literary pubs, medieval castles, and the Cliffs of Moher for under $2K.", link: "prague-vienna.html" },
+      culture_mid: { pick: "Rome + Italy", why: "Deepest validated culture framework in the portfolio. Vatican with Jubilee holy doors, Pompeii day trip rated 11/10, Trastevere neighborhood routing, and 43 validated spots. Five days minimum.", alt: "Barcelona + Madrid", altWhy: "Sagrada Familia, Montserrat monastery, and the Prado — different flavor, same depth.", link: "italy.html" },
+      culture_high: { pick: "Australia + NZ", why: "Six weeks of depth. Sydney Opera House, Aboriginal cultural experiences, Tasmania wilderness, and the South Island. This isn't a vacation — it's an education. 123 spots in the database.", alt: "Rome + Italy extended", altWhy: "Add Amalfi Coast and Florence for a 10-day Italian deep dive.", link: "australia-nz.html" },
+      culture_flex: { pick: "Australia + NZ", why: "Six weeks of depth. Sydney Opera House, Aboriginal cultural experiences, Tasmania wilderness, and the South Island. This isn't a vacation — it's an education. 123 spots in the database.", alt: "Rome + Italy extended", altWhy: "Add Amalfi Coast and Florence for a 10-day Italian deep dive.", link: "australia-nz.html" },
+      adventure_low: { pick: "Iceland", why: "Ring Road works at any budget. Dawson did it. Northern Lights or Midnight Sun depending on timing. Volcanic landscapes, waterfalls, and the Westman Islands. Four versions: summer or winter, short or long.", alt: "Smoky Mountains", altWhy: "Cabin on the quiet side, fall colors, minimal flight cost from the Midwest.", link: "iceland.html" },
+      adventure_mid: { pick: "Iceland", why: "Ring Road works at any budget. Dawson did it. Northern Lights or Midnight Sun depending on timing. Volcanic landscapes, waterfalls, and the Westman Islands. Four versions: summer or winter, short or long.", alt: "Costa Rica", altWhy: "ATV jungle tour, surf lessons, and a beach Airbnb — our best half-day experience anywhere.", link: "iceland.html" },
+      adventure_high: { pick: "Iceland", why: "Ring Road works at any budget. Dawson did it. Northern Lights or Midnight Sun depending on timing. Volcanic landscapes, waterfalls, and the Westman Islands. Four versions: summer or winter, short or long.", alt: "Peru / Machu Picchu", altWhy: "Salkantay Trek, Rainbow Mountain ATV, Huacachina sandboarding — Brady's doing it May 2026.", link: "iceland.html" },
+      adventure_flex: { pick: "Iceland", why: "Ring Road works at any budget. Dawson did it. Northern Lights or Midnight Sun depending on timing. Volcanic landscapes, waterfalls, and the Westman Islands. Four versions: summer or winter, short or long.", alt: "Peru / Machu Picchu", altWhy: "Salkantay Trek, Rainbow Mountain ATV, Huacachina sandboarding — Brady's doing it May 2026.", link: "iceland.html" },
+      food_low: { pick: "Dublin + Galway", why: "Pub food done right plus Galway's seafood scene. McDonagh's fish and chips, oysters at the Saturday market, and 35+ pubs where the Guinness actually tastes different. Affordable and validated.", alt: "Poland August", altWhy: "Pierogi, zurek, and Krakow's Kazimierz food scene for half the price of Western Europe.", link: "dublin-galway.html" },
+      food_mid: { pick: "Barcelona + Madrid", why: "100+ validated spots and a tapas culture that makes every meal an event. Dawson's Madrid study abroad plus Brady's Barcelona — two food cities with completely different personalities. Boqueria market, pintxos bars, and late-night churros con chocolate.", alt: "Rome + Italy", altWhy: "Trastevere trattorias, cacio e pepe at Tonnarello, and one-euro espresso.", link: "spain.html" },
+      food_high: { pick: "Rome + Italy Extended", why: "Trastevere deep dive. Tonnarello, Bar San Calisto, and the kind of neighborhood restaurants that don't show up on TripAdvisor. Extend to Amalfi Coast for seafood and limoncello. This is the trip where you eat your way through history.", alt: "Barcelona + Madrid", altWhy: "If Italian food fatigue is even possible, switch to Spain's variety.", link: "italy.html" },
+      food_flex: { pick: "Rome + Italy Extended", why: "Trastevere deep dive. Tonnarello, Bar San Calisto, and the kind of neighborhood restaurants that don't show up on TripAdvisor. Extend to Amalfi Coast for seafood and limoncello. This is the trip where you eat your way through history.", alt: "Barcelona + Madrid", altWhy: "If Italian food fatigue is even possible, switch to Spain's variety.", link: "italy.html" },
+      mix_low: { pick: "Poland August", why: "Best all-around value in our portfolio. Krakow anchor with nightlife, Auschwitz for sobering culture, Gdansk beaches, Warsaw's rebuilt old town. LOT non-stop from ORD. Three duration versions for groups of 4-8.", alt: "Dublin + Galway", altWhy: "Pubs, castles, cliffs, and craic — hard to beat for a balanced trip under $2K.", link: "poland.html" },
+      mix_mid: { pick: "Barcelona + Madrid", why: "Most validated mix in the portfolio. Two study abroads, 100+ spots, nightlife until 6am, Sagrada Familia, Montserrat day trip, tapas culture, and beach days. Three group versions. This is the default recommendation for a reason.", alt: "Rome + Italy", altWhy: "Swap beaches for history and you still get nightlife and world-class food.", link: "spain.html" },
+      mix_high: { pick: "Multi-City Europe", why: "Open-jaw routing — fly into one city, out of another. Combine Barcelona + Rome, or Dublin + Iceland, or Prague + Munich. We build the flight strategy, the frameworks connect, and you get two trips in one. This is where our system shines.", alt: "Australia + NZ", altWhy: "If you have 2+ weeks, Sydney alone has 123 spots — add Tasmania and NZ for the full experience.", link: "#" },
+      mix_flex: { pick: "Multi-City Europe", why: "Open-jaw routing — fly into one city, out of another. Combine Barcelona + Rome, or Dublin + Iceland, or Prague + Munich. We build the flight strategy, the frameworks connect, and you get two trips in one. This is where our system shines.", alt: "Australia + NZ", altWhy: "If you have 2+ weeks, Sydney alone has 123 spots — add Tasmania and NZ for the full experience.", link: "#" }
+    };
+    return recs[key] || null;
+  };
+
+  const quizResult = getRecommendation();
+
   return (
     <>
       <div style={{height:60}} />
@@ -1042,6 +1565,652 @@ function SystemTab() {
               ))}
             </div>
           </Reveal>
+        </div>
+      </div>
+
+      {/* ========== TRAVEL WINDOWS ========== */}
+      <div style={{background:'var(--surface)',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)'}}>
+        <div className="section-pad">
+          <div className="section-max">
+            <Reveal>
+              <div className="section-label">Travel Windows</div>
+              <div className="section-title">When to <em>Actually Go</em></div>
+              <p className="section-desc" style={{marginBottom:32}}>Four optimal windows based on fare data, crowd patterns, and weather. Everything outside these windows costs more and delivers less.</p>
+            </Reveal>
+            <Reveal delay={200}>
+
+              {/* Window 1: Late November */}
+              <div className={`tw-card`} onClick={() => toggleWindow(0)}>
+                <div className="tw-card-header">
+                  <div className="tw-card-header-left">
+                    <div className="tw-window-name">Late November / Early December</div>
+                    <div className="tw-tagline">The underrated one. Cheap flights, thin crowds, Christmas markets.</div>
+                  </div>
+                  <div className={`tw-chevron ${openWindow===0?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`tw-body ${openWindow===0?'open':''}`}>
+                  <div className="tw-body-inner">
+                    <div className="tw-stats">
+                      <div className="tw-stat"><div className="tw-stat-num">25-40%</div><div className="tw-stat-label">Fare Drop vs Peak</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">Low</div><div className="tw-stat-label">Crowd Level</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">35-50°F</div><div className="tw-stat-label">Avg Temp Europe</div></div>
+                    </div>
+                    <div className="tw-section-label">Why It Works</div>
+                    <p className="tw-text">The window between American Thanksgiving and the Christmas travel surge is one of the least exploited in transatlantic travel. Airlines drop prices to fill seats during a period most Americans associate with staying home. European cities are entering their Christmas market season — Vienna, Prague, Munich, and Dresden all come alive with Gluhwein stands and hand-crafted ornaments — but the tourist hordes haven't arrived yet. You're getting the atmosphere without the crowds.</p>
+                    <div className="tw-section-label">Proof Points</div>
+                    <p className="tw-text">Dublin in late November averages 30% cheaper flights from ORD than the same route in June. Prague Christmas markets open November 30 most years — arrive the first week and you'll have the Old Town Square stalls practically to yourself. Vienna's Rathausplatz market runs late November through December 23, and hotel rates don't spike until December 10. Munich's Christkindlmarkt at Marienplatz opens the Friday before Advent — early arrivals get the magic before the weekend crush.</p>
+                    <div className="tw-section-label">What People Get Wrong</div>
+                    <p className="tw-text">They assume cold weather means bad travel. Wrong. Cold weather means fewer tourists, lower prices, and cozy pub culture at its best. Dublin in November is 45°F and drizzly — which is exactly when the pubs feel most alive. Prague in early December is 35°F — which is exactly when the mulled wine hits different. The cities that struggle in winter are beach destinations, not European capitals. If you're going to Barcelona for the beach, skip this window. If you're going for culture, nightlife, food, and markets, this is the move.</p>
+                    <div className="tw-best-skip">
+                      <div className="tw-best">
+                        <div className="tw-best-title">Best For</div>
+                        <div className="tw-best-list">Christmas markets (Vienna, Prague, Munich, Dresden). Pub culture (Dublin, Galway). City culture trips where weather doesn't matter. Budget-conscious groups who want Europe without peak pricing.</div>
+                      </div>
+                      <div className="tw-skip">
+                        <div className="tw-skip-title">Skip If</div>
+                        <div className="tw-skip-list">You want beach weather. You need guaranteed sunshine. You're going to Mediterranean destinations where off-season means closed restaurants and empty coastlines.</div>
+                      </div>
+                    </div>
+                    <div className="tw-lads-take">
+                      <div className="tw-lads-take-label">The Lads Take</div>
+                      <div className="tw-lads-take-text">Brady went to Dublin in late November. The pubs were full of locals, the flights were cheap, and Temple Bar was actually walkable. Dawson's Iceland Ring Road worked in shoulder season. This window is for people who understand that the best version of a city isn't always the sunniest one.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Window 2: Late April */}
+              <div className={`tw-card`} onClick={() => toggleWindow(1)}>
+                <div className="tw-card-header">
+                  <div className="tw-card-header-left">
+                    <div className="tw-window-name">Late April / Early May</div>
+                    <div className="tw-tagline">The shoulder season sweet spot.</div>
+                  </div>
+                  <div className={`tw-chevron ${openWindow===1?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`tw-body ${openWindow===1?'open':''}`}>
+                  <div className="tw-body-inner">
+                    <div className="tw-stats">
+                      <div className="tw-stat"><div className="tw-stat-num">20-35%</div><div className="tw-stat-label">Fare Drop vs Summer</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">Medium</div><div className="tw-stat-label">Crowd Level</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">55-70°F</div><div className="tw-stat-label">Avg Temp Europe</div></div>
+                    </div>
+                    <div className="tw-section-label">Why It Works</div>
+                    <p className="tw-text">Spring shoulder season in Europe is the closest thing to a cheat code in travel. The weather is warming up — Rome hits 65°F, Barcelona is already in the low 70s, and Dublin is having its driest stretch of the year. But schools aren't out yet. American families are locked into the academic calendar, which means the tourist infrastructure is open and staffed but not overwhelmed. Airlines price this window below summer but above winter, creating a middle ground where you get 80% of the summer experience at 65% of the summer cost.</p>
+                    <div className="tw-section-label">Proof Points</div>
+                    <p className="tw-text">Rome in late April averages $680 round-trip from ORD versus $950 in July. Barcelona in early May has average highs of 68°F with roughly half the tourist volume of August. The Vatican in April has 40% shorter lines than June-August — the Sistine Chapel is actually viewable. Ireland in May is statistically its driest month, which most people don't know because they associate Ireland with rain year-round. Accommodation in Prague drops 25% compared to June bookings for the same properties.</p>
+                    <div className="tw-section-label">What People Get Wrong</div>
+                    <p className="tw-text">They wait for summer because it feels "safer." But summer in Southern Europe isn't comfortable — it's hot. Rome in July is 90°F and you're walking 8 miles a day through ancient ruins with no shade. Barcelona in August is a sweat lodge. The Mediterranean cities are actually better in late April and May: warm enough for outdoor dining, cool enough for all-day walking, and empty enough that you can get a table at the good restaurants without a reservation three weeks in advance.</p>
+                    <div className="tw-best-skip">
+                      <div className="tw-best">
+                        <div className="tw-best-title">Best For</div>
+                        <div className="tw-best-list">Mediterranean cities (Rome, Barcelona, Madrid). Ireland and UK (driest month). Culture-heavy itineraries with lots of walking. Groups who want good weather without summer pricing. Couples and small groups who prefer quieter experiences.</div>
+                      </div>
+                      <div className="tw-skip">
+                        <div className="tw-skip-title">Skip If</div>
+                        <div className="tw-skip-list">You need guaranteed beach weather above 80°F. You're going to Scandinavia or Iceland (still cold in April). You need school break alignment for family travel.</div>
+                      </div>
+                    </div>
+                    <div className="tw-lads-take">
+                      <div className="tw-lads-take-label">The Lads Take</div>
+                      <div className="tw-lads-take-text">Both Brady and Dawson have traveled Europe in this window. The difference between late April Rome and July Rome is the difference between enjoying the Colosseum and enduring it. If your schedule allows it, this window gives you the best version of almost every European city.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Window 3: August */}
+              <div className={`tw-card`} onClick={() => toggleWindow(2)}>
+                <div className="tw-card-header">
+                  <div className="tw-card-header-left">
+                    <div className="tw-window-name">August</div>
+                    <div className="tw-tagline">Beach destinations only. Everything else is a trap.</div>
+                  </div>
+                  <div className={`tw-chevron ${openWindow===2?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`tw-body ${openWindow===2?'open':''}`}>
+                  <div className="tw-body-inner">
+                    <div className="tw-stats">
+                      <div className="tw-stat"><div className="tw-stat-num">Peak</div><div className="tw-stat-label">European Pricing</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">High</div><div className="tw-stat-label">Crowd Level</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">75-95°F</div><div className="tw-stat-label">Avg Temp S. Europe</div></div>
+                    </div>
+                    <div className="tw-section-label">Why It Works — For the Right Destinations</div>
+                    <p className="tw-text">August is the single most overbooked month in European travel. Every American family with school-age kids is competing for the same flights, the same hotels, and the same restaurant tables. City trips to Rome, Paris, and Barcelona in August are genuinely unpleasant — 95°F heat, three-hour museum lines, and prices inflated 40% above shoulder season. But August is also when certain destinations peak in exactly the right way. Beach destinations — Greek islands, Croatia, the Dalmatian Coast, Thailand's Gulf side — are built for August. Poland in August is warm, cheap, and uncrowded by Western European standards because everyone's heading south.</p>
+                    <div className="tw-section-label">Proof Points</div>
+                    <p className="tw-text">Poland flights from ORD in August average $620 on LOT direct — compared to $850-950 for Western European capitals. Krakow in August averages 77°F, which is warm but not punishing. Gdansk has Baltic beaches that feel like a secret — warm enough to swim, empty enough to breathe. Thailand's Koh Samui and Koh Phangan are in dry season on the Gulf side in August while the Andaman coast (Phuket, Krabi) gets monsoon rain. The smart August move is geographic arbitrage: go where Europeans aren't going.</p>
+                    <div className="tw-section-label">What People Get Wrong</div>
+                    <p className="tw-text">They treat August as a default. "We'll go to Europe in August" is the most expensive sentence in travel planning. August in Rome means 90°F at 9am, a two-hour wait for the Vatican, and €18 Aperol Spritzes on every tourist-facing piazza. August in Barcelona means La Rambla is literally shoulder-to-shoulder. The mistake is going to cities designed for walking and outdoor dining during the month when walking and outdoor dining are miserable. August works when the destination is built around water, not cobblestones.</p>
+                    <div className="tw-best-skip">
+                      <div className="tw-best">
+                        <div className="tw-best-title">Best For</div>
+                        <div className="tw-best-list">Poland (warm, cheap, uncrowded). Beach destinations (Greek islands, Croatia). Thailand Gulf coast (dry season). Groups locked into summer schedules who pick the right destinations. Eastern Europe broadly — the crowds thin dramatically east of Vienna.</div>
+                      </div>
+                      <div className="tw-skip">
+                        <div className="tw-skip-title">Skip If</div>
+                        <div className="tw-skip-list">You're going to Rome, Paris, Barcelona, or any Western European capital. You hate heat. You want value — August is peak pricing almost everywhere west of Prague. You don't have a specific beach or Eastern European destination in mind.</div>
+                      </div>
+                    </div>
+                    <div className="tw-lads-take">
+                      <div className="tw-lads-take-label">The Lads Take</div>
+                      <div className="tw-lads-take-text">We built the Poland framework specifically for August because it's the contrarian play. Everyone's fighting over overpriced Western European capitals while Krakow, Warsaw, and Gdansk are sitting there with direct flights from ORD, world-class nightlife, and per-day costs that make Dublin look expensive. August isn't bad — August in the wrong place is bad.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Window 4: Late August / September — THE WINNER */}
+              <div className={`tw-card tw-gold`} onClick={() => toggleWindow(3)}>
+                <div className="tw-card-header">
+                  <div className="tw-card-header-left">
+                    <div className="tw-winner-badge">#1 Recommendation</div>
+                    <div className="tw-window-name" style={{color:'var(--gold)'}}>Late August / September Post-Labor Day</div>
+                    <div className="tw-tagline">The overall winner. Crowds vanish, prices follow, weather stays excellent.</div>
+                  </div>
+                  <div className={`tw-chevron ${openWindow===3?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`tw-body ${openWindow===3?'open':''}`}>
+                  <div className="tw-body-inner">
+                    <div className="tw-stats">
+                      <div className="tw-stat"><div className="tw-stat-num">30-45%</div><div className="tw-stat-label">Fare Drop vs July</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">Low-Med</div><div className="tw-stat-label">Crowd Level</div></div>
+                      <div className="tw-stat"><div className="tw-stat-num">65-80°F</div><div className="tw-stat-label">Avg Temp Europe</div></div>
+                    </div>
+                    <div className="tw-section-label">Why It Works</div>
+                    <p className="tw-text">This is the single best travel window in the calendar and it's not close. The moment American kids go back to school, the entire European travel infrastructure exhales. Flights drop 30-45% from July peaks. Hotels that were sold out in August suddenly have availability. Restaurants in Rome and Barcelona go from "reservation required three weeks out" to "walk in and sit down." But here's the key: the weather hasn't changed. September in Barcelona is 78°F. September in Rome is 75°F. September in Dublin is 60°F with the longest dry stretch still holding. You're getting July weather at October prices.</p>
+                    <div className="tw-section-label">Proof Points</div>
+                    <p className="tw-text">ORD to Barcelona in September averages $580 round-trip versus $880 in July — a 34% drop for essentially identical weather. Rome accommodation in September runs 35% below August rates at the same properties. The Vatican in September has average wait times of 25 minutes versus 90+ in July. Munich in late September means Oktoberfest — the world's largest folk festival with 6 million annual visitors, but strategic tent choices and weekday timing make it manageable. Iceland in September offers the overlap window: still enough daylight for full Ring Road days, but dark enough at night for early Northern Lights season.</p>
+                    <div className="tw-section-label">What People Get Wrong</div>
+                    <p className="tw-text">They think September is "too late." This is the biggest misconception in European travel. September in Southern Europe is summer. September in Central Europe is early fall at worst — still warm, still sunny, still outdoor dining weather. The only destinations where September gets genuinely dicey are Nordic countries and high-altitude Alpine routes, where shorter days and dropping temperatures start to limit options. For everything else — Mediterranean, Western Europe, Eastern Europe, even Ireland — September is objectively the best month to travel. The data backs it up across every metric we track: price, weather, crowds, and availability.</p>
+                    <div className="tw-best-skip">
+                      <div className="tw-best">
+                        <div className="tw-best-title">Best For</div>
+                        <div className="tw-best-list">Literally everything except Nordic/Scandinavian trips. Rome, Barcelona, Madrid, Dublin, Prague, Vienna, Munich (especially Oktoberfest), Poland, Croatia, Greece. Multi-city trips using open-jaw routing. Groups with flexible schedules who aren't locked into school calendars. Budget-conscious travelers who want premium experiences at shoulder-season prices.</div>
+                      </div>
+                      <div className="tw-skip">
+                        <div className="tw-skip-title">Skip If</div>
+                        <div className="tw-skip-list">You're locked into a school calendar. You're going to Iceland for Midnight Sun (that's June). You're doing high-altitude Alpine hiking where snow starts early. You need the absolute cheapest flights (late November still beats September on price alone).</div>
+                      </div>
+                    </div>
+                    <div className="tw-lads-take">
+                      <div className="tw-lads-take-label">The Lads Take</div>
+                      <div className="tw-lads-take-text">If someone asks us "when should I go to Europe?" without any other constraints, the answer is always mid-September. Every time. We built the Munich Oktoberfest framework around late September specifically because it's the convergence point: the festival, the weather, the pricing, and the crowd levels all align perfectly. September is the answer to the question most travelers don't know to ask: "When does Europe stop being a tourist destination and start being a place you can actually experience?"</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </Reveal>
+          </div>
+        </div>
+      </div>
+
+      {/* ========== FLIGHT INTELLIGENCE ========== */}
+      <div className="section-pad">
+        <div className="section-max">
+          <Reveal>
+            <div className="section-label">Flight Intelligence</div>
+            <div className="section-title">How We Find <em>the Deals</em></div>
+            <p className="section-desc" style={{marginBottom:16}}>Airline pricing is adversarial by design. Here's how we beat it — and how we build that intelligence into every framework we deliver.</p>
+          </Reveal>
+          <Reveal delay={200}>
+
+            {/* Group 1: Understanding the Machine */}
+            <div className="fi-group-label">Understanding the Machine</div>
+
+            {/* Card 1 */}
+            <div className="fi-card" onClick={() => toggleFlight(0)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">01</div>
+                <div className="fi-card-title">How Airline Pricing Works</div>
+                <div className={`tw-chevron ${openFlight===0?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===0?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Airlines use dynamic pricing algorithms that adjust fares based on demand, competition, time to departure, day of week, and historical booking patterns. A seat on the same flight can cost $400 or $1,200 depending on when you book, how full the plane is, and what fare class is currently available. There is no single "best price" — there's a price curve, and our job is to help you book at the right point on that curve.</p>
+                  <p className="fi-text">The key concept is fare classes. Every flight has multiple fare buckets (Y, B, M, H, K, L, Q, etc.) with different prices and rules. As cheap buckets sell out, the algorithm moves to the next tier. This is why prices "jump" — you didn't miss a sale, you missed a fare class. Understanding this lets us monitor when cheap buckets open back up, which happens more often than people think, especially on competitive routes.</p>
+                  <p className="fi-text">Airlines also practice market segmentation. They charge different prices on different routes based on competition. ORD to Dublin is cheaper than DTW to Dublin because ORD has Aer Lingus competing with United and American. DTW to Dublin requires a connection, which means less competition and higher fares. We use this to recommend originating airports — sometimes driving to O'Hare saves $300 per person.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="fi-card" onClick={() => toggleFlight(1)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">02</div>
+                <div className="fi-card-title">The Booking Window</div>
+                <div className={`tw-chevron ${openFlight===1?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===1?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">The optimal booking window for international flights is 6-10 weeks before departure for economy, 4-8 weeks for off-peak seasons, and 8-14 weeks for peak summer travel. This isn't opinion — it's based on fare data across thousands of routes. Book too early (6+ months out) and you're paying the "certainty premium" — airlines know early bookers value guaranteed seats. Book too late (under 3 weeks) and you're paying the "desperation premium."</p>
+                  <p className="fi-text">The sweet spot exists because airlines need to fill planes. Around 6-10 weeks out, they have enough data on booking pace to know if a flight is underselling. If it is, they open cheaper fare classes to stimulate demand. This is when you pounce. We track routes our clients are interested in and alert them when fares dip below our target thresholds.</p>
+                  <p className="fi-text">For example: Poland in August 2026 is roughly 3 months out right now. LOT Polish Airlines runs a direct ORD-WAW route. Historical data shows this route drops to $550-650 range about 8 weeks before departure. Right now it's sitting at $720. We're watching it. When it drops, we tell you to book. That's the service — not just finding the flight, but timing the purchase.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Group 2: The Tools We Actually Use */}
+            <div className="fi-group-label">The Tools We Actually Use</div>
+
+            {/* Card 3 */}
+            <div className="fi-card" onClick={() => toggleFlight(2)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">03</div>
+                <div className="fi-card-title">Google Flights</div>
+                <div className={`tw-chevron ${openFlight===2?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===2?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Google Flights is the single best flight search tool available and it's free. Not Skyscanner, not Kayak, not Hopper — Google Flights. Here's why: it searches direct airline inventory, it shows fare calendars with date flexibility, it has a built-in price tracking feature that actually works, and it displays the full fare breakdown including bags. Every other tool is either scraping Google Flights data with a delay or showing you cached prices.</p>
+                  <p className="fi-text">The features most people miss: the "Explore" map (shows cheapest destinations from your airport), the date grid (shows fare variations across a two-month window), the price graph (shows historical pricing for your route), and the tracking alert (emails you when your saved route drops). We use all four of these for every client. The date grid alone has saved our clients thousands — shifting departure by two days can drop fares 20-30% on competitive routes.</p>
+                  <p className="fi-text">The one limitation: Google Flights doesn't always show budget carriers (Ryanair within Europe, for example). For intra-European segments, we supplement with Skyscanner. But for the transatlantic leg — the expensive part — Google Flights is the tool.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4 */}
+            <div className="fi-card" onClick={() => toggleFlight(3)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">04</div>
+                <div className="fi-card-title">Error Fares</div>
+                <div className={`tw-chevron ${openFlight===3?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===3?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Error fares happen when airlines accidentally publish incorrect prices — usually due to currency conversion mistakes, fare filing errors, or IT glitches. A $900 flight to Rome might appear for $280. These are real bookable fares and airlines honor them roughly 70% of the time (US DOT guidelines generally require airlines to honor purchased tickets). The catch: they disappear within hours, sometimes minutes.</p>
+                  <p className="fi-text">We monitor error fare sources including Secret Flying, The Points Guy error fare alerts, Scott's Cheap Flights (now Going), and a few private deal communities. When an error fare appears on a route relevant to a client, we alert immediately. The window is usually 2-6 hours. You need to book first and ask questions later — most error fares are refundable for 24 hours under DOT rules, so there's no risk in grabbing one and canceling if it doesn't work for your schedule.</p>
+                  <p className="fi-text">Error fares are unpredictable by nature, so we never build a framework assuming one will appear. But when they do, they can cut the flight budget by 50-70%. We treat them as found money — nice when they happen, not something to wait for.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 5 */}
+            <div className="fi-card" onClick={() => toggleFlight(4)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">05</div>
+                <div className="fi-card-title">Flexible Dates</div>
+                <div className={`tw-chevron ${openFlight===4?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===4?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Date flexibility is the single most powerful lever you have in flight pricing. A Tuesday departure instead of Friday can save $150-300 per person on transatlantic routes. Mid-week flights (Tuesday, Wednesday, Thursday) are consistently cheaper because business travelers fly Monday and Friday, inflating demand on those days. The algorithm knows weekend departures carry leisure premium — and charges for it.</p>
+                  <p className="fi-text">We use Google Flights' date grid to map the full fare landscape for every route. For the Poland August framework, shifting departure from Friday August 7 to Tuesday August 4 dropped the fare $180 per person on the same LOT direct flight. For a group of 6, that's $1,080 saved by moving three days. This is the kind of intelligence that goes into every framework — not just "here's a flight," but "here's why this specific date on this specific day of the week is the right booking."</p>
+                  <p className="fi-text">The other date lever: return flight timing. Flying back on a Tuesday or Wednesday after a weekend saves another $100-200. Most groups want to "maximize the trip" by flying back Sunday — but Sunday returns are the most expensive day of the week. Fly back Tuesday morning, gain two more days, and pay less for the flight. It's counterintuitive until you see the numbers.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Group 3: Routing Strategies */}
+            <div className="fi-group-label">Routing Strategies</div>
+
+            {/* Card 6 */}
+            <div className="fi-card" onClick={() => toggleFlight(5)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">06</div>
+                <div className="fi-card-title">Open-Jaw Routing</div>
+                <div className={`tw-chevron ${openFlight===5?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===5?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Open-jaw means flying into one city and out of another. Instead of round-trip Chicago to Rome, you fly Chicago to Rome and Barcelona to Chicago. This eliminates the "backtrack" — the wasted day and money spent getting back to your origin city. For multi-city European trips, open-jaw routing saves an average of $200-400 per person compared to round-trip plus intra-European positioning flights.</p>
+                  <p className="fi-text">Google Flights supports open-jaw searches natively (use the "Multi-city" option). We build every multi-destination framework with open-jaw as the default routing assumption. The Spain framework, for example, routes Chicago to Barcelona, then Madrid to Chicago — which lets you take a $15 Renfe train from Barcelona to Madrid instead of flying back to Barcelona for your return flight. The Italy framework could route into Rome and out of Milan if you're adding Florence and the north.</p>
+                  <p className="fi-text">The one complexity: open-jaw fares are sometimes slightly higher per leg than round-trip fares to a single city. But the total trip cost is almost always lower because you eliminate an intra-European flight ($60-150 on budget carriers, plus airport time, plus the stress of an extra flight). We run both scenarios for every client and show the math.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 7 */}
+            <div className="fi-card" onClick={() => toggleFlight(6)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">07</div>
+                <div className="fi-card-title">Hub Arbitrage</div>
+                <div className={`tw-chevron ${openFlight===6?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===6?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Hub arbitrage exploits the price difference between originating airports. ORD (O'Hare) and DTW (Detroit Metro) are our two primary departure hubs, and the fare differences between them can be dramatic. ORD is a major international hub with direct competition from United, American, Aer Lingus, LOT, Lufthansa, and others. DTW is a Delta fortress hub with less international competition, which means higher base fares on most European routes.</p>
+                  <p className="fi-text">For Michigan-based clients, the decision between DTW and ORD is a real cost calculation. ORD is a 4-hour drive or a $80 Amtrak from Kalamazoo/Grand Rapids. If the fare difference is $200+ per person, driving to ORD pays for itself for groups of 2 or more. We run both airports for every client and include the ground transportation math.</p>
+                  <table className="fi-table">
+                    <thead><tr><th>Route</th><th>From ORD</th><th>From DTW</th><th>Savings</th></tr></thead>
+                    <tbody>
+                      <tr><td>Dublin</td><td>$480-550</td><td>$650-780</td><td>$170-230</td></tr>
+                      <tr><td>Rome</td><td>$580-680</td><td>$720-850</td><td>$140-170</td></tr>
+                      <tr><td>Barcelona</td><td>$520-620</td><td>$680-800</td><td>$160-180</td></tr>
+                      <tr><td>Warsaw (LOT Direct)</td><td>$550-650</td><td>$750-900</td><td>$200-250</td></tr>
+                      <tr><td>Bangkok</td><td>$680-850</td><td>$800-1000</td><td>$120-150</td></tr>
+                      <tr><td>Reykjavik</td><td>$380-480</td><td>$520-650</td><td>$140-170</td></tr>
+                    </tbody>
+                  </table>
+                  <p className="fi-text">These are September shoulder-season estimates based on our tracking data. Peak summer adds $150-300 to both columns. The pattern holds: ORD is almost always cheaper for European destinations because of direct route competition.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 8 */}
+            <div className="fi-card" onClick={() => toggleFlight(7)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">08</div>
+                <div className="fi-card-title">Group Booking Splits</div>
+                <div className={`tw-chevron ${openFlight===7?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===7?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">When you search for 6 seats on a flight, the algorithm returns the price of the most expensive fare class that has 6 seats available. If there are 3 seats at $520 and 3 seats at $680, all 6 show as $680. This is how airlines extract maximum revenue from groups — and it's why group travel feels disproportionately expensive compared to booking as a couple.</p>
+                  <p className="fi-text">The fix: split the booking. Search for 2 seats at a time instead of 6. Book the cheap fare class in pairs until it sells out, then book the remainder at the next tier. For the Munich Oktoberfest framework (groups of 4-10), we consistently find $80-150 per person savings by splitting group bookings into pairs. On a group of 8, that's $640-1,200 in total savings — real money that goes toward accommodation or experiences instead.</p>
+                  <p className="fi-text">The risk: split bookings mean separate reservations, which can complicate seat assignments and schedule changes. If the airline cancels or reschedules, passengers on different reservations may get rebooked differently. We mitigate this by booking the same flight for all pairs and checking in together. For the savings involved, the minor coordination overhead is worth it every time.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Group 4: Money Strategies */}
+            <div className="fi-group-label">Money Strategies</div>
+
+            {/* Card 9 */}
+            <div className="fi-card" onClick={() => toggleFlight(8)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">09</div>
+                <div className="fi-card-title">Credit Card Bonuses</div>
+                <div className={`tw-chevron ${openFlight===8?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===8?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">The single fastest way to reduce flight costs is a travel credit card signup bonus. The Chase Sapphire Preferred currently offers 60,000 Ultimate Rewards points after $4,000 spend in 3 months. Those 60,000 points are worth $750 when redeemed through Chase Travel or transferred to airline partners. The $95 annual fee is waived the first year. Net value: $750 in travel credit for spending money you were going to spend anyway.</p>
+                  <p className="fi-text">For groups, the math scales: if 3 people in a group of 6 each open a card and hit the bonus, that's $2,250 in combined travel credit — enough to cover half the group's flights to Europe. We include credit card strategy in every framework where the group has 3+ months before departure (time needed to apply, receive the card, and hit the spending threshold). We never recommend cards with fees that don't pay for themselves.</p>
+                  <p className="fi-text">Transfer partners matter. Chase points transfer 1:1 to United, Hyatt, Southwest, British Airways, and others. Amex points transfer to Delta, Air France/KLM, and British Airways. The right card depends on which airline serves your route. For ORD-based clients flying to Europe, Chase Sapphire is almost always the pick because of the United transfer partnership.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 10 */}
+            <div className="fi-card" onClick={() => toggleFlight(9)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">10</div>
+                <div className="fi-card-title">Seasonal Sales</div>
+                <div className={`tw-chevron ${openFlight===9?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===9?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Airlines run predictable sales cycles. January through early March is "sale season" — airlines dump inventory for spring and summer travel at reduced prices to stimulate early bookings and generate cash flow after the holiday spending slump. The other reliable window is late August through September, when airlines discount fall and winter travel. These aren't random — they're structural features of the airline revenue cycle.</p>
+                  <p className="fi-text">The specific sales to watch: Aer Lingus runs a January transatlantic sale almost every year with fares 20-30% below normal. LOT Polish Airlines discounts ORD-Warsaw fares in late February. Norwegian (when operating) runs flash sales on long-haul routes. WOW Air's successor Play runs Iceland sales in January. We track these cycles and alert clients when relevant sales appear for their target routes.</p>
+                  <p className="fi-text">The trap: don't wait for a sale if you're already seeing a good fare. Sales discount from regular pricing, but if regular pricing is already low due to competition or low demand, the sale price might not materialize — the fare is already as low as it's going. We've seen clients wait for a "sale" while watching a $520 fare climb to $680 because they thought it would go lower. If a fare is at or below our target threshold for that route, we say book it regardless of sale timing.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 11 */}
+            <div className="fi-card" onClick={() => toggleFlight(10)}>
+              <div className="fi-card-header">
+                <div className="fi-card-num">11</div>
+                <div className="fi-card-title">Fare Class Monitoring</div>
+                <div className={`tw-chevron ${openFlight===10?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-body ${openFlight===10?'open':''}`}>
+                <div className="fi-body-inner">
+                  <p className="fi-text">Fare classes are the hidden layer of airline pricing. Every flight has multiple booking classes — from full-fare Y class down to deep-discount Q class — and the algorithm opens and closes these classes based on demand forecasting. When a cheap class sells out, the price jumps to the next tier. When the airline realizes a flight is underselling, it reopens cheap classes. These fluctuations happen daily, sometimes hourly.</p>
+                  <p className="fi-text">We monitor fare classes using Google Flights price tracking, ExpertFlyer (for detailed class availability), and manual spot-checks. When a cheap fare class reopens on a route we're tracking for a client, we alert immediately. This is particularly valuable for popular routes like ORD-Dublin or ORD-Barcelona where fare classes turn over quickly. The difference between booking in L class versus H class on the same United flight can be $200+ per person.</p>
+                  <p className="fi-text">For the Poland August framework, we're currently tracking LOT's ORD-WAW direct flight in fare classes L and K. L class is showing $620 — our target is under $600. Historical data suggests L class availability will increase around 8 weeks before departure as LOT adjusts capacity. We'll alert when it hits. This kind of route-specific, class-specific monitoring is what separates our flight intelligence from "just search Google Flights yourself."</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Myths Section */}
+            <div className="fi-group-label" style={{color:'#a05050'}}>Myths We Hear All the Time</div>
+
+            {/* Myth 1 */}
+            <div className="fi-myth-card" onClick={() => toggleMyth(0)}>
+              <div className="fi-myth-header">
+                <div>
+                  <div className="fi-myth-label">Myth</div>
+                  <div className="fi-myth-title">"Incognito mode gets you cheaper flights"</div>
+                </div>
+                <div className={`tw-chevron ${openMyth===0?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-myth-body ${openMyth===0?'open':''}`}>
+                <div className="fi-myth-body-inner">
+                  <p className="fi-text">This was marginally true in 2012. It's not true now. Airlines don't use browser cookies to inflate prices on repeat searches — they use demand-based algorithmic pricing that's the same regardless of your browser mode. The price changes you see between searches are real-time fare class adjustments, not cookie manipulation. We've tested this extensively. Search the same route in Chrome, Firefox, incognito, and a VPN — you get the same prices within seconds of each other. Save your energy for strategies that actually work.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Myth 2 */}
+            <div className="fi-myth-card" onClick={() => toggleMyth(1)}>
+              <div className="fi-myth-header">
+                <div>
+                  <div className="fi-myth-label">Myth</div>
+                  <div className="fi-myth-title">"Tuesday is always the cheapest day to book"</div>
+                </div>
+                <div className={`tw-chevron ${openMyth===1?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-myth-body ${openMyth===1?'open':''}`}>
+                <div className="fi-myth-body-inner">
+                  <p className="fi-text">This advice comes from a 2014 study that's been misquoted ever since. The original finding was that airlines were more likely to file new fares on Tuesday, which occasionally resulted in lower prices mid-week. But modern dynamic pricing adjusts fares continuously — not on a weekly schedule. There is no statistically significant cheapest day to purchase a ticket. What matters is the booking window (how far from departure) and fare class availability (which changes hourly), not what day of the week you happen to open your laptop. Tuesday is the cheapest day to fly, not to book. Those are different things.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Myth 3 */}
+            <div className="fi-myth-card" onClick={() => toggleMyth(2)}>
+              <div className="fi-myth-header">
+                <div>
+                  <div className="fi-myth-label">Myth</div>
+                  <div className="fi-myth-title">"Book as early as possible for the best price"</div>
+                </div>
+                <div className={`tw-chevron ${openMyth===2?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-myth-body ${openMyth===2?'open':''}`}>
+                <div className="fi-myth-body-inner">
+                  <p className="fi-text">Booking 6+ months in advance almost always means overpaying. Airlines know that early bookers value certainty — the guarantee of a confirmed seat — and they price accordingly. The cheapest fares don't appear until airlines can forecast demand for a specific departure, which requires enough booking data to model. That data doesn't exist until 6-10 weeks before departure for most international routes. Booking 8 months out means paying a "peace of mind" premium of $100-300 per person. The exception: peak holiday travel (Christmas, Spring Break) on limited-capacity routes where early booking is necessary to ensure availability. For everything else, patience pays.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Myth 4 */}
+            <div className="fi-myth-card" onClick={() => toggleMyth(3)}>
+              <div className="fi-myth-header">
+                <div>
+                  <div className="fi-myth-label">Myth</div>
+                  <div className="fi-myth-title">"Use a VPN to get prices from other countries"</div>
+                </div>
+                <div className={`tw-chevron ${openMyth===3?'open':''}`}>&#9662;</div>
+              </div>
+              <div className={`fi-myth-body ${openMyth===3?'open':''}`}>
+                <div className="fi-myth-body-inner">
+                  <p className="fi-text">This one has a kernel of truth but is mostly impractical. Yes, airline websites sometimes display different prices based on the point-of-sale country because of currency conversion, local market pricing, and regional promotions. But modern OTAs and Google Flights normalize pricing effectively. The rare cases where VPN routing saves money are typically on domestic flights within other countries or on airlines with separate regional pricing engines. For transatlantic flights from the US, the price you see on Google Flights from a US IP is the price. The effort spent fiddling with VPNs and foreign-language booking pages is almost never worth the marginal savings. Focus on timing, flexibility, and routing instead.</p>
+                </div>
+              </div>
+            </div>
+
+          </Reveal>
+        </div>
+      </div>
+
+      {/* ========== WHAT YOU GET ========== */}
+      <div style={{background:'var(--surface)',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)'}}>
+        <div className="section-pad">
+          <div className="section-max">
+            <Reveal>
+              <div className="section-label">What You Get</div>
+              <div className="section-title">Five Deliverables. <em>Zero Fluff.</em></div>
+              <p className="section-desc" style={{marginBottom:32}}>Every client gets the same core package. No tiers. No upsells. Here's exactly what's in it — with real examples from frameworks we've already built.</p>
+            </Reveal>
+            <Reveal delay={200}>
+
+              {/* Deliverable 1: HTML Trip Framework */}
+              <div className="wyg-card" onClick={() => toggleDeliverable(0)}>
+                <div className="wyg-header">
+                  <div className="wyg-num">01</div>
+                  <div className="wyg-header-text">
+                    <div className="wyg-title">Custom HTML Trip Framework</div>
+                    <div className="wyg-subtitle">A designed, mobile-optimized trip plan. Not a PDF. Not a Google Doc.</div>
+                  </div>
+                  <div className={`tw-chevron ${openDeliverable===0?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`wyg-body ${openDeliverable===0?'open':''}`}>
+                  <div className="wyg-body-inner">
+                    <p className="wyg-text">Every client receives a custom-built HTML document designed specifically for their trip. This isn't a template — each framework has its own visual identity, color palette, and content structure tailored to the destination. It works on your phone, your laptop, and your tablet. It loads instantly because there's no app to download and no account to create. Open the link, and your entire trip plan is there.</p>
+                    <p className="wyg-text">Each framework includes: neighborhood-by-neighborhood breakdowns with honest assessments, cost models with per-person and per-day projections, day-by-day itinerary suggestions (not rigid schedules — options), accommodation strategy with specific property recommendations, restaurant and bar tiers from "validated favorites" to "research picks," day trip logistics with bookable links, and a "What First-Timers Get Wrong" section that saves you from the mistakes we see every group make.</p>
+                    <p className="wyg-text">The framework is yours permanently. No subscription, no expiration. We update frameworks when prices or venues change, and you always have access to the latest version via the same link.</p>
+                    <div className="wyg-example">
+                      <div className="wyg-example-label">Real Example: Munich Oktoberfest Framework</div>
+                      <div className="wyg-example-text">The Munich framework includes tent-by-tent strategy for Oktoberfest (Augustiner-Brau for locals, Hofbrau for first-timers), a Glockenbachviertel neighborhood base recommendation, complete cost models for groups of 4, 6, 8, and 10, and a "What First-Timers Get Wrong" section covering reservation timing, tent capacity, and the Sunday morning strategy. It's 40+ pages of actionable intelligence in a format that works on your phone at the beer hall.</div>
+                    </div>
+                    <div style={{marginTop:16}}>
+                      <a href="munich.html" target="_blank" rel="noopener noreferrer" className="btn btn-primary">View Munich Framework →</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Deliverable 2: Flight Intelligence */}
+              <div className="wyg-card" onClick={() => toggleDeliverable(1)}>
+                <div className="wyg-header">
+                  <div className="wyg-num">02</div>
+                  <div className="wyg-header-text">
+                    <div className="wyg-title">Flight Intelligence Report</div>
+                    <div className="wyg-subtitle">Route analysis, booking windows, and fare monitoring for your specific trip.</div>
+                  </div>
+                  <div className={`tw-chevron ${openDeliverable===1?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`wyg-body ${openDeliverable===1?'open':''}`}>
+                  <div className="wyg-body-inner">
+                    <p className="wyg-text">We analyze the specific routes for your trip: which airlines fly direct, which connections are worth considering, which airports to originate from (ORD vs DTW), and when to book based on historical fare data for that route. This isn't generic "book 6 weeks in advance" advice — it's route-specific, date-specific, and fare-class-specific intelligence.</p>
+                    <p className="wyg-text">The flight report includes: recommended booking window based on historical fare curves for your route, target price thresholds (what's a "good" fare for this route in this season), originating airport comparison with ground transportation math, open-jaw routing options for multi-city trips, group booking split strategy if applicable, and credit card bonus recommendations aligned to your timeline.</p>
+                    <p className="wyg-text">After delivery, we continue monitoring your route until you book. If fares drop below our target threshold or an error fare appears, you'll hear from us. This is ongoing — not a one-time report.</p>
+                    <div className="wyg-example">
+                      <div className="wyg-example-label">Real Example: Poland August Flight Intelligence</div>
+                      <div className="wyg-example-text">For the Poland August framework, the flight intelligence identifies LOT Polish Airlines' direct ORD-WAW route as the primary option ($550-650 target range), shows that DTW routing adds $150-250 per person with a connection penalty, recommends booking 6-8 weeks before departure based on LOT's historical pricing curve for summer Warsaw flights, and includes a group split strategy for parties of 6+ that saves $80-120 per person. We're currently tracking fare class L availability and will alert when it hits our target.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Deliverable 3: Google Maps Lists */}
+              <div className="wyg-card" onClick={() => toggleDeliverable(2)}>
+                <div className="wyg-header">
+                  <div className="wyg-num">03</div>
+                  <div className="wyg-header-text">
+                    <div className="wyg-title">Google Maps Lists</div>
+                    <div className="wyg-subtitle">Every spot we've validated or researched, organized and saved to your phone.</div>
+                  </div>
+                  <div className={`tw-chevron ${openDeliverable===2?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`wyg-body ${openDeliverable===2?'open':''}`}>
+                  <div className="wyg-body-inner">
+                    <p className="wyg-text">Frameworks are for planning. Google Maps lists are for the ground. Every destination in our portfolio has organized, saved Google Maps lists that you can open on your phone and navigate to directly. No searching, no scrolling through blog posts, no screenshots of recommendation lists. Tap a pin, get walking directions, arrive at a place we've either been to personally or vetted through our research system.</p>
+                    <p className="wyg-text">The lists are organized by category (pubs and food, attractions, bars, etc.) and by city. For destinations with multiple cities (Spain covers Barcelona and Madrid, Ireland covers Dublin and Galway), each city gets its own organized lists. We currently maintain 18 active Google Maps lists across 10 destinations, covering 650+ individual spots.</p>
+                    <p className="wyg-text">When you receive your framework, you'll get links to every relevant Google Maps list. Save them to your phone before the trip. On the ground, you'll always have a validated spot within walking distance — no matter what neighborhood you're in.</p>
+                    <div className="wyg-maps-grid">
+                      <a href="https://maps.app.goo.gl/NrZtg6tUR1Rjk8oS8" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Dublin Pubs & Food</a>
+                      <a href="https://maps.app.goo.gl/9YLakDkjrE6jj7cQA" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Dublin Attractions</a>
+                      <a href="https://maps.app.goo.gl/deRD11SQis6ZUsKL8" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Galway</a>
+                      <a href="https://maps.app.goo.gl/kmFjNeA6k8BHuHWT8" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Rome Food & Drink</a>
+                      <a href="https://maps.app.goo.gl/RAS5mqRhc6BYTa5D6" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Rome Attractions</a>
+                      <a href="https://maps.app.goo.gl/bZp95gDP9VwBe6Kd7" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Barcelona Food</a>
+                      <a href="https://maps.app.goo.gl/2LZGLZQEuT53NK3Z8" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Barcelona Bars</a>
+                      <a href="https://maps.app.goo.gl/63o5dgY5Fr8SJUZk6" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Barcelona Attractions</a>
+                      <a href="https://maps.app.goo.gl/hc199wu19C6cKj9G6" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Jaco, Costa Rica</a>
+                      <a href="https://maps.app.goo.gl/ZWM8LXFGV9QpS8fB7" target="_blank" rel="noopener noreferrer" className="wyg-map-link">San Juan</a>
+                      <a href="https://maps.app.goo.gl/Fr7KdvoLsnXeBV1q8" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Seattle + Olympic</a>
+                      <a href="https://maps.app.goo.gl/PTJn6coPBcRDKbHw5" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Phoenix + Golf</a>
+                      <a href="https://maps.app.goo.gl/9n9uM7NG8Sa2aA8" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Vancouver Bars</a>
+                      <a href="https://maps.app.goo.gl/4moCgAkEHz5uJbQ9A" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Vancouver Attractions</a>
+                      <a href="https://maps.app.goo.gl/R4TC9toa9oP5qJed8" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Vienna Bars</a>
+                      <a href="https://maps.app.goo.gl/e3pGDSj6PCcPEy8j7" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Prague Attractions</a>
+                      <a href="https://maps.app.goo.gl/o7BCdPPpzPHJsEA59" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Prague Bars</a>
+                      <a href="https://maps.app.goo.gl/FYEJQFkTJVyqZr1x7" target="_blank" rel="noopener noreferrer" className="wyg-map-link">Dresden</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Deliverable 4: Money Intelligence */}
+              <div className="wyg-card" onClick={() => toggleDeliverable(3)}>
+                <div className="wyg-header">
+                  <div className="wyg-num">04</div>
+                  <div className="wyg-header-text">
+                    <div className="wyg-title">Money Intelligence</div>
+                    <div className="wyg-subtitle">Savings opportunities specific to your destination, your group, and your timeline.</div>
+                  </div>
+                  <div className={`tw-chevron ${openDeliverable===3?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`wyg-body ${openDeliverable===3?'open':''}`}>
+                  <div className="wyg-body-inner">
+                    <p className="wyg-text">Every framework includes a "Ways to Save" section tailored to the destination. This isn't generic advice like "eat at local restaurants" — it's specific, researched intelligence about where money is wasted and where it can be redirected. We break down accommodation pricing by neighborhood, identify the overpriced tourist traps vs. the local-priced equivalents, and build cost models that show exactly what a trip costs per person per day at different comfort levels.</p>
+                    <p className="wyg-text">The money intelligence covers: accommodation strategy (neighborhood selection, Airbnb vs hotel economics for your group size), food budgeting (where to splurge vs where the cheap food is actually better), transit optimization (when to walk, when to metro, when a day pass pays for itself), experience prioritization (which paid attractions are worth it and which are skippable), group purchasing strategies (tent reservations, group tours, shared accommodation), and timing savings (which days of the week and times of day save money at specific venues).</p>
+                    <div className="wyg-example">
+                      <div className="wyg-example-label">Real Example: Munich Oktoberfest Money Intelligence</div>
+                      <div className="wyg-example-text">The Munich framework's money section is one of our most detailed. It covers: Oktoberfest tent reservation economics (free entry but you need a food/drink commitment — we break down the real per-person cost), Glockenbachviertel Airbnb pricing vs Marienplatz hotel pricing (the neighborhood we recommend is 35% cheaper and has better nightlife), supermarket strategy for breakfast (Aldi runs at German prices — €1.50 breakfast vs €12 hotel breakfast), Bavaria day trip costs (Salzburg by train is €29 round-trip and takes 90 minutes), and credit card optimization for euro transactions (no foreign transaction fee cards save 3% on everything). Total estimated savings versus a "book it all on TripAdvisor" approach: $400-700 per person for a 6-day trip.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Deliverable 5: Personalized Recommendation */}
+              <div className="wyg-card" onClick={() => toggleDeliverable(4)}>
+                <div className="wyg-header">
+                  <div className="wyg-num">05</div>
+                  <div className="wyg-header-text">
+                    <div className="wyg-title">Personalized Recommendation</div>
+                    <div className="wyg-subtitle">Not sure where to go? We match you to a destination based on what actually matters.</div>
+                  </div>
+                  <div className={`tw-chevron ${openDeliverable===4?'open':''}`}>&#9662;</div>
+                </div>
+                <div className={`wyg-body ${openDeliverable===4?'open':''}`}>
+                  <div className="wyg-body-inner">
+                    <p className="wyg-text">Half the people who contact us don't have a destination in mind. They know they want to travel, they know roughly when and how much they want to spend, but they don't know where. That's fine — it's actually our favorite kind of client because we get to match them to the right trip instead of reverse-engineering a trip into a destination they picked from Instagram.</p>
+                    <p className="wyg-text">The recommendation process starts with three questions: what kind of trip are you looking for (nightlife, culture, adventure, food, or a mix), how many people, and what's your budget per person? From those inputs and a short conversation, we narrow to 2-3 destinations from our portfolio and explain why each one fits. You pick. We build. No pressure, no affiliate incentives, no sponsored destinations. We recommend what we'd actually book ourselves.</p>
+                    <p className="wyg-text">Try it yourself right now. Answer three questions and see what we'd recommend:</p>
+
+                    {/* Interactive Quiz */}
+                    <div className="quiz-container" onClick={(e) => e.stopPropagation()}>
+                      <div className="quiz-question">What kind of trip are you looking for?</div>
+                      <div className="quiz-options">
+                        {['nightlife','culture','adventure','food','mix'].map(v => (
+                          <div key={v} className={`quiz-option ${quizVibe===v?'selected':''}`} onClick={() => setQuizVibe(v)}>
+                            {{nightlife:'Nightlife',culture:'Culture & History',adventure:'Adventure & Outdoors',food:'Food & Drink',mix:'A Mix of Everything'}[v]}
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="quiz-question">How many people?</div>
+                      <div className="quiz-options">
+                        {['2','3-4','5-6','7-10'].map(g => (
+                          <div key={g} className={`quiz-option ${quizGroup===g?'selected':''}`} onClick={() => setQuizGroup(g)}>
+                            {g} people
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="quiz-question">Budget per person (flights + accommodation)?</div>
+                      <div className="quiz-options">
+                        {[{k:'low',l:'Under $1,500'},{k:'mid',l:'$1,500 - $3,000'},{k:'high',l:'$3,000 - $5,000'},{k:'flex',l:'$5,000+ / Flexible'}].map(b => (
+                          <div key={b.k} className={`quiz-option ${quizBudget===b.k?'selected':''}`} onClick={() => setQuizBudget(b.k)}>
+                            {b.l}
+                          </div>
+                        ))}
+                      </div>
+
+                      {quizResult && (
+                        <div className="quiz-result">
+                          <div style={{fontFamily:'var(--mono)',fontSize:9,letterSpacing:2,textTransform:'uppercase',color:'var(--copper)',marginBottom:8}}>Our Recommendation</div>
+                          <div className="quiz-result-title">{quizResult.pick}</div>
+                          <div className="quiz-result-why">{quizResult.why}</div>
+                          <div className="quiz-result-alt"><strong>Alternative:</strong> {quizResult.alt} — {quizResult.altWhy}</div>
+                          {quizResult.link !== '#' && (
+                            <a href={quizResult.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{marginRight:12}}>View Framework →</a>
+                          )}
+                          <button className="quiz-reset" onClick={resetQuiz}>Start Over</button>
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </Reveal>
+          </div>
         </div>
       </div>
     </>
