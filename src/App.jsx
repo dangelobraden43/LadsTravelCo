@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { IMAGES } from './images';
 
 /* ===== IMAGE DATA ===== */
@@ -903,6 +904,7 @@ export default function App() {
           <div className="footer-copy">2026</div>
         </div>
       </footer>
+      <SpeedInsights />
     </>
   );
 }
