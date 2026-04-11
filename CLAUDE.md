@@ -70,7 +70,7 @@
 - Vibe selector verified: 6 vibes, all destination mappings logical, every destination in at least one vibe
 - internal/brady/CONTEXT.md updated with 6-MONTH FREE MODEL section
 
-**APRIL 11, 2026 — SESSION 4 (Pre-Launch QA Audit):**
+**APRIL 11, 2026 — SESSION 4 (Pre-Launch QA Audit + Sprint Setup):**
 - Full production bundle audit: 20/20 critical content checks pass in build output
 - All 31 NEW_IMAGES keys verified present (16 batch 1 + 15 batch 2)
 - 4 domestic cards received photos: San Juan (surfGroup), Phoenix (mountainOverlook), Las Vegas (spiceAlley), Charleston (bondiRocks) — all 9 domestic cards now have images
@@ -79,6 +79,10 @@
 - Verified live Vercel deploy: sitemap.xml serving 12 URLs, robots.txt correct, framework pages loading
 - Ryder Cup 2027 callout confirmed in dublin-galway.html, Icelandair stopover confirmed in iceland.html
 - All framework HTMLs have Umami analytics and Microsoft Clarity placeholder
+- Created internal/brady/3-WEEK-SPRINT.md — living priority roadmap (4 tiers, 20+ items)
+- Updated /morning command to read sprint file and recommend from highest unchecked tier
+
+**Active sprint:** `internal/brady/3-WEEK-SPRINT.md` is the living priority list. Every session starts with `/morning`.
 
 ---
 
