@@ -943,73 +943,78 @@ export default function App() {
       <VibeSelector selectedVibe={selectedVibe} onSelect={(v) => setSelectedVibe(selectedVibe === v ? null : v)} scrollTo={scrollTo} />
 
       {/* EARLY ACCESS EMAIL CAPTURE */}
-      <section style={{padding:'48px 24px',textAlign:'center',background:'linear-gradient(180deg, var(--bg) 0%, var(--surface) 50%, var(--bg) 100%)'}}>
+      <section style={{padding:'56px 24px',textAlign:'center',background:'linear-gradient(180deg, var(--bg) 0%, var(--surface) 50%, var(--bg) 100%)'}}>
         <Reveal>
           <div style={{maxWidth:520,margin:'0 auto'}}>
             <div className="section-label" style={{textAlign:'center',marginBottom:8}}>Free Through 2026</div>
-            <h2 style={{fontFamily:'var(--serif)',fontSize:'clamp(1.4rem, 3vw, 1.8rem)',fontWeight:600,marginBottom:8}}>Free personal travel consulting. <em>Seriously.</em></h2>
-            <p style={{fontSize:14,color:'var(--muted)',marginBottom:24}}>Every trip we plan through 2026 is free. Drop your email and we'll reach out to start planning yours.</p>
+            <h2 style={{fontFamily:'var(--editorial)',fontSize:'clamp(1.4rem, 3vw, 2rem)',fontWeight:600,marginBottom:12}}>Free personal travel consulting. <em>Seriously.</em></h2>
+            <p style={{fontSize:14,color:'var(--muted)',marginBottom:28,lineHeight:1.7}}>Every trip we plan through 2026 is free. Drop your email and we'll reach out to start planning yours.</p>
             <form action="https://formspree.io/f/xvzvekkk" method="POST" style={{display:'flex',gap:8,maxWidth:420,margin:'0 auto',flexWrap:'wrap',justifyContent:'center'}}>
               <input type="hidden" name="_subject" value="Early Access Signup" />
-              <input type="email" name="email" required placeholder="your@email.com" style={{flex:'1 1 240px',padding:'10px 16px',borderRadius:8,border:'1px solid var(--border2)',background:'var(--surface)',color:'var(--cream)',fontSize:14,fontFamily:'var(--sans)',outline:'none'}} />
+              <input type="email" name="email" required placeholder="your@email.com" style={{flex:'1 1 240px',padding:'12px 18px',borderRadius:10,border:'1px solid var(--border2)',background:'var(--surface)',color:'var(--cream)',fontSize:14,fontFamily:'var(--sans)',outline:'none'}} />
               <button type="submit" className="btn-primary-pill" style={{whiteSpace:'nowrap'}}>Get Early Access</button>
             </form>
           </div>
         </Reveal>
       </section>
 
+      {/* GRADIENT: dark → light */}
+      <div className="gradient-dark-to-light" />
+
       {/* DESTINATIONS */}
       <div id="destinations">
         <DestinationsSection selectedVibe={selectedVibe} />
       </div>
 
-      {/* PHOTO STRIP */}
-      <div style={{padding:'0 24px',maxWidth:1200,margin:'0 auto'}}>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:6,borderRadius:12,overflow:'hidden'}}>
-          <img src={NEW_IMAGES.pantheonRome} alt="Pantheon Rome" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.pragueSkyline} alt="Prague skyline" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.templeBarDublin} alt="Temple Bar Dublin" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.fitzroyBeach2} alt="Fitzroy Island beach" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.klimtKiss} alt="Klimt The Kiss Vienna" style={{width:'100%',height:160,objectFit:'cover'}} />
+      {/* PHOTO STRIP: destinations → system */}
+      <div className="photo-strip" style={{background:'var(--light-bg)'}}>
+        <div style={{maxWidth:1200,margin:'0 auto',padding:'0 24px'}}>
+          <div className="photo-strip-grid" style={{gridTemplateColumns:'repeat(5, 1fr)',borderRadius:12,overflow:'hidden'}}>
+            <img src={NEW_IMAGES.pantheonRome} alt="Pantheon Rome" style={{height:180}} />
+            <img src={NEW_IMAGES.pragueSkyline} alt="Prague skyline" style={{height:180}} />
+            <img src={BATCH3_IMAGES.templeBarDublin} alt="Temple Bar Dublin" style={{height:180}} />
+            <img src={NEW_IMAGES.fitzroyBeach2} alt="Fitzroy Island beach" style={{height:180}} />
+            <img src={BATCH3_IMAGES.klimtKiss} alt="Klimt The Kiss Vienna" style={{height:180}} />
+          </div>
         </div>
       </div>
+
+      {/* GRADIENT: light → light-alt */}
+      <div className="gradient-light-to-light-alt" />
 
       {/* SYSTEM */}
       <div id="system">
         <SystemSection selectedVibe={selectedVibe} />
       </div>
 
-      {/* PHOTO STRIP — BATCH 3 */}
-      <div style={{padding:'0 24px',maxWidth:1200,margin:'24px auto 0'}}>
-        <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 2fr',gap:6,borderRadius:12,overflow:'hidden'}}>
-          <img src={BATCH3_IMAGES.hawaiiPillbox} alt="Hawaii pillbox hike coastline" style={{width:'100%',height:180,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.dresdenFrauenkirche} alt="Dresden Frauenkirche" style={{width:'100%',height:180,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.busBarNight} alt="Bus bar string lights" style={{width:'100%',height:180,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.vividDroneHeart} alt="Vivid Sydney drone heart" style={{width:'100%',height:180,objectFit:'cover'}} />
+      {/* PHOTO STRIP: system → domestic */}
+      <div className="photo-strip" style={{background:'var(--light-bg-alt)'}}>
+        <div style={{maxWidth:1200,margin:'0 auto',padding:'0 24px'}}>
+          <div className="photo-strip-grid" style={{gridTemplateColumns:'2fr 1fr 1fr 2fr',borderRadius:12,overflow:'hidden'}}>
+            <img src={BATCH3_IMAGES.hawaiiPillbox} alt="Hawaii pillbox hike coastline" style={{height:200}} />
+            <img src={BATCH3_IMAGES.dresdenFrauenkirche} alt="Dresden Frauenkirche" style={{height:200}} />
+            <img src={BATCH3_IMAGES.busBarNight} alt="Bus bar string lights" style={{height:200}} />
+            <img src={BATCH3_IMAGES.vividDroneHeart} alt="Vivid Sydney drone heart" style={{height:200}} />
+          </div>
         </div>
       </div>
+
+      {/* GRADIENT: light-alt → light */}
+      <div className="gradient-light-alt-to-light" />
 
       {/* DOMESTIC */}
       <div id="domestic">
         <DomesticSection />
       </div>
 
-      {/* PHOTO STRIP 2 */}
-      <div style={{padding:'0 24px',maxWidth:1200,margin:'0 auto'}}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 2fr 1fr',gap:6,borderRadius:12,overflow:'hidden'}}>
-          <img src={NEW_IMAGES.dresdenPalace} alt="Dresden Palace" style={{width:'100%',height:200,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.bondiRocks} alt="Bondi coastal rocks" style={{width:'100%',height:200,objectFit:'cover'}} />
-          <img src={NEW_IMAGES.colosseumInside2} alt="Inside the Colosseum" style={{width:'100%',height:200,objectFit:'cover'}} />
-        </div>
-      </div>
-
-      {/* PHOTO STRIP 3 */}
-      <div style={{padding:'0 24px',maxWidth:1200,margin:'24px auto 0'}}>
-        <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 2fr',gap:6,borderRadius:12,overflow:'hidden'}}>
-          <img src={NEW_IMAGES.rockArchPNW} alt="Rock arch Pacific Northwest" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.europeanWaterfall} alt="European waterfall" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.galwayChristmas} alt="Galway Christmas lights" style={{width:'100%',height:160,objectFit:'cover'}} />
-          <img src={BATCH3_IMAGES.konaBrewing} alt="Kona Brewing Hawaii" style={{width:'100%',height:160,objectFit:'cover'}} />
+      {/* PHOTO STRIP: domestic → lads */}
+      <div className="photo-strip" style={{background:'var(--light-bg)'}}>
+        <div style={{maxWidth:1200,margin:'0 auto',padding:'0 24px'}}>
+          <div className="photo-strip-grid" style={{gridTemplateColumns:'1fr 2fr 1fr',borderRadius:12,overflow:'hidden'}}>
+            <img src={NEW_IMAGES.dresdenPalace} alt="Dresden Palace" style={{height:220}} />
+            <img src={NEW_IMAGES.bondiRocks} alt="Bondi coastal rocks" style={{height:220}} />
+            <img src={NEW_IMAGES.colosseumInside2} alt="Inside the Colosseum" style={{height:220}} />
+          </div>
         </div>
       </div>
 
@@ -1018,36 +1023,54 @@ export default function App() {
         <LadsSection />
       </div>
 
-      {/* GIVING BACK */}
-      <section className="section" style={{borderTop:'1px solid var(--border)'}}>
-        <div className="section-inner">
+      {/* PHOTO STRIP: lads → giving back */}
+      <div className="photo-strip" style={{background:'var(--light-bg)'}}>
+        <div style={{maxWidth:1200,margin:'0 auto',padding:'0 24px'}}>
+          <div className="photo-strip-grid" style={{gridTemplateColumns:'2fr 1fr 1fr 2fr',borderRadius:12,overflow:'hidden'}}>
+            <img src={NEW_IMAGES.rockArchPNW} alt="Rock arch Pacific Northwest" style={{height:180}} />
+            <img src={BATCH3_IMAGES.europeanWaterfall} alt="European waterfall" style={{height:180}} />
+            <img src={BATCH3_IMAGES.galwayChristmas} alt="Galway Christmas lights" style={{height:180}} />
+            <img src={BATCH3_IMAGES.konaBrewing} alt="Kona Brewing Hawaii" style={{height:180}} />
+          </div>
+        </div>
+      </div>
+
+      {/* GRADIENT: light → dark */}
+      <div className="gradient-light-to-dark" />
+
+      {/* GIVING BACK — DARK SECTION */}
+      <section className="section giving-back-section">
+        <div className="giving-back-bg">
+          <img src={NEW_IMAGES.mountainOverlook} alt="" />
+        </div>
+        <div className="section-inner" style={{position:'relative',zIndex:1}}>
           <Reveal>
             <div className="section-header" style={{textAlign:'center'}}>
               <div className="section-label" style={{textAlign:'center'}}>Giving Back</div>
               <div className="section-title" style={{textAlign:'center'}}>Free Through 2026.<br/><span className="muted">Donations Go to Causes We Care About.</span></div>
-              <p className="section-desc" style={{margin:'12px auto 0',textAlign:'center'}}>Through 2026, every trip we plan is free. Any donations go directly to causes we care about — matched to the travel season that inspires them.</p>
+              <p className="section-desc" style={{margin:'16px auto 0',textAlign:'center',color:'var(--cream2)'}}>Through 2026, every trip we plan is free. Any donations go directly to causes we care about — matched to the travel season that inspires them.</p>
             </div>
           </Reveal>
-          <Reveal delay={100}>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:16,marginTop:40}}>
-              {[
-                {window:'Late Aug / Sep',cause:'Breast Cancer Research',why:'October awareness approaching',icon:'\uD83C\uDF80'},
-                {window:'Nov / Dec',cause:"Mott Children's Hospital",why:'Holiday giving season',icon:'\u2764\uFE0F'},
-                {window:'Apr / May',cause:'Protecting Our Parks',why:'Earth Day, spring outdoors',icon:'\uD83C\uDF32'},
-                {window:'Jul / Aug',cause:'Sports Science Medical Research',why:'Summer athletics season',icon:'\u26BD'},
-                {window:'Rotating',cause:'Current Events',why:'Responding to what matters now',icon:'\uD83C\uDF0D'}
-              ].map((c,i) => (
-                <div key={i} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'20px 16px',textAlign:'center'}}>
-                  <div style={{fontSize:28,marginBottom:8}}>{c.icon}</div>
-                  <div style={{fontFamily:'var(--mono)',fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',marginBottom:6}}>{c.window}</div>
-                  <div style={{fontFamily:'var(--serif)',fontSize:'1.05rem',fontWeight:600,marginBottom:4}}>{c.cause}</div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))',gap:16,marginTop:48}}>
+            {[
+              {window:'Late Aug / Sep',cause:'Breast Cancer Research',why:'October awareness approaching',icon:'\uD83C\uDF80'},
+              {window:'Nov / Dec',cause:"Mott Children's Hospital",why:'Holiday giving season',icon:'\u2764\uFE0F'},
+              {window:'Apr / May',cause:'Protecting Our Parks',why:'Earth Day, spring outdoors',icon:'\uD83C\uDF32'},
+              {window:'Jul / Aug',cause:'Sports Science Medical Research',why:'Summer athletics season',icon:'\u26BD'},
+              {window:'Rotating',cause:'Current Events',why:'Responding to what matters now',icon:'\uD83C\uDF0D'}
+            ].map((c,i) => (
+              <Reveal key={i} delay={i * 80}>
+                <div className="giving-back-card">
+                  <div style={{fontSize:32,marginBottom:12}}>{c.icon}</div>
+                  <div style={{fontFamily:'var(--mono)',fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',marginBottom:8}}>{c.window}</div>
+                  <div style={{fontFamily:'var(--editorial)',fontSize:'1.1rem',fontWeight:600,marginBottom:6,color:'var(--cream)'}}>{c.cause}</div>
                   <div style={{fontSize:12,color:'var(--dim)'}}>{c.why}</div>
                 </div>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal delay={200}>
-            <p style={{textAlign:'center',fontSize:13,color:'var(--dim)',marginTop:32,maxWidth:480,margin:'32px auto 0'}}>This isn't a marketing angle. It's year zero. Free service, real charity, build the portfolio, prove the system. Paid consulting launches 2027.</p>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={400}>
+            <p style={{textAlign:'center',fontSize:13,color:'var(--dim)',maxWidth:480,margin:'40px auto 0',lineHeight:1.7}}>This isn't a marketing angle. It's year zero. Free service, real charity, build the portfolio, prove the system. Paid consulting launches 2027.</p>
           </Reveal>
         </div>
       </section>
@@ -1161,7 +1184,8 @@ function DestinationsSection({ selectedVibe }) {
                 const isMatch = selectedVibe && vibeDestNames.includes(dest.name);
                 const isDimmed = selectedVibe && !vibeDestNames.includes(dest.name);
                 return (
-                <a key={dest.name} href={dest.link} target="_blank" rel="noopener noreferrer" className={`dest-card ${isMatch ? 'vibe-match' : ''} ${isDimmed ? 'vibe-dim' : ''}`} style={{textDecoration:'none'}}>
+                <Reveal key={dest.name} delay={i * 100}>
+                <a href={dest.link} target="_blank" rel="noopener noreferrer" className={`dest-card ${isMatch ? 'vibe-match' : ''} ${isDimmed ? 'vibe-dim' : ''}`} style={{textDecoration:'none'}}>
                   <img src={IMAGES[dest.img]} alt={dest.name} />
                   <div className="dest-card-overlay" />
                   <div className="dest-card-badge"><IconMapPin /> <span>{dest.stats[0].n} {dest.stats[0].l.split(' ')[0]}</span></div>
@@ -1182,6 +1206,7 @@ function DestinationsSection({ selectedVibe }) {
                     </div>
                   </div>
                 </a>
+                </Reveal>
                 );
               })}
             </div>
@@ -1308,7 +1333,7 @@ function SystemSection({ selectedVibe }) {
 
         {/* Process Steps — Interactive (v0 pattern) */}
         <Reveal delay={100}>
-          <h3 style={{fontFamily:'var(--serif)',fontSize:'1.5rem',fontWeight:600,marginBottom:24}}>How We Work</h3>
+          <h3 style={{fontFamily:'var(--editorial)',fontSize:'1.6rem',fontWeight:600,marginBottom:28,color:'var(--light-text)'}}>How We Work</h3>
           <div className="process-grid">
             <div className="process-list">
               {steps.map((s,i) => (
@@ -1586,10 +1611,10 @@ function DomesticSection() {
           </div>
         </Reveal>
 
-        <Reveal delay={200}>
-          <div className="domestic-grid">
+        <div className="domestic-grid">
             {DOMESTIC.map((d,i) => (
-              <div key={i} className="dom-card" onClick={() => setExpandedDom(expandedDom===i?null:i)}>
+              <Reveal key={i} delay={i * 80}>
+              <div className="dom-card" onClick={() => setExpandedDom(expandedDom===i?null:i)}>
                 <div className="dom-card-img">
                   {d.img && <img src={IMAGES[d.img] || NEW_IMAGES[d.img] || BATCH3_IMAGES[d.img]} alt={d.name} />}
                   {!d.img && <div style={{width:'100%',height:'100%',background:'linear-gradient(135deg, var(--elevated), var(--surface))',position:'relative'}}><div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--serif)',fontSize:'2.2rem',fontWeight:700,color:'var(--dim)',letterSpacing:2}}>{d.name}</span></div></div>}
@@ -1619,9 +1644,9 @@ function DomesticSection() {
                   )}
                 </div>
               </div>
+              </Reveal>
             ))}
           </div>
-        </Reveal>
       </div>
     </section>
   );
@@ -1698,10 +1723,10 @@ function LadsSection() {
         </Reveal>
 
         {/* Founder Cards */}
-        <Reveal delay={100}>
           <div className="founders-grid">
             {founders.map((f,i) => (
-              <div key={i} className="founder-card">
+              <Reveal key={i} delay={i * 150}>
+              <div className="founder-card">
                 <div className="founder-card-img">
                   <img src={IMAGES[f.img]} alt={f.name} />
                   <div className="founder-card-img-overlay" />
@@ -1722,13 +1747,13 @@ function LadsSection() {
                   </div>
                 </div>
               </div>
+              </Reveal>
             ))}
           </div>
-        </Reveal>
 
         {/* Origin Story */}
         <Reveal delay={200}>
-          <h3 style={{fontFamily:'var(--serif)',fontSize:'1.5rem',fontWeight:600,textAlign:'center',margin:'80px 0 40px'}}>The Origin Story</h3>
+          <h3 style={{fontFamily:'var(--editorial)',fontSize:'1.6rem',fontWeight:600,textAlign:'center',margin:'80px 0 40px',color:'var(--light-text)'}}>The Origin Story</h3>
           <div className="timeline" style={{maxWidth:600,margin:'0 auto'}}>
             {timeline.map((t,i) => (
               <div key={i} className="timeline-item">
@@ -1785,17 +1810,17 @@ function LadsSection() {
           </div>
         </Reveal>
 
-        {/* Photos */}
+        {/* Photos — The Lads in the field */}
         <Reveal delay={200}>
-          <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap',margin:'48px 0'}}>
-            <img src={NEW_IMAGES.pragueOldTown} alt="Lads in Prague Old Town" style={{maxHeight:200,borderRadius:8}} />
-            <img src={BATCH3_IMAGES.bradyStPeters} alt="Brady at St Peters Rome" style={{maxHeight:200,borderRadius:8}} />
-            <img src={NEW_IMAGES.galwayGuinness} alt="Lads with Guinness in Galway" style={{maxHeight:200,borderRadius:8}} />
-            <img src={BATCH3_IMAGES.kangarooFeeding} alt="Feeding a kangaroo in Australia" style={{maxHeight:200,borderRadius:8}} />
-            <img src={NEW_IMAGES.surfGroup} alt="Surf group in Australia" style={{maxHeight:200,borderRadius:8}} />
-            <img src={BATCH3_IMAGES.munichMarienplatz} alt="Brady at Marienplatz Munich" style={{maxHeight:200,borderRadius:8}} />
-            <img src={NEW_IMAGES.schonbrunnWalk} alt="Walking into Schonbrunn Palace" style={{maxHeight:200,borderRadius:8}} />
-            <img src={NEW_IMAGES.mountainOverlook} alt="Mountain overlook Costa Rica" style={{maxHeight:200,borderRadius:8}} />
+          <div className="lads-gallery">
+            <img src={NEW_IMAGES.pragueOldTown} alt="Lads in Prague Old Town" />
+            <img src={BATCH3_IMAGES.bradyStPeters} alt="Brady at St Peters Rome" />
+            <img src={NEW_IMAGES.galwayGuinness} alt="Lads with Guinness in Galway" />
+            <img src={BATCH3_IMAGES.kangarooFeeding} alt="Feeding a kangaroo in Australia" />
+            <img src={NEW_IMAGES.surfGroup} alt="Surf group in Australia" />
+            <img src={BATCH3_IMAGES.munichMarienplatz} alt="Brady at Marienplatz Munich" />
+            <img src={NEW_IMAGES.schonbrunnWalk} alt="Walking into Schonbrunn Palace" />
+            <img src={NEW_IMAGES.mountainOverlook} alt="Mountain overlook Costa Rica" />
           </div>
         </Reveal>
 
