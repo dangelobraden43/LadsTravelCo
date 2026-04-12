@@ -4,6 +4,8 @@ import { NEW_IMAGES } from './images-new';
 import { BATCH3_IMAGES } from './images-batch3';
 import { HERO_IMAGES } from './images-hero';
 import { BATCH4_IMAGES } from './images-batch4';
+import { HEIC_HERO_IMAGES } from './images-heic-hero';
+import { HEIC_CARD_IMAGES } from './images-heic-card';
 
 /* ===== IMAGE DATA ===== */
 
