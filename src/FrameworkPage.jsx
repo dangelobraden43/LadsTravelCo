@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './FrameworkPage.css';
 
 export default function FrameworkPage({ data, heroImg }) {
   const [activeNav, setActiveNav] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState('All');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,7 +24,24 @@ export default function FrameworkPage({ data, heroImg }) {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const totalSpots = data.categories.reduce((sum, cat) => sum + cat.spots.length, 0);
+  // Support v2 spots array OR legacy categories
+  const hasV2Spots = data.spots && data.spots.length > 0;
+  const totalSpots = hasV2Spots
+    ? data.spots.length
+    : data.categories.reduce((sum, cat) => sum + cat.spots.length, 0);
+
+  // Build unique category list from v2 spots
+  const spotCategories = useMemo(() => {
+    if (!hasV2Spots) return [];
+    const cats = [...new Set(data.spots.map(s => s.category))];
+    return ['All', ...cats];
+  }, [data.spots, hasV2Spots]);
+
+  const filteredSpots = useMemo(() => {
+    if (!hasV2Spots) return [];
+    if (categoryFilter === 'All') return data.spots;
+    return data.spots.filter(s => s.category === categoryFilter);
+  }, [data.spots, categoryFilter, hasV2Spots]);
 
   return (
     <div className="fw-page" style={style}>
@@ -93,8 +111,72 @@ export default function FrameworkPage({ data, heroImg }) {
         )}
       </section>
 
-      {/* ===== SPOTS BY CATEGORY ===== */}
-      {data.categories.map(cat => (
+      {/* ===== SPOTS — V2 (with category filters) ===== */}
+      {hasV2Spots && (
+        <section id="spots" className="fw-section">
+          <div className="fw-section-label">ALL SPOTS</div>
+          <h2 className="fw-section-title">{totalSpots} Spots — {data.spots.filter(s => s.validated && s.validator !== 'Research').length} Personally Validated</h2>
+
+          {/* Category filter pills */}
+          <div className="fw-cat-filters">
+            {spotCategories.map(cat => (
+              <button
+                key={cat}
+                className={`fw-cat-pill${categoryFilter === cat ? ' active' : ''}`}
+                onClick={() => setCategoryFilter(cat)}
+              >
+                {cat}{cat !== 'All' && ` (${data.spots.filter(s => s.category === cat).length})`}
+              </button>
+            ))}
+          </div>
+
+          <div className="fw-spots-grid">
+            {filteredSpots.map((spot, i) => {
+              const isLads = spot.validator && spot.validator !== 'Research';
+              const hasHH = spot.happyHour && spot.happyHour !== 'None known' && spot.happyHour !== 'N/A' && spot.happyHour !== 'TBD';
+              const hasSave = spot.wayToSave && spot.wayToSave !== 'TBD';
+              return (
+                <div key={i} className={`fw-spot${spot.featured ? ' featured' : ''}`}>
+                  <div className="fw-spot-top">
+                    <div className="fw-spot-name">{spot.name}</div>
+                    {spot.priceRange && <span className="fw-spot-price-badge">{spot.priceRange}</span>}
+                  </div>
+                  <div className="fw-spot-area">{spot.neighborhood || spot.area}{spot.city ? `, ${spot.city}` : ''}</div>
+                  <p className="fw-spot-desc">{spot.description}</p>
+
+                  {hasHH && (
+                    <div className="fw-spot-hh">
+                      <span className="fw-spot-hh-label">HAPPY HOUR</span>
+                      <span className="fw-spot-hh-text">{spot.happyHour}</span>
+                    </div>
+                  )}
+
+                  {hasSave && (
+                    <div className="fw-spot-save">
+                      <span className="fw-spot-save-icon">&#128161;</span>
+                      <span className="fw-spot-save-text">{spot.wayToSave}</span>
+                    </div>
+                  )}
+
+                  <div className="fw-spot-meta">
+                    <span className={`fw-spot-badge ${isLads ? 'validated' : 'research'}`}>
+                      {isLads ? spot.validator : 'RESEARCH'}
+                    </span>
+                    <span className="fw-spot-cat-tag">{spot.category}</span>
+                    {spot.bestTime && spot.bestTime !== 'any' && (
+                      <span className="fw-spot-time">{spot.bestTime}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ===== SPOTS — LEGACY (categories array) ===== */}
+      {!hasV2Spots && data.categories.map(cat => (
+        cat.spots.length > 0 && (
         <section key={cat.id} id={cat.id} className="fw-section" style={{ paddingTop: 40 }}>
           <div className="fw-category-header">
             <h3 className="fw-category-name">{cat.name}</h3>
@@ -120,6 +202,7 @@ export default function FrameworkPage({ data, heroImg }) {
             })}
           </div>
         </section>
+        )
       ))}
 
       {/* ===== DAY TRIPS ===== */}
