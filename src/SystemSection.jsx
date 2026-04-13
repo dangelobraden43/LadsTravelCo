@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+
+const Globe = lazy(() => import('./Globe'));
 import { IMAGES } from './images';
 import { NEW_IMAGES } from './images-new';
 import { BATCH3_IMAGES } from './images-batch3';
@@ -312,19 +314,9 @@ export default function SystemSection({ onQuizComplete }) {
             <h2 className="sys-title-dark" style={{fontSize:'clamp(2rem,5vw,3.6rem)'}}>650+ Spots. 20+ Cities.</h2>
             <p className="sys-subtitle-dark">Every one walked into, sat down at, or stumbled out of.</p>
           </Reveal>
-          <div className="sys-db-bubbles">
-            {ALL_CITIES.map((c, i) => {
-              const size = Math.max(64, Math.round(Math.sqrt(c.n) * 12));
-              return (
-                <Reveal key={c.city} delay={i * 50} type="scale">
-                  <div className="sys-db-bubble" style={{width: size, height: size}}>
-                    <div className="sys-db-bubble-count" style={{fontSize: size > 100 ? 28 : size > 80 ? 22 : 16}}>{c.n}</div>
-                    <div className="sys-db-bubble-city">{c.city}</div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
+          <Suspense fallback={<div style={{height:'60vh',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--muted)',letterSpacing:2}}>LOADING GLOBE...</span></div>}>
+            <Globe />
+          </Suspense>
         </div>
       </section>
       <div className="sys-gradient-dark-to-light" />
