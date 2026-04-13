@@ -4,6 +4,12 @@
   min-height: 400px;
   position: relative;
   margin-top: 40px;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.globe-wrap.globe-visible {
+  opacity: 1;
 }
 
 .globe-hint {
@@ -17,12 +23,54 @@
   color: var(--dim);
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
+}
+
+/* ===== TOOLTIP ===== */
+.globe-tooltip {
+  background: rgba(28, 25, 21, 0.92);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: none;
+}
+
+.globe-tooltip-city {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8dcc8;
+  margin-bottom: 2px;
+}
+
+.globe-tooltip-count {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #d4a843;
+}
+
+.globe-tooltip-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: #b8886e;
+  letter-spacing: 1px;
+  margin-top: 4px;
 }
 
 @media (max-width: 768px) {
   .globe-wrap {
     height: 50vh;
     min-height: 320px;
+  }
+  .globe-hint {
+    font-size: 9px;
+    letter-spacing: 2px;
   }
 }
 
