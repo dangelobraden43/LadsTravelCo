@@ -35,7 +35,7 @@ const DOMESTIC = [
   {name:"Phoenix + Golf",meta:"Brady · 7 Spots",desc:"The golf trip. Shoulder season pricing in late spring or early fall cuts costs 40% and the weather's still perfect.",img:"phoenix_IMG_2651",imgSrc:"hero",links:[{t:"Google Maps",u:"https://maps.app.goo.gl/PTJn6coPBcRDKbHw5"}]},
   {name:"Smoky Mountains",meta:"Brady · 8 Spots",desc:"Cabin on the quiet side, away from Gatlinburg crowds. Go in October for fall colors that make you forget you're three hours from Nashville.",img:"smokyRockOverlook",links:[]},
   {name:"Las Vegas",meta:"Both Lads",desc:"Best as 3–4 nights. Skip the strip restaurants — the off-strip food scene is where the real value hides.",img:"best_IMG_9695",imgSrc:"hero",links:[]},
-  {name:"Charleston",meta:"Brady",desc:"Best food city in the South, and it's not close. King Street for cocktails, Sullivan's Island for the beach day, Husk for the dinner that sells the trip.",img:"best_100_0110",imgSrc:"hero",links:[{t:"One-Pager",u:"charleston.html"}]},
+  {name:"Charleston",meta:"Brady",desc:"Best food city in the South, and it's not close. King Street for cocktails, Sullivan's Island for the beach day, Husk for the dinner that sells the trip.",img:"best_100_0110",imgSrc:"hero",links:[{t:"One-Pager",u:"/charleston"}]},
 ];
 
 const MICH_SPOTS = {

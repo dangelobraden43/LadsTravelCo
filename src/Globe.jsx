@@ -7,14 +7,14 @@ import './Globe.css';
 const R = 1.5;
 
 const CITIES = [
-  { city: 'Sydney', n: 123, lat: -33.87, lng: 151.21, link: 'australia-nz.html' },
-  { city: 'Barcelona', n: 115, lat: 41.39, lng: 2.17, link: 'spain.html' },
-  { city: 'Rome', n: 43, lat: 41.90, lng: 12.50, link: 'italy.html' },
+  { city: 'Sydney', n: 123, lat: -33.87, lng: 151.21, link: '/australia' },
+  { city: 'Barcelona', n: 115, lat: 41.39, lng: 2.17, link: '/spain' },
+  { city: 'Rome', n: 43, lat: 41.90, lng: 12.50, link: '/rome' },
   { city: 'Dublin', n: 39, lat: 53.35, lng: -6.26, link: '/dublin' },
-  { city: 'Prague', n: 38, lat: 50.08, lng: 14.44, link: 'prague-vienna.html' },
-  { city: 'Vienna', n: 37, lat: 48.21, lng: 16.37, link: 'prague-vienna.html' },
+  { city: 'Prague', n: 38, lat: 50.08, lng: 14.44, link: '/prague' },
+  { city: 'Vienna', n: 37, lat: 48.21, lng: 16.37, link: '/prague' },
   { city: 'Costa Rica', n: 28, lat: 9.62, lng: -84.63 },
-  { city: 'Tasmania', n: 27, lat: -42.88, lng: 147.33, link: 'australia-nz.html' },
+  { city: 'Tasmania', n: 27, lat: -42.88, lng: 147.33, link: '/australia' },
   { city: 'Vancouver', n: 22, lat: 49.28, lng: -123.12 },
   { city: 'Chicago', n: 15, lat: 41.88, lng: -87.63 },
   { city: 'Galway', n: 15, lat: 53.27, lng: -9.06, link: '/dublin' },
