@@ -343,7 +343,7 @@ function StatPill({ icon, target, label }) {
 function PhotoStrip({ images, height = 220, columns }) {
   const cols = columns || images.length;
   return (
-    <div style={{
+    <div className="photo-strip-responsive" style={{
       display: 'grid',
       gridTemplateColumns: `repeat(${cols}, 1fr)`,
       gap: 4,
@@ -389,16 +389,13 @@ function VibeSelector({ selectedVibe, setSelectedVibe }) {
   };
 
   return (
-    <section className="vibe-section gradient-dark-to-light" style={{ padding: '80px 0 60px' }}>
+    <section className="vibe-section" style={{ padding: '80px 0 60px' }}>
       <div className="section-inner">
         <Reveal>
           <div className="section-label" style={{ color: 'var(--gold)' }}>HOW DO YOU TRAVEL?</div>
           <h2 className="section-title" style={{ color: 'var(--light-text, var(--cream))' }}>Pick a Vibe. We'll Match the Trip.</h2>
         </Reveal>
         <div className="vibe-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 20,
           marginTop: 40,
         }}>
           {VIBES.map((vibe, i) => {
@@ -543,7 +540,6 @@ function DestinationsSection({ selectedVibe }) {
         {filteredDests.length > 0 && (
           <div className="dest-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 16,
           }}>
             {filteredDests.map((dest, i) => {
@@ -696,11 +692,7 @@ function DestinationsSection({ selectedVibe }) {
                 fontSize: 28, marginBottom: 32,
               }}>What's Next</h2>
             </Reveal>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: 16,
-            }}>
+            <div className="dest-grid" style={{ gap: 16 }}>
               {filteredBucket.map((item, i) => {
                 const match = selectedVibe ? isVibeMatch(item.name, 'bucket') : null;
                 return (

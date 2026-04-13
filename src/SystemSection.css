@@ -1077,3 +1077,292 @@
     text-align: center;
   }
 }
+
+/* ===== MISSING CLASS FIXES — AUDIT PASS ===== */
+
+.sys-root { overflow: hidden; }
+
+/* Process step internals */
+.sys-step-bg-num {
+  font-family: var(--display);
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.1;
+  position: absolute;
+  top: -4px; left: 8px;
+  line-height: 1;
+  pointer-events: none;
+}
+.sys-step-content { position: relative; z-index: 1; }
+.sys-subtitle-light {
+  font-family: var(--editorial);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 600;
+  color: var(--light-text);
+  margin-bottom: 24px;
+}
+.sys-subtitle-dark {
+  font-family: var(--editorial);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--gold);
+  margin-top: 8px;
+}
+.sys-myth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 640px) { .sys-myth-grid { grid-template-columns: 1fr; } }
+
+/* Deliverable cards */
+.sys-del-included {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.sys-del-title {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+.sys-del-desc {
+  font-size: 13px;
+  color: var(--cream2);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+.sys-del-preview {
+  padding: 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  min-height: 80px;
+}
+.sys-del-mock-line {
+  height: 6px;
+  background: rgba(212,168,67,0.2);
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+.sys-del-mock-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.sys-del-mock-dots span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(212,168,67,0.3);
+}
+.sys-del-mini-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sys-del-mini-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--cream2);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sys-del-maps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.sys-del-map-pin {
+  font-size: 11px;
+  color: var(--cream2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sys-del-money {
+  text-align: center;
+  padding: 12px 0;
+}
+.sys-del-money-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-size: 18px;
+}
+
+/* Quiz missing classes */
+.sys-quiz-start {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 40px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 24px rgba(212,168,67,0.2);
+}
+.sys-quiz-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(212,168,67,0.3);
+}
+.sys-quiz-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: var(--radius-full);
+  transition: width 0.4s var(--transition);
+}
+.sys-quiz-q-text {
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.sys-quiz-q-sub {
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 24px;
+}
+.sys-quiz-input-wrap {
+  margin-top: 12px;
+}
+.sys-quiz-input {
+  width: 100%;
+  padding: 14px 20px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.sys-quiz-input::placeholder { color: var(--dim); }
+.sys-quiz-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,168,67,0.1); }
+
+.sys-quiz-sub-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-left: 20px;
+}
+.sys-quiz-sub {
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 8px 18px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--cream2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sys-quiz-sub:hover { border-color: var(--gold-border); }
+.sys-quiz-sub.selected { background: rgba(212,168,67,0.12); border-color: var(--gold); color: var(--gold); }
+
+.sys-quiz-counter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  padding-left: 20px;
+}
+.sys-quiz-counter-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.sys-quiz-counter-btn:hover { border-color: var(--gold); color: var(--gold); }
+.sys-quiz-counter-val {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold);
+  min-width: 32px;
+  text-align: center;
+}
+
+.sys-quiz-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.sys-quiz-back {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.sys-quiz-back:hover { color: var(--cream); }
+.sys-quiz-skip {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.sys-quiz-skip:hover { color: var(--cream2); }
+.sys-quiz-next {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 28px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sys-quiz-next:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(212,168,67,0.25); }
+
+.sys-quiz-reset {
+  display: block;
+  margin: 24px auto 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.sys-quiz-reset:hover { color: var(--cream2); }
+
+/* Quiz option teal variant (for avoid questions) */
+.sys-quiz-option.teal.selected {
+  background: rgba(90,154,173,0.12);
+  border-color: var(--teal);
+  color: var(--teal);
+}

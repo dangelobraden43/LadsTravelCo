@@ -222,7 +222,7 @@ export default function SystemSection({ onQuizComplete }) {
             {PROCESS_STEPS.map((step, i) => (
               <Reveal key={i} delay={i * 100} type="scale">
                 <div className="sys-step">
-                  <div className="sys-step-bg-num">{step.num}</div>
+                  <div className="sys-step-num">{step.num}</div>
                   <div className="sys-step-content">
                     <div className="sys-step-title">{step.title}</div>
                     <div className="sys-step-desc">{step.desc}</div>
