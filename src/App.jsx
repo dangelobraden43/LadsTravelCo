@@ -148,6 +148,7 @@ const DESTINATIONS = [
 ];
 
 const BUCKET_LIST = [
+  {name:"Peru / Machu Picchu",route:"LIMA \u2192 CUSCO \u2192 SALKANTAY TREK \u2192 MACHU PICCHU",status:"departing",meta:"Salkantay Trek \u2014 5 days to Machu Picchu",desc:"Brady\u2019s departing May 2026 for the Salkantay Trek. Five days through the Andes to Machu Picchu. The first case study \u2014 built from firsthand experience, not research."},
   {name:"Munich Oktoberfest",route:"CHICAGO \u2192 MUNICH \u2192 SALZBURG",status:"ready",meta:"4\u201310 ppl \u00B7 5\u20138 days \u00B7 Sept 2026",link:"/munich",desc:"Skip the tourist tents. We know which beer hall to hit, where to stay in Glockenbachviertel, and exactly what it costs for groups of 4\u201310."},
   {name:"Poland August",route:"CHICAGO \u2192 KRAKOW \u2192 WARSAW \u2192 GDA\u0143SK",status:"ready",meta:"4\u20138 ppl \u00B7 6\u201310 days \u00B7 Aug 2026",link:"/poland",desc:"LOT flies non-stop from Chicago. Krakow\u2019s nightlife, Auschwitz, Gda\u0144sk beaches \u2014 best value trip in Europe and it\u2019s not close."},
   {name:"Thailand NYE",route:"BANGKOK \u2192 KOH PHANGAN \u2192 KRABI",status:"ready",meta:"4\u20138 ppl \u00B7 10\u201316 days \u00B7 Dec\u2013Jan",link:"/thailand",desc:"Ring in the new year at a Full Moon Party, then island-hop to Krabi. Cathay Pacific routing via Hong Kong. Every logistics headache already solved."},
@@ -263,10 +264,11 @@ const QUIZ_RECS = {
 
 /* ===== BUCKET LIST IMAGE MAP ===== */
 const BUCKET_IMAGES = {
+  "Peru / Machu Picchu": HEIC_HERO_IMAGES.heicHiking_IMG_4195,
   "Munich Oktoberfest": BATCH3_IMAGES.munichMarienplatz,
   "Poland August": NEW_IMAGES.pragueSkyline,
   "Thailand NYE": NEW_IMAGES.fitzroyBeach,
-  "Tour du Mont Blanc": HERO_IMAGES.hiking_7103980642848666692,
+  "Tour du Mont Blanc": HEIC_HERO_IMAGES.heicHiking_IMG_5304,
   "Pilsenfest + Prague": NEW_IMAGES.pilsnerUrquell,
   "Camp Nou Reopening": NEW_IMAGES.sagradaSunset,
   "Ryder Cup 2027": BATCH3_IMAGES.galwayChristmas,
@@ -294,11 +296,11 @@ const heroImages = [
 
 /* ===== PHOTO STRIP IMAGES ===== */
 const photoStrip1 = [
-  NEW_IMAGES.pantheonRome,
-  BATCH3_IMAGES.templeBarDublin,
-  HERO_IMAGES.kilkennyCastleLawn,
+  NEW_IMAGES.sagradaSunset,
+  HERO_IMAGES.olympicDeerAboveClouds,
   NEW_IMAGES.colosseumInside,
-  BATCH3_IMAGES.klimtKiss,
+  HERO_IMAGES.schonbrunnPalaceGardensVienna,
+  BATCH3_IMAGES.oahuSunset,
 ];
 
 const photoStrip2 = [
@@ -508,7 +510,7 @@ function VibeSelector({ selectedVibe, setSelectedVibe }) {
 }
 
 /* ===== DESTINATIONS SECTION ===== */
-function DestinationsSection({ selectedVibe, navigate }) {
+function DestinationsSection({ selectedVibe, setSelectedVibe, navigate }) {
   const [filter, setFilter] = useState('all');
   const activeVibe = VIBES.find(v => v.id === selectedVibe);
 
@@ -535,9 +537,31 @@ function DestinationsSection({ selectedVibe, navigate }) {
           </h2>
         </Reveal>
 
+        {/* Vibe pills — compact horizontal selector */}
+        <div style={{
+          display: 'flex', gap: 6, marginTop: 24, justifyContent: 'center', flexWrap: 'wrap',
+        }}>
+          {VIBES.map(vibe => {
+            const isActive = selectedVibe === vibe.id;
+            return (
+              <button key={vibe.id}
+                onClick={() => setSelectedVibe(isActive ? null : vibe.id)}
+                style={{
+                  background: isActive ? vibe.color : 'transparent',
+                  color: isActive ? '#fff' : 'var(--light-muted, #888)',
+                  border: isActive ? 'none' : '1px solid var(--light-border, #ddd)',
+                  fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 600,
+                  padding: '6px 14px', borderRadius: 20, cursor: 'pointer',
+                  letterSpacing: 0.5, transition: 'all 0.2s ease', whiteSpace: 'nowrap',
+                }}
+              >{vibe.label}</button>
+            );
+          })}
+        </div>
+
         {/* Filter tabs */}
         <div className="filter-tabs" style={{
-          display: 'flex', gap: 8, marginTop: 32, marginBottom: 40,
+          display: 'flex', gap: 8, marginTop: 16, marginBottom: 40,
           justifyContent: 'center',
         }}>
           {[
@@ -756,14 +780,14 @@ function DestinationsSection({ selectedVibe, navigate }) {
                       }} />
                       <div style={{
                         position: 'absolute', top: 16, right: 16,
-                        background: item.status === 'ready' ? 'rgba(201,168,76,0.9)' : 'rgba(90,154,173,0.9)',
-                        color: '#fff',
+                        background: item.status === 'departing' ? 'rgba(201,168,76,0.95)' : item.status === 'ready' ? 'rgba(201,168,76,0.9)' : 'rgba(90,154,173,0.9)',
+                        color: item.status === 'departing' ? '#1a1a1a' : '#fff',
                         fontFamily: 'var(--mono)',
                         fontSize: 10, fontWeight: 700,
                         padding: '5px 12px', borderRadius: 20,
                         letterSpacing: 1, zIndex: 2,
                       }}>
-                        {item.status === 'ready' ? 'FRAMEWORK READY' : 'BUILDING'}
+                        {item.status === 'departing' ? 'DEPARTING MAY 2026' : item.status === 'ready' ? 'FRAMEWORK READY' : 'BUILDING'}
                       </div>
                       <div style={{
                         position: 'absolute', bottom: 0, left: 0, right: 0,
@@ -967,18 +991,7 @@ export default function App() {
             Two friends. Four continents. Every recommendation from personal experience.
           </p>
 
-          {/* Stat pills */}
-          <div className="hero-stats" style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 16,
-            marginTop: 48,
-            flexWrap: 'wrap',
-          }}>
-            <StatPill icon={<IconPin />} target="650" label="Validated Spots" />
-            <StatPill icon={<IconGlobe />} target="20" label="Cities Explored" />
-            <StatPill icon={<IconPlane />} target="4" label="Continents" />
-          </div>
+          {/* Stats moved to Database section — hero is photography-first */}
         </div>
 
         {/* Scroll indicator */}
@@ -1021,14 +1034,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* ===== VIBE SELECTOR ===== */}
-      <VibeSelector selectedVibe={selectedVibe} setSelectedVibe={setSelectedVibe} />
-
       {/* ===== PHOTO STRIP 1 (quick rhythm) ===== */}
       <PhotoStrip images={photoStrip1} height={180} columns={5} />
 
-      {/* ===== DESTINATIONS ===== */}
-      <DestinationsSection selectedVibe={selectedVibe} navigate={navigate} />
+      {/* ===== DESTINATIONS (vibe pills integrated) ===== */}
+      <DestinationsSection selectedVibe={selectedVibe} setSelectedVibe={setSelectedVibe} navigate={navigate} />
 
       {/* ===== PHOTO STRIP 2 ===== */}
       <PhotoStrip images={photoStrip2} height={260} columns={4} />

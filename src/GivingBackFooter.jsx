@@ -60,6 +60,9 @@ export default function GivingBackFooter() {
             <p className="gb-statement">
               Every trip we plan through 2026 is free. Any donations go straight to these causes. We don't take a cut.
             </p>
+            <p className="gb-statement" style={{ marginTop: 8, fontSize: 15, opacity: 0.7 }}>
+              Free through 2026. Building something that lasts.
+            </p>
           </Reveal>
 
           <div className="gb-causes">

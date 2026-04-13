@@ -58,11 +58,11 @@ function useCountUp(target, duration = 1500) {
 }
 
 const PROCESS_STEPS = [
-  { num: '01', title: 'Fill Out the Intake', desc: '90 seconds. Where, who, when, budget.' },
-  { num: '02', title: '15-Minute Call', desc: 'Flights, stay, experiences — all covered.' },
-  { num: '03', title: 'Research Runs', desc: 'Six AI agents. Flights, neighborhoods, savings.' },
-  { num: '04', title: 'Framework Delivered', desc: 'Designed HTML doc. Cost breakdowns. Validated spots.' },
-  { num: '05', title: 'Follow-Up Included', desc: 'Plans change — we\'re here when they do.' },
+  { num: '01', title: 'Fill Out the Intake', desc: '90 seconds. Where, who, when, budget.', example: 'intake', exampleText: '"Barcelona, group of 6, September, $3K budget, nightlife + food focused"' },
+  { num: '02', title: '15-Minute Call', desc: 'We ask the questions you didn\'t know to ask.', example: 'quote', exampleText: '"You said Barcelona — have you considered September instead of July? 10 degrees cooler, half the crowds, La Merce festival. Here\'s why."' },
+  { num: '03', title: 'Research Runs', desc: 'Six AI agents build your intelligence layer.', example: 'agents', agents: ['Flight Scanner', 'Neighborhood Profiler', 'Cost Modeler', 'Validation Engine', 'Booking Optimizer', 'Local Intel'] },
+  { num: '04', title: 'Framework Delivered', desc: 'A designed trip document with everything you need.', example: 'framework', exampleText: 'Interactive HTML doc: day-by-day itinerary, 30+ mapped spots, cost breakdowns by category, timing windows, Google Maps lists.' },
+  { num: '05', title: 'Follow-Up Included', desc: 'Plans change — we\'re here when they do.', example: 'followup', exampleText: '"Hey, those ORD\u2192Dublin flights dropped to $485. Book today \u2014 they won\'t last."' },
 ];
 
 const FLIGHT_STRATEGIES = [
@@ -216,7 +216,7 @@ export default function SystemSection({ onQuizComplete }) {
           <Reveal>
             <div className="sys-label">THE SYSTEM</div>
             <h2 className="sys-title-light">How It Actually Works</h2>
-            <p className="sys-desc-light">650+ spots. Cost models built by a data scientist. Nothing we haven't done ourselves.</p>
+            <p className="sys-desc-light">180+ spots across 29 cities and 13 countries. Cost models built by a data scientist. Nothing we haven't done ourselves.</p>
           </Reveal>
 
           {/* Process Pipeline */}
@@ -228,6 +228,28 @@ export default function SystemSection({ onQuizComplete }) {
                   <div className="sys-step-content">
                     <div className="sys-step-title">{step.title}</div>
                     <div className="sys-step-desc">{step.desc}</div>
+                    {/* Step example preview */}
+                    <div style={{
+                      marginTop: 12, padding: '10px 14px',
+                      background: 'rgba(201,168,76,0.06)', borderRadius: 8,
+                      border: '1px solid rgba(201,168,76,0.12)',
+                      fontSize: 12, fontFamily: 'var(--sans)', color: '#666',
+                      lineHeight: 1.5,
+                    }}>
+                      {step.example === 'agents' ? (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                          {step.agents.map(a => (
+                            <span key={a} style={{
+                              background: 'rgba(201,168,76,0.12)', padding: '3px 10px',
+                              borderRadius: 12, fontFamily: 'var(--mono)', fontSize: 10,
+                              color: 'var(--gold, #c9a84c)', fontWeight: 600, letterSpacing: 0.5,
+                            }}>{a}</span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span style={{ fontStyle: 'italic' }}>{step.exampleText}</span>
+                      )}
+                    </div>
                   </div>
                   {i < PROCESS_STEPS.length - 1 && <div className="sys-step-connector" />}
                 </div>
@@ -311,8 +333,19 @@ export default function SystemSection({ onQuizComplete }) {
         <div className="sys-inner" style={{textAlign:'center'}}>
           <Reveal type="fade">
             <div className="sys-label-copper">THE DATABASE</div>
-            <h2 className="sys-title-dark" style={{fontSize:'clamp(2rem,5vw,3.6rem)'}}>650+ Spots. 20+ Cities.</h2>
+            <h2 className="sys-title-dark" style={{fontSize:'clamp(2rem,5vw,3.6rem)'}}>180+ Spots. 29 Cities. 13 Countries.</h2>
             <p className="sys-subtitle-dark">Every one walked into, sat down at, or stumbled out of.</p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 32, flexWrap: 'wrap' }}>
+              {[{n:'180+',l:'Validated Spots'},{n:'29',l:'Cities Explored'},{n:'13',l:'Countries'},{n:'4',l:'Continents'}].map((s,i) => (
+                <div key={i} style={{
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(201,168,76,0.15)',
+                  borderRadius: 12, padding: '14px 22px', textAlign: 'center', minWidth: 100,
+                }}>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 22, fontWeight: 700, color: 'var(--gold)' }}>{s.n}</div>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--cream2)', marginTop: 4 }}>{s.l}</div>
+                </div>
+              ))}
+            </div>
           </Reveal>
           <Suspense fallback={<div style={{height:'60vh',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--muted)',letterSpacing:2}}>LOADING GLOBE...</span></div>}>
             <Globe />
@@ -327,7 +360,7 @@ export default function SystemSection({ onQuizComplete }) {
           <Reveal>
             <div className="sys-label">WHAT YOU GET</div>
             <h2 className="sys-title-light">What You Get</h2>
-            <p className="sys-desc-light">All five. Every time. No tiers.</p>
+            <p className="sys-desc-light">All five deliverables. Every time. No tiers.</p>
           </Reveal>
           <div className="sys-del-scroll">
             {DELIVERABLES.map((d, i) => (
@@ -346,10 +379,15 @@ export default function SystemSection({ onQuizComplete }) {
                       </div>
                     )}
                     {d.preview === 'flights' && (
-                      <div className="sys-del-mini-table">
-                        <div className="sys-del-mini-row"><span>Dublin</span><span style={{color:'var(--gold)'}}>Save $200</span></div>
-                        <div className="sys-del-mini-row"><span>Rome</span><span style={{color:'var(--gold)'}}>Save $150</span></div>
-                        <div className="sys-del-mini-row"><span>Warsaw</span><span style={{color:'var(--gold)'}}>Save $250</span></div>
+                      <div style={{fontSize:11}}>
+                        <div style={{fontFamily:'var(--mono)',fontSize:10,color:'var(--gold)',letterSpacing:1,marginBottom:8}}>SAMPLE: OKTOBERFEST 2026 FLIGHTS</div>
+                        <div className="sys-del-mini-table">
+                          <div className="sys-del-mini-row"><span style={{fontWeight:600}}>Route</span><span style={{fontWeight:600}}>Price</span></div>
+                          <div className="sys-del-mini-row"><span>ORD→MUC Icelandair (w/ stopover)</span><span style={{color:'var(--gold)'}}>$625–750</span></div>
+                          <div className="sys-del-mini-row"><span>ORD→MUC Lufthansa direct</span><span>$850–1,100</span></div>
+                          <div className="sys-del-mini-row"><span>DTW→MUC (any carrier)</span><span style={{textDecoration:'line-through',color:'var(--muted)'}}>$950–1,300</span></div>
+                        </div>
+                        <div style={{marginTop:8,fontSize:10,color:'var(--muted)'}}>Book window: 12–16 weeks out. Icelandair adds free Iceland stopover.</div>
                       </div>
                     )}
                     {d.preview === 'maps' && (
@@ -360,12 +398,16 @@ export default function SystemSection({ onQuizComplete }) {
                       </div>
                     )}
                     {d.preview === 'money' && (
-                      <div className="sys-del-money">
-                        <div className="sys-del-money-row">
-                          <span style={{textDecoration:'line-through',color:'var(--muted)'}}>$4,200</span>
-                          <span style={{color:'var(--gold)',fontFamily:'var(--display)',fontSize:28,fontWeight:700}}>$2,800</span>
+                      <div style={{fontSize:11}}>
+                        <div style={{fontFamily:'var(--mono)',fontSize:10,color:'var(--gold)',letterSpacing:1,marginBottom:8}}>SAMPLE: ROME 7 DAYS (GROUP OF 4)</div>
+                        <div className="sys-del-mini-table">
+                          <div className="sys-del-mini-row"><span style={{fontWeight:600}}>Category</span><span style={{fontWeight:600}}>Typical</span><span style={{fontWeight:600,color:'var(--gold)'}}>Ours</span></div>
+                          <div className="sys-del-mini-row"><span>Flights (ORD)</span><span>$950</span><span style={{color:'var(--gold)'}}>$750</span></div>
+                          <div className="sys-del-mini-row"><span>Hotels (7 nights)</span><span>$700</span><span style={{color:'var(--gold)'}}>$450</span></div>
+                          <div className="sys-del-mini-row"><span>Food & Drink</span><span>$600</span><span style={{color:'var(--gold)'}}>$400</span></div>
+                          <div className="sys-del-mini-row" style={{borderTop:'1px solid rgba(201,168,76,0.2)',paddingTop:6,marginTop:4}}><span style={{fontWeight:700}}>Total</span><span style={{textDecoration:'line-through',color:'var(--muted)'}}>$2,800</span><span style={{color:'var(--gold)',fontWeight:700}}>$1,800</span></div>
                         </div>
-                        <div style={{fontSize:12,color:'var(--muted)',marginTop:4}}>Average savings per person</div>
+                        <div style={{marginTop:6,fontSize:10,color:'var(--muted)'}}>Aperitivo strategy saves €50–75/person. We find the neighborhoods, not the tourist traps.</div>
                       </div>
                     )}
                     {d.preview === 'quiz' && (

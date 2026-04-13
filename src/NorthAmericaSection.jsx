@@ -88,7 +88,6 @@ const MICH_CATEGORIES = [
 
 /* ===== COMPONENT ===== */
 export default function NorthAmericaSection() {
-  const [michCategory, setMichCategory] = useState('food');
   const [expandedCard, setExpandedCard] = useState(null);
 
   const getCardImage = (d) => {
@@ -104,56 +103,7 @@ export default function NorthAmericaSection() {
           <Reveal>
             <div className="na-label">NORTH AMERICA</div>
             <h2 className="na-title">Closer to Home. <em>Same Standards.</em></h2>
-            <p className="na-desc">Not every great trip needs a passport.</p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Michigan Hero */}
-      <section className="na-michigan">
-        <div className="na-inner">
-          <Reveal type="scale">
-            <div className="na-mich-panel">
-              <div className="na-mich-header">
-                <div>
-                  <h3 className="na-mich-title">Lads Local Michigan</h3>
-                  <div className="na-mich-subtitle">Home Turf Intelligence</div>
-                </div>
-                <div className="na-mich-stats">
-                  <div className="na-mich-stat"><span className="na-mich-stat-num">46</span><span className="na-mich-stat-label">spots</span></div>
-                  <div className="na-mich-stat"><span className="na-mich-stat-num">8</span><span className="na-mich-stat-label">regions</span></div>
-                  <div className="na-mich-stat"><span className="na-mich-stat-num">Free</span><span className="na-mich-stat-label">resource</span></div>
-                </div>
-              </div>
-
-              <p className="na-mich-intro">We grew up here. Every brewery, every trail, every shortcut. Same depth as the international frameworks, except we can also tell you where to park.</p>
-
-              {/* Category Tabs */}
-              <div className="na-mich-tabs">
-                {MICH_CATEGORIES.map(c => (
-                  <button key={c.id}
-                    className={`na-mich-tab ${michCategory === c.id ? 'active' : ''}`}
-                    onClick={() => setMichCategory(c.id)}
-                  >{c.label}</button>
-                ))}
-              </div>
-
-              {/* Spots List */}
-              <div className="na-mich-spots">
-                {MICH_SPOTS[michCategory].map((spot, i) => (
-                  <Reveal key={spot.name} delay={i * 40}>
-                    <div className="na-mich-spot">
-                      <div className="na-mich-spot-main">
-                        <div className="na-mich-spot-name">{spot.name}</div>
-                        <div className="na-mich-spot-area">{spot.area}</div>
-                      </div>
-                      <div className="na-mich-spot-note">{spot.note}</div>
-                      <div className="na-mich-spot-badge">{spot.badge}</div>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
+            <p className="na-desc">Not every great trip needs a passport. Same depth. Shorter flight.</p>
           </Reveal>
         </div>
       </section>
@@ -162,27 +112,27 @@ export default function NorthAmericaSection() {
       <section className="na-destinations">
         <div className="na-inner">
           <Reveal>
-            <h3 className="na-dest-title">Beyond Michigan</h3>
-            <p className="na-dest-desc">Same depth. Shorter flight.</p>
+            <h3 className="na-dest-title" style={{fontSize:'clamp(1.4rem,3vw,2rem)'}}>Where We Go When We Stay Close</h3>
           </Reveal>
 
-          <div className="na-dest-grid">
+          <div className="na-dest-grid na-dest-grid-featured">
             {DOMESTIC.map((d, i) => {
               const img = getCardImage(d);
               const isExpanded = expandedCard === i;
+              const isFeatured = i === 0; // Costa Rica as featured card
               return (
                 <Reveal key={d.name} delay={i * 60}>
-                  <div className={`na-dest-card ${isExpanded ? 'expanded' : ''}`}
+                  <div className={`na-dest-card na-dest-card-large ${isExpanded ? 'expanded' : ''} ${isFeatured ? 'na-dest-card-hero' : ''}`}
                     onClick={() => setExpandedCard(isExpanded ? null : i)}>
-                    <div className="na-dest-card-img">
+                    <div className="na-dest-card-img" style={{ minHeight: isFeatured ? 320 : 240 }}>
                       {img && <img src={img} alt={d.name} loading="lazy" />}
                       <div className="na-dest-card-overlay" />
                       <div className="na-dest-card-name-overlay">
                         <div className="na-dest-card-meta-badge">{d.meta}</div>
-                        <div className="na-dest-card-name-text">{d.name}</div>
+                        <div className="na-dest-card-name-text" style={{ fontSize: isFeatured ? 26 : 20 }}>{d.name}</div>
                       </div>
                     </div>
-                    <div className="na-dest-card-body">
+                    <div className="na-dest-card-body" style={{ padding: '16px 20px' }}>
                       <p className="na-dest-card-desc">{d.desc}</p>
                       {d.links.length > 0 && (
                         <div className="na-dest-card-links">

@@ -7,12 +7,12 @@ import './Globe.css';
 const R = 1.5;
 
 const CITIES = [
-  { city: 'Sydney', n: 123, lat: -33.87, lng: 151.21, link: '/australia' },
-  { city: 'Barcelona', n: 115, lat: 41.39, lng: 2.17, link: '/spain' },
-  { city: 'Rome', n: 43, lat: 41.90, lng: 12.50, link: '/rome' },
-  { city: 'Dublin', n: 39, lat: 53.35, lng: -6.26, link: '/dublin' },
-  { city: 'Prague', n: 38, lat: 50.08, lng: 14.44, link: '/prague' },
-  { city: 'Vienna', n: 37, lat: 48.21, lng: 16.37, link: '/prague' },
+  { city: 'Sydney', n: 123, lat: -33.87, lng: 151.21, link: '/australia', showLabel: true },
+  { city: 'Barcelona', n: 115, lat: 41.39, lng: 2.17, link: '/spain', showLabel: true },
+  { city: 'Rome', n: 43, lat: 41.90, lng: 12.50, link: '/rome', showLabel: true },
+  { city: 'Dublin', n: 39, lat: 53.35, lng: -6.26, link: '/dublin', showLabel: true },
+  { city: 'Prague', n: 38, lat: 50.08, lng: 14.44, link: '/prague', showLabel: true },
+  { city: 'Vienna', n: 37, lat: 48.21, lng: 16.37, link: '/prague', showLabel: true },
   { city: 'Costa Rica', n: 28, lat: 9.62, lng: -84.63 },
   { city: 'Tasmania', n: 27, lat: -42.88, lng: 147.33, link: '/australia' },
   { city: 'Vancouver', n: 22, lat: 49.28, lng: -123.12 },
@@ -22,6 +22,7 @@ const CITIES = [
   { city: 'Seattle', n: 14, lat: 47.61, lng: -122.33 },
   { city: 'Smoky Mtns', n: 8, lat: 35.61, lng: -83.43 },
   { city: 'Phoenix', n: 7, lat: 33.45, lng: -112.07 },
+  { city: 'Cusco', n: 0, lat: -13.52, lng: -71.97, tooltip: 'Coming May 2026' },
 ];
 
 const ARCS = [
@@ -78,20 +79,29 @@ function Pin({ city, index, entered, hovered, setHovered }) {
       >
         <sphereGeometry args={[1, 12, 12]} />
         <meshStandardMaterial
-          color="#d4a843"
-          emissive="#d4a843"
-          emissiveIntensity={isHovered ? 0.8 : 0.3}
-          roughness={0.3}
-          metalness={0.4}
+          color="#f0c050"
+          emissive="#f0c050"
+          emissiveIntensity={isHovered ? 1.0 : 0.6}
+          roughness={0.2}
+          metalness={0.5}
         />
       </mesh>
-      {isHovered && (
-        <Html center style={{ pointerEvents: 'none' }}>
-          <div className="globe-tooltip">
-            <div className="globe-tooltip-city">{city.city}</div>
-            <div className="globe-tooltip-count">{city.n} spots</div>
-            {city.link && <div className="globe-tooltip-cta">Explore &rarr;</div>}
-          </div>
+      <pointLight color="#f0c050" intensity={0.4} distance={0.5} />
+      {(isHovered || city.showLabel) && (
+        <Html center style={{ pointerEvents: isHovered ? 'auto' : 'none' }}>
+          {isHovered ? (
+            <div className="globe-tooltip">
+              <div className="globe-tooltip-city">{city.city}</div>
+              <div className="globe-tooltip-count">{city.tooltip || `${city.n} spots`}</div>
+              {city.link && <div className="globe-tooltip-cta">Explore &rarr;</div>}
+            </div>
+          ) : (
+            <div className="globe-label" style={{
+              fontFamily: 'var(--mono, monospace)', fontSize: 9, color: 'rgba(240,192,80,0.7)',
+              letterSpacing: 1, whiteSpace: 'nowrap', textTransform: 'uppercase',
+              pointerEvents: 'none', userSelect: 'none', transform: 'translateY(-14px)',
+            }}>{city.city}</div>
+          )}
         </Html>
       )}
     </group>
@@ -154,11 +164,11 @@ function GlobeScene({ entered }) {
         </mesh>
         <mesh>
           <sphereGeometry args={[R + 0.002, 36, 18]} />
-          <meshBasicMaterial color="#3a3630" wireframe transparent opacity={0.12} />
+          <meshBasicMaterial color="#3a3630" wireframe transparent opacity={0.20} />
         </mesh>
         <mesh>
-          <sphereGeometry args={[R * 1.02, 64, 64]} />
-          <meshBasicMaterial color="#d4a843" transparent opacity={0.03} side={THREE.BackSide} />
+          <sphereGeometry args={[R * 1.03, 64, 64]} />
+          <meshBasicMaterial color="#d4a843" transparent opacity={0.06} side={THREE.BackSide} />
         </mesh>
 
         {CITIES.map((c, i) => (
