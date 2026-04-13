@@ -13,6 +13,8 @@ import NorthAmericaSection from './NorthAmericaSection';
 import './NorthAmericaSection.css';
 import LadsSection from './LadsSection';
 import './LadsSection.css';
+import PhotoGallery from './PhotoGallery';
+import './PhotoGallery.css';
 import GivingBackFooter from './GivingBackFooter';
 import './GivingBackFooter.css';
 
@@ -1066,6 +1068,9 @@ export default function App() {
 
       {/* ===== PHOTO STRIP 5 (lingering) ===== */}
       <PhotoStrip images={photoStrip5} height={260} columns={3} />
+
+      {/* ===== PHOTO GALLERY — PARALLAX WALL ===== */}
+      <PhotoGallery />
 
       {/* ===== ACT 5: GIVING BACK + FOOTER ===== */}
       <GivingBackFooter />
