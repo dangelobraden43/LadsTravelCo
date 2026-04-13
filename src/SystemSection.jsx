@@ -184,7 +184,7 @@ const DEST_IMAGES = {
   'Peru / Machu Picchu': HERO_IMAGES.hiking_7103980642848666692,
 };
 
-export default function SystemSection() {
+export default function SystemSection({ onQuizComplete }) {
   // Quiz state
   const [quizStep, setQuizStep] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState({});
@@ -507,8 +507,18 @@ export default function SystemSection() {
                   <p className="sys-quiz-result-why">{quizResult.why}</p>
                   {quizResult.alt && <p className="sys-quiz-result-alt">Also consider: <strong>{quizResult.alt}</strong> — {quizResult.altWhy}</p>}
                   <div className="sys-quiz-result-actions">
-                    <a href={quizResult.link !== '#' ? quizResult.link : undefined} className="sys-quiz-cta-gold"
-                      onClick={e => { if (quizResult.link === '#') e.preventDefault(); }}>Start Planning This Trip →</a>
+                    <button className="sys-quiz-cta-gold"
+                      onClick={() => {
+                        if (onQuizComplete) {
+                          onQuizComplete({
+                            destination: quizResult.pick,
+                            timing: quizAnswers.timing?.input || quizAnswers.timing?.sub || quizAnswers.timing?.value || '',
+                            group: quizAnswers.group?.count ? `${quizAnswers.group.value} (${quizAnswers.group.count})` : quizAnswers.group?.value || '',
+                            budget: quizAnswers.budget?.value || '',
+                            styles: quizAnswers.priorities?.values || [],
+                          });
+                        }
+                      }}>Start Planning This Trip →</button>
                     <button className="sys-quiz-cta-ghost">Book a Call Instead →</button>
                   </div>
                   <button className="sys-quiz-reset" onClick={() => { setQuizStep(0); setQuizAnswers({}); setQuizResult(null); setQuizStarted(false); }}>Start Over</button>

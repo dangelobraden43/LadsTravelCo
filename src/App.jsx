@@ -10,6 +10,10 @@ import SystemSection from './SystemSection';
 import './SystemSection.css';
 import NorthAmericaSection from './NorthAmericaSection';
 import './NorthAmericaSection.css';
+import LadsSection from './LadsSection';
+import './LadsSection.css';
+import GivingBackFooter from './GivingBackFooter';
+import './GivingBackFooter.css';
 
 /* ===== INTERSECTION OBSERVER HOOK ===== */
 function useReveal(threshold = 0.15) {
@@ -774,6 +778,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('destinations');
   const [heroImg, setHeroImg] = useState(0);
   const [selectedVibe, setSelectedVibe] = useState(null);
+  const [quizData, setQuizData] = useState(null);
 
   /* Scroll listener for nav */
   useEffect(() => {
@@ -1005,7 +1010,13 @@ export default function App() {
 
       {/* ===== ACT 2: THE SYSTEM ===== */}
       <div id="the-system">
-        <SystemSection />
+        <SystemSection onQuizComplete={(data) => {
+          setQuizData(data);
+          setTimeout(() => {
+            const el = document.getElementById('intake-form');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }, 300);
+        }} />
       </div>
 
       {/* ===== ACT 3: NORTH AMERICA ===== */}
@@ -1013,47 +1024,13 @@ export default function App() {
         <NorthAmericaSection />
       </div>
 
-      {/* ===== FOOTER ===== */}
-      <footer className="site-footer" style={{
-        background: 'var(--bg, #141210)',
-        padding: '60px 0 40px',
-        textAlign: 'center',
-      }}>
-        <div className="footer-inner" style={{
-          maxWidth: 1200, margin: '0 auto', padding: '0 32px',
-        }}>
-          <div className="footer-brand" style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
-            marginBottom: 16,
-          }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: '50%',
-              background: 'var(--gold)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: 'var(--display)', fontSize: 16, fontWeight: 700,
-              color: '#1a1a1a',
-            }}>L</div>
-            <span style={{
-              fontFamily: 'var(--display)',
-              fontSize: 16, fontWeight: 600,
-              color: 'var(--cream, #e8dcc8)',
-            }}>The Lads Travel Co.</span>
-          </div>
-          <p className="footer-tagline" style={{
-            fontFamily: 'var(--sans)',
-            fontSize: 14,
-            color: 'var(--muted, #8a8070)',
-            maxWidth: 480, margin: '0 auto 16px',
-          }}>
-            Built with coffee, flight delays, and questionable pub decisions.
-          </p>
-          <div className="footer-copy" style={{
-            fontFamily: 'var(--mono)',
-            fontSize: 12,
-            color: 'var(--dim, #5a5550)',
-          }}>2026</div>
-        </div>
-      </footer>
+      {/* ===== ACT 4: THE LADS ===== */}
+      <div id="the-lads">
+        <LadsSection quizData={quizData} />
+      </div>
+
+      {/* ===== ACT 5: GIVING BACK + FOOTER ===== */}
+      <GivingBackFooter />
 
       {/* Float animation keyframes */}
       <style>{`
