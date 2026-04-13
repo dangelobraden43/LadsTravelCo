@@ -14,7 +14,7 @@
 }
 .tw2-gradient-out {
   height: 120px;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--light-bg-alt) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--light-bg) 100%);
 }
 
 /* ===== Section header ===== */
