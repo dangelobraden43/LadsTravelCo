@@ -6,6 +6,8 @@ import { HERO_IMAGES } from './images-hero';
 import { BATCH4_IMAGES } from './images-batch4';
 import { HEIC_HERO_IMAGES } from './images-heic-hero';
 import { HEIC_CARD_IMAGES } from './images-heic-card';
+import SystemSection from './SystemSection';
+import './SystemSection.css';
 
 /* ===== INTERSECTION OBSERVER HOOK ===== */
 function useReveal(threshold = 0.15) {
@@ -998,6 +1000,11 @@ export default function App() {
 
       {/* ===== PHOTO STRIP 2 ===== */}
       <PhotoStrip images={photoStrip2} height={260} columns={4} />
+
+      {/* ===== ACT 2: THE SYSTEM ===== */}
+      <div id="the-system">
+        <SystemSection />
+      </div>
 
       {/* ===== FOOTER ===== */}
       <footer className="site-footer" style={{
