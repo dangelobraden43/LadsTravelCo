@@ -511,16 +511,8 @@ function VibeSelector({ selectedVibe, setSelectedVibe }) {
 }
 
 /* ===== DESTINATIONS SECTION ===== */
-function DestinationsSection({ selectedVibe, setSelectedVibe, navigate }) {
+function DestinationsSection({ navigate }) {
   const [filter, setFilter] = useState('all');
-  const activeVibe = VIBES.find(v => v.id === selectedVibe);
-
-  const isVibeMatch = (name, type) => {
-    if (!activeVibe) return false;
-    if (type === 'dest') return activeVibe.destinations.includes(name);
-    if (type === 'bucket') return activeVibe.bucketList.includes(name);
-    return false;
-  };
 
   const filteredDests = filter === 'bucket' ? [] : DESTINATIONS;
   const filteredBucket = filter === 'validated' ? [] : BUCKET_LIST;
@@ -538,31 +530,9 @@ function DestinationsSection({ selectedVibe, setSelectedVibe, navigate }) {
           </h2>
         </Reveal>
 
-        {/* Vibe pills — compact horizontal selector */}
-        <div style={{
-          display: 'flex', gap: 6, marginTop: 24, justifyContent: 'center', flexWrap: 'wrap',
-        }}>
-          {VIBES.map(vibe => {
-            const isActive = selectedVibe === vibe.id;
-            return (
-              <button key={vibe.id}
-                onClick={() => setSelectedVibe(isActive ? null : vibe.id)}
-                style={{
-                  background: isActive ? vibe.color : 'transparent',
-                  color: isActive ? '#fff' : 'var(--light-muted, #888)',
-                  border: isActive ? 'none' : '1px solid var(--light-border, #ddd)',
-                  fontFamily: 'var(--mono)', fontSize: 11, fontWeight: 600,
-                  padding: '6px 14px', borderRadius: 20, cursor: 'pointer',
-                  letterSpacing: 0.5, transition: 'all 0.2s ease', whiteSpace: 'nowrap',
-                }}
-              >{vibe.label}</button>
-            );
-          })}
-        </div>
-
         {/* Filter tabs */}
         <div className="filter-tabs" style={{
-          display: 'flex', gap: 8, marginTop: 16, marginBottom: 40,
+          display: 'flex', gap: 8, marginTop: 32, marginBottom: 40,
           justifyContent: 'center',
         }}>
           {[
@@ -598,13 +568,11 @@ function DestinationsSection({ selectedVibe, setSelectedVibe, navigate }) {
             gap: 16,
           }}>
             {filteredDests.map((dest, i) => {
-              const match = selectedVibe ? isVibeMatch(dest.name, 'dest') : null;
               const isFirst = i === 0;
-              const previewLine = `${dest.stats[0]?.n} ${dest.stats[0]?.l?.split(' ').slice(0, 3).join(' ')}`;
               return (
                 <Reveal key={dest.name} delay={i * 80}>
                   <div
-                    className={`dest-card${match === true ? ' vibe-match' : ''}${match === false ? ' vibe-dim' : ''}`}
+                    className="dest-card"
                     onClick={() => dest.link.startsWith('/') ? navigate(dest.link) : (window.location.href = dest.link)}
                     style={{
                       position: 'relative',
@@ -750,11 +718,10 @@ function DestinationsSection({ selectedVibe, setSelectedVibe, navigate }) {
             </Reveal>
             <div className="dest-grid" style={{ gap: 16 }}>
               {filteredBucket.map((item, i) => {
-                const match = selectedVibe ? isVibeMatch(item.name, 'bucket') : null;
                 return (
                   <Reveal key={item.name} delay={i * 80}>
                     <div
-                      className={`dest-card${match === true ? ' vibe-match' : ''}${match === false ? ' vibe-dim' : ''}`}
+                      className="dest-card"
                       onClick={() => item.link && (item.link.startsWith('/') ? navigate(item.link) : (window.location.href = item.link))}
                       style={{
                         position: 'relative',
@@ -827,7 +794,6 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('destinations');
   const [heroImg, setHeroImg] = useState(0);
-  const [selectedVibe, setSelectedVibe] = useState(null);
   const [quizData, setQuizData] = useState(null);
 
   /* Scroll listener for nav */
@@ -1069,8 +1035,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* ===== DESTINATIONS (vibe pills integrated) ===== */}
-      <DestinationsSection selectedVibe={selectedVibe} setSelectedVibe={setSelectedVibe} navigate={navigate} />
+      {/* ===== DESTINATIONS ===== */}
+      <DestinationsSection navigate={navigate} />
 
       {/* ===== PHOTO STRIP 2 ===== */}
       <PhotoStrip images={photoStrip2} height={260} columns={4} />
@@ -1131,10 +1097,6 @@ export default function App() {
         }
         .dest-card:hover .dest-card-cta {
           opacity: 1 !important;
-        }
-        .vibe-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(0,0,0,0.15);
         }
       `}</style>
     </>
