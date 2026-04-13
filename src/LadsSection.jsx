@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IMAGES } from './images';
 import { NEW_IMAGES } from './images-new';
 import { BATCH3_IMAGES } from './images-batch3';
+import { BATCH4_IMAGES } from './images-batch4';
+import { HERO_IMAGES } from './images-hero';
+import { HEIC_HERO_IMAGES } from './images-heic-hero';
 import './LadsSection.css';
 
 /* ===== HOOKS ===== */
@@ -74,6 +77,12 @@ const GALLERY_IMAGES = [
   { src: BATCH3_IMAGES.munichMarienplatz, alt: 'Brady at Marienplatz Munich' },
   { src: NEW_IMAGES.schonbrunnWalk, alt: 'Walking into Schonbrunn' },
   { src: NEW_IMAGES.mountainOverlook, alt: 'Mountain overlook Costa Rica' },
+  { src: BATCH3_IMAGES.hohRainforest, alt: 'Hoh Rainforest Olympic' },
+  { src: NEW_IMAGES.pilsnerUrquell, alt: 'Pilsner Urquell brewery' },
+  { src: BATCH3_IMAGES.rockPoolSwim, alt: 'Rock pool swim Australia' },
+  { src: NEW_IMAGES.glendalough, alt: 'Glendalough Ireland' },
+  { src: BATCH4_IMAGES.barcelona_IMG_0393, alt: 'Barcelona street life' },
+  { src: HEIC_HERO_IMAGES.heicHiking_IMG_4327, alt: 'Mountain summit trail' },
 ];
 
 const TRIP_STYLES = ['Nightlife', 'Culture', 'Beach', 'Adventure', 'Food & Drink', 'Mix'];
@@ -118,8 +127,8 @@ export default function LadsSection({ quizData }) {
         <div className="lads-inner">
           <Reveal>
             <div className="lads-label">THE LADS</div>
-            <h2 className="lads-title">Two Friends. <em>One Mission.</em></h2>
-            <p className="lads-desc">We're not a travel agency. We're two guys who love planning trips as much as taking them.</p>
+            <h2 className="lads-title">Who <em>We Are</em></h2>
+            <p className="lads-desc">Two guys, 650+ spots, and zero interest in giving you the same itinerary as everyone else.</p>
           </Reveal>
         </div>
       </section>
@@ -160,7 +169,7 @@ export default function LadsSection({ quizData }) {
           <Reveal type="fade">
             <div className="lads-build-card">
               <div className="lads-build-stat">20 Days</div>
-              <p className="lads-build-text">Built the entire site, research pipeline, and 650+ spot database during a broken-hand recovery. While maintaining a 4.0 GPA.</p>
+              <p className="lads-build-text">Broke his hand surfing in Costa Rica. Built the entire site, research pipeline, and 650+ spot database with one good hand. 4.0 GPA didn't drop.</p>
             </div>
           </Reveal>
         </div>
@@ -170,7 +179,7 @@ export default function LadsSection({ quizData }) {
       <div className="lads-gallery">
         {GALLERY_IMAGES.map((img, i) => (
           <div key={i} className="lads-gallery-item">
-            <img src={img.src} alt={img.alt} />
+            <img src={img.src} alt={img.alt} loading="lazy" />
           </div>
         ))}
       </div>
@@ -194,7 +203,7 @@ export default function LadsSection({ quizData }) {
           </div>
           <Reveal delay={200}>
             <p className="lads-study-abroad">
-              Brady spent two years as a peer advisor at GVSU's Padnos International Center — the office that sends students abroad. If you're heading overseas through a university program, we've literally done this job before.
+              Brady spent two years as a peer advisor at GVSU's Padnos International Center. If you're heading overseas through a university program, we've literally done this job before.
             </p>
           </Reveal>
         </div>
@@ -205,7 +214,7 @@ export default function LadsSection({ quizData }) {
         <div className="lads-inner" style={{textAlign:'center'}}>
           <Reveal type="fade">
             <h3 className="lads-call-heading">Want to talk first?</h3>
-            <p className="lads-call-sub">Book a free 15-minute call. No commitment, no pressure.</p>
+            <p className="lads-call-sub">15 minutes. Free. We'll tell you if we can actually help.</p>
             <button
               className="lads-call-btn"
               data-cal-link="braden-dangelo/secret"
@@ -231,8 +240,8 @@ export default function LadsSection({ quizData }) {
             ) : (
               <>
                 <div className="lads-form-header">
-                  <h3>{hasQuizData ? 'Almost there. Just a few more details.' : 'Start Your Journey'}</h3>
-                  {!hasQuizData && <p>No cost through 2026. Seriously. We're building something and we want you to be part of it.</p>}
+                  <h3>{hasQuizData ? 'Almost there. Just a few details.' : 'Tell Us Where You\'re Going'}</h3>
+                  {!hasQuizData && <p>No cost through 2026. Seriously.</p>}
                   {hasQuizData && quizData.destination && (
                     <div className="lads-form-prefill-tag">Planning: {quizData.destination}</div>
                   )}

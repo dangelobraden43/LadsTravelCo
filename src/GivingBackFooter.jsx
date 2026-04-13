@@ -58,7 +58,7 @@ export default function GivingBackFooter() {
 
           <Reveal delay={200}>
             <p className="gb-statement">
-              Every trip we plan through 2026 is free. Donations go directly to causes shaped by our experiences. We don't take a cut. We never will.
+              Every trip we plan through 2026 is free. Any donations go straight to these causes. We don't take a cut.
             </p>
           </Reveal>
 

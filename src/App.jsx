@@ -305,6 +305,31 @@ const photoStrip2 = [
   BATCH3_IMAGES.vividDroneHeart,
 ];
 
+/* Additional photo strips for rhythm */
+const photoStrip3 = [
+  HERO_IMAGES.castelSantAngeloStPetersViewRome,
+  NEW_IMAGES.bondiCoastal,
+  BATCH3_IMAGES.rockPoolSwim,
+];
+
+/* Photo strip 4: quick rhythm between domestic and cinematic */
+const photoStrip4 = [
+  HEIC_HERO_IMAGES.heicBarcelona_IMG_6905,
+  BATCH4_IMAGES.ireland_IMG_2287,
+  HEIC_HERO_IMAGES.heicItaly_IMG_3525,
+  BATCH4_IMAGES.prauge_IMG_0274,
+  HEIC_HERO_IMAGES.heicAustralia_IMG_0994,
+];
+
+/* Photo strip 5: lingering trio between Lads and Giving Back */
+const photoStrip5 = [
+  HEIC_HERO_IMAGES.heicHiking_IMG_4312,
+  BATCH4_IMAGES.oahu_IMG_5004,
+  HEIC_HERO_IMAGES.heicIreland_IMG_2610,
+];
+
+const photoStripCinematic = HERO_IMAGES.olympicDeerAboveClouds;
+
 /* ===== STAT PILL COMPONENT ===== */
 function StatPill({ icon, target, label }) {
   const { ref, count } = useCountUp(target, 1500);
@@ -315,11 +340,12 @@ function StatPill({ icon, target, label }) {
       WebkitBackdropFilter: 'blur(20px)',
       border: '1px solid rgba(255,255,255,0.1)',
       borderRadius: 16,
-      padding: '20px 28px',
+      padding: '16px 24px',
       display: 'flex',
       alignItems: 'center',
-      gap: 16,
-      minWidth: 180,
+      gap: 14,
+      minWidth: 160,
+      flex: '1 1 160px',
     }}>
       <div style={{
         width: 44, height: 44, borderRadius: '50%',
@@ -359,6 +385,7 @@ function PhotoStrip({ images, height = 220, columns }) {
           <img
             src={src}
             alt=""
+            loading="lazy"
             style={{
               width: '100%', height: '100%', objectFit: 'cover',
               transition: 'transform 0.4s ease',
@@ -392,8 +419,8 @@ function VibeSelector({ selectedVibe, setSelectedVibe }) {
     <section className="vibe-section" style={{ padding: '80px 0 60px' }}>
       <div className="section-inner">
         <Reveal>
-          <div className="section-label" style={{ color: 'var(--gold)' }}>HOW DO YOU TRAVEL?</div>
-          <h2 className="section-title" style={{ color: 'var(--light-text, var(--cream))' }}>Pick a Vibe. We'll Match the Trip.</h2>
+          <div className="section-label" style={{ color: 'var(--gold)' }}>CHOOSE YOUR ADVENTURE</div>
+          <h2 className="section-title" style={{ color: 'var(--light-text, var(--cream))' }}>What Are You Looking For?</h2>
         </Reveal>
         <div className="vibe-grid" style={{
           marginTop: 40,
@@ -493,7 +520,7 @@ function DestinationsSection({ selectedVibe }) {
   const filteredBucket = filter === 'validated' ? [] : BUCKET_LIST;
 
   return (
-    <section id="destinations" className="section-alt" style={{
+    <section id="destinations" className="section-alt" style={{scrollMarginTop:60,
       background: 'var(--light-bg, #f5f0e8)',
       padding: '80px 0',
     }}>
@@ -501,7 +528,7 @@ function DestinationsSection({ selectedVibe }) {
         <Reveal>
           <div className="section-label" style={{ color: 'var(--gold)' }}>DESTINATIONS</div>
           <h2 className="section-title" style={{ color: 'var(--light-text, #1a1a1a)' }}>
-            Where We've Been. <span style={{ color: 'var(--light-muted, #999)' }}>Where We'll Take You.</span>
+            Where We've Been. <span style={{ color: 'var(--light-muted, #999)' }}>Where You're Going.</span>
           </h2>
         </Reveal>
 
@@ -566,6 +593,7 @@ function DestinationsSection({ selectedVibe }) {
                     <img
                       src={IMAGES[dest.img]}
                       alt={dest.name}
+                      loading="lazy"
                       className="dest-card-bg"
                       style={{
                         position: 'absolute', inset: 0,
@@ -658,11 +686,11 @@ function DestinationsSection({ selectedVibe }) {
                   <div style={{
                     fontFamily: 'var(--display)',
                     fontSize: 20, fontWeight: 600, color: 'var(--cream, #e8dcc8)',
-                  }}>18 Curated Google Maps Lists</div>
+                  }}>18 Google Maps Lists. Made by Us.</div>
                   <div style={{
                     fontFamily: 'var(--sans)',
                     fontSize: 14, color: 'var(--cream2, #b8ad9a)', marginTop: 4,
-                  }}>Drop them into your phone and explore like a local.</div>
+                  }}>Drop them into your phone. Navigate like you live there.</div>
                 </div>
               </div>
               <button style={{
@@ -712,6 +740,7 @@ function DestinationsSection({ selectedVibe }) {
                       <img
                         src={BUCKET_IMAGES[item.name]}
                         alt={item.name}
+                        loading="lazy"
                         style={{
                           position: 'absolute', inset: 0,
                           width: '100%', height: '100%', objectFit: 'cover',
@@ -876,7 +905,7 @@ export default function App() {
               zIndex: 0,
             }}
           >
-            <img src={src} alt="" style={{
+            <img src={src} alt="" loading="eager" style={{
               width: '100%', height: '100%', objectFit: 'cover',
             }} />
           </div>
@@ -931,7 +960,7 @@ export default function App() {
             margin: '0 auto',
             lineHeight: 1.6,
           }}>
-            Two friends. 20+ cities. Four continents. 650+ spots personally validated.
+            Two friends. Four continents. Every recommendation from personal experience.
           </p>
 
           {/* Stat pills */}
@@ -991,8 +1020,8 @@ export default function App() {
       {/* ===== VIBE SELECTOR ===== */}
       <VibeSelector selectedVibe={selectedVibe} setSelectedVibe={setSelectedVibe} />
 
-      {/* ===== PHOTO STRIP 1 ===== */}
-      <PhotoStrip images={photoStrip1} height={220} columns={5} />
+      {/* ===== PHOTO STRIP 1 (quick rhythm) ===== */}
+      <PhotoStrip images={photoStrip1} height={180} columns={5} />
 
       {/* ===== DESTINATIONS ===== */}
       <DestinationsSection selectedVibe={selectedVibe} />
@@ -1001,7 +1030,7 @@ export default function App() {
       <PhotoStrip images={photoStrip2} height={260} columns={4} />
 
       {/* ===== ACT 2: THE SYSTEM ===== */}
-      <div id="the-system">
+      <div id="the-system" style={{scrollMarginTop:60}}>
         <SystemSection onQuizComplete={(data) => {
           setQuizData(data);
           setTimeout(() => {
@@ -1011,15 +1040,30 @@ export default function App() {
         }} />
       </div>
 
+      {/* ===== PHOTO STRIP 3 (cinematic trio) ===== */}
+      <PhotoStrip images={photoStrip3} height={340} columns={3} />
+
       {/* ===== ACT 3: NORTH AMERICA ===== */}
-      <div id="domestic">
+      <div id="domestic" style={{scrollMarginTop:60}}>
         <NorthAmericaSection />
       </div>
 
+      {/* ===== PHOTO STRIP 4 (quick rhythm) ===== */}
+      <PhotoStrip images={photoStrip4} height={180} columns={5} />
+
+      {/* ===== CINEMATIC SINGLE IMAGE ===== */}
+      <div className="cinematic-single">
+        <img src={photoStripCinematic} alt="" loading="lazy" />
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom, rgba(20,18,16,0.1) 0%, rgba(20,18,16,0.4) 100%)'}} />
+      </div>
+
       {/* ===== ACT 4: THE LADS ===== */}
-      <div id="the-lads">
+      <div id="the-lads" style={{scrollMarginTop:60}}>
         <LadsSection quizData={quizData} />
       </div>
+
+      {/* ===== PHOTO STRIP 5 (lingering) ===== */}
+      <PhotoStrip images={photoStrip5} height={260} columns={3} />
 
       {/* ===== ACT 5: GIVING BACK + FOOTER ===== */}
       <GivingBackFooter />

@@ -103,8 +103,8 @@ export default function NorthAmericaSection() {
         <div className="na-inner">
           <Reveal>
             <div className="na-label">NORTH AMERICA</div>
-            <h2 className="na-title">Closer to Home. <em>Still Curated.</em></h2>
-            <p className="na-desc">Not every great trip needs a passport. Here's what we know about our own backyard.</p>
+            <h2 className="na-title">Closer to Home. <em>Same Standards.</em></h2>
+            <p className="na-desc">Not every great trip needs a passport.</p>
           </Reveal>
         </div>
       </section>
@@ -126,7 +126,7 @@ export default function NorthAmericaSection() {
                 </div>
               </div>
 
-              <p className="na-mich-intro">Home turf. We grew up here, went to school here, know every brewery, every trail, and every shortcut. Same depth as our international frameworks — for the state we actually live in.</p>
+              <p className="na-mich-intro">We grew up here. Every brewery, every trail, every shortcut. Same depth as the international frameworks, except we can also tell you where to park.</p>
 
               {/* Category Tabs */}
               <div className="na-mich-tabs">
@@ -163,7 +163,7 @@ export default function NorthAmericaSection() {
         <div className="na-inner">
           <Reveal>
             <h3 className="na-dest-title">Beyond Michigan</h3>
-            <p className="na-dest-desc">Eight more destinations with the same honest depth.</p>
+            <p className="na-dest-desc">Same depth. Shorter flight.</p>
           </Reveal>
 
           <div className="na-dest-grid">
@@ -175,7 +175,7 @@ export default function NorthAmericaSection() {
                   <div className={`na-dest-card ${isExpanded ? 'expanded' : ''}`}
                     onClick={() => setExpandedCard(isExpanded ? null : i)}>
                     <div className="na-dest-card-img">
-                      {img && <img src={img} alt={d.name} />}
+                      {img && <img src={img} alt={d.name} loading="lazy" />}
                       <div className="na-dest-card-overlay" />
                       <div className="na-dest-card-name-overlay">
                         <div className="na-dest-card-meta-badge">{d.meta}</div>
@@ -208,7 +208,7 @@ export default function NorthAmericaSection() {
       <div className="na-quote">
         <Reveal type="fade">
           <blockquote className="na-quote-text">
-            "The best trip isn't always the farthest one."
+            "You don't need to cross an ocean to have the best weekend of your life."
           </blockquote>
         </Reveal>
       </div>

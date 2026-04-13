@@ -152,6 +152,7 @@ function WindowPanel({ window: w, index }) {
             src={w.image}
             alt={w.imageAlt}
             className="tw2-photo"
+            loading="lazy"
             style={{ transform: `scale(${photoScale})` }}
           />
           <div

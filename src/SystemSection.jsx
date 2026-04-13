@@ -89,11 +89,11 @@ const ALL_CITIES = [
 ];
 
 const DELIVERABLES = [
-  { title: 'Custom HTML Trip Framework', desc: 'A designed, interactive document with your full itinerary, cost breakdowns, validated spots, and day-by-day templates. Works on your phone.', preview: 'framework' },
-  { title: 'Flight Intelligence Report', desc: 'Route analysis, booking window recommendation, hub arbitrage comparison, and error fare monitoring for your specific dates.', preview: 'flights' },
-  { title: 'Google Maps Lists', desc: '18 curated lists. Drop them into your phone and navigate like a local. Every restaurant, bar, attraction, and hidden gem.', preview: 'maps' },
-  { title: 'Money Intelligence', desc: 'Cost models for your group size. Per-person breakdowns for accommodation, food, transport, and experiences.', preview: 'money' },
-  { title: 'Personalized Recommendation', desc: 'Not sure where to go? Take the quiz below and we\'ll match you based on your vibe, budget, and travel style.', preview: 'quiz' },
+  { title: 'Custom Trip Framework', desc: 'Your full itinerary in a designed, interactive doc. Cost breakdowns, validated spots, day-by-day templates. Works on your phone.', preview: 'framework' },
+  { title: 'Flight Intelligence Report', desc: 'Route analysis, booking windows, hub arbitrage comparison, error fare monitoring. For your specific dates and airports.', preview: 'flights' },
+  { title: '18 Google Maps Lists', desc: 'Drop them into your phone and navigate like you live there. Every restaurant, bar, attraction, and hidden spot we found.', preview: 'maps' },
+  { title: 'Money Intelligence', desc: 'Per-person cost models for your group size. Accommodation, food, transport, experiences. No surprises.', preview: 'money' },
+  { title: 'Personalized Match', desc: 'Don\'t know where to go? Take the quiz below. Seven questions and we\'ll tell you exactly where to start.', preview: 'quiz' },
 ];
 
 const QUIZ_QUESTIONS = [
@@ -213,8 +213,8 @@ export default function SystemSection({ onQuizComplete }) {
         <div className="sys-inner">
           <Reveal>
             <div className="sys-label">THE SYSTEM</div>
-            <h2 className="sys-title-light">Data Science Meets Personal Experience</h2>
-            <p className="sys-desc-light">We don't give generic advice. Every recommendation is backed by real data, cost models, and 650+ spots we've personally validated.</p>
+            <h2 className="sys-title-light">How It Actually Works</h2>
+            <p className="sys-desc-light">650+ spots. Cost models built by a data scientist. Nothing we haven't done ourselves.</p>
           </Reveal>
 
           {/* Process Pipeline */}
@@ -245,14 +245,14 @@ export default function SystemSection({ onQuizComplete }) {
           <div className="sys-fi-hero">
             <Reveal type="fade">
               <p className="sys-fi-stat">90% of AI travel itineraries contain factual errors.</p>
-              <p className="sys-fi-counter">We do it differently.</p>
+              <p className="sys-fi-counter">We don't guess.</p>
             </Reveal>
           </div>
 
           {/* Strategy label */}
           <Reveal>
             <div className="sys-label" style={{marginTop:60}}>FLIGHT INTELLIGENCE</div>
-            <h3 className="sys-subtitle-light">Our Search Strategy</h3>
+            <h3 className="sys-subtitle-light">How We Actually Find Cheap Flights</h3>
           </Reveal>
 
           {/* Strategy cards — 2 column masonry */}
@@ -310,7 +310,7 @@ export default function SystemSection({ onQuizComplete }) {
           <Reveal type="fade">
             <div className="sys-label-copper">THE DATABASE</div>
             <h2 className="sys-title-dark" style={{fontSize:'clamp(2rem,5vw,3.6rem)'}}>650+ Spots. 20+ Cities.</h2>
-            <p className="sys-subtitle-dark">Every single one personally validated.</p>
+            <p className="sys-subtitle-dark">Every one walked into, sat down at, or stumbled out of.</p>
           </Reveal>
           <div className="sys-db-bubbles">
             {ALL_CITIES.map((c, i) => {
@@ -334,8 +334,8 @@ export default function SystemSection({ onQuizComplete }) {
         <div className="sys-inner">
           <Reveal>
             <div className="sys-label">WHAT YOU GET</div>
-            <h2 className="sys-title-light">Five Deliverables. Zero Guesswork.</h2>
-            <p className="sys-desc-light">Every framework includes all five. No tiers, no upsells.</p>
+            <h2 className="sys-title-light">What You Get</h2>
+            <p className="sys-desc-light">All five. Every time. No tiers.</p>
           </Reveal>
           <div className="sys-del-scroll">
             {DELIVERABLES.map((d, i) => (
@@ -396,8 +396,8 @@ export default function SystemSection({ onQuizComplete }) {
           <Reveal type="fade">
             <div style={{textAlign:'center',marginBottom:48}}>
               <div className="sys-label">FIND YOUR TRIP</div>
-              <h2 className="sys-title-dark">Answer a Few Questions.</h2>
-              <p className="sys-subtitle-dark" style={{fontStyle:'normal',color:'var(--cream2)'}}>We'll match you with a destination.</p>
+              <h2 className="sys-title-dark">Not Sure Where to Go?</h2>
+              <p className="sys-subtitle-dark" style={{fontStyle:'normal',color:'var(--cream2)'}}>Seven questions. We'll tell you.</p>
             </div>
           </Reveal>
 
