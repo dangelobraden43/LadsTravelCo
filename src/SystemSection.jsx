@@ -147,7 +147,7 @@ const QUIZ_QUESTIONS = [
 ];
 
 const QUIZ_RECS = {
-  nightlife_low: { pick: "Dublin + Galway", why: "Cheapest validated nightlife city. 35+ pubs, three timing versions, flights from ORD under $500 shoulder season.", alt: "Poland August", altWhy: "Krakow's nightlife district is world-class and even cheaper.", link: "dublin-galway.html" },
+  nightlife_low: { pick: "Dublin + Galway", why: "Cheapest validated nightlife city. 35+ pubs, three timing versions, flights from ORD under $500 shoulder season.", alt: "Poland August", altWhy: "Krakow's nightlife district is world-class and even cheaper.", link: "/dublin" },
   nightlife_mid: { pick: "Munich Oktoberfest", why: "Event-driven nightlife at its peak. Augustiner tent strategy, Glockenbachviertel base, cost model for groups of 4-10.", alt: "Barcelona + Madrid", altWhy: "100+ validated spots and Madrid nightlife.", link: "munich.html" },
   nightlife_high: { pick: "Thailand NYE", why: "Full Moon Party, Bangkok rooftops, Krabi beach clubs. Cathay Pacific via Hong Kong.", alt: "Barcelona + Madrid", altWhy: "Barcelona's nightlife runs until 6am.", link: "thailand.html" },
   nightlife_flex: { pick: "Thailand NYE", why: "Full Moon Party, Bangkok rooftops, Krabi beach clubs. Cathay Pacific via Hong Kong.", alt: "Barcelona + Madrid", altWhy: "Barcelona's nightlife runs until 6am.", link: "thailand.html" },
@@ -159,7 +159,7 @@ const QUIZ_RECS = {
   adventure_mid: { pick: "Iceland", why: "Ring Road at any budget. Northern Lights or Midnight Sun. Four versions.", alt: "Costa Rica", altWhy: "ATV tour, surf lessons, best half-day experience anywhere.", link: "iceland.html" },
   adventure_high: { pick: "Iceland", why: "Ring Road at any budget. Volcanic landscapes, waterfalls, Westman Islands.", alt: "Peru / Machu Picchu", altWhy: "Salkantay Trek, Rainbow Mountain — Brady's doing it May 2026.", link: "iceland.html" },
   adventure_flex: { pick: "Iceland", why: "Ring Road at any budget. Volcanic landscapes, waterfalls, Westman Islands.", alt: "Peru / Machu Picchu", altWhy: "Salkantay Trek, Rainbow Mountain — Brady's doing it May 2026.", link: "iceland.html" },
-  food_low: { pick: "Dublin + Galway", why: "Pub food plus Galway seafood. McDonagh's, oyster market, 35+ pubs.", alt: "Poland August", altWhy: "Pierogi, zurek, Krakow Kazimierz food scene.", link: "dublin-galway.html" },
+  food_low: { pick: "Dublin + Galway", why: "Pub food plus Galway seafood. McDonagh's, oyster market, 35+ pubs.", alt: "Poland August", altWhy: "Pierogi, zurek, Krakow Kazimierz food scene.", link: "/dublin" },
   food_mid: { pick: "Barcelona + Madrid", why: "100+ spots, tapas culture, two study abroads of knowledge. Boqueria, pintxos, churros.", alt: "Rome + Italy", altWhy: "Trastevere trattorias, cacio e pepe, one-euro espresso.", link: "spain.html" },
   food_high: { pick: "Rome + Italy Extended", why: "Trastevere deep dive. Tonnarello, Bar San Calisto. Extend to Amalfi for seafood.", alt: "Barcelona + Madrid", altWhy: "Switch to Spain's variety if Italian food fatigue is possible.", link: "italy.html" },
   food_flex: { pick: "Rome + Italy Extended", why: "Trastevere deep dive. Tonnarello, Bar San Calisto. Extend to Amalfi for seafood.", alt: "Barcelona + Madrid", altWhy: "Switch to Spain's variety if Italian food fatigue is possible.", link: "italy.html" },

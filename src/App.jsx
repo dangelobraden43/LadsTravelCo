@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IMAGES } from './images';
 import { NEW_IMAGES } from './images-new';
 import { BATCH3_IMAGES } from './images-batch3';
@@ -88,7 +89,7 @@ const DESTINATIONS = [
     badge: "Both Lads \u2014 Personally Validated",
     stats: [{n:"35+",l:"Pubs we drank in across Dublin & Galway"},{n:"3",l:"Versions: Christmas, St. Pat's, or summer"},{n:"45+",l:"Spots mapped \u2014 pubs, restaurants, sights"},{n:"3",l:"Day trips we personally took"}],
     desc: "Christmas markets, St. Patrick\u2019s Day, or summer \u2014 three completely different trips from the same two cities. Every pub rated, every attraction mapped, every day trip personally taken.",
-    link: "dublin-galway.html",
+    link: "/dublin",
     maps: [{t:"Pubs & Food",u:"https://maps.app.goo.gl/NrZtg6tUR1Rjk8oS8"},{t:"Attractions",u:"https://maps.app.goo.gl/9YLakDkjrE6jj7cQA"},{t:"Galway",u:"https://maps.app.goo.gl/deRD11SQis6ZUsKL8"}],
     trips: [{t:"Cliffs of Moher + Burren",d:"Full day from Galway. Brady rated 9/10.",u:"https://www.viator.com/tours/Galway/Cliffs-of-Moher-and-Burren-Day-Trip-Including-Dunguaire-Castle-Aillwee-Cave-and-Doolin-from-Galway/d5156-8625P1"},{t:"Wicklow + Glendalough + Kilkenny",d:"Full day from Dublin. Medieval castle, monastic ruins, mountains.",u:"https://gyg.me/V0UrxNUe"}]
   },
@@ -236,7 +237,7 @@ const VIBES = [
 
 /* ===== QUIZ RECS ===== */
 const QUIZ_RECS = {
-  nightlife_low: { pick: "Dublin + Galway", why: "Cheapest validated nightlife city in our portfolio. 35+ pubs documented, three timing versions, and flights from ORD under $500 in shoulder season. Temple Bar is overpriced but the spots we send you to aren't.", alt: "Poland August", altWhy: "Krakow's nightlife district is world-class and even cheaper.", link: "dublin-galway.html" },
+  nightlife_low: { pick: "Dublin + Galway", why: "Cheapest validated nightlife city in our portfolio. 35+ pubs documented, three timing versions, and flights from ORD under $500 in shoulder season. Temple Bar is overpriced but the spots we send you to aren't.", alt: "Poland August", altWhy: "Krakow's nightlife district is world-class and even cheaper.", link: "/dublin" },
   nightlife_mid: { pick: "Munich Oktoberfest", why: "Event-driven nightlife at its peak. Augustiner-Brau tent strategy, Glockenbachviertel base, and a complete cost model for groups of 4-10. This is the one trip where the party IS the culture.", alt: "Barcelona + Madrid", altWhy: "100+ validated spots and Dawson's Madrid nightlife knowledge.", link: "munich.html" },
   nightlife_high: { pick: "Thailand NYE", why: "Full Moon Party on Koh Phangan, rooftop bars in Bangkok, beach clubs in Krabi. Cathay Pacific via Hong Kong. This is the bucket-list nightlife trip \u2014 10 to 16 days of it.", alt: "Barcelona + Madrid", altWhy: "If Southeast Asia feels too far, Barcelona's nightlife runs until 6am.", link: "thailand.html" },
   nightlife_flex: { pick: "Thailand NYE", why: "Full Moon Party on Koh Phangan, rooftop bars in Bangkok, beach clubs in Krabi. Cathay Pacific via Hong Kong. This is the bucket-list nightlife trip \u2014 10 to 16 days of it.", alt: "Barcelona + Madrid", altWhy: "If Southeast Asia feels too far, Barcelona's nightlife runs until 6am.", link: "thailand.html" },
@@ -248,7 +249,7 @@ const QUIZ_RECS = {
   adventure_mid: { pick: "Iceland", why: "Ring Road works at any budget. Dawson did it. Northern Lights or Midnight Sun depending on timing. Volcanic landscapes, waterfalls, and the Westman Islands. Four versions: summer or winter, short or long.", alt: "Costa Rica", altWhy: "ATV jungle tour, surf lessons, and a beach Airbnb \u2014 our best half-day experience anywhere.", link: "iceland.html" },
   adventure_high: { pick: "Iceland", why: "Ring Road works at any budget. Dawson did it. Northern Lights or Midnight Sun depending on timing. Volcanic landscapes, waterfalls, and the Westman Islands. Four versions: summer or winter, short or long.", alt: "Peru / Machu Picchu", altWhy: "Salkantay Trek, Rainbow Mountain ATV, Huacachina sandboarding \u2014 Brady's doing it May 2026.", link: "iceland.html" },
   adventure_flex: { pick: "Iceland", why: "Ring Road works at any budget. Dawson did it. Northern Lights or Midnight Sun depending on timing. Volcanic landscapes, waterfalls, and the Westman Islands. Four versions: summer or winter, short or long.", alt: "Peru / Machu Picchu", altWhy: "Salkantay Trek, Rainbow Mountain ATV, Huacachina sandboarding \u2014 Brady's doing it May 2026.", link: "iceland.html" },
-  food_low: { pick: "Dublin + Galway", why: "Pub food done right plus Galway's seafood scene. McDonagh's fish and chips, oysters at the Saturday market, and 35+ pubs where the Guinness actually tastes different. Affordable and validated.", alt: "Poland August", altWhy: "Pierogi, zurek, and Krakow's Kazimierz food scene for half the price of Western Europe.", link: "dublin-galway.html" },
+  food_low: { pick: "Dublin + Galway", why: "Pub food done right plus Galway's seafood scene. McDonagh's fish and chips, oysters at the Saturday market, and 35+ pubs where the Guinness actually tastes different. Affordable and validated.", alt: "Poland August", altWhy: "Pierogi, zurek, and Krakow's Kazimierz food scene for half the price of Western Europe.", link: "/dublin" },
   food_mid: { pick: "Barcelona + Madrid", why: "100+ validated spots and a tapas culture that makes every meal an event. Dawson's Madrid study abroad plus Brady's Barcelona \u2014 two food cities with completely different personalities. Boqueria market, pintxos bars, and late-night churros con chocolate.", alt: "Rome + Italy", altWhy: "Trastevere trattorias, cacio e pepe at Tonnarello, and one-euro espresso.", link: "spain.html" },
   food_high: { pick: "Rome + Italy Extended", why: "Trastevere deep dive. Tonnarello, Bar San Calisto, and the kind of neighborhood restaurants that don't show up on TripAdvisor. Extend to Amalfi Coast for seafood and limoncello. This is the trip where you eat your way through history.", alt: "Barcelona + Madrid", altWhy: "If Italian food fatigue is even possible, switch to Spain's variety.", link: "italy.html" },
   food_flex: { pick: "Rome + Italy Extended", why: "Trastevere deep dive. Tonnarello, Bar San Calisto, and the kind of neighborhood restaurants that don't show up on TripAdvisor. Extend to Amalfi Coast for seafood and limoncello. This is the trip where you eat your way through history.", alt: "Barcelona + Madrid", altWhy: "If Italian food fatigue is even possible, switch to Spain's variety.", link: "italy.html" },
@@ -505,7 +506,7 @@ function VibeSelector({ selectedVibe, setSelectedVibe }) {
 }
 
 /* ===== DESTINATIONS SECTION ===== */
-function DestinationsSection({ selectedVibe }) {
+function DestinationsSection({ selectedVibe, navigate }) {
   const [filter, setFilter] = useState('all');
   const activeVibe = VIBES.find(v => v.id === selectedVibe);
 
@@ -577,7 +578,7 @@ function DestinationsSection({ selectedVibe }) {
                 <Reveal key={dest.name} delay={i * 80}>
                   <div
                     className={`dest-card${match === true ? ' vibe-match' : ''}${match === false ? ' vibe-dim' : ''}`}
-                    onClick={() => window.location.href = dest.link}
+                    onClick={() => dest.link.startsWith('/') ? navigate(dest.link) : (window.location.href = dest.link)}
                     style={{
                       position: 'relative',
                       borderRadius: 16,
@@ -727,7 +728,7 @@ function DestinationsSection({ selectedVibe }) {
                   <Reveal key={item.name} delay={i * 80}>
                     <div
                       className={`dest-card${match === true ? ' vibe-match' : ''}${match === false ? ' vibe-dim' : ''}`}
-                      onClick={() => item.link && (window.location.href = item.link)}
+                      onClick={() => item.link && (item.link.startsWith('/') ? navigate(item.link) : (window.location.href = item.link))}
                       style={{
                         position: 'relative',
                         borderRadius: 16,
@@ -795,6 +796,7 @@ function DestinationsSection({ selectedVibe }) {
 
 /* ===== MAIN APP ===== */
 export default function App() {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('destinations');
   const [heroImg, setHeroImg] = useState(0);
@@ -1024,7 +1026,7 @@ export default function App() {
       <PhotoStrip images={photoStrip1} height={180} columns={5} />
 
       {/* ===== DESTINATIONS ===== */}
-      <DestinationsSection selectedVibe={selectedVibe} />
+      <DestinationsSection selectedVibe={selectedVibe} navigate={navigate} />
 
       {/* ===== PHOTO STRIP 2 ===== */}
       <PhotoStrip images={photoStrip2} height={260} columns={4} />
