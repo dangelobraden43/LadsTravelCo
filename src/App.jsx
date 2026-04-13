@@ -8,6 +8,8 @@ import { HEIC_HERO_IMAGES } from './images-heic-hero';
 import { HEIC_CARD_IMAGES } from './images-heic-card';
 import SystemSection from './SystemSection';
 import './SystemSection.css';
+import NorthAmericaSection from './NorthAmericaSection';
+import './NorthAmericaSection.css';
 
 /* ===== INTERSECTION OBSERVER HOOK ===== */
 function useReveal(threshold = 0.15) {
@@ -1004,6 +1006,11 @@ export default function App() {
       {/* ===== ACT 2: THE SYSTEM ===== */}
       <div id="the-system">
         <SystemSection />
+      </div>
+
+      {/* ===== ACT 3: NORTH AMERICA ===== */}
+      <div id="domestic">
+        <NorthAmericaSection />
       </div>
 
       {/* ===== FOOTER ===== */}

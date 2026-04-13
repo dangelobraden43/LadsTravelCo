@@ -1,0 +1,350 @@
+/* ===== NORTH AMERICA SECTION — WARM EDITORIAL FEEL ===== */
+/* EB Garamond for headlines, --copper accents, magazine layout */
+
+.na-root {
+  overflow: hidden;
+}
+
+.na-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ===== Section Intro ===== */
+.na-intro {
+  background: var(--light-bg);
+  padding: 100px 0 60px;
+}
+.na-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 16px;
+}
+.na-title {
+  font-family: 'EB Garamond', var(--serif);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--light-text);
+  margin-bottom: 14px;
+}
+.na-title em {
+  font-family: var(--editorial);
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 500;
+}
+.na-desc {
+  font-size: 16px;
+  color: var(--light-muted);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+/* ===== Michigan Hero Panel ===== */
+.na-michigan {
+  background: var(--light-bg);
+  padding: 0 0 60px;
+}
+.na-mich-panel {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.na-mich-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--copper), var(--gold), var(--copper));
+}
+
+.na-mich-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.na-mich-title {
+  font-family: 'EB Garamond', var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+.na-mich-subtitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--copper);
+}
+.na-mich-stats {
+  display: flex;
+  gap: 20px;
+}
+.na-mich-stat {
+  text-align: center;
+}
+.na-mich-stat-num {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+  letter-spacing: -0.02em;
+}
+.na-mich-stat-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.na-mich-intro {
+  font-size: 14px;
+  color: var(--cream2);
+  line-height: 1.75;
+  max-width: 640px;
+  margin-bottom: 24px;
+}
+
+/* Category Tabs */
+.na-mich-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.na-mich-tab {
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+}
+.na-mich-tab:hover {
+  border-color: var(--copper);
+  color: var(--cream2);
+}
+.na-mich-tab.active {
+  background: rgba(184, 136, 110, 0.2);
+  border-color: var(--copper);
+  color: var(--copper);
+}
+
+/* Spots List */
+.na-mich-spots {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.na-mich-spot {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+.na-mich-spot:hover {
+  border-color: var(--border2);
+  transform: translateX(2px);
+}
+.na-mich-spot-main {
+  min-width: 0;
+}
+.na-mich-spot-name {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.na-mich-spot-area {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.na-mich-spot-note {
+  font-size: 13px;
+  color: var(--cream2);
+  line-height: 1.5;
+}
+.na-mich-spot-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--copper);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* ===== Domestic Destination Cards ===== */
+.na-destinations {
+  background: var(--light-bg);
+  padding: 60px 0 80px;
+}
+.na-dest-title {
+  font-family: 'EB Garamond', var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--light-text);
+  margin-bottom: 8px;
+}
+.na-dest-desc {
+  font-size: 15px;
+  color: var(--light-muted);
+  margin-bottom: 36px;
+}
+.na-dest-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.na-dest-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--light-surface);
+  border: 1px solid var(--light-border);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.3s var(--transition);
+}
+.na-dest-card:hover {
+  border-color: rgba(184, 136, 110, 0.3);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.na-dest-card-img {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+.na-dest-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--transition);
+}
+.na-dest-card:hover .na-dest-card-img img {
+  transform: scale(1.05);
+}
+.na-dest-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 40%, rgba(0,0,0,0.6));
+}
+.na-dest-card-name-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
+  z-index: 1;
+}
+.na-dest-card-meta-badge {
+  font-size: 10px;
+  color: var(--copper);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.na-dest-card-name-text {
+  font-family: 'EB Garamond', var(--serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+.na-dest-card-body {
+  padding: 16px;
+}
+.na-dest-card-desc {
+  font-size: 13px;
+  color: var(--light-text2);
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+.na-dest-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.na-dest-card-link {
+  padding: 4px 12px;
+  background: rgba(184, 136, 110, 0.08);
+  border: 1px solid rgba(184, 136, 110, 0.2);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  color: var(--copper);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.na-dest-card-link:hover {
+  background: rgba(184, 136, 110, 0.15);
+  border-color: var(--copper);
+}
+.na-dest-card-expand {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--copper);
+}
+
+/* ===== Pull Quote ===== */
+.na-quote {
+  background: var(--light-bg);
+  padding: 60px 32px;
+  text-align: center;
+}
+.na-quote-text {
+  font-family: 'EB Garamond', var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--light-text);
+  opacity: 0.7;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .na-intro { padding: 80px 0 40px; }
+  .na-michigan { padding: 0 0 40px; }
+  .na-mich-panel { padding: 28px 20px; }
+  .na-mich-header { flex-direction: column; }
+  .na-mich-spot {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .na-mich-spot-note { font-size: 12px; }
+  .na-dest-grid { grid-template-columns: 1fr 1fr; }
+  .na-destinations { padding: 40px 0 60px; }
+}
+@media (max-width: 480px) {
+  .na-dest-grid { grid-template-columns: 1fr; }
+  .na-mich-tabs { gap: 4px; }
+  .na-mich-tab { padding: 6px 14px; font-size: 12px; }
+}
