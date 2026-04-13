@@ -6,6 +6,8 @@ import { HERO_IMAGES } from './images-hero';
 import { BATCH4_IMAGES } from './images-batch4';
 import { HEIC_HERO_IMAGES } from './images-heic-hero';
 import { HEIC_CARD_IMAGES } from './images-heic-card';
+import TravelWindows from './TravelWindows';
+import './TravelWindows.css';
 
 /* ===== IMAGE DATA ===== */
 
@@ -1282,7 +1284,7 @@ function DestinationsSection({ selectedVibe }) {
 /* ===== SYSTEM SECTION ===== */
 function SystemSection({ selectedVibe }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [openWindow, setOpenWindow] = useState(null);
+  // openWindow state removed — TravelWindows is now a standalone component
   const [openFlight, setOpenFlight] = useState(null);
   const [openMyth, setOpenMyth] = useState(null);
   const [openDeliverable, setOpenDeliverable] = useState(null);
@@ -1301,7 +1303,6 @@ function SystemSection({ selectedVibe }) {
     }
   }, [selectedVibe]);
 
-  const toggleWindow = (i) => setOpenWindow(openWindow === i ? null : i);
   const toggleFlight = (i) => setOpenFlight(openFlight === i ? null : i);
   const toggleMyth = (i) => setOpenMyth(openMyth === i ? null : i);
   const toggleDeliverable = (i) => setOpenDeliverable(openDeliverable === i ? null : i);
@@ -1324,6 +1325,7 @@ function SystemSection({ selectedVibe }) {
   ];
 
   return (
+    <>
     <section className="section section-alt">
       <div className="section-inner">
         {/* Header */}
@@ -1360,15 +1362,12 @@ function SystemSection({ selectedVibe }) {
           </div>
         </Reveal>
 
-        {/* Travel Windows */}
-        <Reveal delay={200}>
-          <div style={{marginTop:80}}>
-            <div className="section-label">Travel Windows</div>
-            <div className="section-title" style={{marginBottom:12}}>When to <em>Actually Go</em></div>
-            <p className="section-desc" style={{marginBottom:32}}>Four optimal windows based on fare data, crowd patterns, and weather. Everything outside these windows costs more and delivers less.</p>
-            {TRAVEL_WINDOWS_JSX(openWindow, toggleWindow)}
-          </div>
-        </Reveal>
+        {/* Travel Windows — v2 sticky scroll component (renders its own dark section with gradient bridges) */}
+        </div>
+      </section>
+      <TravelWindows />
+      <section className="section section-alt">
+        <div className="section-inner">
 
         {/* Flight Intelligence */}
         <Reveal delay={200}>
@@ -1443,6 +1442,7 @@ function SystemSection({ selectedVibe }) {
         </Reveal>
       </div>
     </section>
+    </>
   );
 }
 
