@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IMAGES } from './images';
 import { NEW_IMAGES } from './images-new';
@@ -7,6 +7,7 @@ import { HERO_IMAGES } from './images-hero';
 import { BATCH4_IMAGES } from './images-batch4';
 import { HEIC_HERO_IMAGES } from './images-heic-hero';
 import { HEIC_CARD_IMAGES } from './images-heic-card';
+const Globe = lazy(() => import('./Globe'));
 import SystemSection from './SystemSection';
 import './SystemSection.css';
 import NorthAmericaSection from './NorthAmericaSection';
@@ -1034,8 +1035,39 @@ export default function App() {
         </div>
       </section>
 
-      {/* ===== PHOTO STRIP 1 (quick rhythm) ===== */}
-      <PhotoStrip images={photoStrip1} height={180} columns={5} />
+      {/* ===== GLOBE + DATABASE (pulled up from System section) ===== */}
+      <section style={{
+        background: 'var(--bg, #141210)',
+        padding: '60px 0 40px',
+        position: 'relative',
+      }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
+          <Reveal type="fade">
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600, letterSpacing: 4, color: 'var(--gold)', marginBottom: 16 }}>THE DATABASE</div>
+            <h2 style={{
+              fontFamily: "'Fraunces', var(--display)", fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+              fontWeight: 400, color: 'var(--cream, #e8dcc8)', lineHeight: 1.2, marginBottom: 8,
+            }}>180+ Spots. 29 Cities. 13 Countries.</h2>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--cream2, #b8ad9a)', marginBottom: 0 }}>
+              Every one walked into, sat down at, or stumbled out of.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 28, flexWrap: 'wrap' }}>
+              {[{n:'180+',l:'Validated Spots'},{n:'29',l:'Cities'},{n:'13',l:'Countries'},{n:'4',l:'Continents'}].map((s,i) => (
+                <div key={i} style={{
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(201,168,76,0.15)',
+                  borderRadius: 12, padding: '12px 20px', textAlign: 'center', minWidth: 90,
+                }}>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 20, fontWeight: 700, color: 'var(--gold)' }}>{s.n}</div>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--cream2)', marginTop: 2 }}>{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+          <Suspense fallback={<div style={{ height: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--muted)', letterSpacing: 2 }}>LOADING GLOBE...</span></div>}>
+            <Globe />
+          </Suspense>
+        </div>
+      </section>
 
       {/* ===== DESTINATIONS (vibe pills integrated) ===== */}
       <DestinationsSection selectedVibe={selectedVibe} setSelectedVibe={setSelectedVibe} navigate={navigate} />

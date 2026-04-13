@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
-
-const Globe = lazy(() => import('./Globe'));
+import React, { useState, useEffect, useRef } from 'react';
 import { IMAGES } from './images';
 import { NEW_IMAGES } from './images-new';
 import { BATCH3_IMAGES } from './images-batch3';
@@ -327,34 +325,9 @@ export default function SystemSection({ onQuizComplete }) {
         ))}
       </div>
 
-      {/* SUB-SECTION 4: Database Viz (dark) */}
-      <div className="sys-gradient-light-to-dark" />
-      <section className="sys-section-dark">
-        <div className="sys-inner" style={{textAlign:'center'}}>
-          <Reveal type="fade">
-            <div className="sys-label-copper">THE DATABASE</div>
-            <h2 className="sys-title-dark" style={{fontSize:'clamp(2rem,5vw,3.6rem)'}}>180+ Spots. 29 Cities. 13 Countries.</h2>
-            <p className="sys-subtitle-dark">Every one walked into, sat down at, or stumbled out of.</p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 32, flexWrap: 'wrap' }}>
-              {[{n:'180+',l:'Validated Spots'},{n:'29',l:'Cities Explored'},{n:'13',l:'Countries'},{n:'4',l:'Continents'}].map((s,i) => (
-                <div key={i} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(201,168,76,0.15)',
-                  borderRadius: 12, padding: '14px 22px', textAlign: 'center', minWidth: 100,
-                }}>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: 22, fontWeight: 700, color: 'var(--gold)' }}>{s.n}</div>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--cream2)', marginTop: 4 }}>{s.l}</div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-          <Suspense fallback={<div style={{height:'60vh',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--muted)',letterSpacing:2}}>LOADING GLOBE...</span></div>}>
-            <Globe />
-          </Suspense>
-        </div>
-      </section>
-      <div className="sys-gradient-dark-to-light" />
+      {/* Globe/Database moved to App.jsx — directly after hero */}
 
-      {/* SUB-SECTION 5: What You Get (light) */}
+      {/* SUB-SECTION 4: What You Get (light) */}
       <section className="sys-section-light">
         <div className="sys-inner">
           <Reveal>
