@@ -1,50 +1,61 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import './FrameworkPage.css';
+import React, { useState, useEffect, useMemo } from 'react'
+import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
+import { SEO_DEFAULTS } from './utils/seo'
+import './FrameworkPage.css'
 
 export default function FrameworkPage({ data, heroImg }) {
-  const [activeNav, setActiveNav] = useState(null);
-  const [categoryFilter, setCategoryFilter] = useState('All');
+  const [activeNav, setActiveNav] = useState(null)
+  const [categoryFilter, setCategoryFilter] = useState('All')
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.title = `${data.name} — The Lads Travel Co.`;
-  }, [data.name]);
+    window.scrollTo(0, 0)
+    document.title = `${data.name} — The Lads Travel Co.`
+  }, [data.name])
 
   const style = {
     '--fw-bg': data.palette.bg,
     '--fw-surface': data.palette.surface,
     '--fw-elevated': data.palette.elevated,
     '--fw-accent': data.palette.accent,
-  };
+  }
 
   const scrollTo = (id) => {
-    setActiveNav(id);
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+    setActiveNav(id)
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
 
   // Support v2 spots array OR legacy categories
-  const hasV2Spots = data.spots && data.spots.length > 0;
+  const hasV2Spots = data.spots && data.spots.length > 0
   const totalSpots = hasV2Spots
     ? data.spots.length
-    : data.categories.reduce((sum, cat) => sum + cat.spots.length, 0);
+    : data.categories.reduce((sum, cat) => sum + cat.spots.length, 0)
 
   // Build unique category list from v2 spots
   const spotCategories = useMemo(() => {
-    if (!hasV2Spots) return [];
-    const cats = [...new Set(data.spots.map(s => s.category))];
-    return ['All', ...cats];
-  }, [data.spots, hasV2Spots]);
+    if (!hasV2Spots) return []
+    const cats = [...new Set(data.spots.map((s) => s.category))]
+    return ['All', ...cats]
+  }, [data.spots, hasV2Spots])
 
   const filteredSpots = useMemo(() => {
-    if (!hasV2Spots) return [];
-    if (categoryFilter === 'All') return data.spots;
-    return data.spots.filter(s => s.category === categoryFilter);
-  }, [data.spots, categoryFilter, hasV2Spots]);
+    if (!hasV2Spots) return []
+    if (categoryFilter === 'All') return data.spots
+    return data.spots.filter((s) => s.category === categoryFilter)
+  }, [data.spots, categoryFilter, hasV2Spots])
 
   return (
     <div className="fw-page" style={style}>
+      <Helmet>
+        <title>
+          {data.name} — {SEO_DEFAULTS.siteName}
+        </title>
+        <meta name="description" content={data.tagline} />
+        <meta property="og:title" content={`${data.name} — ${SEO_DEFAULTS.siteName}`} />
+        <meta property="og:description" content={data.overview?.quickRead || data.tagline} />
+        <meta property="og:type" content="website" />
+      </Helmet>
       {/* ===== HERO ===== */}
       <section className="fw-hero">
         {heroImg && (
@@ -53,7 +64,9 @@ export default function FrameworkPage({ data, heroImg }) {
           </div>
         )}
         <div className="fw-hero-overlay" />
-        <Link to="/" className="fw-hero-back">&larr; Back to The Lads Travel Co.</Link>
+        <Link to="/" className="fw-hero-back">
+          &larr; Back to The Lads Travel Co.
+        </Link>
         <div className="fw-hero-content">
           <div className="fw-hero-badge">PERSONALLY VALIDATED</div>
           <h1 className="fw-hero-name">{data.name}</h1>
@@ -72,15 +85,17 @@ export default function FrameworkPage({ data, heroImg }) {
       {/* ===== NAV ===== */}
       <nav className="fw-nav">
         <div className="fw-nav-inner">
-          {data.navSections.map(s => {
-            const id = s.toLowerCase().replace(/\s+/g, '-');
+          {data.navSections.map((s) => {
+            const id = s.toLowerCase().replace(/\s+/g, '-')
             return (
               <button
                 key={id}
                 className={`fw-nav-pill${activeNav === id ? ' active' : ''}`}
                 onClick={() => scrollTo(id)}
-              >{s}</button>
-            );
+              >
+                {s}
+              </button>
+            )
           })}
         </div>
       </nav>
@@ -88,7 +103,9 @@ export default function FrameworkPage({ data, heroImg }) {
       {/* ===== OVERVIEW ===== */}
       <section id="overview" className="fw-section">
         <div className="fw-section-label">OVERVIEW</div>
-        <h2 className="fw-section-title">{totalSpots} Spots Across {data.categories.length} Categories</h2>
+        <h2 className="fw-section-title">
+          {totalSpots} Spots Across {data.categories.length} Categories
+        </h2>
         <div className="fw-overview-grid">
           <div className="fw-overview-card">
             <div className="fw-overview-card-label">AT A GLANCE</div>
@@ -115,33 +132,47 @@ export default function FrameworkPage({ data, heroImg }) {
       {hasV2Spots && (
         <section id="spots" className="fw-section">
           <div className="fw-section-label">ALL SPOTS</div>
-          <h2 className="fw-section-title">{totalSpots} Spots — {data.spots.filter(s => s.validated && s.validator !== 'Research').length} Personally Validated</h2>
+          <h2 className="fw-section-title">
+            {totalSpots} Spots —{' '}
+            {data.spots.filter((s) => s.validated && s.validator !== 'Research').length} Personally
+            Validated
+          </h2>
 
           {/* Category filter pills */}
           <div className="fw-cat-filters">
-            {spotCategories.map(cat => (
+            {spotCategories.map((cat) => (
               <button
                 key={cat}
                 className={`fw-cat-pill${categoryFilter === cat ? ' active' : ''}`}
                 onClick={() => setCategoryFilter(cat)}
               >
-                {cat}{cat !== 'All' && ` (${data.spots.filter(s => s.category === cat).length})`}
+                {cat}
+                {cat !== 'All' && ` (${data.spots.filter((s) => s.category === cat).length})`}
               </button>
             ))}
           </div>
 
           <div className="fw-spots-grid">
             {filteredSpots.map((spot, i) => {
-              const isLads = spot.validator && spot.validator !== 'Research';
-              const hasHH = spot.happyHour && spot.happyHour !== 'None known' && spot.happyHour !== 'N/A' && spot.happyHour !== 'TBD';
-              const hasSave = spot.wayToSave && spot.wayToSave !== 'TBD';
+              const isLads = spot.validator && spot.validator !== 'Research'
+              const hasHH =
+                spot.happyHour &&
+                spot.happyHour !== 'None known' &&
+                spot.happyHour !== 'N/A' &&
+                spot.happyHour !== 'TBD'
+              const hasSave = spot.wayToSave && spot.wayToSave !== 'TBD'
               return (
                 <div key={i} className={`fw-spot${spot.featured ? ' featured' : ''}`}>
                   <div className="fw-spot-top">
                     <div className="fw-spot-name">{spot.name}</div>
-                    {spot.priceRange && <span className="fw-spot-price-badge">{spot.priceRange}</span>}
+                    {spot.priceRange && (
+                      <span className="fw-spot-price-badge">{spot.priceRange}</span>
+                    )}
                   </div>
-                  <div className="fw-spot-area">{spot.neighborhood || spot.area}{spot.city ? `, ${spot.city}` : ''}</div>
+                  <div className="fw-spot-area">
+                    {spot.neighborhood || spot.area}
+                    {spot.city ? `, ${spot.city}` : ''}
+                  </div>
                   <p className="fw-spot-desc">{spot.description}</p>
 
                   {hasHH && (
@@ -168,42 +199,46 @@ export default function FrameworkPage({ data, heroImg }) {
                     )}
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         </section>
       )}
 
       {/* ===== SPOTS — LEGACY (categories array) ===== */}
-      {!hasV2Spots && data.categories.map(cat => (
-        cat.spots.length > 0 && (
-        <section key={cat.id} id={cat.id} className="fw-section" style={{ paddingTop: 40 }}>
-          <div className="fw-category-header">
-            <h3 className="fw-category-name">{cat.name}</h3>
-            <span className="fw-category-count">{cat.spots.length} spots</span>
-          </div>
-          <div className="fw-spots-grid">
-            {cat.spots.map((spot, i) => {
-              const isLads = spot.validator && spot.validator !== 'Research';
-              return (
-                <div key={i} className="fw-spot">
-                  <div className="fw-spot-name">{spot.name}</div>
-                  <div className="fw-spot-area">{spot.area}</div>
-                  <p className="fw-spot-desc">{spot.description}</p>
-                  <div className="fw-spot-meta">
-                    <span className={`fw-spot-badge ${isLads ? 'validated' : 'research'}`}>
-                      {isLads ? spot.validator : 'RESEARCH'}
-                    </span>
-                    {spot.rating && <span className="fw-spot-rating">{spot.rating}&#9733;</span>}
-                    {spot.price && <span className="fw-spot-price">{spot.price}</span>}
-                  </div>
+      {!hasV2Spots &&
+        data.categories.map(
+          (cat) =>
+            cat.spots.length > 0 && (
+              <section key={cat.id} id={cat.id} className="fw-section" style={{ paddingTop: 40 }}>
+                <div className="fw-category-header">
+                  <h3 className="fw-category-name">{cat.name}</h3>
+                  <span className="fw-category-count">{cat.spots.length} spots</span>
                 </div>
-              );
-            })}
-          </div>
-        </section>
-        )
-      ))}
+                <div className="fw-spots-grid">
+                  {cat.spots.map((spot, i) => {
+                    const isLads = spot.validator && spot.validator !== 'Research'
+                    return (
+                      <div key={i} className="fw-spot">
+                        <div className="fw-spot-name">{spot.name}</div>
+                        <div className="fw-spot-area">{spot.area}</div>
+                        <p className="fw-spot-desc">{spot.description}</p>
+                        <div className="fw-spot-meta">
+                          <span className={`fw-spot-badge ${isLads ? 'validated' : 'research'}`}>
+                            {isLads ? spot.validator : 'RESEARCH'}
+                          </span>
+                          {spot.rating && (
+                            <span className="fw-spot-rating">{spot.rating}&#9733;</span>
+                          )}
+                          {spot.price && <span className="fw-spot-price">{spot.price}</span>}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
+            )
+        )}
 
       {/* ===== DAY TRIPS ===== */}
       <section id="day-trips" className="fw-section">
@@ -221,7 +256,12 @@ export default function FrameworkPage({ data, heroImg }) {
               </div>
               <p className="fw-trip-desc">{trip.description}</p>
               {trip.bookingUrl && (
-                <a href={trip.bookingUrl} target="_blank" rel="noopener noreferrer" className="fw-trip-book">
+                <a
+                  href={trip.bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="fw-trip-book"
+                >
                   Book on {trip.bookingPlatform} &rarr;
                 </a>
               )}
@@ -234,10 +274,19 @@ export default function FrameworkPage({ data, heroImg }) {
       <section id="maps" className="fw-section">
         <div className="fw-section-label">GOOGLE MAPS</div>
         <h2 className="fw-section-title">Drop These Into Your Phone</h2>
-        <p className="fw-section-desc">Open in Google Maps, hit save, and navigate like you live there. Every pub, restaurant, and attraction pinned.</p>
+        <p className="fw-section-desc">
+          Open in Google Maps, hit save, and navigate like you live there. Every pub, restaurant,
+          and attraction pinned.
+        </p>
         <div className="fw-maps-grid">
           {data.mapsLinks.map((m, i) => (
-            <a key={i} href={m.url} target="_blank" rel="noopener noreferrer" className="fw-map-card">
+            <a
+              key={i}
+              href={m.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fw-map-card"
+            >
               <div className="fw-map-icon">&#128205;</div>
               <div className="fw-map-name">{m.name}</div>
               <div className="fw-map-cta">Open in Google Maps &rarr;</div>
@@ -271,16 +320,30 @@ export default function FrameworkPage({ data, heroImg }) {
 
         {data.costModel && (
           <>
-            <h3 className="fw-section-title" style={{ fontSize: '1.4rem', marginTop: 48 }}>Cost Model (Per Person, Group of 4)</h3>
+            <h3 className="fw-section-title" style={{ fontSize: '1.4rem', marginTop: 48 }}>
+              Cost Model (Per Person, Group of 4)
+            </h3>
             <table className="fw-cost-table">
               <thead>
-                <tr>{data.costModel.headers.map((h, i) => <th key={i}>{h}</th>)}</tr>
+                <tr>
+                  {data.costModel.headers.map((h, i) => (
+                    <th key={i}>{h}</th>
+                  ))}
+                </tr>
               </thead>
               <tbody>
                 {data.costModel.rows.map((row, i) => (
-                  <tr key={i}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>
+                  <tr key={i}>
+                    {row.map((cell, j) => (
+                      <td key={j}>{cell}</td>
+                    ))}
+                  </tr>
                 ))}
-                <tr>{data.costModel.totals.map((cell, j) => <td key={j}>{cell}</td>)}</tr>
+                <tr>
+                  {data.costModel.totals.map((cell, j) => (
+                    <td key={j}>{cell}</td>
+                  ))}
+                </tr>
               </tbody>
             </table>
             {data.costModel.lean && <p className="fw-cost-lean">{data.costModel.lean}</p>}
@@ -296,8 +359,10 @@ export default function FrameworkPage({ data, heroImg }) {
 
       {/* ===== FOOTER NAV ===== */}
       <div className="fw-footer-nav">
-        <Link to="/" className="fw-footer-link">&larr; Back to all destinations</Link>
+        <Link to="/" className="fw-footer-link">
+          &larr; Back to all destinations
+        </Link>
       </div>
     </div>
-  );
+  )
 }

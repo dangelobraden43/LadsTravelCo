@@ -47,3 +47,22 @@ testing/b_NUquevGyH7U.zip
 
 # Old babel backup
 index-old-babel.html
+
+# Environment secrets
+.env
+.env.local
+.env.*.local
+
+# Bundle report
+bundle-report.html
+dist/bundle-report.html
+
+# Temp image extraction
+temp_images/
+
+# Claude Code worktrees
+.claude/worktrees/
+
+# Setup prompts (not deployed)
+master-setup-prompt.md
+site-audit-for-creative-director.md

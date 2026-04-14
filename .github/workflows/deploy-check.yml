@@ -1,0 +1,23 @@
+name: Pre-Deploy Validation
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Check for giant files
+        run: |
+          find dist -name "*.js" -size +2M -exec echo "WARNING: Large file {}" \;
+          find dist -name "*.js" -size +5M -exec echo "CRITICAL: File too large {}" \; -exec exit 1 \;
+      - name: Verify critical routes exist
+        run: |
+          test -f dist/index.html && echo "index.html OK"

@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE CODE MASTER CONTEXT
-## Last Updated: April 11, 2026
+## Last Updated: April 14, 2026
 
 ---
 
@@ -83,6 +83,46 @@
 - Updated /morning command to read sprint file and recommend from highest unchecked tier
 
 **Active sprint:** `internal/brady/3-WEEK-SPRINT.md` is the living priority list. Every session starts with `/morning`.
+
+---
+
+## PLATFORM VISION (Updated April 14, 2026)
+
+The site is a five-axis travel intelligence platform. One database. Five views.
+
+AXIS 1 — City Immersion: 10 frameworks live
+AXIS 2 — Adventure & Trekking: three-rung ladder (accessible → multi-day → expedition)
+AXIS 3 — Road Trips & Routes: west coast spine Vancouver → Phoenix
+AXIS 4 — Signature Events / Where We're Headed: Oktoberfest, Thailand NYE, TMB
+AXIS 5 — Sacred Sites: filter + badge across all frameworks
+
+Every spot has a `contexts` array that allows it to surface across multiple axes.
+This is the data architecture decision that makes the platform possible.
+
+## PERFORMANCE TARGET
+Current bundle: 59MB (main chunk, base64 images split into 7 chunks)
+Target: under 8MB initial load
+Method: extract-images script → /public/images/ → Vercel CDN serves WebP
+Status: Script created (scripts/extract-images.js), not yet run
+
+## BUILD SESSION SEQUENCE
+Session 1: Performance (image extraction + React.lazy routes)
+Session 2: Where We're Headed section + Giving Back redesign
+Session 3: Travel Windows immersive rebuild
+Session 4 (post-Peru): Salkantay framework — first adventure anchor
+
+## CHARITY WINDOWS (confirmed April 14, 2026)
+Late Apr/May: NPCA
+June/July/Aug: TUFF
+Late Aug/Sep: Ginny L. Clements Breast Cancer Research (U of Arizona)
+Late Nov/Dec: C.S. Mott Children's Hospital
+Rotating: Brady + Dawson decide
+
+## AUTOMATION TARGET (Summer 2026)
+All client touchpoints automated except the 15-minute call.
+Formspree → MailerLite sequence → Cal.com → framework delivery → post-trip survey
+Brady touches: the call, the pipeline run, the delivery email.
+Everything else runs.
 
 ---
 

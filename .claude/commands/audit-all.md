@@ -1,9 +1,9 @@
-Run the audit skill against every deployed HTML framework file in the project root:
-
-dublin-galway.html, italy.html, spain.html, australia-nz.html, iceland.html, munich.html, poland.html, thailand.html, prague-vienna.html, lads-local.html, charleston.html
-
-For each file, check: typography (EB Garamond headlines, Outfit body, JetBrains Mono labels), palette (unique per framework, not reusing another's), confidence labels (copper for validated, blue-grey for research), mobile responsiveness, Google Maps links working, tour links working, content completeness.
-
-Output a single summary table with columns: File | Typography | Palette | Labels | Mobile | Links | Overall Grade
-
-Flag any file scoring below B+ for immediate attention.
+For each framework in src/data/ (dublin, rome, spain, australia, iceland,
+prague, munich, poland, thailand, charleston):
+1. Count total spots
+2. Count spots where ladsTake is not empty
+3. Count spots where validated = true
+4. Count spots where contexts array is not empty
+Output as a table:
+| Framework | Spots | ladsTake filled | Validated | Context-tagged |
+Report completion % for each column. Flag any framework under 50% on any metric.
