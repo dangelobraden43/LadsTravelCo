@@ -116,13 +116,13 @@ function Atmosphere() {
     varying float intensity;
     void main() {
       vec3 gold = vec3(0.831, 0.659, 0.263);
-      gl_FragColor = vec4(gold * intensity * 0.5, intensity * 0.45);
+      gl_FragColor = vec4(gold * intensity * 0.25, intensity * 0.18);
     }
   `
 
   return (
-    <mesh>
-      <sphereGeometry args={[R * 1.06, 64, 64]} />
+    <mesh renderOrder={0}>
+      <sphereGeometry args={[R * 1.03, 64, 64]} />
       <shaderMaterial
         ref={shaderRef}
         vertexShader={vertexShader}
@@ -175,6 +175,7 @@ function Pin({ city, index, entered, hovered, setHovered, onPinClick }) {
       <mesh
         ref={meshRef}
         scale={0.001}
+        renderOrder={1}
         onPointerOver={(e) => {
           e.stopPropagation()
           setHovered(city.city)
