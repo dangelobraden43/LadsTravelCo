@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GALLERY_IMAGES } from './images-gallery';
-import { BATCH3_IMAGES } from './images-batch3';
-import { NEW_IMAGES } from './images-new';
-import { HERO_IMAGES } from './images-hero';
-import { HEIC_HERO_IMAGES } from './images-heic-hero';
+import { BATCH3_IMAGES } from './images-paths';
+import { NEW_IMAGES } from './images-paths';
+import { HERO_IMAGES } from './images-paths';
+import { HEIC_HERO_IMAGES } from './images-paths';
 import './PhotoGallery.css';
 
 /* Gallery photos with captions — gallery images + art/culture supplements */

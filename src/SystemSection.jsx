@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IMAGES } from './images';
-import { NEW_IMAGES } from './images-new';
-import { BATCH3_IMAGES } from './images-batch3';
-import { HERO_IMAGES } from './images-hero';
+import { IMAGES } from './images-paths';
+import { NEW_IMAGES } from './images-paths';
+import { BATCH3_IMAGES } from './images-paths';
+import { HERO_IMAGES } from './images-paths';
 import TravelWindows from './TravelWindows';
 import './SystemSection.css';
 

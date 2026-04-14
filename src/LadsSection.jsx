@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IMAGES } from './images';
-import { NEW_IMAGES } from './images-new';
-import { BATCH3_IMAGES } from './images-batch3';
-import { BATCH4_IMAGES } from './images-batch4';
-import { HERO_IMAGES } from './images-hero';
-import { HEIC_HERO_IMAGES } from './images-heic-hero';
+import { IMAGES } from './images-paths';
+import { NEW_IMAGES } from './images-paths';
+import { BATCH3_IMAGES } from './images-paths';
+import { BATCH4_IMAGES } from './images-paths';
+import { HERO_IMAGES } from './images-paths';
+import { HEIC_HERO_IMAGES } from './images-paths';
 import './LadsSection.css';
 
 /* ===== HOOKS ===== */
