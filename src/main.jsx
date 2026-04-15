@@ -11,6 +11,11 @@ import Clarity from '@microsoft/clarity'
 import './index.css'
 
 const FrameworkPage = lazy(() => import('./FrameworkPage'))
+const ExplorePage = lazy(() => import('./ExplorePage'))
+const AdventurePage = lazy(() => import('./AdventurePage'))
+const WhenPage = lazy(() => import('./WhenPage'))
+const PlanPage = lazy(() => import('./PlanPage'))
+const LadsPage = lazy(() => import('./LadsPage'))
 
 Clarity.init('wbqqkbsekh')
 
@@ -80,6 +85,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Suspense fallback={<div style={{ background: '#141210', height: '100vh' }} />}>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/adventure" element={<AdventurePage />} />
+          <Route path="/when" element={<WhenPage />} />
+          <Route path="/plan" element={<PlanPage />} />
+          <Route path="/lads" element={<LadsPage />} />
           {DESTINATIONS.map((slug) => (
             <Route key={slug} path={`/${slug}`} element={<LazyFramework slug={slug} />} />
           ))}
