@@ -113,23 +113,12 @@ function Nav({ scrolled }) {
           onClick={() => navigate('/')}
           style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
         >
-          <div
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              background: 'var(--gold)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: 'var(--display)',
-              fontSize: 18,
-              fontWeight: 700,
-              color: '#1a1a1a',
-            }}
-          >
-            L
-          </div>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--gold)' }}>
+            <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="1.2"/>
+            <ellipse cx="16" cy="16" rx="14" ry="6" stroke="currentColor" strokeWidth="1.2"/>
+            <line x1="2" y1="16" x2="30" y2="16" stroke="currentColor" strokeWidth="1.2"/>
+            <line x1="16" y1="2" x2="16" y2="30" stroke="currentColor" strokeWidth="1.2"/>
+          </svg>
           <span
             style={{
               fontFamily: 'var(--display)',

@@ -7,6 +7,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { reportWebVitals } from './utils/vitals'
+import { initSmoothScroll } from './utils/animations'
 import Clarity from '@microsoft/clarity'
 import './index.css'
 
@@ -102,3 +103,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 )
 
 reportWebVitals()
+initSmoothScroll()
