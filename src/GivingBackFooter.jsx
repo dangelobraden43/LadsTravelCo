@@ -98,6 +98,7 @@ export default function GivingBackFooter() {
               <p className="ft-email-thanks">You're in. We'll be in touch.</p>
             ) : (
               <form onSubmit={handleEmail} className="ft-email-form">
+                <input type="text" name="_gotcha" style={{display:'none'}} tabIndex={-1} autoComplete="off" />
                 <input type="hidden" name="_subject" value="Email Signup" />
                 <input name="email" type="email" required placeholder="your@email.com" className="ft-email-input" />
                 <button type="submit" className="ft-email-btn" disabled={emailSubmitting}>

@@ -247,6 +247,7 @@ export default function LadsSection({ quizData }) {
                   )}
                 </div>
                 <form onSubmit={handleSubmit}>
+                  <input type="text" name="_gotcha" style={{display:'none'}} tabIndex={-1} autoComplete="off" />
                   <input type="hidden" name="_subject" value="New Trip Inquiry" />
                   {hasQuizData && quizData.destination && <input type="hidden" name="Destination" value={quizData.destination} />}
                   {hasQuizData && quizData.timing && <input type="hidden" name="Travel Dates" value={quizData.timing} />}
