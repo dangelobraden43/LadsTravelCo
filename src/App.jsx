@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES, HERO_IMAGES } from './images-paths'
-import { countUpOnScroll, revealOnScroll, staggerReveal } from './utils/animations'
+import { gsap, countUpOnScroll, revealOnScroll, staggerReveal } from './utils/animations'
+import Splitting from 'splitting'
+import 'splitting/dist/splitting.css'
 const Globe = lazy(() => import('./Globe'))
 
 /* ===== HOOKS ===== */
@@ -192,6 +194,27 @@ function PhotoStrip({ images, height = 220 }) {
   )
 }
 
+/* ===== CURSOR GLOW ===== */
+function CursorGlow() {
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const move = (e) => {
+      el.style.left = e.clientX + 'px'
+      el.style.top = e.clientY + 'px'
+    }
+    window.addEventListener('mousemove', move, { passive: true })
+    return () => window.removeEventListener('mousemove', move)
+  }, [])
+  return <div ref={ref} style={{
+    position: 'fixed', width: 200, height: 200, borderRadius: '50%',
+    background: 'radial-gradient(circle, rgba(212,168,67,0.06) 0%, transparent 70%)',
+    pointerEvents: 'none', zIndex: 9999, transform: 'translate(-50%,-50%)',
+    mixBlendMode: 'screen',
+  }} />
+}
+
 /* ===== MAIN APP (HOMEPAGE) ===== */
 export default function App() {
   const navigate = useNavigate()
@@ -199,6 +222,9 @@ export default function App() {
   const [heroImg, setHeroImg] = useState(0)
   const ctaRef = useRef(null)
   const [ctaInit, setCtaInit] = useState(false)
+  const heroLine1 = useRef(null)
+  const heroLine2 = useRef(null)
+  const [heroAnimDone, setHeroAnimDone] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80)
@@ -213,6 +239,23 @@ export default function App() {
     return () => clearInterval(interval)
   }, [])
 
+  // Splitting.js hero headline animation
+  useEffect(() => {
+    if (heroAnimDone) return
+    setHeroAnimDone(true)
+    setTimeout(() => {
+      ;[heroLine1, heroLine2].forEach((ref, idx) => {
+        if (!ref.current) return
+        Splitting({ target: ref.current, by: 'chars' })
+        const chars = ref.current.querySelectorAll('.char')
+        gsap.fromTo(chars,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.03, delay: idx * 0.3 }
+        )
+      })
+    }, 200)
+  }, [heroAnimDone])
+
   useEffect(() => {
     if (ctaInit || !ctaRef.current) return
     setCtaInit(true)
@@ -222,6 +265,7 @@ export default function App() {
 
   return (
     <>
+      <CursorGlow />
       <Nav scrolled={scrolled} />
 
       {/* ===== HERO ===== */}
@@ -247,11 +291,11 @@ export default function App() {
             FREE PERSONAL TRAVEL CONSULTING THROUGH 2026
           </div>
           <h1 style={{ margin: 0, lineHeight: 1.1, marginBottom: 20 }}>
-            <span style={{ fontFamily: "'Space Grotesk', var(--sans)", fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 300, color: '#fff', display: 'block' }}>Travel Like</span>
-            <span style={{ fontFamily: "'Fraunces', var(--display)", fontSize: 'clamp(40px, 5.5vw, 72px)', fontWeight: 400, fontStyle: 'italic', color: 'var(--gold)', display: 'block' }}>You Know Someone</span>
+            <span ref={heroLine1} data-splitting="" style={{ fontFamily: "'Space Grotesk', var(--sans)", fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 300, color: '#fff', display: 'block' }}>Travel Like</span>
+            <span ref={heroLine2} data-splitting="" style={{ fontFamily: "'Fraunces', var(--display)", fontSize: 'clamp(40px, 5.5vw, 72px)', fontWeight: 400, fontStyle: 'italic', color: 'var(--gold)', display: 'block' }}>You Know Someone</span>
           </h1>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--cream2, #b8ad9a)', maxWidth: 580, margin: '0 auto', lineHeight: 1.6 }}>
-            Two friends. Four continents. Every recommendation from personal experience.
+          <p style={{ fontFamily: 'var(--sans)', fontSize: 18, color: '#b8ad9a', maxWidth: 580, margin: '0 auto', lineHeight: 1.6 }}>
+            Free trip planning from two guys who've actually been there.
           </p>
         </div>
         <div style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)', zIndex: 2, animation: 'float 2s ease-in-out infinite', opacity: 0.5, color: 'var(--cream2, #b8ad9a)' }}>
@@ -314,6 +358,7 @@ export default function App() {
           50% { transform: translateX(-50%) translateY(8px); }
         }
         .nav-label-short { display: none; }
+        [data-splitting] .char { display: inline-block; }
         @media(max-width:640px) {
           .nav-label-full { display: none; }
           .nav-label-short { display: inline; }
