@@ -84,7 +84,12 @@
 
 **Active sprint:** `internal/brady/3-WEEK-SPRINT.md` is the living priority list. Every session starts with `/morning`.
 
-**APRIL 14, 2026 — FULL BUILD DAY (Marathon Session):**
+**APRIL 14, 2026 — SESSION SUMMARY:**
+- Built five-spoke architecture (/explore, /adventure, /when, /plan, /lads) with split-screen theater, sticky scroll seasons, and GSAP character animations — bundle went from 59MB to 1.6MB
+- Shipped complete infrastructure: GitHub Actions CI/CD, Vercel Analytics + Clarity, security headers, Formspree honeypots, ESLint + Prettier + Husky, affiliate utils, Airtable sync script
+- Locked photo assignments (Tier 1 + Tier 2, 58 photos across 14 sections) and extracted all 298 images from base64 to CDN-served WebP
+
+**APRIL 14, 2026 — FULL BUILD DAY (Detail Log):**
 
 Site Architecture:
 - Five-spoke architecture live: /, /explore, /adventure, /when, /plan, /lads
@@ -147,16 +152,19 @@ AXIS 5 — Sacred Sites: filter + badge across all frameworks
 Every spot has a `contexts` array that allows it to surface across multiple axes.
 This is the data architecture decision that makes the platform possible.
 
-## CURRENT BUNDLE SIZES
-Main chunk (index): ~15.7KB
-App chunk: ~142KB (GSAP + Splitting.js)
+## CURRENT BUNDLE SIZES (verified April 14, 2026 session close)
+Main chunk (index): 10KB
+App chunk: 143KB (GSAP + Splitting.js + cursor glow)
 three-vendor: 884KB
 react-vendor: 250KB
+ExplorePage: 14KB (split-screen theater + Splitting.js)
+WhenPage: 10KB (sticky scroll seasons)
+PlanPage: 40KB (SystemSection + LadsSection)
 Framework routes: 11-33KB each (lazy loaded)
-Spoke pages: 5-10KB each (lazy loaded)
-Globe: ~8KB (lazy loaded)
-Total JS: ~5.5MB across 26 chunks
-Images: served as WebP from /public/images/ via Vercel CDN (not in JS bundle)
+Globe: 8KB (lazy loaded)
+Total JS: ~1.6MB across 24 chunks (initial load: ~400KB)
+Images: 298 WebP files served from /public/images/ via Vercel CDN
+Build time: 1.81s
 
 ## NEXT SESSION (April 15)
 Video integration — 12 Cloudinary URLs incoming. VideoBackground component needed.
@@ -180,6 +188,9 @@ Video placement map:
 - Airtable base not yet created (sync script ready)
 - Cloudinary account not yet created
 - ESLint has ~80 warnings across codebase (mostly unused vars from restructure)
+- Globe was dropped during five-spoke restructure — restored in same session
+- Splitting.js CSS import required ('splitting/dist/splitting.css') — imported in App.jsx and ExplorePage.jsx
+- Security headers added to vercel.json but not yet verified in production response headers
 
 ## CHARITY WINDOWS (confirmed April 14, 2026)
 Late Apr/May: NPCA
