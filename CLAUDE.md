@@ -84,6 +84,54 @@
 
 **Active sprint:** `internal/brady/3-WEEK-SPRINT.md` is the living priority list. Every session starts with `/morning`.
 
+**APRIL 14, 2026 — FULL BUILD DAY (Marathon Session):**
+
+Site Architecture:
+- Five-spoke architecture live: /, /explore, /adventure, /when, /plan, /lads
+- Nav: Explore · Adventure · When · Plan · The Lads (mobile: Trek replaces Adventure)
+- All 10 framework routes still live (/dublin, /rome, /spain, /australia, /iceland, /prague, /munich, /poland, /thailand, /charleston)
+- React Router client-side routing with Vercel SPA rewrites
+
+Performance:
+- Bundle: 59MB → 5.5MB (90.6% reduction)
+- 298 base64 images extracted to public/images/ as WebP, served from Vercel CDN
+- React.lazy on all routes — main chunk 15.7KB, framework data 11-33KB each lazy-loaded
+- Build time: 8.83s → 1.38s
+
+Infrastructure:
+- GSAP + ScrollTrigger + Splitting.js installed
+- Lenis installed then REMOVED — native scroll only, GSAP ScrollTrigger works standalone
+- ESLint 9 + Prettier + Husky + lint-staged
+- GitHub Actions: quality.yml, lighthouse.yml, deploy-check.yml
+- Vercel Analytics + Speed Insights wired in main.jsx
+- Microsoft Clarity live (project ID: wbqqkbsekh)
+- web-vitals reporting to console in dev
+- Affiliate utility: src/utils/affiliate.js (UTM builders for Viator, GYG)
+- Airtable sync script: scripts/airtable-sync.js (ready, needs Airtable base)
+- Image extraction script: scripts/extract-images.js (run, completed)
+- vite-plugin-sitemap auto-generates sitemap on build
+- react-helmet-async on FrameworkPage for dynamic OG tags
+
+Visual Build:
+- Globe: 3D interactive globe with Earth texture, atmosphere glow, 21 city pins, 4 route arcs, hover tooltips, click navigation via React Router. Globe SVG wireframe logo in nav.
+- Homepage: hero (6 locked photos crossfading), Splitting.js character-by-character headline animation, clarity line ("Free trip planning from two guys who've actually been there"), gold cursor glow effect, Data Spectacle (183 counts up with GSAP), photo strip 1 (range, 5 photos), four-path CTA with staggerReveal, photo strip 3 (moments, 4 photos)
+- /when: four full-viewport sticky scroll seasons (Spring/Summer/Fall/Winter) with full-bleed photos, destination picks with prices, cause panels with personal stories and donate buttons. Mobile fallback removes sticky.
+- /explore: split-screen theater — left: numbered editorial list with Splitting.js character reveals on destination names, right: persistent photo panel that crossfades on hover. Photo strip 2 (cities). Where We're Headed editorial.
+- /adventure: three-rung cards (Accessible Wilderness / Multi-Day Treks / Expedition) with alternating photo layout, Salkantay callout panel with May 2026 date.
+- /plan: SystemSection + LadsSection (quiz, intake form, Cal.com)
+- /lads: LadsSection + GivingBackFooter
+
+Photo Assignments (locked):
+- Hero: colosseum, opera, fitzroyBeach, iceland, oahuSunset, cliffs
+- When seasons: schonbrunn (spring), rockPoolSwim (summer), munichMarienplatz (fall), glendaloughCelticCrosses (winter)
+- Adventure rungs: olympicDeerAboveClouds (1), mountainOverlook (2), hiking_7103980642848666692 (3)
+- Explore header: montserrat
+- 3 photo strips assigned (range, cities, moments) + 10 framework strips (3 each)
+
+Domain & Email:
+- Domain: ladstravel.com (DNS propagating)
+- Google Workspace: brady@, dawson@, stew@ all active
+
 ---
 
 ## PLATFORM VISION (Updated April 14, 2026)
@@ -99,17 +147,39 @@ AXIS 5 — Sacred Sites: filter + badge across all frameworks
 Every spot has a `contexts` array that allows it to surface across multiple axes.
 This is the data architecture decision that makes the platform possible.
 
-## PERFORMANCE TARGET
-Current bundle: 59MB (main chunk, base64 images split into 7 chunks)
-Target: under 8MB initial load
-Method: extract-images script → /public/images/ → Vercel CDN serves WebP
-Status: Script created (scripts/extract-images.js), not yet run
+## CURRENT BUNDLE SIZES
+Main chunk (index): ~15.7KB
+App chunk: ~142KB (GSAP + Splitting.js)
+three-vendor: 884KB
+react-vendor: 250KB
+Framework routes: 11-33KB each (lazy loaded)
+Spoke pages: 5-10KB each (lazy loaded)
+Globe: ~8KB (lazy loaded)
+Total JS: ~5.5MB across 26 chunks
+Images: served as WebP from /public/images/ via Vercel CDN (not in JS bundle)
 
-## BUILD SESSION SEQUENCE
-Session 1: Performance (image extraction + React.lazy routes)
-Session 2: Where We're Headed section + Giving Back redesign
-Session 3: Travel Windows immersive rebuild
-Session 4 (post-Peru): Salkantay framework — first adventure anchor
+## NEXT SESSION (April 15)
+Video integration — 12 Cloudinary URLs incoming. VideoBackground component needed.
+Video placement map:
+  Hero: Vivid Opera House
+  Data moment: Vivid Harbor Bridge drone
+  /lads: Scooter to Trevi Fountain
+  /when winter: Irish pub band
+  /when fall: Inside Colosseum
+  /when spring: Schonbrunn pan
+  /when summer: Jaco beach sunset
+  /adventure Rung 1: Olympic rope hike
+  /adventure Rung 2: Costa Rica ATV canopy
+  /explore Dublin: Guinness immersive
+  /explore Spain: Montserrat views
+  /lads secondary: Smoky Mountains hike
+
+## KNOWN ISSUES
+- /when cause paragraphs need Brady's actual voice (current copy is AI-drafted from Brady's stories)
+- ladsTake field empty on most spots in data modules — Brady needs to fill before launch
+- Airtable base not yet created (sync script ready)
+- Cloudinary account not yet created
+- ESLint has ~80 warnings across codebase (mostly unused vars from restructure)
 
 ## CHARITY WINDOWS (confirmed April 14, 2026)
 Late Apr/May: NPCA
