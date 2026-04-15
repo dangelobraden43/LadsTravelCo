@@ -312,6 +312,15 @@ export default function App() {
         </div>
       </section>
 
+      {/* ===== GLOBE ===== */}
+      <section style={{ background: '#141210', padding: '60px 0 0', position: 'relative' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
+          <Suspense fallback={<div style={{ height: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: '#8a8070', letterSpacing: 2 }}>LOADING GLOBE...</span></div>}>
+            <Globe />
+          </Suspense>
+        </div>
+      </section>
+
       {/* ===== DATA SPECTACLE ===== */}
       <DataSpectacle />
 
