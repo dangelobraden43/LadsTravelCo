@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Nav } from './App'
+import { ScrollTrigger } from './utils/animations'
 import {
   IMAGES, NEW_IMAGES, BATCH3_IMAGES,
   HERO_IMAGES, HEIC_HERO_IMAGES,
@@ -237,7 +238,10 @@ function SeasonSection({ season, index }) {
 }
 
 export default function WhenPage() {
-  useEffect(() => { window.scrollTo(0, 0) }, [])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    setTimeout(() => ScrollTrigger.refresh(), 100)
+  }, [])
 
   return (
     <>
