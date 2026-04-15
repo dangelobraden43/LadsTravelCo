@@ -706,81 +706,142 @@ function DestinationsSection({ navigate }) {
           </Reveal>
         )}
 
-        {/* Bucket List section */}
-        {filteredBucket.length > 0 && (
-          <div style={{ marginTop: 60 }}>
+        {/* Where We're Headed */}
+        {filter !== 'validated' && (
+          <div style={{
+            marginTop: 60,
+            background: 'var(--bg, #141210)',
+            borderRadius: 16,
+            padding: '60px 40px',
+          }}>
             <Reveal>
-              <div className="section-label" style={{ color: 'var(--gold)' }}>BUCKET LIST</div>
-              <h2 className="section-title" style={{
-                color: 'var(--light-text, #1a1a1a)',
-                fontSize: 28, marginBottom: 32,
-              }}>What's Next</h2>
+              <div style={{
+                fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700,
+                letterSpacing: 3, color: 'var(--copper, #b8886e)',
+                marginBottom: 12, textTransform: 'uppercase',
+              }}>WHERE WE'RE HEADED</div>
+              <div style={{
+                fontFamily: "'Fraunces', Georgia, serif", fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontStyle: 'italic', fontWeight: 400, color: 'var(--cream, #e8dcc8)',
+                lineHeight: 1.15, marginBottom: 8,
+              }}>The List.</div>
+              <div style={{
+                fontFamily: 'var(--sans)', fontSize: 14,
+                color: 'var(--muted, #8a8070)', marginBottom: 48,
+              }}>No dates on most of these. That's intentional.</div>
             </Reveal>
-            <div className="dest-grid" style={{ gap: 16 }}>
-              {filteredBucket.map((item, i) => {
-                return (
-                  <Reveal key={item.name} delay={i * 80}>
-                    <div
-                      className="dest-card"
-                      onClick={() => item.link && (item.link.startsWith('/') ? navigate(item.link) : (window.location.href = item.link))}
-                      style={{
-                        position: 'relative',
-                        borderRadius: 16,
-                        overflow: 'hidden',
-                        cursor: item.link ? 'pointer' : 'default',
-                        aspectRatio: '3/4',
-                        transition: 'all 0.3s ease',
-                      }}
-                    >
-                      <img
-                        src={BUCKET_IMAGES[item.name]}
-                        alt={item.name}
-                        loading="lazy"
-                        style={{
-                          position: 'absolute', inset: 0,
-                          width: '100%', height: '100%', objectFit: 'cover',
-                          transition: 'transform 0.4s ease',
-                        }}
-                      />
-                      <div style={{
-                        position: 'absolute', inset: 0,
-                        background: 'linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.88) 100%)',
-                      }} />
-                      <div style={{
-                        position: 'absolute', top: 16, right: 16,
-                        background: item.status === 'departing' ? 'rgba(201,168,76,0.95)' : item.status === 'ready' ? 'rgba(201,168,76,0.9)' : 'rgba(90,154,173,0.9)',
-                        color: item.status === 'departing' ? '#1a1a1a' : '#fff',
-                        fontFamily: 'var(--mono)',
-                        fontSize: 10, fontWeight: 700,
-                        padding: '5px 12px', borderRadius: 20,
-                        letterSpacing: 1, zIndex: 2,
-                      }}>
-                        {item.status === 'departing' ? 'DEPARTING MAY 2026' : item.status === 'ready' ? 'FRAMEWORK READY' : 'BUILDING'}
-                      </div>
-                      <div style={{
-                        position: 'absolute', bottom: 0, left: 0, right: 0,
-                        padding: '20px', zIndex: 2,
-                      }}>
-                        <div style={{
-                          fontFamily: 'var(--mono)',
-                          fontSize: 10, color: 'var(--gold)',
-                          letterSpacing: 2, marginBottom: 6,
-                        }}>{item.route}</div>
-                        <div style={{
-                          fontFamily: 'var(--display)',
-                          fontSize: 22, fontWeight: 600,
-                          color: '#fff', marginBottom: 6, lineHeight: 1.2,
-                        }}>{item.name}</div>
-                        <div style={{
-                          fontFamily: 'var(--sans)',
-                          fontSize: 12, color: 'rgba(255,255,255,0.6)',
-                        }}>{item.meta}</div>
-                      </div>
-                    </div>
-                  </Reveal>
-                );
-              })}
-            </div>
+
+            {/* TREKS */}
+            <Reveal delay={100}>
+              <div style={{
+                fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 600,
+                letterSpacing: 3, color: 'var(--gold, #d4a843)',
+                padding: '16px 0 20px', borderTop: '1px solid rgba(201,168,76,0.15)',
+                textTransform: 'uppercase',
+              }}>TREKS</div>
+            </Reveal>
+            {[
+              { name: 'Lima + Huacachina + Salkantay + Machu Picchu', desc: "Lima to the oasis, ATV through red mountains, five days on the Salkantay, then standing at a wonder of the world.", status: 'now' },
+              { name: 'Tour du Mont Blanc', desc: "We've been to Europe. We haven't hiked the Alps. Hut to hut through Switzerland, France, and Italy \u2014 the distance, the countries, the scenery.", status: 'list' },
+              { name: 'New Zealand Great Walks', desc: "My deepest travel regret is not hiking New Zealand when we were already in Australia. One of the most beautiful countries on earth.", status: 'list' },
+              { name: 'Kilimanjaro', desc: "The true pinnacle. Everest gets the name recognition but Kili has always been the one.", status: 'list' },
+              { name: 'Everest Base Camp', desc: "We always think big.", status: 'list' },
+            ].map((item, i) => (
+              <Reveal key={item.name} delay={150 + i * 60}>
+                <div style={{ padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 6 }}>
+                    <div style={{
+                      fontFamily: "'Fraunces', Georgia, serif", fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+                      fontStyle: 'italic', fontWeight: 400, color: 'var(--cream, #e8dcc8)',
+                    }}>{item.name}</div>
+                    <span style={{
+                      fontFamily: 'var(--mono)', fontSize: 9, fontWeight: 700,
+                      letterSpacing: 1, padding: '3px 10px', borderRadius: 20,
+                      ...(item.status === 'now' ? { background: 'var(--gold, #d4a843)', color: '#141210' }
+                        : item.status === 'live' ? { background: 'var(--teal, #5a9aad)', color: '#141210' }
+                        : { background: 'transparent', color: 'var(--gold, #d4a843)', border: '1px solid rgba(201,168,76,0.3)' }),
+                    }}>{item.status === 'now' ? 'HAPPENING NOW' : item.status === 'live' ? 'FRAMEWORK LIVE' : 'ON THE LIST'}</span>
+                  </div>
+                  <div style={{
+                    fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--cream2, #b8ad9a)',
+                    lineHeight: 1.6, maxWidth: 640,
+                  }}>{item.desc}</div>
+                </div>
+              </Reveal>
+            ))}
+
+            {/* EVENTS */}
+            <Reveal delay={200}>
+              <div style={{
+                fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 600,
+                letterSpacing: 3, color: 'var(--gold, #d4a843)',
+                padding: '32px 0 20px', borderTop: '1px solid rgba(201,168,76,0.15)',
+                marginTop: 16, textTransform: 'uppercase',
+              }}>EVENTS</div>
+            </Reveal>
+            {[
+              { name: 'Oktoberfest \u2014 Munich', desc: "Two weeks, the Theresienwiese, and every beer hall in the city.", status: 'live' },
+              { name: 'Thailand NYE \u2014 Koh Phangan', desc: "Ring in the new year on the islands.", status: 'live' },
+              { name: 'Running of the Bulls \u2014 Pamplona', desc: "Do it once in your life. Who else can say they have.", status: 'list' },
+              { name: 'Camp Nou Reopening \u2014 Barcelona', desc: "I was devastated to miss the grand opening. The immersive museum was the most impressive thing I've seen from any sporting organization. And Yamal.", status: 'list' },
+            ].map((item, i) => (
+              <Reveal key={item.name} delay={250 + i * 60}>
+                <div style={{ padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 6 }}>
+                    <div style={{
+                      fontFamily: "'Fraunces', Georgia, serif", fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+                      fontStyle: 'italic', fontWeight: 400, color: 'var(--cream, #e8dcc8)',
+                    }}>{item.name}</div>
+                    <span style={{
+                      fontFamily: 'var(--mono)', fontSize: 9, fontWeight: 700,
+                      letterSpacing: 1, padding: '3px 10px', borderRadius: 20,
+                      ...(item.status === 'now' ? { background: 'var(--gold, #d4a843)', color: '#141210' }
+                        : item.status === 'live' ? { background: 'var(--teal, #5a9aad)', color: '#141210' }
+                        : { background: 'transparent', color: 'var(--gold, #d4a843)', border: '1px solid rgba(201,168,76,0.3)' }),
+                    }}>{item.status === 'now' ? 'HAPPENING NOW' : item.status === 'live' ? 'FRAMEWORK LIVE' : 'ON THE LIST'}</span>
+                  </div>
+                  <div style={{
+                    fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--cream2, #b8ad9a)',
+                    lineHeight: 1.6, maxWidth: 640,
+                  }}>{item.desc}</div>
+                </div>
+              </Reveal>
+            ))}
+
+            {/* ROUTES & WONDERS */}
+            <Reveal delay={300}>
+              <div style={{
+                fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 600,
+                letterSpacing: 3, color: 'var(--gold, #d4a843)',
+                padding: '32px 0 20px', borderTop: '1px solid rgba(201,168,76,0.15)',
+                marginTop: 16, textTransform: 'uppercase',
+              }}>ROUTES & WONDERS</div>
+            </Reveal>
+            {[
+              { name: 'West Coast Road Trip \u2014 Vancouver to Phoenix', desc: "The best way to experience the beauty of America is by exploring its nature. There's a reason this is so popular.", status: 'list' },
+              { name: 'Petra \u2014 Jordan', desc: "Truly the most impressive wonder of the world. Undervisited because of political tension. The wonders matter to us.", status: 'list' },
+              { name: 'The Pyramids \u2014 Egypt', desc: "Infinite history. Culture and history alongside great experiences \u2014 that's what the Lads seek. And the pyramids, like the Colosseum, are truly magnificent.", status: 'list' },
+            ].map((item, i) => (
+              <Reveal key={item.name} delay={350 + i * 60}>
+                <div style={{ padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 6 }}>
+                    <div style={{
+                      fontFamily: "'Fraunces', Georgia, serif", fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+                      fontStyle: 'italic', fontWeight: 400, color: 'var(--cream, #e8dcc8)',
+                    }}>{item.name}</div>
+                    <span style={{
+                      fontFamily: 'var(--mono)', fontSize: 9, fontWeight: 700,
+                      letterSpacing: 1, padding: '3px 10px', borderRadius: 20,
+                      background: 'transparent', color: 'var(--gold, #d4a843)', border: '1px solid rgba(201,168,76,0.3)',
+                    }}>ON THE LIST</span>
+                  </div>
+                  <div style={{
+                    fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--cream2, #b8ad9a)',
+                    lineHeight: 1.6, maxWidth: 640,
+                  }}>{item.desc}</div>
+                </div>
+              </Reveal>
+            ))}
           </div>
         )}
       </div>
