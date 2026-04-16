@@ -27,12 +27,61 @@
 
 **Zero placeholder links remain.**
 
-**APRIL 15, 2026 — SESSION:**
-- Airtable fully connected: 285 spots synced across 10 countries (Italy 33, Spain 55, Ireland 45, USA 10, Austria 26, Australia 75, Czech Republic 23, Canada 9, Puerto Rico 3, Costa Rica 6)
-- airtable-sync.js rewritten: replaced Airtable npm package with direct fetch API (npm package had persistent 404 bug), groups by country
-- Cloudinary connected: 8 videos analyzed via API, poster frames extracted and reviewed
-- Video analysis complete: 7 portrait / 1 landscape. Montserrat is strongest, TreviScooter is weakest. Revised placement strategy designed around portrait orientation (phone-frame concept).
-- Next session: build VideoBackground component and wire all 8 videos into site
+**APRIL 15, 2026 — FULL BUILD SESSION (10 commits):**
+
+Infrastructure:
+- Airtable fully connected: 285 spots synced across 10 countries via direct fetch API
+- Cloudinary connected (cloud: doonck2rm): 8 videos analyzed, poster frames extracted
+- Email updated to brady@ladstravel.com across all 28+ files
+
+Immersive Journey Homepage (Section-as-World architecture):
+- WorldManager + 7 worlds: Pub → Globe → Cities → Wild → Seasons → System → Pub Return
+- Each world has: unique palette, particle system, texture overlay, crossfade transitions
+- WorldBackground: only renders active + adjacent worlds (performance optimized)
+- WorldParticles: Three.js particle field that swaps behavior per world (dust/stars/firefly/petals/constellation)
+- WorldTexture: CSS texture overlays with crossfade
+- VideoBackground: Cloudinary video component with portrait-frame/split-screen/ambient-bg/inline-clip modes
+- SmokeyNP video wired into adventure world
+
+3D Depth Hero:
+- DepthHero component: Three.js shader-based parallax on enhanced photos
+- 4 enhanced photos (Colosseum, Opera House, Iceland, Cliffs) processed via sharp
+- Mouse-reactive parallax, chromatic aberration, vignette, gold particles
+- Auto-cycles every 7 seconds with smooth crossfade
+
+3D Hoodie Mockup:
+- Fall 2026 breast cancer awareness x Munich Oktoberfest x Detroit Lions
+- Canvas-generated texture (1024x1024) with ribbon, branding, lion, pretzel
+- 3D curved geometry with hood and sleeves, auto-rotate, hover glow
+- "COMING SOON" badge, "100% TO CHARITY" messaging
+- Placed in seasons world with "PRODUCT PREVIEW" label
+
+Visual Polish Pass:
+- Fixed nav doubled text (moved CSS to index.css)
+- Eliminated dead space (removed 100vh from content worlds)
+- Fixed CTA visibility (dark card + backdrop blur)
+- Fixed Data Spectacle (native IntersectionObserver replaces GSAP ScrollTrigger)
+- Optimized WorldBackground (3 layers max instead of 7)
+
+Premium Gift Page — Michigan Local Intelligence:
+- Standalone page at /gift/michigan — the deliverable proof of concept
+- Premium cover with gold CSS particles, curator credit
+- Sticky filter nav: All 21 · Grand Rapids 7 · Detroit 4 · Traverse City 3 · Harbor Country 3 · Golf 4
+- Spot cards with tier badges (MUST-HIT gold, LADS PICK copper, ALSO GOOD muted)
+- Ratings, prices (golf), validation dots, Brady's descriptions
+- The Lads Take blockquote + branded footer
+- Lightweight (no Three.js), mobile-responsive, scroll-reveal animations
+
+Design Documentation:
+- Spec: docs/superpowers/specs/2026-04-15-immersive-journey-design.md
+- Plan: docs/superpowers/plans/2026-04-15-immersive-journey-session1.md
+
+Security Verified:
+- No API keys or secrets in src/
+- .env.local gitignored (Airtable + Cloudinary credentials)
+- No personal email (dangelobraden43) in any source file
+- Vercel security headers: X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy
+- Formspree honeypot fields present
 
 **APRIL 11, 2026 — SHIPPED TODAY:**
 - Migrated from inline Babel to Vite build system (permanent infrastructure fix)
@@ -173,58 +222,27 @@ Total JS: ~1.6MB across 24 chunks (initial load: ~400KB)
 Images: 298 WebP files served from /public/images/ via Vercel CDN
 Build time: 1.81s
 
-## NEXT SESSION — VIDEO BUILD (Priority #1)
-Build VideoBackground component and wire 8 Cloudinary videos into the site.
-Cloud name: doonck2rm. Credentials in .env.local.
+## NEXT SESSION (April 16)
+1. Photo quality upgrade — AI upscaling or professional editing of hero photos (current phone quality limits the 3D depth effect)
+2. Wire remaining 6 videos into worlds (VividArrow hero, Montserrat cities, IrishSong pub, ViennaPalace seasons, CostaATVbar wild, TreviScooter lads)
+3. Framework page visual upgrade — bring framework pages up to par with new homepage design language
+4. Gift page template — generalize GiftPage.jsx into reusable template for all destinations
+5. "Built With AI" story page — last build before Peru trip
+6. Missing texture files: public/textures/wood-grain.webp and stone.webp (404 in console)
 
-### Design Approach
-7 of 8 videos are portrait (720x1280). Only VividArrow is landscape (1280x720).
-Do NOT force portrait video into landscape containers. Design around the orientation:
-- Phone-shaped video windows floating over dark backgrounds (authentic, matches how footage was shot)
-- Split-screen layouts with portrait video on one side, content on the other
-- Scroll-triggered vertical video reveals
-- VividArrow is the ONLY full-bleed landscape background (hero)
-
-### Video Placement Map (Revised)
-| Video | ID | Orientation | Size | Placement | Treatment |
-|-------|----|-------------|------|-----------|-----------|
-| VividArrow | VividArrow_kodo0p | Landscape | 8.9MB | Hero | Full-bleed background, autoplay, muted |
-| Montserrat | Montserrat_fvwtgo | Portrait | 3.9MB | /explore Spain | Split-screen left panel — vertical framing emphasizes cliff height |
-| IrishSong | IrishSong_qqxzzr | Portrait | 13.7MB | /when winter | Phone-shaped container in card — intimate pub setting |
-| ViennaPalace | ViennaPalace_auec7z | Portrait | 2.6MB | /when spring | Phone-shaped container — Schonbrunn Gloriette |
-| CostaATVbar | CostaATVbar_rpyngq | Portrait | 1.2MB | /adventure | Vertical card — jungle mountain view from bar |
-| SmokeyNP | SmokeyNP_eewi1h | Portrait | 2.6MB | /adventure or domestic | Vertical reveal panel — summit with Blue Ridge layers |
-| SmokeyMts | SmokeyMts_s2ijgc | Portrait | 2.5MB | Ambient background | OK to crop — all sky/trees, no subject to lose |
-| TreviScooter | TreviScooter_qryefo | Portrait | 9.4MB | /lads | Small inline clip, personality moment — NOT a background |
-
-### Cloudinary URL Pattern
-Base: `https://res.cloudinary.com/doonck2rm/video/upload/{transforms}/{public_id}.mp4`
-Optimized: add `q_auto,f_auto` after `upload/`
-Poster frames: `so_{seconds},w_800,f_jpg` generates JPG thumbnail at any timestamp
-
-### Video Quality Notes (from frame analysis)
-- Montserrat: BEST video. Cinematic mountain composition. Scroll-stopper.
-- SmokeyNP + SmokeyMts: Strong nature footage, good depth.
-- ViennaPalace: Clean European grandeur, bright daylight.
-- IrishSong: Authentic pub scene, Jameson mirror, guitarist, Christmas lights. Audio worth preserving (muted default, unmute on click).
-- VividArrow: Sydney Vivid drone show — crowd/phones in frame but motion carries it. Pick poster frame carefully.
-- CostaATVbar: Jungle bar POV with bird chart — tells a story.
-- TreviScooter: WEAKEST. Dark, blurry, faces only. Trevi Fountain not visible in sampled frames. Use as small personality clip only.
-
-### Open Questions for Brady
-1. TreviScooter — is there a timestamp where the fountain is visible?
-2. Confirm phone-frame concept vs center-crop-everything approach
-3. IrishSong audio — keep it (muted default, unmute on click)?
+### Cloudinary Video Reference
+Cloud: doonck2rm. 8 videos. URL pattern: `https://res.cloudinary.com/doonck2rm/video/upload/q_auto,f_auto,w_1280/{id}.mp4`
+SmokeyNP wired into adventure world. 6 remaining unwired.
 
 ## KNOWN ISSUES
-- /when cause paragraphs need Brady's actual voice (current copy is AI-drafted from Brady's stories)
-- ladsTake field empty on most spots in data modules — Brady needs to fill before launch
-- Airtable sync working — 285 spots across 10 countries synced to src/data/airtable-*.js
-- Cloudinary live — 8 videos uploaded (cloud: doonck2rm), credentials in .env.local
-- ESLint has ~80 warnings across codebase (mostly unused vars from restructure)
-- Globe was dropped during five-spoke restructure — restored in same session
-- Splitting.js CSS import required ('splitting/dist/splitting.css') — imported in App.jsx and ExplorePage.jsx
-- Security headers added to vercel.json but not yet verified in production response headers
+- Photo quality: hero-enhanced photos are phone-quality with sharp processing — need AI upscaling or professional editing
+- Missing texture files: public/textures/wood-grain.webp and stone.webp (WorldTexture references them, 404 in console)
+- Framework pages feel dated compared to new immersive homepage — need visual upgrade
+- /when cause paragraphs need Brady's actual voice
+- ladsTake field empty on most spots in data modules
+- 6 of 8 Cloudinary videos not yet wired into worlds
+- ESLint warnings (~28) across codebase (mostly unused vars)
+- TreviScooter video quality too low for background use — personality clip only
 
 ## CHARITY WINDOWS (confirmed April 14, 2026)
 Late Apr/May: NPCA
