@@ -210,9 +210,25 @@ vegas-zion-rise hero: RiseLantern_xuegox (Rise Festival footage)
 
 ## SESSION SEQUENCE (what's next)
 
-SESSION NEXT:
+SESSION 6 — FRAMEWORK ENGINE (Pass B):
+Architecture decided: Hybrid approach. Keep homepage, rebuild FrameworkPage.jsx
+into a cultural immersive experience. Full sensory stack per destination:
+- Globe zoom → cinematic video transition → 3D scene → framework content
+- Per-destination: ambient audio, Cloudinary video hero, palette shift,
+  3D particle environment, scroll-aware scene evolution
+- Data-driven from Airtable/JS files — one engine, all frameworks
+- Design direction: "D — all of the above" (sensory + cinematic + interactive + layered)
+Brady provides: ambient audio clips (sourced from Freesound/Pixabay), additional
+Cloudinary video uploads, one-line vibe descriptions per destination
+Spec not yet written — brainstorm paused mid-question, resume next session
+
+SESSION 7 — MAIN SITE VISUAL LEAP (Pass C):
+Bring immersive design back to homepage. Upgrade worlds system.
+Depends on Session 6 engine being built first.
+
+ALSO NEXT:
 - Google Search Console: verify domain, submit sitemap
-- Bing Webmaster Tools: same
+- Bing Webmaster Tools: verify (meta tag live)
 - LinkedIn launch post (already drafted)
 - Book CPA consult ($150-300, Michigan small business)
 - Apply to Travelpayouts (higher affiliate rates than direct)
