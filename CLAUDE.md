@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: April 15, 2026
+## Last Updated: April 16, 2026
 
 ---
 
@@ -9,6 +9,42 @@ Live: ladstravel.com (Vercel, auto-deploy on push)
 Repo: dangelobraden43/LadsTravelCo
 Stack: React + Vite, React Router, Three.js (react-three-fiber)
 Email: brady@ladstravel.com (Google Workspace active)
+Frameworks: 14 total (12 destination + vegas-zion-rise + jordi)
+
+## WHAT WAS BUILT (April 16, 2026)
+
+SESSION 5 — Framework deliverables + SEO foundation:
+
+DELIVERABLES:
+- vegas-zion-rise.html — first client-grade immersive framework
+  3D canvas lantern engine, Rise Festival video background,
+  scene-aware scroll system, mouse parallax, 4-day itinerary
+  Live: ladstravel.com/vegas-zion-rise
+- jordi.html — Barcelona founding story framework
+  17 processed photos (HEIC→WebP pipeline), photo-driven narrative,
+  Sagrada Familia centerpiece, Brady+Lexie personal photos
+  Live: ladstravel.com/jordi
+
+SEO FOUNDATION (all 12 frameworks + index):
+- Microsoft Clarity tracking live (wbqqkbsekh) — no longer placeholder
+- Schema.org JSON-LD: Organization+TravelAgency on index,
+  Article+TouristDestination+BreadcrumbList on each framework
+- Meta descriptions with long-tail SEO keywords per destination
+- OG image, URL, twitter card tags on all frameworks
+- Canonical URLs: ladstravel.com (fixed from vercel.app)
+- Internal cross-links: every framework → 3 related frameworks
+- Sitemap: fixed hostname ladstravel.co→ladstravel.com, all 14 pages listed
+- Title cleanup: removed year suffixes (Italy 2026 → Italy)
+
+DATA:
+- Airtable resync: 10 data files updated (April 16 pull)
+- Cloudinary: RiseLantern_xuegox video uploaded for Vegas framework
+
+INFRASTRUCTURE:
+- HEIC→WebP conversion pipeline via heic-convert + sharp
+- Framework delivery model proven: HTML in public/ → Vercel cleanURL
+
+---
 
 ## WHAT WAS BUILT (April 10-15, 2026)
 
@@ -73,7 +109,7 @@ AFFILIATE:
 Five-axis travel intelligence platform.
 One database. Five views.
 
-AXIS 1 — City Immersion: 10 frameworks live
+AXIS 1 — City Immersion: 12 frameworks live + 2 special deliverables
 AXIS 2 — Adventure & Trekking: three-rung ladder
 AXIS 3 — Road Trips & Routes: west coast spine
 AXIS 4 — Signature Events / Where We're Headed
@@ -160,28 +196,37 @@ Data moment: Vivid Harbor Bridge drone
 /explore Dublin: Guinness immersive
 /explore Spain: Montserrat views
 /lads secondary: Smoky Mountains hike
+vegas-zion-rise hero: RiseLantern_xuegox (Rise Festival footage)
 
 ---
 
 ## SESSION SEQUENCE (what's next)
 
 SESSION NEXT:
+- Google Search Console: verify domain, submit sitemap
+- Bing Webmaster Tools: same
+- LinkedIn launch post (already drafted)
+- Book CPA consult ($150-300, Michigan small business)
+- Apply to Travelpayouts (higher affiliate rates than direct)
+- ConvertKit free account + embed on site (email capture)
+- Padnos International Center outreach (schedule post-Peru meeting)
 - All 4 seasonal hoodies in HoodieShowcase.jsx
 - Video integration complete (remaining 4 videos)
 - Printify store connected to /giving
-- Buffer 60-day content batch
 
 PRE-PERU (May 3):
-- Beta client framework delivered
+- File MI LLC via LARA ($50, pending CPA input)
+- Apply for Chase Ink Business Preferred
+- Beta client framework delivered ✓ (vegas-zion-rise)
 - Padnos + K-College outreach sent
 - Personal layer on 30 spots Brady knows best
-- Shoulder Season hoodie live on Printify
 
 POST-PERU (May 14-17):
 - Process Peru photos in Lightroom
 - Build Salkantay framework (first adventure anchor)
-- SEOptimer 14-day trial
-- Share ladstravel.com publicly for first time
+- Buy domain, transfer DNS, update Vercel
+- Public launch post — full narrative
+- SEO sprint: 2-3 months Ahrefs/Semrush
 
 FORD PERIOD (May 18 - Aug):
 - Site on autopilot
@@ -201,7 +246,7 @@ FALL 2026:
 /morning  — reads this file + sprint, outputs top 3 priorities
 /ship     — diff → commit message → confirm → push
 /perf     — build + bundle size report + Lighthouse
-/audit-all — checks all 10 framework data files
+/audit-all — checks all 12 framework data files
 /context-tag [destination] — tags spots with five-axis contexts
 
 ---
@@ -219,7 +264,7 @@ FALL 2026:
 | Clarity | wbqqkbsekh |
 | Airtable | Base: configured, Dawson has access |
 | MailerLite | Email 1 active, webhook pending |
-| Cloudinary | 8 videos connected |
+| Cloudinary | 9 videos connected (added RiseLantern) |
 | Printify | Hoodie store in progress |
 | Google Workspace | brady@/dawson@/stew@ ladstravel.com |
 
