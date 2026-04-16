@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Jordi — The Lads Travel Co.">
+<meta property="og:description" content="A thank you to the man who showed us what this is supposed to feel like.">
+<meta property="og:type" content="website">
+<meta name="description" content="A thank you to the guide who gave us his Barcelona and started something he doesn't know about yet.">
+<meta property="og:image" content="https://ladstravel.com/og-image.png">
+<meta property="og:url" content="https://ladstravel.com/jordi">
+<link rel="canonical" href="https://ladstravel.com/jordi">
+<title>Jordi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","wbqqkbsekh");</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e0b09;
+  --bg2:#161210;
+  --text:#f2e8d5;
+  --muted:rgba(242,232,213,0.55);
+  --dim:rgba(242,232,213,0.3);
+  --catalan:#C83A32;
+  --amber:#D4782E;
+  --gold:#E0AE42;
+  --burgundy:#8A3454;
+  --warm:rgba(212,120,46,0.06);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Outfit',sans-serif;
+  --serif:'EB Garamond',Georgia,serif;
+  --max:700px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ====== HERO: THE NAME ====== */
+.hero{
+  position:relative;height:100vh;min-height:650px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+}
+.hero-bg img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(0.3) saturate(0.8);
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(12,10,8,0.3) 0%, rgba(12,10,8,0.7) 60%),
+    linear-gradient(to bottom, rgba(12,10,8,0.4) 0%, rgba(12,10,8,0.2) 40%, rgba(12,10,8,0.85) 85%, rgba(12,10,8,1) 100%);
+}
+.hero-content{position:relative;z-index:1;padding:0 2rem}
+.hero-pre{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.5em;text-transform:uppercase;
+  color:var(--gold);opacity:0.6;
+  margin-bottom:2rem;
+  opacity:0;animation:fadeUp 1.5s ease 0.3s forwards;
+}
+.hero h1{
+  font-family:var(--serif);
+  font-size:clamp(4rem,14vw,9rem);
+  font-weight:400;font-style:italic;
+  letter-spacing:0.02em;line-height:1;
+  color:var(--text);
+  opacity:0;animation:fadeUp 2s ease 0.8s forwards;
+  text-shadow:0 2px 60px rgba(200,107,43,0.15);
+}
+.hero-sub{
+  font-family:var(--serif);
+  font-size:1.1rem;font-style:italic;
+  color:var(--muted);margin-top:1.5rem;
+  opacity:0;animation:fadeUp 1.5s ease 1.5s forwards;
+}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;z-index:1;
+  opacity:0;animation:fadeUp 1.5s ease 2.5s forwards;
+}
+.hero-scroll span{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  opacity:0.25;
+}
+.scroll-line{
+  width:1px;height:32px;margin:0.6rem auto 0;
+  background:linear-gradient(to bottom,rgba(212,160,57,0.4),transparent);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.25;transform:scaleY(1)}50%{opacity:0.7;transform:scaleY(1.3)}}
+
+/* ====== LETTER ====== */
+.letter{
+  max-width:var(--max);margin:0 auto;
+  padding:6rem 1.5rem 4rem;
+}
+.letter-date{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);opacity:0.5;margin-bottom:2rem;
+}
+.letter p{
+  font-family:var(--serif);font-size:1.15rem;
+  line-height:1.9;color:var(--muted);margin-bottom:1.5rem;
+}
+.letter p:first-of-type{color:var(--text);font-size:1.25rem}
+.letter em{color:var(--text);font-style:italic}
+.letter strong{color:var(--gold);font-weight:500}
+
+/* ====== PHOTO SECTIONS ====== */
+.photo-full{
+  position:relative;width:100%;
+  height:70vh;min-height:400px;
+  overflow:hidden;margin:2rem 0;
+}
+.photo-full img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.photo-full .caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:3rem 2rem 2rem;
+  background:linear-gradient(to top,rgba(12,10,8,0.9),transparent);
+}
+.photo-full .caption-label{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.5rem;
+}
+.photo-full .caption p{
+  font-family:var(--serif);font-size:1rem;
+  font-style:italic;color:var(--muted);
+}
+
+/* ====== SAGRADA HERO MOMENT ====== */
+.sagrada-moment{
+  position:relative;width:100%;
+  min-height:90vh;overflow:hidden;
+  margin:3rem 0;
+  display:flex;align-items:flex-end;
+}
+.sagrada-moment img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+}
+.sagrada-moment::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to bottom,rgba(12,10,8,0.15) 0%,rgba(12,10,8,0) 30%,rgba(12,10,8,0) 50%,rgba(12,10,8,0.7) 80%,rgba(12,10,8,0.95) 100%),
+    linear-gradient(to right,rgba(12,10,8,0.15) 0%,transparent 15%,transparent 85%,rgba(12,10,8,0.15) 100%);
+}
+.sagrada-text{
+  position:relative;z-index:2;
+  padding:4rem 2rem 3rem;
+  max-width:650px;
+}
+.sagrada-text .mono{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;
+}
+.sagrada-text h2{
+  font-family:var(--serif);
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:400;font-style:italic;
+  line-height:1.35;margin-bottom:1rem;
+}
+.sagrada-text p{
+  font-family:var(--serif);font-size:1rem;
+  color:rgba(242,232,213,0.7);line-height:1.8;
+}
+
+/* ====== PERSONAL PHOTO STRIP ====== */
+.photo-strip{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:0.4rem;margin:2rem 0;
+  padding:0 1.5rem;
+  max-width:1000px;margin-left:auto;margin-right:auto;
+}
+.photo-strip img{
+  width:100%;height:280px;object-fit:cover;object-position:center 30%;
+  border-radius:6px;
+  transition:transform 0.4s ease;
+}
+.photo-strip img:hover{transform:scale(1.03)}
+.photo-strip .tall{grid-row:span 2;height:100%}
+
+/* ====== VIDEO SECTION ====== */
+.video-moment{
+  position:relative;width:100%;
+  height:60vh;min-height:350px;
+  overflow:hidden;margin:2rem 0;
+}
+.video-moment video{width:100%;height:100%;object-fit:cover}
+.video-moment::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom,rgba(12,10,8,0.6) 0%,rgba(12,10,8,0.1) 20%,rgba(12,10,8,0.1) 80%,rgba(12,10,8,0.6) 100%),
+    radial-gradient(ellipse at 50% 50%,transparent 40%,rgba(12,10,8,0.3) 100%);
+}
+.video-moment .overlay-text{
+  position:absolute;inset:0;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+}
+.video-moment .overlay-text .mono{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.35em;text-transform:uppercase;
+  color:rgba(212,160,57,0.6);margin-bottom:1rem;
+}
+.video-moment .overlay-text h2{
+  font-family:var(--serif);font-size:clamp(1.8rem,5vw,2.8rem);
+  font-weight:400;font-style:italic;
+  text-shadow:0 2px 30px rgba(0,0,0,0.5);
+}
+
+/* ====== THE DAY ====== */
+.story{
+  max-width:var(--max);margin:0 auto;
+  padding:4rem 1.5rem;
+}
+.story-label{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.story h2{
+  font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.2rem);
+  font-weight:400;margin-bottom:1rem;
+}
+.story p{
+  font-family:var(--serif);font-size:1.05rem;
+  line-height:1.85;color:var(--muted);margin-bottom:1.2rem;
+}
+.story p em{color:var(--text)}
+
+/* ====== PHOTO PAIR ====== */
+.photo-pair{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0.5rem;margin:2rem 0;
+  max-width:900px;margin-left:auto;margin-right:auto;
+  padding:0 1.5rem;
+}
+.photo-pair img{
+  width:100%;height:320px;object-fit:cover;object-position:center 30%;
+  border-radius:6px;
+  transition:transform 0.4s ease;
+}
+.photo-pair img:hover{transform:scale(1.03)}
+
+/* ====== THE REVEAL ====== */
+.reveal{
+  position:relative;
+  padding:6rem 2rem;text-align:center;
+  overflow:hidden;
+}
+.reveal::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(200,107,43,0.06),transparent 70%);
+}
+.reveal-content{position:relative;z-index:1}
+.reveal .divider{
+  width:50px;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+  margin:0 auto 2.5rem;
+}
+.reveal h2{
+  font-family:var(--serif);
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:400;font-style:italic;
+  line-height:1.4;margin-bottom:1.5rem;
+}
+.reveal h2 span{color:var(--gold)}
+.reveal p{
+  font-family:var(--serif);font-size:1.05rem;
+  color:var(--muted);line-height:1.85;
+  max-width:580px;margin:0 auto 1.2rem;
+}
+
+/* ====== WHAT WE BUILT ====== */
+.built{
+  max-width:var(--max);margin:0 auto;
+  padding:4rem 1.5rem;
+}
+.built-label{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.built h2{
+  font-family:var(--serif);font-size:1.8rem;
+  font-weight:400;margin-bottom:1rem;
+}
+.built p{
+  font-family:var(--serif);font-size:1.05rem;
+  color:var(--muted);line-height:1.85;margin-bottom:1.2rem;
+}
+
+/* Stat row */
+.stat-row{
+  display:flex;gap:2.5rem;justify-content:center;
+  flex-wrap:wrap;margin:2.5rem 0;
+  padding:2rem 0;
+  border-top:1px solid rgba(212,160,57,0.1);
+  border-bottom:1px solid rgba(212,160,57,0.1);
+}
+.stat{text-align:center}
+.stat-num{
+  font-family:var(--mono);font-size:2rem;
+  font-weight:500;color:var(--gold);display:block;
+}
+.stat-label{
+  font-family:var(--mono);font-size:0.48rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  opacity:0.3;margin-top:0.3rem;display:block;
+}
+
+/* Framework cards */
+.framework-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0.8rem;margin:2rem 0;
+}
+.fw-card{
+  padding:1.2rem;border-radius:8px;
+  border:1px solid rgba(212,120,46,0.1);
+  background:linear-gradient(135deg,rgba(212,120,46,0.03),transparent);
+  transition:all 0.35s ease;
+}
+.fw-card:hover{border-color:rgba(212,120,46,0.25);transform:translateY(-2px);background:linear-gradient(135deg,rgba(212,120,46,0.06),transparent)}
+.fw-card h4{
+  font-family:var(--sans);font-size:0.95rem;
+  font-weight:500;margin-bottom:0.3rem;
+}
+.fw-card p{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.1em;opacity:0.35;margin:0;
+}
+
+/* ====== WHO I AM ====== */
+.about{
+  max-width:var(--max);margin:0 auto;
+  padding:4rem 1.5rem;
+}
+.about-label{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.about h2{
+  font-family:var(--serif);font-size:1.8rem;
+  font-weight:400;margin-bottom:1rem;
+}
+.about p{
+  font-family:var(--serif);font-size:1.05rem;
+  color:var(--muted);line-height:1.85;margin-bottom:1.2rem;
+}
+.about p em{color:var(--text)}
+
+/* ====== THE DOOR ====== */
+.door{
+  text-align:center;
+  padding:6rem 2rem;
+  position:relative;
+}
+.door::before{
+  content:'';position:absolute;top:0;left:50%;
+  transform:translateX(-50%);
+  width:50px;height:1px;
+  background:linear-gradient(to right,transparent,var(--gold),transparent);
+}
+.door h2{
+  font-family:var(--serif);
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:400;font-style:italic;
+  line-height:1.4;margin-bottom:1.5rem;
+}
+.door p{
+  font-family:var(--serif);font-size:1.05rem;
+  color:var(--muted);line-height:1.85;
+  max-width:500px;margin:0 auto 1rem;
+}
+.door .sign-off{
+  font-family:var(--serif);font-size:1.15rem;
+  font-style:italic;color:var(--text);
+  margin-top:2.5rem;
+}
+.door .sign-name{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  opacity:0.3;margin-top:0.5rem;
+}
+
+/* ====== FOOTER ====== */
+.footer{
+  text-align:center;padding:3rem 2rem 2rem;
+}
+.footer a{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);opacity:0.4;
+  text-decoration:none;transition:opacity 0.3s;
+}
+.footer a:hover{opacity:0.8}
+
+/* ====== AMBIENT GLOW ====== */
+.photo-full::before{
+  content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:80%;height:80px;
+  background:radial-gradient(ellipse,rgba(212,120,46,0.06),transparent);
+  z-index:0;pointer-events:none;
+}
+
+/* ====== SCROLL ANIMATIONS ====== */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity 0.9s ease,transform 0.9s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* ====== MOBILE ====== */
+@media(max-width:600px){
+  .photo-pair{grid-template-columns:1fr;gap:0.5rem}
+  .photo-pair img{height:220px}
+  .framework-grid{grid-template-columns:1fr}
+  .stat-row{gap:1.5rem}
+  .photo-full{height:50vh;min-height:300px}
+  .sagrada-moment{min-height:75vh}
+  .sagrada-text{padding:3rem 1.5rem 2rem}
+  .photo-strip{grid-template-columns:1fr;gap:0.5rem}
+  .photo-strip img{height:220px}
+}
+</style>
+</head>
+<body>
+
+<!-- ====== HERO: HIS NAME ====== -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="/images/jordi/montserrat.webp" alt="Montserrat, Spain">
+  </div>
+  <div class="hero-content">
+    <div class="hero-pre">Thank you</div>
+    <h1>Jordi</h1>
+    <div class="hero-sub">Barcelona, March 2026</div>
+  </div>
+  <div class="hero-scroll">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ====== THE LETTER ====== -->
+<section class="letter fade-in">
+  <div class="letter-date">March 2026 &middot; Barcelona</div>
+  <p>You don&rsquo;t know what you started.</p>
+  <p>We got split into two groups on the Montserrat tour. You weren&rsquo;t our assigned guide &mdash; we ended up in your half by chance. We started talking toward the end of the day. <em>Not networking. Not angling. Just conversation.</em></p>
+  <p>Then you said you had the next day off. And you offered to spend it showing us Barcelona.</p>
+  <p>I questioned it at first. A stranger offering his day off to two people he just met. But I read you as genuine. <em>We said yes.</em></p>
+  <p>That decision changed everything.</p>
+</section>
+
+<!-- ====== JORDI'S ROOFTOP ====== -->
+<div class="photo-full fade-in" style="height:70vh;min-height:450px;">
+  <img src="/images/jordi/jordi-rooftop.webp" alt="Jordi on a Barcelona rooftop" style="object-position:center 65%;">
+  <div class="caption">
+    <div class="caption-label">Your city</div>
+    <p>This is the Barcelona you showed us. Every rooftop, every corner, every story.</p>
+  </div>
+</div>
+
+<!-- ====== BRADY + LEXIE ====== -->
+<div class="photo-full fade-in" style="height:85vh;min-height:550px;">
+  <img src="/images/jordi/brady-lexie.webp" alt="Brady and Lexie in Barcelona" style="object-position:center 15%;">
+  <div class="caption">
+    <div class="caption-label">Brady + Lexie</div>
+    <p>Her first time in Europe. Your city was the last stop. It became the most important one.</p>
+  </div>
+</div>
+
+<!-- ====== THE DAY ====== -->
+<section class="story fade-in">
+  <div class="story-label">The next day</div>
+  <h2>You gave us your Barcelona.</h2>
+  <p>E-bikes around the entire city. Our last day, covering everything we hadn&rsquo;t gotten to. You shared your personal love for each spot along the way.</p>
+  <p><em>The religious history. The spiritual history. The war history.</em> You walked us through all of it &mdash; not like a guide reading a script, but like someone showing their home to people they wanted to understand it.</p>
+  <p>You knew when to lead and when to step back. You watched our bikes while giving us time to explore on our own. You read the moment every time.</p>
+</section>
+
+<!-- ====== THE E-BIKE DAY PHOTOS ====== -->
+<div class="photo-strip fade-in">
+  <img src="/images/jordi/eleven-pool.webp" alt="Eleven BCN pool">
+  <img src="/images/jordi/olympic-stadium.webp" alt="Olympic Stadium Barcelona">
+  <img src="/images/jordi/barcelona-street.webp" alt="Barcelona streets">
+</div>
+
+<div class="photo-pair fade-in">
+  <img src="/images/jordi/eleven.webp" alt="Eleven BCN">
+  <img src="/images/jordi/barcelona-0338.webp" alt="Barcelona">
+</div>
+
+<!-- ====== THE RESTAURANT ====== -->
+<section class="story fade-in">
+  <p>Then you set us up at your favorite restaurant in the city. Walked to the bar. <em>Paid for our meal.</em> And left without making it a thing.</p>
+  <p>That gesture &mdash; quiet, unprompted, without expectation &mdash; is the hardest thing in the world to systematize. And it&rsquo;s the most important thing to get right.</p>
+</section>
+
+<!-- ====== JORDI TOOK THIS PHOTO ====== -->
+<div class="photo-full fade-in" style="height:80vh;min-height:500px;">
+  <img src="/images/jordi/jordi-took-photo.webp" alt="Photo Jordi took of Brady and Lexie" style="object-position:center 20%;">
+  <div class="caption">
+    <div class="caption-label">You took this photo</div>
+    <p>We didn&rsquo;t ask. You just saw the moment and captured it.</p>
+  </div>
+</div>
+
+<!-- ====== SAGRADA FAMILIA: THE MOMENT ====== -->
+<div class="sagrada-moment fade-in">
+  <img src="/images/jordi/best-sagrada.webp" alt="Sagrada Familia at sunset from rooftop, Barcelona">
+  <div class="sagrada-text">
+    <div class="mono">The photo that started everything</div>
+    <h2>The Sagrada Familia had received its final cross one week before we stood here.</h2>
+    <p>This was her first time in Europe. We&rsquo;d come from Rome, where we watched the Pope&rsquo;s procession during the Jubilee Year. We&rsquo;d survived Spirit Airlines canceling our Lima flights and a last-minute scramble to rebook this rooftop in Spanish. And then we looked up and saw this.</p>
+    <p>This is now the hero image of our website. The first thing anyone sees.</p>
+  </div>
+</div>
+
+<!-- ====== SAGRADA DAY + POSTCARDS + GIRONA ====== -->
+<div class="photo-strip fade-in">
+  <img src="/images/jordi/sagrada-day.webp" alt="Sagrada Familia during the day">
+  <img src="/images/jordi/postcards.webp" alt="Barcelona postcards">
+  <img src="/images/jordi/girona.webp" alt="Girona day trip">
+</div>
+
+<!-- ====== TOSSA DE MAR ====== -->
+<div class="photo-full fade-in" style="height:50vh;min-height:300px;">
+  <img src="/images/jordi/tossa.webp" alt="Tossa de Mar beach, Costa Brava">
+  <div class="caption">
+    <div class="caption-label">Your Costa Brava</div>
+    <p>You told us to come back and visit. We haven&rsquo;t forgotten.</p>
+  </div>
+</div>
+
+<!-- ====== THE REVEAL ====== -->
+<section class="reveal fade-in">
+  <div class="reveal-content">
+    <div class="divider"></div>
+    <h2>You showed us what this<br>is supposed to <span>feel</span> like.</h2>
+    <p>When we got home, I had a conversation with a friend who was leaving for study abroad in Madrid the next day. He had no plan. No framework. No one to show him the city the way you showed us Barcelona.</p>
+    <p>That night, my best friend Dawson and I decided to build something.</p>
+  </div>
+</section>
+
+<!-- ====== WHAT WE BUILT ====== -->
+<section class="built fade-in">
+  <div class="built-label">What you started</div>
+  <h2>The Lads Travel Co.</h2>
+  <p>An AI-powered travel intelligence platform. We take the thing you did naturally in one day &mdash; deep personal knowledge of a place, shared freely, knowing when to lead and when to get out of the way &mdash; and we systematize it into destination frameworks that anyone can use.</p>
+  <p>Every recommendation is validated from firsthand experience. Every cost is real. Every spot has been walked, eaten at, or drunk in by at least one of us. We don&rsquo;t scrape review sites. We build from trips we&rsquo;ve actually taken.</p>
+
+  <div class="stat-row">
+    <div class="stat"><span class="stat-num">285</span><span class="stat-label">Validated Spots</span></div>
+    <div class="stat"><span class="stat-num">12</span><span class="stat-label">Frameworks</span></div>
+    <div class="stat"><span class="stat-num">8</span><span class="stat-label">Countries</span></div>
+  </div>
+
+  <p>Barcelona has 55 spots in our database. Your Montserrat day trip is rated 10 out of 10. The note in our system reads: <em>&ldquo;Friends with tour guide.&rdquo;</em></p>
+
+  <div class="framework-grid">
+    <div class="fw-card"><h4>Dublin + Galway</h4><p>35+ pubs &middot; Both Lads</p></div>
+    <div class="fw-card"><h4>Italy</h4><p>33 spots &middot; Rome + Amalfi</p></div>
+    <div class="fw-card"><h4>Barcelona + Madrid</h4><p>55 spots &middot; Your city</p></div>
+    <div class="fw-card"><h4>Iceland</h4><p>Ring Road &middot; 7 days</p></div>
+    <div class="fw-card"><h4>Prague + Vienna</h4><p>75+ spots &middot; 3 capitals</p></div>
+    <div class="fw-card"><h4>Australia + NZ</h4><p>57 spots &middot; Study abroad</p></div>
+    <div class="fw-card"><h4>Thailand</h4><p>Bangkok to Krabi</p></div>
+    <div class="fw-card"><h4>Vegas + Zion + Rise</h4><p>Lantern Festival &middot; 4 nights</p></div>
+  </div>
+</section>
+
+<!-- ====== WHO I AM ====== -->
+<section class="about fade-in">
+  <div class="about-label">Who I am</div>
+  <h2>Brady D&rsquo;Angelo</h2>
+  <p>22. Grand Valley State University &mdash; double major in Data Science and Economics. I built machine learning models for Farmers Insurance, taught myself to code, and spent my junior year as a peer advisor at the university&rsquo;s international center helping students plan study abroad trips.</p>
+  <p>That&rsquo;s where the obsession started. I kept seeing students leave for Europe with no plan, no local knowledge, and no one in their corner. They&rsquo;d come back and say <em>&ldquo;I wish someone had told me.&rdquo;</em></p>
+  <p>My best friend Dawson and I have traveled together since we were 20. Dublin at Christmas. Rome during the Jubilee Year. <em>Barcelona with you.</em> Every trip, we took notes. Built spreadsheets. Rated every pub, restaurant, and hostel. Mapped the day trips that were worth the money and the ones that weren&rsquo;t.</p>
+  <p>After your day with us, I realized those notes weren&rsquo;t just for us. They were a product. And the way you delivered it &mdash; personal, generous, honest &mdash; was the standard everything should be measured against.</p>
+  <p>I start at Ford Motor Company in May. The Lads runs on the side. Dawson handles first-touch client intake. A third friend, Stew, does photography. But the frameworks &mdash; the research, the design, the intelligence layer &mdash; that&rsquo;s me, working with AI tools that didn&rsquo;t exist two years ago.</p>
+  <p>The site was built in 10 days. From zero to 285 spots, 12 frameworks, live analytics, and a 3D globe with every city we&rsquo;ve visited pinned on it. <em>Your pin is on that globe.</em></p>
+</section>
+
+<!-- ====== MORE BARCELONA ====== -->
+<div class="photo-strip fade-in">
+  <img src="/images/jordi/barcelona-0393.webp" alt="Barcelona">
+  <img src="/images/jordi/barcelona-6905.webp" alt="Barcelona">
+  <img src="/images/jordi/barcelona-0436.webp" alt="Barcelona">
+</div>
+
+<!-- ====== THE DOOR ====== -->
+<section class="door fade-in">
+  <h2>The door is open.</h2>
+  <p>You gave us your Barcelona without asking for anything in return. The restaurant recommendations you&rsquo;ve kept sending since we left &mdash; every one of them has gone into the database.</p>
+  <p>We&rsquo;d love to show you what we&rsquo;re building. And we haven&rsquo;t forgotten about Costa Brava.</p>
+  <div class="sign-off">With gratitude,</div>
+  <div class="sign-name">Brady D&rsquo;Angelo<br>The Lads Travel Co.</div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <a href="https://ladstravel.com">ladstravel.com</a>
+</footer>
+
+<!-- ====== SCROLL ANIMATIONS ====== -->
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Jordi — A Thank You from The Lads Travel Co.","description":"A thank you to the Barcelona guide who gave us his city and started something he doesn't know about yet.","datePublished":"2026-04-16","dateModified":"2026-04-16","author":{"@type":"Person","name":"Brady D'Angelo"},"publisher":{"@id":"https://ladstravel.com/#organization"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://ladstravel.com/jordi"}}</script>
+</body>
+</html>
