@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: April 16, 2026
+## Last Updated: April 16, 2026 (evening)
 
 ---
 
@@ -11,6 +11,40 @@ Repo: dangelobraden43/LadsTravelCo
 Stack: React + Vite, React Router, Three.js (react-three-fiber)
 Email: brady@ladstravel.com (Google Workspace active)
 Frameworks: 14 total (12 destination + vegas-zion-rise + jordi)
+
+## WHAT WAS BUILT (April 16, 2026 — evening polish)
+
+SESSION 5.5 — Visibility, routing, vision clarity:
+
+HOMEPAGE:
+- New "What We Actually Deliver" section between Globe and DataSpectacle
+  Two large photo cards linking to /vegas-zion-rise and /jordi
+  Copy: "Two frameworks. Live. Don't take our word for it."
+  Accent colors match each framework (amber for Vegas, burgundy for Jordi)
+- Jordi + Vegas-Zion-Rise were orphaned before this session —
+  no link from anywhere in the React app
+
+EXPLORE PAGE:
+- Featured frameworks row added above DestinationTheater
+  Same two cards, 16:9 instead of 4:5
+
+GLOBE FIX:
+- Atmosphere shader was blowing out as a yellow sun-ball
+  (additive-blended front-side Fresnel with pow(0.75-dot,3.0) × 0.25)
+  Rewritten as back-side rim halo, normal blending, subtler falloff
+- Lighting rebalanced: ambient #b8c4d4 @ 0.9, neutral directional
+  Earth stays legible at any rotation instead of going gold-washed
+- Stars Math.random() moved out of useMemo (react-hooks/purity)
+
+VERCEL SPA ROUTING FIX (critical):
+- /explore, /plan, /when, /adventure, /lads, /gift/michigan and
+  all React framework routes (/rome, /dublin, /australia, /prague,
+  /michigan) were 404'ing on direct hit — only worked via client-side
+  navigate() from homepage
+- Root cause: with cleanUrls:true, Vercel didn't resolve
+  destination:"/index.html" correctly in rewrites
+- Fix: explicit per-route rewrites with destination:"/" (commit 1bb5715)
+- All 25 routes now 200 on direct hit / refresh / shared link
 
 ## WHAT WAS BUILT (April 16, 2026)
 
@@ -307,11 +341,37 @@ The tech makes them faster. It doesn't make them less human.
 
 ---
 
+## WHAT WE DON'T DO / DON'T SELL
+
+- We do NOT sell travel insurance, do not recommend providers,
+  do not position as advisors on it. Frameworks must never mention
+  insurance in any form — not a section, not an aside, not a
+  "get insurance before you go" line, nothing.
+- The older audit_results.md has a "Insurance is non-negotiable
+  in all frameworks" rule — that rule is STALE. Ignore it.
+- We do NOT sell direct bookings or fulfillment. Revenue = affiliate
+  tour commissions (Viator/GYG), hoodie/merch with charity split,
+  and future paid consulting.
+- We do NOT sell / operate our own flights, hotels, or tours.
+
+## OPEN DECISIONS
+
+- Two parallel framework systems exist:
+  (a) Static HTML in public/ (jordi, vegas-zion-rise, italy, munich,
+      thailand, iceland, spain, australia-nz, charleston, poland,
+      prague-vienna, lads-local, dublin-galway)
+  (b) React routes driven by src/data/*.js + FrameworkPage.jsx
+      (rome, dublin, spain, australia, iceland, prague, munich, poland,
+       thailand, michigan, charleston)
+  Jordi + vegas-zion-rise prove (a) is the client-grade direction.
+  Next session: pick one, delete the other, fix the overlap.
+
 ## RULES
 
 - Never invent spots, prices, or recommendations
 - Never push without showing the diff
 - Never reuse another framework's palette
+- Never add insurance content to any framework (see above)
 - Always run npm run build before committing
 - Always end sessions with CLAUDE.md updated
 - Quality over deadline. Nothing ships until it's right.
