@@ -7,6 +7,7 @@ import 'splitting/dist/splitting.css'
 import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
+const HoodieMockup = lazy(() => import('./worlds/HoodieMockup'))
 const Globe = lazy(() => import('./Globe'))
 
 /* ===== HOOKS ===== */
@@ -852,6 +853,17 @@ export default function App() {
               </p>
             </div>
           </Reveal>
+
+          {/* Adventure video */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+            <VideoBackground
+              publicId="SmokeyNP_eewi1h"
+              posterTime={3}
+              placement="portrait-frame"
+              hasAudio={false}
+              isActive={true}
+            />
+          </div>
         </section>
       </WorldSection>
 
@@ -1022,8 +1034,34 @@ export default function App() {
             ))}
           </div>
 
-          {/* Hoodie mount point */}
-          <div id="hoodie-mount" style={{ marginTop: 40 }} />
+          {/* 3D Hoodie — Fall 2026 Breast Cancer Awareness */}
+          <div style={{ marginTop: 60 }}>
+            <Suspense
+              fallback={
+                <div
+                  style={{
+                    height: 500,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 12,
+                      color: '#8a8070',
+                      letterSpacing: 2,
+                    }}
+                  >
+                    LOADING MOCKUP...
+                  </span>
+                </div>
+              }
+            >
+              <HoodieMockup />
+            </Suspense>
+          </div>
         </section>
       </WorldSection>
 

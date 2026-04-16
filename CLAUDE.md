@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE CODE MASTER CONTEXT
-## Last Updated: April 14, 2026
+## Last Updated: April 15, 2026
 
 ---
 
@@ -26,6 +26,13 @@
 - Old static site archived as index-old-babel.html
 
 **Zero placeholder links remain.**
+
+**APRIL 15, 2026 — SESSION:**
+- Airtable fully connected: 285 spots synced across 10 countries (Italy 33, Spain 55, Ireland 45, USA 10, Austria 26, Australia 75, Czech Republic 23, Canada 9, Puerto Rico 3, Costa Rica 6)
+- airtable-sync.js rewritten: replaced Airtable npm package with direct fetch API (npm package had persistent 404 bug), groups by country
+- Cloudinary connected: 8 videos analyzed via API, poster frames extracted and reviewed
+- Video analysis complete: 7 portrait / 1 landscape. Montserrat is strongest, TreviScooter is weakest. Revised placement strategy designed around portrait orientation (phone-frame concept).
+- Next session: build VideoBackground component and wire all 8 videos into site
 
 **APRIL 11, 2026 — SHIPPED TODAY:**
 - Migrated from inline Babel to Vite build system (permanent infrastructure fix)
@@ -166,27 +173,54 @@ Total JS: ~1.6MB across 24 chunks (initial load: ~400KB)
 Images: 298 WebP files served from /public/images/ via Vercel CDN
 Build time: 1.81s
 
-## NEXT SESSION (April 15)
-Video integration — 12 Cloudinary URLs incoming. VideoBackground component needed.
-Video placement map:
-  Hero: Vivid Opera House
-  Data moment: Vivid Harbor Bridge drone
-  /lads: Scooter to Trevi Fountain
-  /when winter: Irish pub band
-  /when fall: Inside Colosseum
-  /when spring: Schonbrunn pan
-  /when summer: Jaco beach sunset
-  /adventure Rung 1: Olympic rope hike
-  /adventure Rung 2: Costa Rica ATV canopy
-  /explore Dublin: Guinness immersive
-  /explore Spain: Montserrat views
-  /lads secondary: Smoky Mountains hike
+## NEXT SESSION — VIDEO BUILD (Priority #1)
+Build VideoBackground component and wire 8 Cloudinary videos into the site.
+Cloud name: doonck2rm. Credentials in .env.local.
+
+### Design Approach
+7 of 8 videos are portrait (720x1280). Only VividArrow is landscape (1280x720).
+Do NOT force portrait video into landscape containers. Design around the orientation:
+- Phone-shaped video windows floating over dark backgrounds (authentic, matches how footage was shot)
+- Split-screen layouts with portrait video on one side, content on the other
+- Scroll-triggered vertical video reveals
+- VividArrow is the ONLY full-bleed landscape background (hero)
+
+### Video Placement Map (Revised)
+| Video | ID | Orientation | Size | Placement | Treatment |
+|-------|----|-------------|------|-----------|-----------|
+| VividArrow | VividArrow_kodo0p | Landscape | 8.9MB | Hero | Full-bleed background, autoplay, muted |
+| Montserrat | Montserrat_fvwtgo | Portrait | 3.9MB | /explore Spain | Split-screen left panel — vertical framing emphasizes cliff height |
+| IrishSong | IrishSong_qqxzzr | Portrait | 13.7MB | /when winter | Phone-shaped container in card — intimate pub setting |
+| ViennaPalace | ViennaPalace_auec7z | Portrait | 2.6MB | /when spring | Phone-shaped container — Schonbrunn Gloriette |
+| CostaATVbar | CostaATVbar_rpyngq | Portrait | 1.2MB | /adventure | Vertical card — jungle mountain view from bar |
+| SmokeyNP | SmokeyNP_eewi1h | Portrait | 2.6MB | /adventure or domestic | Vertical reveal panel — summit with Blue Ridge layers |
+| SmokeyMts | SmokeyMts_s2ijgc | Portrait | 2.5MB | Ambient background | OK to crop — all sky/trees, no subject to lose |
+| TreviScooter | TreviScooter_qryefo | Portrait | 9.4MB | /lads | Small inline clip, personality moment — NOT a background |
+
+### Cloudinary URL Pattern
+Base: `https://res.cloudinary.com/doonck2rm/video/upload/{transforms}/{public_id}.mp4`
+Optimized: add `q_auto,f_auto` after `upload/`
+Poster frames: `so_{seconds},w_800,f_jpg` generates JPG thumbnail at any timestamp
+
+### Video Quality Notes (from frame analysis)
+- Montserrat: BEST video. Cinematic mountain composition. Scroll-stopper.
+- SmokeyNP + SmokeyMts: Strong nature footage, good depth.
+- ViennaPalace: Clean European grandeur, bright daylight.
+- IrishSong: Authentic pub scene, Jameson mirror, guitarist, Christmas lights. Audio worth preserving (muted default, unmute on click).
+- VividArrow: Sydney Vivid drone show — crowd/phones in frame but motion carries it. Pick poster frame carefully.
+- CostaATVbar: Jungle bar POV with bird chart — tells a story.
+- TreviScooter: WEAKEST. Dark, blurry, faces only. Trevi Fountain not visible in sampled frames. Use as small personality clip only.
+
+### Open Questions for Brady
+1. TreviScooter — is there a timestamp where the fountain is visible?
+2. Confirm phone-frame concept vs center-crop-everything approach
+3. IrishSong audio — keep it (muted default, unmute on click)?
 
 ## KNOWN ISSUES
 - /when cause paragraphs need Brady's actual voice (current copy is AI-drafted from Brady's stories)
 - ladsTake field empty on most spots in data modules — Brady needs to fill before launch
-- Airtable base not yet created (sync script ready)
-- Cloudinary account not yet created
+- Airtable sync working — 285 spots across 10 countries synced to src/data/airtable-*.js
+- Cloudinary live — 8 videos uploaded (cloud: doonck2rm), credentials in .env.local
 - ESLint has ~80 warnings across codebase (mostly unused vars from restructure)
 - Globe was dropped during five-spoke restructure — restored in same session
 - Splitting.js CSS import required ('splitting/dist/splitting.css') — imported in App.jsx and ExplorePage.jsx
@@ -198,6 +232,10 @@ June/July/Aug: TUFF
 Late Aug/Sep: Ginny L. Clements Breast Cancer Research (U of Arizona)
 Late Nov/Dec: C.S. Mott Children's Hospital
 Rotating: Brady + Dawson decide
+
+## FUTURE BUILDS (parked, not in current sprint)
+- **3D Hoodie Merch:** One hoodie per season/charity. 3D rotating mockups in the Giving Back section. Spring/NPCA, Summer/TUFF, Fall/Clements, Winter/Mott. Each hoodie design reflects its cause. Revenue goes 100% to charity.
+- **"Built With AI" Story Page:** Before/after showcase of the site's evolution — static HTML to React to immersive 3D. Proof of concept that AI builds beautiful things. The mic drop. Ship before Peru trip as the last pre-departure build.
 
 ## AUTOMATION TARGET (Summer 2026)
 All client touchpoints automated except the 15-minute call.
@@ -469,7 +507,7 @@ Cliffs of Moher: viator.com/tours/Galway/...d5156-8625P1 · Wicklow+Kilkenny: gy
 - Never reuse another framework's palette
 - Never mention insurance anywhere
 - Never push without showing the diff
-- Never use any email other than dangelobraden43@gmail.com
+- Never use any email other than brady@ladstravel.com
 - Always use EB Garamond for headlines, Outfit for body, JetBrains Mono for labels
 - Always distinguish personal validation (copper) from research (blue-grey)
 - Always prioritize mobile responsiveness

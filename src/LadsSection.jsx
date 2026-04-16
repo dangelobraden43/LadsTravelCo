@@ -1,31 +1,50 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { IMAGES } from './images-paths';
-import { NEW_IMAGES } from './images-paths';
-import { BATCH3_IMAGES } from './images-paths';
-import { BATCH4_IMAGES } from './images-paths';
-import { HERO_IMAGES } from './images-paths';
-import { HEIC_HERO_IMAGES } from './images-paths';
-import './LadsSection.css';
+import React, { useState, useEffect, useRef } from 'react'
+import { IMAGES } from './images-paths'
+import { NEW_IMAGES } from './images-paths'
+import { BATCH3_IMAGES } from './images-paths'
+import { BATCH4_IMAGES } from './images-paths'
+import { HERO_IMAGES } from './images-paths'
+import { HEIC_HERO_IMAGES } from './images-paths'
+import './LadsSection.css'
 
 /* ===== HOOKS ===== */
 function useReveal(threshold = 0.15) {
-  const ref = useRef(null);
+  const ref = useRef(null)
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { el.classList.add('visible'); obs.unobserve(el); }
-    }, { threshold });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          el.classList.add('visible')
+          obs.unobserve(el)
+        }
+      },
+      { threshold }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return ref
 }
 function Reveal({ children, style = {}, delay = 0, type = 'up' }) {
-  const ref = useReveal();
-  const cls = type === 'up' ? 'reveal' : type === 'fade' ? 'reveal-fade' : type === 'scale' ? 'reveal-scale' : type === 'left' ? 'reveal-left' : 'reveal';
-  const s = delay ? { ...style, transitionDelay: `${delay}ms` } : style;
-  return <div ref={ref} className={cls} style={s}>{children}</div>;
+  const ref = useReveal()
+  const cls =
+    type === 'up'
+      ? 'reveal'
+      : type === 'fade'
+        ? 'reveal-fade'
+        : type === 'scale'
+          ? 'reveal-scale'
+          : type === 'left'
+            ? 'reveal-left'
+            : 'reveal'
+  const s = delay ? { ...style, transitionDelay: `${delay}ms` } : style
+  return (
+    <div ref={ref} className={cls} style={s}>
+      {children}
+    </div>
+  )
 }
 
 /* ===== DATA ===== */
@@ -36,10 +55,19 @@ const FOUNDERS = [
     img: IMAGES.surf,
     credentials: [
       { label: 'M.S. Applied Statistics', detail: 'Grand Valley State University (May 2027)' },
-      { label: 'Farmers Insurance', detail: 'Gradient boosting models — 24.7% error reduction on 2M+ records' },
+      {
+        label: 'Farmers Insurance',
+        detail: 'Gradient boosting models — 24.7% error reduction on 2M+ records',
+      },
       { label: 'Ford Motor Company', detail: 'Starting May 2026' },
-      { label: 'GVSU Padnos International Center', detail: 'Former peer advisor — sent students abroad' },
-      { label: '20+ cities, 4 continents', detail: 'Every spot in the database validated firsthand' },
+      {
+        label: 'GVSU Padnos International Center',
+        detail: 'Former peer advisor — sent students abroad',
+      },
+      {
+        label: '20+ cities, 4 continents',
+        detail: 'Every spot in the database validated firsthand',
+      },
     ],
   },
   {
@@ -54,7 +82,7 @@ const FOUNDERS = [
       { label: 'Co-validates', detail: 'Every framework recommendation' },
     ],
   },
-];
+]
 
 const TIMELINE = [
   { year: '2023', event: 'Costa Rica trip — first framework seed', milestone: false },
@@ -66,7 +94,7 @@ const TIMELINE = [
   { year: '2026', event: 'Site launches. Peru trip (May). Ford starts.', milestone: true },
   { year: '2026', event: 'Poland trip (August)', milestone: false },
   { year: '2027', event: 'M.S. graduation. Paid consulting launches.', milestone: true },
-];
+]
 
 const GALLERY_IMAGES = [
   { src: NEW_IMAGES.pragueOldTown, alt: 'Lads in Prague Old Town' },
@@ -83,42 +111,52 @@ const GALLERY_IMAGES = [
   { src: NEW_IMAGES.glendalough, alt: 'Glendalough Ireland' },
   { src: BATCH4_IMAGES.barcelona_IMG_0393, alt: 'Barcelona street life' },
   { src: HEIC_HERO_IMAGES.heicHiking_IMG_4327, alt: 'Mountain summit trail' },
-];
+]
 
-const TRIP_STYLES = ['Nightlife', 'Culture', 'Beach', 'Adventure', 'Food & Drink', 'Mix'];
+const TRIP_STYLES = ['Nightlife', 'Culture', 'Beach', 'Adventure', 'Food & Drink', 'Mix']
 
 /* ===== COMPONENT ===== */
 export default function LadsSection({ quizData }) {
-  const [formSent, setFormSent] = useState(false);
-  const [formError, setFormError] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [styles, setStyles] = useState(quizData?.styles || []);
-  const formRef = useRef(null);
+  const [formSent, setFormSent] = useState(false)
+  const [formError, setFormError] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [styles, setStyles] = useState(quizData?.styles || [])
+  const formRef = useRef(null)
 
-  const hasQuizData = quizData && quizData.destination;
+  const hasQuizData = quizData && quizData.destination
 
   const toggleStyle = (s) => {
-    setStyles(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
-  };
+    setStyles((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    const fd = new FormData(e.target);
-    fd.set('Trip Style', styles.join(', '));
+    e.preventDefault()
+    setSubmitting(true)
+    const fd = new FormData(e.target)
+    fd.set('Trip Style', styles.join(', '))
     if (quizData) {
-      if (quizData.destination) fd.set('Quiz Destination', quizData.destination);
-      if (quizData.timing) fd.set('Quiz Timing', quizData.timing);
-      if (quizData.group) fd.set('Quiz Group', quizData.group);
-      if (quizData.budget) fd.set('Quiz Budget', quizData.budget);
+      if (quizData.destination) fd.set('Quiz Destination', quizData.destination)
+      if (quizData.timing) fd.set('Quiz Timing', quizData.timing)
+      if (quizData.group) fd.set('Quiz Group', quizData.group)
+      if (quizData.budget) fd.set('Quiz Budget', quizData.budget)
     }
     try {
-      const res = await fetch('https://formspree.io/f/xvzvekkk', { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
-      if (res.ok) { setFormSent(true); setFormError(false); }
-      else { setFormError(true); }
-    } catch { setFormError(true); }
-    setSubmitting(false);
-  };
+      const res = await fetch('https://formspree.io/f/xvzvekkk', {
+        method: 'POST',
+        body: fd,
+        headers: { Accept: 'application/json' },
+      })
+      if (res.ok) {
+        setFormSent(true)
+        setFormError(false)
+      } else {
+        setFormError(true)
+      }
+    } catch {
+      setFormError(true)
+    }
+    setSubmitting(false)
+  }
 
   return (
     <div className="lads-root">
@@ -127,8 +165,13 @@ export default function LadsSection({ quizData }) {
         <div className="lads-inner">
           <Reveal>
             <div className="lads-label">THE LADS</div>
-            <h2 className="lads-title">Who <em>We Are</em></h2>
-            <p className="lads-desc">Two guys, 650+ spots, and zero interest in giving you the same itinerary as everyone else.</p>
+            <h2 className="lads-title">
+              Who <em>We Are</em>
+            </h2>
+            <p className="lads-desc">
+              Two guys, 650+ spots, and zero interest in giving you the same itinerary as everyone
+              else.
+            </p>
           </Reveal>
         </div>
       </section>
@@ -169,7 +212,10 @@ export default function LadsSection({ quizData }) {
           <Reveal type="fade">
             <div className="lads-build-card">
               <div className="lads-build-stat">20 Days</div>
-              <p className="lads-build-text">Broke his hand surfing in Costa Rica. Built the entire site, research pipeline, and 650+ spot database with one good hand. 4.0 GPA didn't drop.</p>
+              <p className="lads-build-text">
+                Broke his hand surfing in Costa Rica. Built the entire site, research pipeline, and
+                650+ spot database with one good hand. 4.0 GPA didn't drop.
+              </p>
             </div>
           </Reveal>
         </div>
@@ -203,7 +249,9 @@ export default function LadsSection({ quizData }) {
           </div>
           <Reveal delay={200}>
             <p className="lads-study-abroad">
-              Brady spent two years as a peer advisor at GVSU's Padnos International Center. If you're heading overseas through a university program, we've literally done this job before.
+              Brady spent two years as a peer advisor at GVSU's Padnos International Center. If
+              you're heading overseas through a university program, we've literally done this job
+              before.
             </p>
           </Reveal>
         </div>
@@ -211,16 +259,20 @@ export default function LadsSection({ quizData }) {
 
       {/* Book a Call */}
       <section className="lads-call-section">
-        <div className="lads-inner" style={{textAlign:'center'}}>
+        <div className="lads-inner" style={{ textAlign: 'center' }}>
           <Reveal type="fade">
             <h3 className="lads-call-heading">Want to talk first?</h3>
-            <p className="lads-call-sub">15 minutes. Free. We'll tell you if we can actually help.</p>
+            <p className="lads-call-sub">
+              15 minutes. Free. We'll tell you if we can actually help.
+            </p>
             <button
               className="lads-call-btn"
               data-cal-link="braden-dangelo/secret"
               data-cal-namespace="secret"
               data-cal-config='{"layout":"month_view"}'
-            >Book a Call</button>
+            >
+              Book a Call
+            </button>
           </Reveal>
         </div>
       </section>
@@ -240,19 +292,37 @@ export default function LadsSection({ quizData }) {
             ) : (
               <>
                 <div className="lads-form-header">
-                  <h3>{hasQuizData ? 'Almost there. Just a few details.' : 'Tell Us Where You\'re Going'}</h3>
+                  <h3>
+                    {hasQuizData
+                      ? 'Almost there. Just a few details.'
+                      : "Tell Us Where You're Going"}
+                  </h3>
                   {!hasQuizData && <p>No cost through 2026. Seriously.</p>}
                   {hasQuizData && quizData.destination && (
                     <div className="lads-form-prefill-tag">Planning: {quizData.destination}</div>
                   )}
                 </div>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="_gotcha" style={{display:'none'}} tabIndex={-1} autoComplete="off" />
+                  <input
+                    type="text"
+                    name="_gotcha"
+                    style={{ display: 'none' }}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
                   <input type="hidden" name="_subject" value="New Trip Inquiry" />
-                  {hasQuizData && quizData.destination && <input type="hidden" name="Destination" value={quizData.destination} />}
-                  {hasQuizData && quizData.timing && <input type="hidden" name="Travel Dates" value={quizData.timing} />}
-                  {hasQuizData && quizData.group && <input type="hidden" name="Group Size" value={quizData.group} />}
-                  {hasQuizData && quizData.budget && <input type="hidden" name="Budget" value={quizData.budget} />}
+                  {hasQuizData && quizData.destination && (
+                    <input type="hidden" name="Destination" value={quizData.destination} />
+                  )}
+                  {hasQuizData && quizData.timing && (
+                    <input type="hidden" name="Travel Dates" value={quizData.timing} />
+                  )}
+                  {hasQuizData && quizData.group && (
+                    <input type="hidden" name="Group Size" value={quizData.group} />
+                  )}
+                  {hasQuizData && quizData.budget && (
+                    <input type="hidden" name="Budget" value={quizData.budget} />
+                  )}
 
                   <div className="lads-form-grid">
                     <div className="lads-form-field">
@@ -346,14 +416,18 @@ export default function LadsSection({ quizData }) {
                   </div>
 
                   {!hasQuizData && (
-                    <div className="lads-form-field" style={{marginBottom:20}}>
+                    <div className="lads-form-field" style={{ marginBottom: 20 }}>
                       <label>Trip Style</label>
                       <div className="lads-form-styles">
-                        {TRIP_STYLES.map(s => (
-                          <button key={s} type="button"
+                        {TRIP_STYLES.map((s) => (
+                          <button
+                            key={s}
+                            type="button"
                             className={`lads-form-style-pill ${styles.includes(s) ? 'active' : ''}`}
                             onClick={() => toggleStyle(s)}
-                          >{s}</button>
+                          >
+                            {s}
+                          </button>
                         ))}
                       </div>
                     </div>
@@ -361,10 +435,18 @@ export default function LadsSection({ quizData }) {
 
                   <div className="lads-form-field">
                     <label>Anything Else?</label>
-                    <textarea name="Notes" rows={3} placeholder="Allergies, must-dos, deal-breakers..." />
+                    <textarea
+                      name="Notes"
+                      rows={3}
+                      placeholder="Allergies, must-dos, deal-breakers..."
+                    />
                   </div>
 
-                  {formError && <p className="lads-form-error">Something went wrong. Try again or email dangelobraden43@gmail.com</p>}
+                  {formError && (
+                    <p className="lads-form-error">
+                      Something went wrong. Try again or email brady@ladstravel.com
+                    </p>
+                  )}
 
                   <button type="submit" className="lads-form-submit" disabled={submitting}>
                     {submitting ? 'Sending...' : "Let's Plan Your Trip"}
@@ -373,9 +455,11 @@ export default function LadsSection({ quizData }) {
               </>
             )}
           </div>
-          <p className="lads-form-fallback">Or reach out directly — <a href="mailto:dangelobraden43@gmail.com">dangelobraden43@gmail.com</a></p>
+          <p className="lads-form-fallback">
+            Or reach out directly — <a href="mailto:brady@ladstravel.com">brady@ladstravel.com</a>
+          </p>
         </div>
       </section>
     </div>
-  );
+  )
 }
