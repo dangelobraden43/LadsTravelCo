@@ -4,7 +4,19 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/((?!assets/|images/|textures/|.*\\.).*)", "destination": "/index.html" }],
+  "rewrites": [
+    { "source": "/explore", "destination": "/index.html" },
+    { "source": "/adventure", "destination": "/index.html" },
+    { "source": "/when", "destination": "/index.html" },
+    { "source": "/plan", "destination": "/index.html" },
+    { "source": "/lads", "destination": "/index.html" },
+    { "source": "/gift/:slug*", "destination": "/index.html" },
+    { "source": "/rome", "destination": "/index.html" },
+    { "source": "/australia", "destination": "/index.html" },
+    { "source": "/prague", "destination": "/index.html" },
+    { "source": "/dublin", "destination": "/index.html" },
+    { "source": "/michigan", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
