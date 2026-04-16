@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Pack Your Bags — A Trip Planned For You">
+<meta property="og:description" content="Las Vegas. Zion. Rise Lantern Festival. 4 nights, 3 worlds, 1 unforgettable experience.">
+<meta property="og:type" content="website">
+<title>Pack Your Bags</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --amber:#f0a838;
+  --amber-dim:rgba(240,168,56,0.6);
+  --amber-glow:rgba(240,168,56,0.15);
+  --amber-faint:rgba(240,168,56,0.08);
+  --bg:#07060a;
+  --text:#f0ebe3;
+  --muted:rgba(240,235,227,0.5);
+  --dim:rgba(240,235,227,0.35);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Outfit',sans-serif;
+  --max:700px;
+}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(240,168,56,0.2) transparent}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ====== PERSISTENT LAYERS ====== */
+#bg-video{
+  position:fixed;inset:0;z-index:0;
+  overflow:hidden;
+}
+#bg-video video{
+  width:100%;height:100%;object-fit:cover;
+  opacity:0.12;
+  transition:opacity 1.5s ease;
+}
+#bg-video::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 50% 40%, transparent 0%, var(--bg) 75%),
+    linear-gradient(to bottom, rgba(7,6,10,0.6) 0%, rgba(7,6,10,0.3) 50%, rgba(7,6,10,0.7) 100%);
+  z-index:1;
+}
+
+#lantern-canvas{
+  position:fixed;inset:0;z-index:1;
+  pointer-events:none;
+  width:100%;height:100%;
+}
+
+/* Content scrolls above */
+.page{position:relative;z-index:2;}
+
+/* ====== HERO ====== */
+.hero{
+  position:relative;
+  height:100vh;min-height:650px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:0 2rem;
+}
+.hero-mono{
+  font-family:var(--mono);font-size:0.6rem;
+  letter-spacing:0.45em;text-transform:uppercase;
+  color:var(--amber-dim);
+  margin-bottom:2rem;
+  opacity:0;animation:fadeUp 1.5s ease 0.3s forwards;
+}
+.hero h1{
+  font-size:clamp(3rem,10vw,7rem);
+  font-weight:200;letter-spacing:0.02em;
+  line-height:1.05;
+  opacity:0;animation:fadeUp 2s ease 0.8s forwards;
+  text-shadow:0 2px 60px rgba(0,0,0,0.5),0 0 100px var(--amber-glow);
+}
+.hero h1 em{
+  font-style:normal;font-weight:300;
+  color:var(--amber);
+  text-shadow:0 0 60px rgba(240,168,56,0.3);
+}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;
+  opacity:0;animation:fadeUp 1.5s ease 2.5s forwards;
+}
+.hero-scroll span{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  opacity:0.35;
+}
+.scroll-line{
+  width:1px;height:32px;
+  background:linear-gradient(to bottom,rgba(240,180,80,0.5),transparent);
+  margin:0.6rem auto 0;
+  animation:scrollPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scrollPulse{0%,100%{opacity:0.25;transform:scaleY(1)}50%{opacity:0.7;transform:scaleY(1.4)}}
+
+/* ====== REVEAL ====== */
+.reveal{
+  padding:6rem 2rem 4rem;
+  text-align:center;
+}
+.reveal .divider{
+  width:40px;height:1px;
+  background:rgba(240,180,80,0.3);
+  margin:0 auto 2.5rem;
+}
+.reveal h2{
+  font-size:clamp(1.8rem,5vw,3.2rem);
+  font-weight:200;letter-spacing:0.04em;
+  line-height:1.3;margin-bottom:1.2rem;
+}
+.reveal h2 span{color:var(--amber)}
+.reveal-sub{
+  font-size:0.9rem;opacity:0.4;font-weight:300;
+  margin-bottom:3rem;
+}
+.stats{
+  display:flex;gap:3rem;justify-content:center;flex-wrap:wrap;
+}
+.stat-num{
+  font-family:var(--mono);font-size:2.2rem;
+  font-weight:500;color:var(--amber);display:block;
+  text-shadow:0 0 25px rgba(240,168,56,0.2);
+}
+.stat-label{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  opacity:0.3;margin-top:0.3rem;display:block;
+}
+
+/* ====== WORLD CARDS ====== */
+.worlds{padding:2rem 0 3rem;}
+.world{max-width:800px;margin:0 auto 1.5rem;padding:0 1.5rem;}
+.world-card{
+  border-radius:12px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.04);
+  transition:border-color 0.4s,transform 0.4s;
+  background:rgba(255,255,255,0.01);
+}
+.world-card:hover{border-color:rgba(240,180,80,0.12);transform:translateY(-2px)}
+.world-visual{height:180px;position:relative;overflow:hidden}
+.world-visual .grad{position:absolute;inset:0}
+.world-visual .fade{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,var(--bg) 100%)}
+.world-visual video{width:100%;height:100%;object-fit:cover;opacity:0.45}
+.world-body{padding:1.5rem 1.8rem 1.8rem;margin-top:-1.5rem;position:relative;z-index:1}
+.world-tag{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:0.5rem;
+}
+.world-body h3{font-size:1.35rem;font-weight:300;letter-spacing:0.02em;margin-bottom:0.4rem}
+.world-body p{font-size:0.85rem;opacity:0.45;line-height:1.7}
+
+.vegas-g{background:linear-gradient(135deg,#1a0a20,#2a1040 40%,#180830 70%,#0a0a14)}
+.vegas-g::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 60%,rgba(200,50,120,0.12),transparent 50%),radial-gradient(circle at 70% 40%,rgba(100,60,200,0.1),transparent 50%)}
+.zion-g{background:linear-gradient(160deg,#1a1008,#2a1a0a 40%,#3a2210 70%,#1a1008)}
+.zion-g::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(180,100,40,0.1),transparent 50%),radial-gradient(circle at 80% 30%,rgba(200,140,60,0.08),transparent 50%)}
+
+/* ====== DAY SECTIONS ====== */
+.day{max-width:var(--max);margin:0 auto;padding:4rem 1.5rem 2rem}
+.day-divider{
+  display:flex;align-items:center;gap:1rem;margin-bottom:2rem;
+}
+.day-dot{
+  width:6px;height:6px;background:var(--amber);border-radius:50%;
+  box-shadow:0 0 14px rgba(240,168,56,0.4);flex-shrink:0;
+}
+.day-label{
+  font-family:var(--mono);font-size:0.5rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--amber);flex-shrink:0;
+}
+.day-line{flex:1;height:1px;background:linear-gradient(to right,rgba(240,168,56,0.25),transparent)}
+.day h2{font-size:1.6rem;font-weight:300;letter-spacing:0.02em;margin-bottom:0.3rem}
+.day-sub{font-size:0.85rem;opacity:0.35;font-weight:300;margin-bottom:2rem}
+
+/* ====== SPOT CARDS ====== */
+.spot{
+  position:relative;
+  background:rgba(255,255,255,0.015);
+  border:1px solid rgba(240,180,80,0.06);
+  border-radius:10px;padding:1.3rem 1.5rem;
+  margin-bottom:0.7rem;
+  transition:all 0.35s ease;overflow:hidden;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.spot::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--amber),rgba(240,168,56,0.08));
+  opacity:0;transition:opacity 0.35s;
+}
+.spot::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 50%,rgba(240,168,56,0.025),transparent 50%);
+  opacity:0;transition:opacity 0.35s;
+}
+.spot:hover{
+  border-color:rgba(240,180,80,0.15);
+  background:rgba(255,255,255,0.025);
+  transform:translateX(4px);
+}
+.spot:hover::before,.spot:hover::after{opacity:1}
+.spot-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.4rem;position:relative;z-index:1}
+.spot-name{font-weight:500;font-size:1.05rem}
+.spot-meta{
+  font-family:var(--mono);font-size:0.55rem;
+  opacity:0.3;white-space:nowrap;margin-left:1rem;padding-top:0.2rem;
+}
+.spot-desc{font-size:0.84rem;opacity:0.45;line-height:1.65;margin-bottom:0.6rem;position:relative;z-index:1}
+.spot-tags{display:flex;gap:0.4rem;flex-wrap:wrap;position:relative;z-index:1}
+.tag{
+  font-family:var(--mono);font-size:0.48rem;
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:3px 10px;border-radius:3px;
+  background:var(--amber-faint);color:var(--amber-dim);
+  border:1px solid rgba(240,168,56,0.1);
+}
+
+/* ====== BRADY'S NOTE ====== */
+.note{
+  position:relative;
+  border-left:2px solid rgba(240,168,56,0.3);
+  padding:1rem 1.3rem;margin:1.5rem 0 2rem;
+  background:linear-gradient(135deg,rgba(240,168,56,0.025),transparent);
+  border-radius:0 8px 8px 0;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.note-label{
+  font-family:var(--mono);font-size:0.48rem;
+  letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:0.4rem;
+}
+.note p{font-size:0.84rem;font-style:italic;opacity:0.6;line-height:1.7}
+
+/* ====== RISE CENTERPIECE ====== */
+.rise-moment{
+  position:relative;min-height:85vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  overflow:hidden;margin:2rem 0;
+}
+.rise-video-bg{
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+}
+.rise-video-bg video{width:100%;height:100%;object-fit:cover}
+.rise-video-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 50% 50%,rgba(7,6,10,0.15) 0%,rgba(7,6,10,0.5) 60%),
+    linear-gradient(to bottom,rgba(7,6,10,0.7) 0%,rgba(7,6,10,0.1) 20%,rgba(7,6,10,0.1) 80%,rgba(7,6,10,0.7) 100%);
+}
+.rise-moment .content{
+  position:relative;z-index:2;
+  text-align:center;padding:0 2rem;
+}
+.rise-time{
+  font-family:var(--mono);font-size:0.6rem;
+  letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--amber-dim);margin-bottom:1.5rem;
+}
+.rise-moment h2{
+  font-size:clamp(2.2rem,7vw,4rem);
+  font-weight:200;letter-spacing:0.04em;
+  line-height:1.15;margin-bottom:1.5rem;
+  text-shadow:0 2px 40px rgba(0,0,0,0.6),0 0 80px var(--amber-glow);
+}
+.rise-desc{
+  font-size:1rem;font-weight:300;opacity:0.6;
+  max-width:540px;line-height:1.9;margin:0 auto;
+  text-shadow:0 1px 12px rgba(0,0,0,0.5);
+}
+
+/* ====== PRO TIPS ====== */
+.tips{max-width:var(--max);margin:0 auto;padding:3rem 1.5rem}
+.tips h3{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:1.5rem;
+}
+.tip{
+  display:flex;gap:1rem;margin-bottom:0.8rem;
+  padding:1rem 1.2rem;
+  background:rgba(255,255,255,0.012);
+  border-radius:8px;border:1px solid rgba(255,255,255,0.025);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.tip-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.15rem}
+.tip-text{font-size:0.84rem;opacity:0.5;line-height:1.6}
+.tip-text strong{color:var(--text);opacity:1;font-weight:500}
+
+/* ====== LOGISTICS ====== */
+.logistics{max-width:var(--max);margin:0 auto;padding:3rem 1.5rem}
+.logistics h3{
+  font-family:var(--mono);font-size:0.55rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:1.5rem;
+}
+.logistic-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.logistic-item{
+  padding:1rem 1.2rem;
+  background:rgba(255,255,255,0.012);
+  border:1px solid rgba(255,255,255,0.025);
+  border-radius:8px;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.logistic-item .li-label{
+  font-family:var(--mono);font-size:0.48rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:0.3rem;
+}
+.logistic-item p{font-size:0.84rem;opacity:0.5;line-height:1.5}
+
+/* ====== FOOTER ====== */
+.footer{
+  text-align:center;padding:6rem 2rem 4rem;
+  position:relative;
+}
+.footer::before{
+  content:'';position:absolute;top:0;left:50%;
+  transform:translateX(-50%);
+  width:40px;height:1px;
+  background:rgba(240,180,80,0.2);
+}
+.footer .love{font-size:1.2rem;font-weight:300;opacity:0.55;font-style:italic;margin-bottom:0.8rem}
+.footer .brand{
+  font-family:var(--mono);font-size:0.48rem;
+  letter-spacing:0.4em;text-transform:uppercase;opacity:0.15;
+}
+
+/* ====== MOBILE ====== */
+@media(max-width:600px){
+  .hero h1{font-size:clamp(2.5rem,12vw,4rem)}
+  .stats{gap:2rem}
+  .spot-top{flex-direction:column;gap:0.15rem}
+  .spot-meta{margin-left:0}
+  .world-visual{height:140px}
+  .logistic-grid{grid-template-columns:1fr}
+  .rise-moment{min-height:70vh}
+}
+
+/* ====== SCROLL ANIMATIONS ====== */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- PERSISTENT VIDEO BACKGROUND -->
+<div id="bg-video">
+  <video autoplay muted loop playsinline id="bg-vid">
+    <source src="https://res.cloudinary.com/doonck2rm/video/upload/q_auto,f_auto,w_1280/v1776336908/RiseLantern_xuegox.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- PERSISTENT 3D LANTERN CANVAS -->
+<canvas id="lantern-canvas"></canvas>
+
+<!-- SCROLLABLE CONTENT -->
+<div class="page">
+
+  <!-- ====== HERO ====== -->
+  <section class="hero" data-scene="reveal">
+    <div class="hero-mono">I planned something for you</div>
+    <h1>Pack your <em>bags</em>.</h1>
+    <div class="hero-scroll">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ====== REVEAL ====== -->
+  <section class="reveal fade-in" data-scene="reveal">
+    <div class="divider"></div>
+    <h2>Las Vegas. Zion. <span>Rise.</span></h2>
+    <div class="reveal-sub">4 nights &middot; 3 worlds &middot; 1 lantern festival in the desert</div>
+    <div class="stats">
+      <div><span class="stat-num">4</span><span class="stat-label">Nights</span></div>
+      <div><span class="stat-num">3</span><span class="stat-label">Worlds</span></div>
+      <div><span class="stat-num">1</span><span class="stat-label">Lantern Festival</span></div>
+    </div>
+  </section>
+
+  <!-- ====== THREE WORLDS ====== -->
+  <section class="worlds">
+    <div class="world fade-in">
+      <div class="world-card">
+        <div class="world-visual"><div class="grad vegas-g"></div><div class="fade"></div></div>
+        <div class="world-body">
+          <div class="world-tag">Days 1 &amp; 2</div>
+          <h3>Las Vegas</h3>
+          <p>Strip views from the 50th floor. Speakeasies behind unmarked doors. Handmade pasta overlooking the Bellagio Fountains.</p>
+        </div>
+      </div>
+    </div>
+    <div class="world fade-in">
+      <div class="world-card">
+        <div class="world-visual">
+          <video autoplay muted loop playsinline>
+            <source src="https://res.cloudinary.com/doonck2rm/video/upload/q_auto,f_auto,w_600/v1776336908/RiseLantern_xuegox.mp4" type="video/mp4">
+          </video>
+          <div class="fade"></div>
+        </div>
+        <div class="world-body">
+          <div class="world-tag">Day 2 &middot; Sunset</div>
+          <h3>Rise Lantern Festival</h3>
+          <p>Thousands of lanterns released at once over the Mojave Desert. Write a message on yours. Watch them rise until they become the stars.</p>
+        </div>
+      </div>
+    </div>
+    <div class="world fade-in">
+      <div class="world-card">
+        <div class="world-visual"><div class="grad zion-g"></div><div class="fade"></div></div>
+        <div class="world-body">
+          <div class="world-tag">Days 3 &amp; 4</div>
+          <h3>Zion National Park</h3>
+          <p>Sunrise over canyon walls. Walking upstream through thousand-foot slot canyons. Earning dinner at the best restaurant in Springdale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== DAY 1 ====== -->
+  <section class="day fade-in" data-scene="vegas">
+    <div class="day-divider">
+      <div class="day-dot"></div>
+      <div class="day-label">Day 01 &middot; Thursday</div>
+      <div class="day-line"></div>
+    </div>
+    <h2>Arrive in Vegas</h2>
+    <div class="day-sub">Check in. Decompress. First taste of the Strip.</div>
+
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">The Cosmopolitan</div><div class="spot-meta">Center Strip</div></div>
+      <div class="spot-desc">Wraparound terrace with 180&deg; Strip views. Best restaurant collection under one roof. Walking distance to everything that matters.</div>
+      <div class="spot-tags"><span class="tag">Home Base</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Scarpetta</div><div class="spot-meta">4.6&#9733; &middot; $$$$</div></div>
+      <div class="spot-desc">Overlooks the Bellagio Fountains. Handmade pasta, mood lighting, Italian music. The date-night sweet spot &mdash; elevated without being pretentious.</div>
+      <div class="spot-tags"><span class="tag">Dinner</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Ghost Donkey</div><div class="spot-meta">Speakeasy</div></div>
+      <div class="spot-desc">Unmarked green door with a donkey sign in Block 16. Mezcal-focused cocktails. Signature nachos. Small, cozy, perfect nightcap.</div>
+      <div class="spot-tags"><span class="tag">After Dinner</span></div>
+    </div>
+    <div class="note">
+      <div class="note-label">Brady&rsquo;s Note</div>
+      <p>Keep tonight low-key. You just flew in. Walk the Strip, get dinner, find the speakeasy. Save the energy &mdash; tomorrow night is Rise.</p>
+    </div>
+  </section>
+
+  <!-- ====== DAY 2 ====== -->
+  <section class="day fade-in" data-scene="vegas">
+    <div class="day-divider">
+      <div class="day-dot"></div>
+      <div class="day-label">Day 02 &middot; Friday</div>
+      <div class="day-line"></div>
+    </div>
+    <h2>Pool Day &rarr; Rise Festival</h2>
+    <div class="day-sub">Recharge by the water. Then the desert lights up.</div>
+
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">LIQUID Pool Lounge</div><div class="spot-meta">Aria &middot; Adults Only</div></div>
+      <div class="spot-desc">Intimate, 16,000 sq ft. Private dipping pools, craft cocktails. No EDM blasting &mdash; just sun, water, and us.</div>
+      <div class="spot-tags"><span class="tag">Morning</span><span class="tag">Pool</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Mon Ami Gabi</div><div class="spot-meta">Paris LV &middot; 4.5&#9733;</div></div>
+      <div class="spot-desc">One of the only Strip-front patios in Vegas. Steak frites and eggs Benedict watching the Bellagio Fountains. Late lunch before we head out.</div>
+      <div class="spot-tags"><span class="tag">Late Lunch</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Lotus of Siam</div><div class="spot-meta">James Beard Winner</div></div>
+      <div class="spot-desc">The best Thai restaurant in America. Off-Strip, locals-only feel. Khao soi, larb, 300-bottle wine list. $40-60/person for Michelin-quality food.</div>
+      <div class="spot-tags"><span class="tag">Backup Dinner</span><span class="tag">Hidden Gem</span></div>
+    </div>
+    <div class="note">
+      <div class="note-label">Brady&rsquo;s Note</div>
+      <p>We leave for the festival around 2 PM. It&rsquo;s 30 minutes south on I-15 into the Mojave. Dress in layers &mdash; warm during sunset, cold after dark. Comfortable shoes you don&rsquo;t mind getting dusty. This is the night.</p>
+    </div>
+  </section>
+
+  <!-- ====== RISE CENTERPIECE ====== -->
+  <section class="rise-moment" data-scene="rise">
+    <div class="rise-video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="https://res.cloudinary.com/doonck2rm/video/upload/q_auto,f_auto,w_1280/v1776336908/RiseLantern_xuegox.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="content">
+      <div class="rise-time">Day 02 &middot; 7:00 PM &middot; Jean Dry Lake Bed, Mojave Desert</div>
+      <h2>Rise Lantern Festival</h2>
+      <div class="rise-desc">The desert goes quiet. Thousands of people hold their lanterns. At once &mdash; they release. Warm light lifts from every direction, rising past you, above you, until the entire sky is glowing. You&rsquo;ll write a message on yours. Then let it go.</div>
+    </div>
+  </section>
+
+  <!-- ====== RISE TIPS ====== -->
+  <section class="tips fade-in">
+    <h3>What You Need to Know</h3>
+    <div class="tip">
+      <div class="tip-icon">&#128293;</div>
+      <div class="tip-text"><strong>The lantern release happens at exactly 7 PM.</strong> Be at the Compass Stage by 6:30. Position yourself center-crowd &mdash; the best view is lanterns rising on all sides of you.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#127777;&#65039;</div>
+      <div class="tip-text"><strong>Desert temperature drops 25&deg;F after sunset.</strong> Bring a hoodie and a blanket. It&rsquo;s warm during the festival, then cold fast once the sun&rsquo;s gone.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#128663;</div>
+      <div class="tip-text"><strong>No Uber or Lyft.</strong> We&rsquo;ll drive ourselves &mdash; 30 min from the Strip. Parking is $30, pre-purchased with tickets. Expect traffic leaving after.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#128246;</div>
+      <div class="tip-text"><strong>Almost no cell service on the lake bed.</strong> Screenshot tickets and download playlists before we leave. That&rsquo;s part of the magic.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#9999;&#65039;</div>
+      <div class="tip-text"><strong>Write your message before the ceremony.</strong> Everyone writes something on their lantern &mdash; a wish, a tribute, a goal. Take your time with it. Markers are provided.</div>
+    </div>
+  </section>
+
+  <!-- ====== DAY 3 ====== -->
+  <section class="day fade-in" data-scene="zion">
+    <div class="day-divider">
+      <div class="day-dot"></div>
+      <div class="day-label">Day 03 &middot; Saturday</div>
+      <div class="day-line"></div>
+    </div>
+    <h2>Drive to Zion</h2>
+    <div class="day-sub">2.5 hours north through the desert. A different world entirely.</div>
+
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Flanigan&rsquo;s Resort &amp; Spa</div><div class="spot-meta">Springdale</div></div>
+      <div class="spot-desc">Boutique resort steps from the park entrance. Full spa, pool, hot tub, labyrinth garden. The elevated pick for couples in Zion.</div>
+      <div class="spot-tags"><span class="tag">Home Base</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Watchman Trail</div><div class="spot-meta">3.3 mi &middot; Easy-Moderate</div></div>
+      <div class="spot-desc">Starts at the Visitor Center &mdash; no shuttle needed. Views over Springdale and the Towers of the Virgin. The Watchman peak glows red-orange at sunset.</div>
+      <div class="spot-tags"><span class="tag">Sunset Hike</span><span class="tag">Golden Hour</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">King&rsquo;s Landing</div><div class="spot-meta">Springdale &middot; $$$$</div></div>
+      <div class="spot-desc">Bison carpaccio, charred octopus, NY strip with canyon views. The best restaurant outside the park. Earn this one on the trail.</div>
+      <div class="spot-tags"><span class="tag">Dinner</span><span class="tag">Date Night</span></div>
+    </div>
+    <div class="note">
+      <div class="note-label">Brady&rsquo;s Note</div>
+      <p>Leave Vegas by 9 AM. You cross from Pacific to Mountain time &mdash; lose an hour. Check in, relax, then catch Watchman at golden hour. Keep tonight simple &mdash; tomorrow is the big hike day.</p>
+    </div>
+  </section>
+
+  <!-- ====== DAY 4 ====== -->
+  <section class="day fade-in" data-scene="zion">
+    <div class="day-divider">
+      <div class="day-dot"></div>
+      <div class="day-label">Day 04 &middot; Sunday</div>
+      <div class="day-line"></div>
+    </div>
+    <h2>Zion &mdash; The Full Day</h2>
+    <div class="day-sub">Sunrise, slot canyons, and the best hike on Earth.</div>
+
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Canyon Overlook Trail</div><div class="spot-meta">1 mi &middot; Easy &middot; Sunrise</div></div>
+      <div class="spot-desc">The best sunrise in Utah. Panoramic view of the entire canyon as first light spills across the walls. 30 minutes up. Drive yourself &mdash; it&rsquo;s outside the shuttle zone. Be there 30 min before sunrise.</div>
+      <div class="spot-tags"><span class="tag">Sunrise</span><span class="tag">Must Do</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">The Narrows</div><div class="spot-meta">3&ndash;6 mi &middot; Moderate</div></div>
+      <div class="spot-desc">Walk upstream through the Virgin River inside a slot canyon with thousand-foot walls on either side. Rent canyoneering shoes + walking stick in Springdale ($35). Go as far as you want &mdash; the deeper you go, the more dramatic it gets.</div>
+      <div class="spot-tags"><span class="tag">Adventure</span><span class="tag">Iconic</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Emerald Pools Trail</div><div class="spot-meta">3 mi loop &middot; Easy-Moderate</div></div>
+      <div class="spot-desc">Three tiers of waterfalls and green pools. Chain all three together for a solid loop. Lower is paved and easy. Upper has scrambling and the best views. Shuttle Stop 5.</div>
+      <div class="spot-tags"><span class="tag">Afternoon</span><span class="tag">Waterfalls</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Canyon Junction Bridge</div><div class="spot-meta">Sunset &middot; Free</div></div>
+      <div class="spot-desc">THE sunset shot. The Watchman glows red with the Virgin River reflecting in the foreground. Most photographed spot in the park. Be there 30 min early.</div>
+      <div class="spot-tags"><span class="tag">Sunset</span><span class="tag">Photo Spot</span></div>
+    </div>
+    <div class="spot">
+      <div class="spot-top"><div class="spot-name">Spotted Dog Cafe</div><div class="spot-meta">Flanigan&rsquo;s &middot; 4.8&#9733;</div></div>
+      <div class="spot-desc">Highest-rated in Springdale. Lamb shank, fresh local ingredients, scratch sauces. On-site at Flanigan&rsquo;s &mdash; walk downstairs after a full day on the trail.</div>
+      <div class="spot-tags"><span class="tag">Dinner</span><span class="tag">Last Night</span></div>
+    </div>
+    <div class="note">
+      <div class="note-label">Brady&rsquo;s Note</div>
+      <p>The Narrows is one of the most unique hikes on Earth. You&rsquo;re literally walking through a river inside a canyon. Bring a dry bag for your phone. The water is cold but you won&rsquo;t care &mdash; the walls towering above you are something else entirely.</p>
+    </div>
+  </section>
+
+  <!-- ====== LOGISTICS ====== -->
+  <section class="logistics fade-in">
+    <h3>The Details</h3>
+    <div class="logistic-grid">
+      <div class="logistic-item">
+        <div class="li-label">Getting There</div>
+        <p>Fly into LAS (Harry Reid). Rent a car &mdash; you need it for Zion and the festival. ~$40/day.</p>
+      </div>
+      <div class="logistic-item">
+        <div class="li-label">Rise Tickets</div>
+        <p>Gold tier ($269) &mdash; skip the lines, VIP restrooms. Worth the upgrade over Silver.</p>
+      </div>
+      <div class="logistic-item">
+        <div class="li-label">Zion Shuttle</div>
+        <p>Free. Runs every 5-10 min from Visitor Center. First shuttle 7 AM. No reservation needed.</p>
+      </div>
+      <div class="logistic-item">
+        <div class="li-label">Gear Rental</div>
+        <p>Narrows shoes + stick from Zion Outfitter in Springdale. ~$35/person. Reserve ahead.</p>
+      </div>
+      <div class="logistic-item">
+        <div class="li-label">Time Zones</div>
+        <p>Vegas is Pacific. Zion is Mountain. You lose 1 hour driving east. Plan accordingly.</p>
+      </div>
+      <div class="logistic-item">
+        <div class="li-label">Best Window</div>
+        <p>Early October. Rise Festival dates. Zion is 65-75&deg;F, fall colors, trails open, crowds thin.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="love">Planned with love.</div>
+    <div class="brand">The Lads Travel Co.</div>
+  </footer>
+
+</div><!-- /.page -->
+
+<!-- ====== 3D INTERACTIVE LANTERN ENGINE ====== -->
+<script>
+(function(){
+  const canvas = document.getElementById('lantern-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // State
+  let W, H, dpr;
+  let mouseX = 0.5, mouseY = 0.5; // normalized 0-1
+  let scrollY = 0, scrollMax = 1;
+  let lanterns = [];
+  let stars = [];
+  let time = 0;
+  let currentScene = 'reveal';
+
+  // Scene configs
+  const scenes = {
+    reveal:  { maxLanterns: 35, spawnRate: 0.03, baseSize: 7, videoOpacity: 0.1, starOpacity: 1 },
+    vegas:   { maxLanterns: 15, spawnRate: 0.012, baseSize: 5, videoOpacity: 0.06, starOpacity: 0.4 },
+    rise:    { maxLanterns: 100, spawnRate: 0.08, baseSize: 10, videoOpacity: 0.25, starOpacity: 1 },
+    zion:    { maxLanterns: 10, spawnRate: 0.008, baseSize: 4, videoOpacity: 0.04, starOpacity: 0.6 },
+  };
+  let scene = scenes.reveal;
+
+  // Resize
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    initStars();
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Mouse / touch tracking for 3D parallax
+  function onPointer(e){
+    const x = e.clientX ?? e.touches?.[0]?.clientX ?? W/2;
+    const y = e.clientY ?? e.touches?.[0]?.clientY ?? H/2;
+    mouseX = x / W;
+    mouseY = y / H;
+  }
+  window.addEventListener('mousemove', onPointer);
+  window.addEventListener('touchmove', onPointer, {passive:true});
+
+  // Scroll tracking + scene detection
+  function onScroll(){
+    scrollY = window.scrollY;
+    scrollMax = document.documentElement.scrollHeight - H;
+
+    // Detect scene from visible sections
+    const sections = document.querySelectorAll('[data-scene]');
+    const mid = scrollY + H * 0.5;
+    let found = 'reveal';
+    sections.forEach(s => {
+      const top = s.offsetTop;
+      const bot = top + s.offsetHeight;
+      if(mid >= top && mid <= bot) found = s.dataset.scene;
+    });
+
+    if(found !== currentScene){
+      currentScene = found;
+      scene = scenes[found] || scenes.reveal;
+      // Animate video opacity
+      const vid = document.getElementById('bg-vid');
+      if(vid) vid.style.opacity = scene.videoOpacity;
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  // Stars
+  function initStars(){
+    stars = [];
+    const count = Math.floor((W * H) / 6000);
+    for(let i = 0; i < count; i++){
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        size: 0.4 + Math.random() * 1.2,
+        speed: 0.008 + Math.random() * 0.025,
+        phase: Math.random() * Math.PI * 2,
+        base: 0.05 + Math.random() * 0.4
+      });
+    }
+  }
+
+  function drawStars(){
+    const alpha = scene.starOpacity;
+    if(alpha < 0.05) return;
+    stars.forEach(s => {
+      const twinkle = 0.3 + 0.7 * Math.sin(time * s.speed + s.phase);
+      const a = s.base * twinkle * alpha;
+      if(a < 0.02) return;
+
+      // 3D parallax on stars — subtle
+      const px = s.x + (mouseX - 0.5) * 5 * (1 - s.base);
+      const py = s.y + (mouseY - 0.5) * 5 * (1 - s.base);
+
+      ctx.fillStyle = `rgba(255,255,255,${a})`;
+      ctx.beginPath();
+      ctx.arc(px, py, s.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  // Lantern class
+  class Lantern {
+    constructor(){
+      this.depth = Math.random(); // 0=far, 1=near
+      this.size = scene.baseSize * (0.2 + this.depth * 0.8);
+      this.x = Math.random() * W;
+      this.y = H + this.size + Math.random() * 40;
+      this.vy = -(0.12 + this.depth * 0.5 + Math.random() * 0.2);
+      this.vx = (Math.random() - 0.5) * 0.25;
+      this.swayAmp = 0.2 + Math.random() * 0.6;
+      this.swayFreq = 0.0015 + Math.random() * 0.003;
+      this.swayOff = Math.random() * Math.PI * 2;
+      this.opacity = 0;
+      this.maxOpacity = 0.3 + this.depth * 0.6;
+      this.fadeIn = 0.004 + Math.random() * 0.004;
+      const hue = 22 + Math.random() * 22;
+      const sat = 78 + Math.random() * 22;
+      const lit = 52 + Math.random() * 18 + this.depth * 8;
+      this.hsl = `${hue},${sat}%,${lit}%`;
+      this.flickerSpd = 0.04 + Math.random() * 0.08;
+      this.flickerOff = Math.random() * Math.PI * 2;
+      this.alive = true;
+    }
+
+    update(){
+      // 3D parallax — closer lanterns move more with mouse
+      const parallaxX = (mouseX - 0.5) * this.depth * 20;
+      const parallaxY = (mouseY - 0.5) * this.depth * 10;
+
+      this.y += this.vy;
+      this.x += this.vx + Math.sin(time * this.swayFreq + this.swayOff) * this.swayAmp * 0.08;
+
+      this.drawX = this.x + parallaxX;
+      this.drawY = this.y + parallaxY;
+
+      if(this.opacity < this.maxOpacity) this.opacity = Math.min(this.opacity + this.fadeIn, this.maxOpacity);
+      if(this.y < H * 0.1) this.opacity *= 0.993;
+      if(this.y < -this.size * 5 || this.opacity < 0.008) this.alive = false;
+    }
+
+    draw(){
+      const flicker = 0.82 + 0.18 * Math.sin(time * this.flickerSpd + this.flickerOff);
+      const a = this.opacity * flicker;
+      if(a < 0.01) return;
+
+      const x = this.drawX, y = this.drawY;
+      const s = this.size;
+
+      // Outer glow
+      const gr = s * (3 + this.depth * 2);
+      const og = ctx.createRadialGradient(x, y, 0, x, y, gr);
+      og.addColorStop(0, `hsla(${this.hsl},${a * 0.28})`);
+      og.addColorStop(0.4, `hsla(${this.hsl},${a * 0.08})`);
+      og.addColorStop(1, `hsla(${this.hsl},0)`);
+      ctx.fillStyle = og;
+      ctx.fillRect(x - gr, y - gr, gr * 2, gr * 2);
+
+      // Body
+      const bh = s * 1.35;
+      const bg = ctx.createRadialGradient(x, y - bh * 0.1, s * 0.08, x, y, s * 0.85);
+      bg.addColorStop(0, `rgba(255,235,170,${a})`);
+      bg.addColorStop(0.45, `hsla(${this.hsl},${a})`);
+      bg.addColorStop(1, `hsla(${this.hsl},${a * 0.4})`);
+      ctx.fillStyle = bg;
+      ctx.beginPath();
+      ctx.ellipse(x, y, s, bh, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Core
+      const cg = ctx.createRadialGradient(x, y - bh * 0.15, 0, x, y, s * 0.45);
+      cg.addColorStop(0, `rgba(255,248,210,${a * 0.55})`);
+      cg.addColorStop(1, `rgba(255,220,140,0)`);
+      ctx.fillStyle = cg;
+      ctx.beginPath();
+      ctx.ellipse(x, y - bh * 0.1, s * 0.45, bh * 0.45, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Main loop
+  function animate(){
+    time++;
+    ctx.clearRect(0, 0, W, H);
+
+    // Stars
+    drawStars();
+
+    // Spawn lanterns
+    if(Math.random() < scene.spawnRate && lanterns.length < scene.maxLanterns){
+      lanterns.push(new Lantern());
+    }
+
+    // Cull excess when scene changes to fewer lanterns
+    // (let them float away naturally — don't pop)
+
+    // Sort by depth (far first)
+    lanterns.sort((a, b) => a.depth - b.depth);
+
+    // Update & draw
+    for(let i = 0; i < lanterns.length; i++){
+      lanterns[i].update();
+      lanterns[i].draw();
+    }
+
+    // Remove dead
+    lanterns = lanterns.filter(l => l.alive);
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Scroll-triggered fade-ins
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+})();
+</script>
+</body>
+</html>
