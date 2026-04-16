@@ -15,7 +15,7 @@ export default defineConfig({
       dynamicRoutes: [
         '/', '/dublin-galway', '/italy', '/spain', '/australia-nz', '/iceland',
         '/prague-vienna', '/munich', '/poland', '/thailand', '/charleston',
-        '/lads-local', '/vegas-zion-rise',
+        '/lads-local', '/vegas-zion-rise', '/jordi',
       ],
       changefreq: 'weekly',
       priority: {
@@ -23,7 +23,7 @@ export default defineConfig({
         '/dublin-galway': 0.9, '/italy': 0.9, '/spain': 0.9,
         '/australia-nz': 0.8, '/iceland': 0.8, '/prague-vienna': 0.8,
         '/munich': 0.7, '/poland': 0.7, '/thailand': 0.8, '/charleston': 0.7,
-        '/lads-local': 0.7, '/vegas-zion-rise': 0.8,
+        '/lads-local': 0.7, '/vegas-zion-rise': 0.8, '/jordi': 0.6,
       },
     }),
   ],
