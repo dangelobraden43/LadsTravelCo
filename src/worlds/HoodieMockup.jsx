@@ -495,7 +495,7 @@ function Scene() {
 const wrapperStyle = {
   position: 'relative',
   width: '100%',
-  maxWidth: '560px',
+  maxWidth: '680px',
   margin: '0 auto',
   padding: '2rem 0',
 }
@@ -506,9 +506,11 @@ const canvasContainerStyle = {
   aspectRatio: '1 / 1',
   borderRadius: '20px',
   overflow: 'hidden',
-  background: 'linear-gradient(135deg, rgba(20,18,16,0.9) 0%, rgba(28,25,21,0.95) 100%)',
-  border: '1px solid rgba(201,168,76,0.12)',
-  boxShadow: '0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+  background:
+    'radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.08) 0%, rgba(20,18,16,0.95) 50%, rgba(28,25,21,0.98) 100%)',
+  border: '1px solid rgba(201,168,76,0.15)',
+  boxShadow:
+    '0 8px 40px rgba(0,0,0,0.5), 0 0 80px rgba(201,168,76,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
   backdropFilter: 'blur(20px)',
 }
 

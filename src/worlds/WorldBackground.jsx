@@ -1,17 +1,18 @@
 // src/worlds/WorldBackground.jsx
-import React, { useRef, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { useWorld } from './useWorldScroll'
 import worlds from './worlds'
 
 export default function WorldBackground() {
   const { activeIndex } = useWorld()
-  const layersRef = useRef([])
 
-  useEffect(() => {
-    layersRef.current.forEach((layer, i) => {
-      if (!layer) return
-      layer.style.opacity = i === activeIndex ? '1' : '0'
-    })
+  // Only render active world and its immediate neighbors to reduce DOM load
+  const visibleIndices = useMemo(() => {
+    const set = new Set()
+    set.add(activeIndex)
+    if (activeIndex > 0) set.add(activeIndex - 1)
+    if (activeIndex < worlds.length - 1) set.add(activeIndex + 1)
+    return set
   }, [activeIndex])
 
   return (
@@ -23,19 +24,22 @@ export default function WorldBackground() {
         pointerEvents: 'none',
       }}
     >
-      {worlds.map((world, i) => (
-        <div
-          key={world.id}
-          ref={(el) => (layersRef.current[i] = el)}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: world.palette.bgGradient || world.palette.bg,
-            opacity: i === 0 ? 1 : 0,
-            transition: 'opacity 0.8s ease-in-out',
-          }}
-        />
-      ))}
+      {worlds.map((world, i) => {
+        if (!visibleIndices.has(i)) return null
+        return (
+          <div
+            key={world.id}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: world.palette.bgGradient || world.palette.bg,
+              opacity: i === activeIndex ? 1 : 0,
+              transition: 'opacity 0.8s ease-in-out',
+              willChange: i === activeIndex ? 'auto' : 'opacity',
+            }}
+          />
+        )
+      })}
     </div>
   )
 }

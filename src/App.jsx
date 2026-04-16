@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES } from './images-paths'
-import { gsap, countUpOnScroll, revealOnScroll, staggerReveal } from './utils/animations'
+import { gsap, staggerReveal } from './utils/animations'
 import Splitting from 'splitting'
 import 'splitting/dist/splitting.css'
 import WorldManager from './worlds/WorldManager'
@@ -49,14 +49,14 @@ function Reveal({ children, style = {}, delay = 0, type = 'up' }) {
   )
 }
 
-function WorldSection({ worldId, children, style = {} }) {
+function WorldSection({ worldId, children, style = {}, fullHeight = false }) {
   return (
     <section
       data-world={worldId}
       style={{
         position: 'relative',
         zIndex: 2,
-        minHeight: '100vh',
+        ...(fullHeight ? { minHeight: '100vh' } : {}),
         ...style,
       }}
     >
@@ -216,22 +216,63 @@ function Nav({ scrolled }) {
 }
 
 /* ===== DATA SPECTACLE ===== */
+function useCountUp(ref, target) {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let animated = false
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !animated) {
+          animated = true
+          obs.unobserve(el)
+          const duration = 2000
+          const start = performance.now()
+          const tick = (now) => {
+            const progress = Math.min((now - start) / duration, 1)
+            const eased = 1 - Math.pow(1 - progress, 3)
+            el.textContent = Math.round(eased * target)
+            if (progress < 1) requestAnimationFrame(tick)
+          }
+          requestAnimationFrame(tick)
+        }
+      },
+      { threshold: 0.3 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [ref, target])
+}
+
 function DataSpectacle() {
   const bigRef = useRef(null)
   const stat1 = useRef(null)
   const stat2 = useRef(null)
   const stat3 = useRef(null)
   const subRef = useRef(null)
-  const initRef = useRef(false)
 
+  useCountUp(bigRef, 183)
+  useCountUp(stat1, 13)
+  useCountUp(stat2, 29)
+  useCountUp(stat3, 4)
+
+  // Reveal subtitle via IntersectionObserver
   useEffect(() => {
-    if (initRef.current) return
-    initRef.current = true
-    if (bigRef.current) countUpOnScroll(bigRef.current, 183, '')
-    if (stat1.current) countUpOnScroll(stat1.current, 13, '')
-    if (stat2.current) countUpOnScroll(stat2.current, 29, '')
-    if (stat3.current) countUpOnScroll(stat3.current, 4, '')
-    if (subRef.current) revealOnScroll(subRef.current, { delay: 0.4 })
+    const el = subRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = '1'
+          el.style.transform = 'translateY(0)'
+          el.style.transition = 'opacity 0.8s ease, transform 0.8s ease'
+          obs.unobserve(el)
+        }
+      },
+      { threshold: 0.3 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
   }, [])
 
   return (
@@ -533,7 +574,7 @@ export default function App() {
       </WorldSection>
 
       {/* ===== WORLD 2: GLOBE ===== */}
-      <WorldSection worldId="globe">
+      <WorldSection worldId="globe" fullHeight>
         <section style={{ padding: '60px 0 0', position: 'relative' }}>
           <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
             <Suspense
@@ -580,7 +621,7 @@ export default function App() {
       </WorldSection>
 
       {/* ===== WORLD 3: CITIES ===== */}
-      <WorldSection worldId="cities">
+      <WorldSection worldId="cities" fullHeight>
         {/* ===== DATA SPECTACLE ===== */}
         <DataSpectacle />
 
@@ -589,7 +630,17 @@ export default function App() {
 
         {/* ===== FOUR PATH CTA ===== */}
         <section style={{ background: 'transparent', padding: '80px 0 100px' }}>
-          <div style={{ maxWidth: 700, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
+          <div
+            style={{
+              maxWidth: 700,
+              margin: '0 auto',
+              padding: '60px 32px',
+              textAlign: 'center',
+              background: 'rgba(20,18,16,0.6)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: 16,
+            }}
+          >
             <Reveal>
               <h2
                 style={{
@@ -654,7 +705,7 @@ export default function App() {
       </WorldSection>
 
       {/* ===== WORLD 4: WILD ===== */}
-      <WorldSection worldId="wild" style={{ minHeight: '100vh' }}>
+      <WorldSection worldId="wild">
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 60 }}>
@@ -868,7 +919,7 @@ export default function App() {
       </WorldSection>
 
       {/* ===== WORLD 5: SEASONS ===== */}
-      <WorldSection worldId="seasons" style={{ minHeight: '100vh' }}>
+      <WorldSection worldId="seasons">
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 60 }}>
@@ -1035,7 +1086,23 @@ export default function App() {
           </div>
 
           {/* 3D Hoodie — Fall 2026 Breast Cancer Awareness */}
-          <div style={{ marginTop: 60 }}>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginTop: 80, marginBottom: 20 }}>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: 4,
+                  color: '#d4a843',
+                  textTransform: 'uppercase',
+                }}
+              >
+                PRODUCT PREVIEW
+              </div>
+            </div>
+          </Reveal>
+          <div style={{ marginTop: 0 }}>
             <Suspense
               fallback={
                 <div
@@ -1066,7 +1133,7 @@ export default function App() {
       </WorldSection>
 
       {/* ===== WORLD 6: SYSTEM ===== */}
-      <WorldSection worldId="system" style={{ minHeight: '100vh' }}>
+      <WorldSection worldId="system">
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 60 }}>
@@ -1268,7 +1335,7 @@ export default function App() {
       </WorldSection>
 
       {/* ===== WORLD 7: PUB RETURN ===== */}
-      <WorldSection worldId="pub-return" style={{ minHeight: '100vh' }}>
+      <WorldSection worldId="pub-return">
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 60 }}>
@@ -1459,15 +1526,7 @@ export default function App() {
           0%, 100% { transform: translateX(-50%) translateY(0); }
           50% { transform: translateX(-50%) translateY(8px); }
         }
-        .nav-label-short { display: none; }
         [data-splitting] .char { display: inline-block; }
-        @media(max-width:640px) {
-          .nav-label-full { display: none; }
-          .nav-label-short { display: inline; }
-        }
-        @media(max-width:768px) {
-          .photo-strip-responsive { grid-template-columns: repeat(3, 1fr) !important; }
-        }
       `}</style>
     </WorldManager>
   )
