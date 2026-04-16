@@ -4,18 +4,19 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/explore", "destination": "/index.html" },
-    { "source": "/adventure", "destination": "/index.html" },
-    { "source": "/when", "destination": "/index.html" },
-    { "source": "/plan", "destination": "/index.html" },
-    { "source": "/lads", "destination": "/index.html" },
-    { "source": "/gift/:slug*", "destination": "/index.html" },
-    { "source": "/rome", "destination": "/index.html" },
-    { "source": "/australia", "destination": "/index.html" },
-    { "source": "/prague", "destination": "/index.html" },
-    { "source": "/dublin", "destination": "/index.html" },
-    { "source": "/michigan", "destination": "/index.html" }
+    { "source": "/explore", "destination": "/" },
+    { "source": "/adventure", "destination": "/" },
+    { "source": "/when", "destination": "/" },
+    { "source": "/plan", "destination": "/" },
+    { "source": "/lads", "destination": "/" },
+    { "source": "/gift/:slug*", "destination": "/" },
+    { "source": "/rome", "destination": "/" },
+    { "source": "/australia", "destination": "/" },
+    { "source": "/prague", "destination": "/" },
+    { "source": "/dublin", "destination": "/" },
+    { "source": "/michigan", "destination": "/" }
   ],
   "headers": [
     {
