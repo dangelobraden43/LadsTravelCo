@@ -4,7 +4,7 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "rewrites": [{ "source": "/((?!assets/|images/|textures/|.*\\.).*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/(.*)",
