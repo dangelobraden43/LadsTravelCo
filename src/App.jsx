@@ -6,6 +6,7 @@ import Splitting from 'splitting'
 import 'splitting/dist/splitting.css'
 import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
+const DepthHero = lazy(() => import('./worlds/DepthHero'))
 const Globe = lazy(() => import('./Globe'))
 
 /* ===== HOOKS ===== */
@@ -404,7 +405,6 @@ function CursorGlow() {
 export default function App() {
   const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false)
-  const [heroImg, setHeroImg] = useState(0)
   const ctaRef = useRef(null)
   const ctaInitRef = useRef(false)
   const heroLine1 = useRef(null)
@@ -415,13 +415,6 @@ export default function App() {
     const onScroll = () => setScrolled(window.scrollY > 80)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHeroImg((prev) => (prev + 1) % heroImages.length)
-    }, 6000)
-    return () => clearInterval(interval)
   }, [])
 
   // Splitting.js hero headline animation
@@ -454,170 +447,88 @@ export default function App() {
       <CursorGlow />
       <Nav scrolled={scrolled} />
 
-      {/* ===== WORLD 1: PUB ===== */}
-      <WorldSection worldId="pub">
-        <section
-          className="hero"
-          style={{
-            position: 'relative',
-            height: '100vh',
-            minHeight: 700,
-            overflow: 'hidden',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {heroImages.map((src, i) => (
+      {/* ===== WORLD 1: THE HOOK — Living 3D Photos ===== */}
+      <WorldSection worldId="pub" style={{ minHeight: 'auto' }}>
+        <Suspense fallback={<div style={{ height: '100vh', background: '#141210' }} />}>
+          <DepthHero>
             <div
-              key={i}
-              className="hero-bg"
+              style={{
+                textAlign: 'center',
+                maxWidth: 700,
+                padding: '0 32px',
+                pointerEvents: 'auto',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'var(--mono)',
+                  fontSize: 11,
+                  color: 'var(--gold)',
+                  letterSpacing: 4,
+                  marginBottom: 24,
+                  textTransform: 'uppercase',
+                }}
+              >
+                FREE PERSONAL TRAVEL CONSULTING THROUGH 2026
+              </div>
+              <h1 style={{ margin: 0, lineHeight: 1.1, marginBottom: 20 }}>
+                <span
+                  ref={heroLine1}
+                  data-splitting=""
+                  style={{
+                    fontFamily: "'Space Grotesk', var(--sans)",
+                    fontSize: 'clamp(36px, 5vw, 64px)',
+                    fontWeight: 300,
+                    color: '#fff',
+                    display: 'block',
+                  }}
+                >
+                  Travel Like
+                </span>
+                <span
+                  ref={heroLine2}
+                  data-splitting=""
+                  style={{
+                    fontFamily: "'Fraunces', var(--display)",
+                    fontSize: 'clamp(40px, 5.5vw, 72px)',
+                    fontWeight: 400,
+                    fontStyle: 'italic',
+                    color: 'var(--gold)',
+                    display: 'block',
+                  }}
+                >
+                  You Know Someone
+                </span>
+              </h1>
+              <p
+                style={{
+                  fontFamily: 'var(--sans)',
+                  fontSize: 18,
+                  color: '#b8ad9a',
+                  maxWidth: 580,
+                  margin: '0 auto',
+                  lineHeight: 1.6,
+                }}
+              >
+                Free trip planning from two guys who've actually been there.
+              </p>
+            </div>
+            <div
               style={{
                 position: 'absolute',
-                inset: 0,
-                opacity: heroImg === i ? 1 : 0,
-                transition: 'opacity 1.2s ease-in-out',
-                zIndex: 0,
+                bottom: 40,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 2,
+                animation: 'float 2s ease-in-out infinite',
+                opacity: 0.5,
+                color: 'var(--cream2, #b8ad9a)',
               }}
             >
-              <img
-                src={src}
-                alt=""
-                loading="eager"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
+              <IconChevron />
             </div>
-          ))}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background:
-                'linear-gradient(to bottom, rgba(20,18,16,0.45) 0%, rgba(20,18,16,0.25) 40%, rgba(20,18,16,0.75) 70%, transparent 100%)',
-              zIndex: 1,
-            }}
-          />
-          <div
-            style={{
-              position: 'relative',
-              zIndex: 2,
-              textAlign: 'center',
-              maxWidth: 700,
-              padding: '0 32px',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'var(--mono)',
-                fontSize: 11,
-                color: 'var(--gold)',
-                letterSpacing: 4,
-                marginBottom: 24,
-                textTransform: 'uppercase',
-              }}
-            >
-              FREE PERSONAL TRAVEL CONSULTING THROUGH 2026
-            </div>
-            <h1 style={{ margin: 0, lineHeight: 1.1, marginBottom: 20 }}>
-              <span
-                ref={heroLine1}
-                data-splitting=""
-                style={{
-                  fontFamily: "'Space Grotesk', var(--sans)",
-                  fontSize: 'clamp(36px, 5vw, 64px)',
-                  fontWeight: 300,
-                  color: '#fff',
-                  display: 'block',
-                }}
-              >
-                Travel Like
-              </span>
-              <span
-                ref={heroLine2}
-                data-splitting=""
-                style={{
-                  fontFamily: "'Fraunces', var(--display)",
-                  fontSize: 'clamp(40px, 5.5vw, 72px)',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                  color: 'var(--gold)',
-                  display: 'block',
-                }}
-              >
-                You Know Someone
-              </span>
-            </h1>
-            <p
-              style={{
-                fontFamily: 'var(--sans)',
-                fontSize: 18,
-                color: '#b8ad9a',
-                maxWidth: 580,
-                margin: '0 auto',
-                lineHeight: 1.6,
-              }}
-            >
-              Free trip planning from two guys who've actually been there.
-            </p>
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 40,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              zIndex: 2,
-              animation: 'float 2s ease-in-out infinite',
-              opacity: 0.5,
-              color: 'var(--cream2, #b8ad9a)',
-            }}
-          >
-            <IconChevron />
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 40,
-              right: 32,
-              zIndex: 2,
-              display: 'flex',
-              gap: 8,
-              alignItems: 'center',
-            }}
-          >
-            {heroImages.map((_, i) => (
-              <div
-                key={i}
-                onClick={() => setHeroImg(i)}
-                style={{
-                  width: heroImg === i ? 24 : 8,
-                  height: 8,
-                  borderRadius: 4,
-                  background: heroImg === i ? 'var(--gold)' : 'rgba(255,255,255,0.3)',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                }}
-              />
-            ))}
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '10%',
-              right: '5%',
-              zIndex: 3,
-              opacity: 0.85,
-            }}
-          >
-            <VideoBackground
-              publicId="IrishSong_qqxzzr"
-              posterTime={3}
-              placement="portrait-frame"
-              hasAudio={true}
-              isActive={true}
-            />
-          </div>
-        </section>
+          </DepthHero>
+        </Suspense>
       </WorldSection>
 
       {/* ===== WORLD 2: GLOBE ===== */}
@@ -742,115 +653,766 @@ export default function App() {
       </WorldSection>
 
       {/* ===== WORLD 4: WILD ===== */}
-      <WorldSection
-        worldId="wild"
-        style={{
-          minHeight: '60vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div style={{ textAlign: 'center', padding: '80px 32px' }}>
-          <h2
-            style={{
-              fontFamily: "'Fraunces', var(--display)",
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: 'var(--cream, #e8dcc8)',
-            }}
-          >
-            The Wild
-          </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: '#8a8070', marginTop: 12 }}>
-            Adventure content — Session 2
-          </p>
-        </div>
+      <WorldSection worldId="wild" style={{ minHeight: '100vh' }}>
+        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: 60 }}>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: 4,
+                  color: '#b8886e',
+                  marginBottom: 16,
+                  textTransform: 'uppercase',
+                }}
+              >
+                ADVENTURE
+              </div>
+              <h2
+                style={{
+                  fontFamily: "'Fraunces', var(--display)",
+                  fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: 'var(--cream, #e8dcc8)',
+                  lineHeight: 1.15,
+                  marginBottom: 12,
+                }}
+              >
+                The Ladder.
+              </h2>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 15,
+                  color: '#b8ad9a',
+                  maxWidth: 480,
+                  margin: '0 auto',
+                }}
+              >
+                From first trails to expedition logistics.
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Rung Cards */}
+          {[
+            {
+              num: 'RUNG 1',
+              title: 'Accessible Wilderness',
+              desc: 'Day hikes and weekend trips. No experience required. Grand Canyon, Zion, Olympic.',
+              pills: ['Zion', 'Olympic', 'Grand Canyon'],
+              status: null,
+            },
+            {
+              num: 'RUNG 2',
+              title: 'Multi-Day Treks',
+              desc: 'Three to ten days. Real preparation required. The Salkantay is the proof of concept.',
+              pills: [],
+              status: 'HAPPENING NOW',
+            },
+            {
+              num: 'RUNG 3',
+              title: 'Expedition',
+              desc: 'Ten days to three weeks. This is the list we\u2019re building toward.',
+              pills: ['TMB', 'Kilimanjaro', 'Everest Base Camp'],
+              status: null,
+            },
+          ].map((rung, i) => (
+            <Reveal key={rung.num} delay={i * 120}>
+              <div
+                style={{
+                  background: '#1c1915',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: 12,
+                  padding: '32px 36px',
+                  marginBottom: 20,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: 2,
+                      color: '#b8886e',
+                    }}
+                  >
+                    {rung.num}
+                  </span>
+                  {rung.status && (
+                    <span
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: 9,
+                        fontWeight: 700,
+                        letterSpacing: 1,
+                        padding: '3px 10px',
+                        borderRadius: 20,
+                        background: '#d4a843',
+                        color: '#141210',
+                      }}
+                    >
+                      {rung.status}
+                    </span>
+                  )}
+                </div>
+                <h3
+                  style={{
+                    fontFamily: "'Fraunces', serif",
+                    fontSize: 'clamp(24px, 3vw, 32px)',
+                    fontStyle: 'italic',
+                    fontWeight: 400,
+                    color: '#e8dcc8',
+                    marginBottom: 10,
+                  }}
+                >
+                  {rung.title}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 14,
+                    color: '#b8ad9a',
+                    lineHeight: 1.6,
+                    marginBottom: 14,
+                  }}
+                >
+                  {rung.desc}
+                </p>
+                {rung.pills.length > 0 && (
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {rung.pills.map((p) => (
+                      <span
+                        key={p}
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: 10,
+                          letterSpacing: 1,
+                          color: '#d4a843',
+                          padding: '4px 12px',
+                          borderRadius: 16,
+                          border: '1px solid rgba(212,168,67,0.3)',
+                        }}
+                      >
+                        {p}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Reveal>
+          ))}
+
+          {/* Salkantay Callout */}
+          <Reveal delay={400}>
+            <div
+              style={{
+                padding: '24px 28px',
+                borderRadius: 8,
+                background: 'rgba(184,136,110,0.06)',
+                borderLeft: '3px solid #b8886e',
+                marginTop: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "'Fraunces', serif",
+                  fontSize: 18,
+                  fontStyle: 'italic',
+                  color: '#e8dcc8',
+                  marginBottom: 8,
+                }}
+              >
+                SALKANTAY + MACHU PICCHU
+              </div>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 13,
+                  color: '#b8ad9a',
+                  lineHeight: 1.5,
+                  marginBottom: 2,
+                }}
+              >
+                Brady is on this trek May 3{'\u2013'}13, 2026.
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 13,
+                  color: '#8a8070',
+                  lineHeight: 1.5,
+                }}
+              >
+                Full framework coming May 14.
+              </p>
+            </div>
+          </Reveal>
+        </section>
       </WorldSection>
 
       {/* ===== WORLD 5: SEASONS ===== */}
-      <WorldSection
-        worldId="seasons"
-        style={{
-          minHeight: '60vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div style={{ textAlign: 'center', padding: '80px 32px' }}>
-          <h2
+      <WorldSection worldId="seasons" style={{ minHeight: '100vh' }}>
+        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: 60 }}>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: 4,
+                  color: '#b8886e',
+                  marginBottom: 16,
+                  textTransform: 'uppercase',
+                }}
+              >
+                WHEN TO GO
+              </div>
+              <h2
+                style={{
+                  fontFamily: "'Fraunces', var(--display)",
+                  fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: 'var(--cream, #e8dcc8)',
+                  lineHeight: 1.15,
+                  marginBottom: 12,
+                }}
+              >
+                When to Travel
+              </h2>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 15,
+                  color: '#b8ad9a',
+                  maxWidth: 520,
+                  margin: '0 auto',
+                }}
+              >
+                Four seasons. Four causes. Every trip gives back.
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Season Cards 2x2 Grid */}
+          <div
             style={{
-              fontFamily: "'Fraunces', var(--display)",
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: 'var(--cream, #e8dcc8)',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: 20,
             }}
           >
-            The Seasons
-          </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: '#8a8070', marginTop: 12 }}>
-            When & Giving Back — Session 2
-          </p>
-        </div>
+            {[
+              {
+                season: 'Spring',
+                months: 'APR \u2013 MAY',
+                desc: 'Cherry blossoms in Japan, shoulder season in Europe.',
+                charity: 'National Parks Conservation Assoc.',
+                color: '#7ab87a',
+              },
+              {
+                season: 'Summer',
+                months: 'JUN \u2013 AUG',
+                desc: 'Peak Mediterranean, Iceland midnight sun.',
+                charity: 'TUFF \u2014 The Uniform Funding Foundation',
+                color: '#d4a843',
+              },
+              {
+                season: 'Fall',
+                months: 'SEP \u2013 OCT',
+                desc: 'Oktoberfest, autumn in New England, shoulder season deals.',
+                charity: 'Ginny L. Clements Breast Cancer Research',
+                color: '#b8886e',
+              },
+              {
+                season: 'Winter',
+                months: 'NOV \u2013 MAR',
+                desc: 'Christmas markets, ski season, Southern Hemisphere summer.',
+                charity: 'C.S. Mott Children\u2019s Hospital',
+                color: '#8a9ab0',
+              },
+            ].map((s, i) => (
+              <Reveal key={s.season} delay={i * 100}>
+                <div
+                  style={{
+                    background: '#1c1915',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: 12,
+                    padding: '32px 28px',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 10,
+                      letterSpacing: 3,
+                      color: s.color,
+                      marginBottom: 12,
+                    }}
+                  >
+                    {s.months}
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: "'Fraunces', serif",
+                      fontSize: 28,
+                      fontStyle: 'italic',
+                      fontWeight: 400,
+                      color: '#e8dcc8',
+                      marginBottom: 10,
+                    }}
+                  >
+                    {s.season}.
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 14,
+                      color: '#b8ad9a',
+                      lineHeight: 1.6,
+                      marginBottom: 20,
+                      flex: 1,
+                    }}
+                  >
+                    {s.desc}
+                  </p>
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
+                    <div
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: 9,
+                        letterSpacing: 2,
+                        color: '#8a8070',
+                        marginBottom: 6,
+                      }}
+                    >
+                      THIS SEASON&rsquo;S CAUSE
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: 13,
+                        color: '#e8dcc8',
+                        marginBottom: 4,
+                      }}
+                    >
+                      {s.charity}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: 10,
+                        color: '#d4a843',
+                      }}
+                    >
+                      100% to charity
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Hoodie mount point */}
+          <div id="hoodie-mount" style={{ marginTop: 40 }} />
+        </section>
       </WorldSection>
 
       {/* ===== WORLD 6: SYSTEM ===== */}
-      <WorldSection
-        worldId="system"
-        style={{
-          minHeight: '60vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div style={{ textAlign: 'center', padding: '80px 32px' }}>
-          <h2
+      <WorldSection worldId="system" style={{ minHeight: '100vh' }}>
+        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: 60 }}>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: 4,
+                  color: '#b8886e',
+                  marginBottom: 16,
+                  textTransform: 'uppercase',
+                }}
+              >
+                HOW IT WORKS
+              </div>
+              <h2
+                style={{
+                  fontFamily: "'Fraunces', var(--display)",
+                  fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: 'var(--cream, #e8dcc8)',
+                  lineHeight: 1.15,
+                  marginBottom: 12,
+                }}
+              >
+                The System
+              </h2>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 15,
+                  color: '#b8ad9a',
+                  maxWidth: 520,
+                  margin: '0 auto',
+                }}
+              >
+                285 spots. 10 countries. Built on data, not guesses.
+              </p>
+            </div>
+          </Reveal>
+
+          {/* 5-Step Process */}
+          <div
             style={{
-              fontFamily: "'Fraunces', var(--display)",
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: 'var(--cream, #e8dcc8)',
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 8,
+              flexWrap: 'wrap',
+              marginBottom: 60,
             }}
           >
-            The System
-          </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: '#8a8070', marginTop: 12 }}>
-            Data & Intelligence — Session 2
-          </p>
-        </div>
+            {['Research', 'Validate', 'Rate', 'Build', 'Deliver'].map((step, i) => (
+              <Reveal key={step} delay={i * 80}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div
+                    style={{
+                      background: '#1c1915',
+                      border: '1px solid rgba(201,168,76,0.2)',
+                      borderRadius: 24,
+                      padding: '10px 20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 10,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        color: '#d4a843',
+                      }}
+                    >
+                      0{i + 1}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: '#e8dcc8',
+                      }}
+                    >
+                      {step}
+                    </span>
+                  </div>
+                  {i < 4 && <span style={{ color: '#5a5550', fontSize: 16 }}>{'\u2192'}</span>}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Stat Cards */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: 20,
+              marginBottom: 60,
+            }}
+          >
+            {[
+              { value: '285', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
+              { value: '10', label: 'COUNTRIES', sub: '4 continents. 21 cities.' },
+              {
+                value: '6',
+                label: 'AI RESEARCH AGENTS',
+                sub: 'Flight, cost, neighborhood, validation, booking, local intel.',
+              },
+            ].map((stat, i) => (
+              <Reveal key={stat.label} delay={i * 100}>
+                <div
+                  style={{
+                    background: '#1c1915',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: 12,
+                    padding: '36px 28px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: 48,
+                      fontWeight: 700,
+                      color: '#d4a843',
+                      lineHeight: 1,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 10,
+                      letterSpacing: 3,
+                      color: '#8a8070',
+                      marginBottom: 10,
+                    }}
+                  >
+                    {stat.label}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 13,
+                      color: '#b8ad9a',
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {stat.sub}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Quote */}
+          <Reveal>
+            <blockquote
+              style={{
+                textAlign: 'center',
+                maxWidth: 640,
+                margin: '0 auto',
+                padding: '32px 0',
+                borderTop: '1px solid rgba(201,168,76,0.12)',
+                borderBottom: '1px solid rgba(201,168,76,0.12)',
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "'Fraunces', serif",
+                  fontSize: 'clamp(18px, 2.5vw, 22px)',
+                  fontStyle: 'italic',
+                  fontWeight: 400,
+                  color: '#e8dcc8',
+                  lineHeight: 1.6,
+                  marginBottom: 12,
+                }}
+              >
+                "90% of AI-generated travel itineraries contain factual errors. We fix that."
+              </p>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 10,
+                  letterSpacing: 2,
+                  color: '#8a8070',
+                }}
+              >
+                FIRSTHAND KNOWLEDGE + DATA SCIENCE + AI RESEARCH
+              </div>
+            </blockquote>
+          </Reveal>
+        </section>
       </WorldSection>
 
       {/* ===== WORLD 7: PUB RETURN ===== */}
-      <WorldSection
-        worldId="pub-return"
-        style={{
-          minHeight: '60vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div style={{ textAlign: 'center', padding: '80px 32px' }}>
-          <h2
+      <WorldSection worldId="pub-return" style={{ minHeight: '100vh' }}>
+        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: 60 }}>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: 4,
+                  color: '#b8886e',
+                  marginBottom: 16,
+                  textTransform: 'uppercase',
+                }}
+              >
+                THE LADS
+              </div>
+              <h2
+                style={{
+                  fontFamily: "'Fraunces', var(--display)",
+                  fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: 'var(--cream, #e8dcc8)',
+                  lineHeight: 1.15,
+                  marginBottom: 12,
+                }}
+              >
+                Let&rsquo;s Plan Your Trip
+              </h2>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 15,
+                  color: '#b8ad9a',
+                  maxWidth: 520,
+                  margin: '0 auto',
+                }}
+              >
+                You&rsquo;ve seen where we&rsquo;ve been. Now let&rsquo;s plan where you&rsquo;re
+                going.
+              </p>
+            </div>
+          </Reveal>
+
+          {/* Team Cards */}
+          <div
             style={{
-              fontFamily: "'Fraunces', var(--display)",
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              color: 'var(--cream, #e8dcc8)',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: 20,
+              marginBottom: 60,
             }}
           >
-            Back to the Pub
-          </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: '#8a8070', marginTop: 12 }}>
-            The Lads & Contact — Session 2
-          </p>
-        </div>
+            {[
+              {
+                name: 'Brady',
+                role: 'Builder / Data Science',
+                line: 'M.S. Applied Statistics. The builder. 20+ cities, 4 continents.',
+              },
+              {
+                name: 'Dawson',
+                role: 'Analytics / Firsthand Knowledge',
+                line: 'Data Analytics. Madrid, Iceland Ring Road, Rome, Paris.',
+              },
+              {
+                name: 'Stew',
+                role: 'Sales / Outreach',
+                line: 'Sales. Chicago. Client outreach and networking.',
+              },
+            ].map((member, i) => (
+              <Reveal key={member.name} delay={i * 120}>
+                <div
+                  style={{
+                    background: '#1c1915',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: 12,
+                    padding: '32px 28px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: '50%',
+                      background: 'rgba(201,168,76,0.1)',
+                      border: '1px solid rgba(201,168,76,0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 16px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontSize: 22,
+                        fontStyle: 'italic',
+                        color: '#d4a843',
+                      }}
+                    >
+                      {member.name[0]}
+                    </span>
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: "'Fraunces', serif",
+                      fontSize: 24,
+                      fontStyle: 'italic',
+                      fontWeight: 400,
+                      color: '#e8dcc8',
+                      marginBottom: 4,
+                    }}
+                  >
+                    {member.name}
+                  </h3>
+                  <div
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 10,
+                      letterSpacing: 2,
+                      color: '#b8886e',
+                      marginBottom: 14,
+                    }}
+                  >
+                    {member.role}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 14,
+                      color: '#b8ad9a',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {member.line}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <Reveal>
+            <div style={{ textAlign: 'center' }}>
+              <button
+                onClick={() => navigate('/plan')}
+                style={{
+                  padding: '16px 40px',
+                  borderRadius: 28,
+                  border: 'none',
+                  background: 'var(--gold, #d4a843)',
+                  color: '#141210',
+                  fontFamily: 'var(--sans)',
+                  fontSize: 16,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  letterSpacing: 0.3,
+                  transition: 'all 0.2s ease',
+                  marginBottom: 20,
+                }}
+              >
+                Start Planning
+              </button>
+              <div
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 12,
+                  color: '#8a8070',
+                  letterSpacing: 1,
+                }}
+              >
+                <a
+                  href="mailto:brady@ladstravel.com"
+                  style={{ color: '#b8ad9a', textDecoration: 'none' }}
+                >
+                  brady@ladstravel.com
+                </a>
+              </div>
+            </div>
+          </Reveal>
+        </section>
       </WorldSection>
 
       {/* Float animation */}
