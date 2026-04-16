@@ -620,6 +620,205 @@ export default function App() {
         </div>
       </WorldSection>
 
+      {/* ===== FEATURED WORK — Jordi + Vegas-Zion-Rise ===== */}
+      <section
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          padding: '120px 32px 80px',
+          maxWidth: 1200,
+          margin: '0 auto',
+        }}
+      >
+        <Reveal>
+          <div style={{ textAlign: 'center', marginBottom: 60 }}>
+            <div
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: 4,
+                color: '#d4a843',
+                marginBottom: 16,
+                textTransform: 'uppercase',
+              }}
+            >
+              WHAT WE ACTUALLY DELIVER
+            </div>
+            <h2
+              style={{
+                fontFamily: "'Fraunces', serif",
+                fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                color: '#e8dcc8',
+                lineHeight: 1.15,
+                marginBottom: 12,
+              }}
+            >
+              Two frameworks. Live.
+            </h2>
+            <p
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: 15,
+                color: '#b8ad9a',
+                maxWidth: 560,
+                margin: '0 auto',
+              }}
+            >
+              Don&rsquo;t take our word for it. These are the last two trips we built.
+            </p>
+          </div>
+        </Reveal>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gap: 24,
+          }}
+        >
+          {[
+            {
+              href: '/vegas-zion-rise',
+              tag: 'CLIENT FRAMEWORK',
+              title: 'Pack Your Bags',
+              subtitle: 'Vegas + Zion + Rise Lantern Festival',
+              desc: 'Four nights, three worlds, one lantern festival in the Mojave. Built for Lexie.',
+              img: 'https://res.cloudinary.com/doonck2rm/video/upload/so_5,w_1200,f_jpg/RiseLantern_xuegox.jpg',
+              accent: '#f0a838',
+            },
+            {
+              href: '/jordi',
+              tag: 'FOUNDING STORY',
+              title: 'Jordi',
+              subtitle: 'A thank you to the man who showed us how',
+              desc: 'The guide who gave us his Barcelona and started something he doesn\u2019t know about yet.',
+              img: '/images/jordi/best-sagrada.webp',
+              accent: '#D4782E',
+            },
+          ].map((card, i) => (
+            <Reveal key={card.href} delay={i * 120}>
+              <a
+                href={card.href}
+                style={{
+                  display: 'block',
+                  position: 'relative',
+                  aspectRatio: '4 / 5',
+                  borderRadius: 16,
+                  overflow: 'hidden',
+                  background: '#1c1915',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  textDecoration: 'none',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)'
+                  e.currentTarget.style.boxShadow = `0 20px 60px ${card.accent}22`
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+              >
+                <img
+                  src={card.img}
+                  alt={card.title}
+                  loading="lazy"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'brightness(0.55) saturate(1.05)',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background:
+                      'linear-gradient(to bottom, rgba(20,18,16,0.2) 0%, rgba(20,18,16,0.15) 45%, rgba(20,18,16,0.92) 100%)',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    padding: '36px 36px 32px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: 3,
+                      color: card.accent,
+                      marginBottom: 14,
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {card.tag}
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: "'Fraunces', serif",
+                      fontSize: 'clamp(2rem, 4vw, 2.8rem)',
+                      fontStyle: 'italic',
+                      fontWeight: 400,
+                      color: '#f4ecdb',
+                      lineHeight: 1.05,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {card.title}
+                  </h3>
+                  <div
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: '#e8dcc8',
+                      marginBottom: 12,
+                    }}
+                  >
+                    {card.subtitle}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 14,
+                      color: '#b8ad9a',
+                      lineHeight: 1.55,
+                      marginBottom: 18,
+                    }}
+                  >
+                    {card.desc}
+                  </p>
+                  <div
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: 2,
+                      color: card.accent,
+                    }}
+                  >
+                    OPEN FRAMEWORK &rarr;
+                  </div>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* ===== WORLD 3: CITIES ===== */}
       <WorldSection worldId="cities" fullHeight>
         {/* ===== DATA SPECTACLE ===== */}

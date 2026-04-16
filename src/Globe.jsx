@@ -50,16 +50,17 @@ function ll2v(lat, lng, r) {
 }
 
 /* ===== STARS ===== */
+const STAR_POSITIONS = new Float32Array(1800 * 3)
+for (let i = 0; i < 1800; i++) {
+  STAR_POSITIONS[i * 3] = (Math.random() - 0.5) * 30
+  STAR_POSITIONS[i * 3 + 1] = (Math.random() - 0.5) * 30
+  STAR_POSITIONS[i * 3 + 2] = (Math.random() - 0.5) * 30
+}
+
 function Stars() {
   const geom = useMemo(() => {
-    const positions = new Float32Array(1800 * 3)
-    for (let i = 0; i < 1800; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 30
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 30
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 30
-    }
     const g = new THREE.BufferGeometry()
-    g.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    g.setAttribute('position', new THREE.BufferAttribute(STAR_POSITIONS, 3))
     return g
   }, [])
 
@@ -107,7 +108,7 @@ function Atmosphere() {
     void main() {
       vec3 vNormal = normalize(normalMatrix * normal);
       vec3 vNormel = normalize(vec3(modelViewMatrix * vec4(position, 1.0)));
-      intensity = pow(0.75 - dot(vNormal, vNormel), 3.0);
+      intensity = pow(1.0 - dot(vNormal, vNormel), 2.5);
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `
@@ -116,21 +117,22 @@ function Atmosphere() {
     varying float intensity;
     void main() {
       vec3 gold = vec3(0.831, 0.659, 0.263);
-      gl_FragColor = vec4(gold * intensity * 0.25, intensity * 0.18);
+      gl_FragColor = vec4(gold, intensity * 0.55);
     }
   `
 
   return (
-    <mesh renderOrder={0}>
-      <sphereGeometry args={[R * 1.03, 64, 64]} />
+    <mesh renderOrder={2}>
+      <sphereGeometry args={[R * 1.08, 64, 64]} />
       <shaderMaterial
         ref={shaderRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniforms}
-        side={THREE.FrontSide}
-        blending={THREE.AdditiveBlending}
+        side={THREE.BackSide}
+        blending={THREE.NormalBlending}
         transparent
+        depthWrite={false}
       />
     </mesh>
   )
@@ -264,13 +266,7 @@ function CityLabel({ city, hovered }) {
         <boxGeometry args={[0.001, 0.001, 0.001]} />
         <meshBasicMaterial />
       </mesh>
-      {isHovered ? (
-        <group>
-          {/* Tooltip rendered via CSS class */}
-        </group>
-      ) : (
-        <></>
-      )}
+      {isHovered ? <group>{/* Tooltip rendered via CSS class */}</group> : <></>}
     </group>
   )
 }
@@ -290,10 +286,10 @@ function GlobeScene({ entered, onNavigate, onHover }) {
 
   return (
     <>
-      {/* Lighting */}
-      <ambientLight color="#ffffff" intensity={0.3} />
-      <directionalLight color="#fff5e0" intensity={1.4} position={[5, 3, 5]} />
-      <directionalLight color="#4466aa" intensity={0.25} position={[-5, -2, -3]} />
+      {/* Lighting — balanced day/night so earth stays visible at all rotations */}
+      <ambientLight color="#b8c4d4" intensity={0.9} />
+      <directionalLight color="#ffffff" intensity={1.4} position={[3, 2, 6]} />
+      <directionalLight color="#4a6080" intensity={0.5} position={[-4, -1, 2]} />
 
       <Stars />
 
@@ -345,10 +341,7 @@ function TooltipOverlay({ hovered }) {
   if (!city) return null
 
   return (
-    <div
-      className="globe-tooltip-fixed"
-      style={{ left: mouse.x + 14, top: mouse.y - 10 }}
-    >
+    <div className="globe-tooltip-fixed" style={{ left: mouse.x + 14, top: mouse.y - 10 }}>
       <div className="globe-tooltip-city">{city.city}</div>
       <div className="globe-tooltip-count">
         {city.comingSoon ? 'Coming May 2026' : `${city.n} validated spots`}
