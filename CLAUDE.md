@@ -5,7 +5,8 @@
 
 ## STATUS
 
-Live: ladstravel.com (Vercel, auto-deploy on push)
+Live: lads-travel-co.vercel.app (Vercel, auto-deploy on push)
+Domain: ladstravel.com DNS not yet connected — use vercel.app URLs for sharing
 Repo: dangelobraden43/LadsTravelCo
 Stack: React + Vite, React Router, Three.js (react-three-fiber)
 Email: brady@ladstravel.com (Google Workspace active)
@@ -43,6 +44,13 @@ DATA:
 INFRASTRUCTURE:
 - HEIC→WebP conversion pipeline via heic-convert + sharp
 - Framework delivery model proven: HTML in public/ → Vercel cleanURL
+- Bing Webmaster Tools: verification meta tag live (E83CF4C6...)
+- All integrations verified: Formspree, Cal.com, Umami, Clarity, email, affiliates
+
+LIVE URLS:
+- lads-travel-co.vercel.app (main site)
+- lads-travel-co.vercel.app/vegas-zion-rise (Lexie surprise trip)
+- lads-travel-co.vercel.app/jordi (founding story — Jordi doesn't know yet)
 
 ---
 
