@@ -16,7 +16,13 @@
     { "source": "/australia", "destination": "/" },
     { "source": "/prague", "destination": "/" },
     { "source": "/dublin", "destination": "/" },
-    { "source": "/michigan", "destination": "/" }
+    { "source": "/michigan", "destination": "/" },
+    { "source": "/spain", "destination": "/" },
+    { "source": "/iceland", "destination": "/" },
+    { "source": "/munich", "destination": "/" },
+    { "source": "/poland", "destination": "/" },
+    { "source": "/thailand", "destination": "/" },
+    { "source": "/charleston", "destination": "/" }
   ],
   "headers": [
     {
