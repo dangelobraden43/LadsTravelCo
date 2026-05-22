@@ -11,6 +11,7 @@
     { "source": "/when", "destination": "/" },
     { "source": "/plan", "destination": "/" },
     { "source": "/lads", "destination": "/" },
+    { "source": "/story", "destination": "/" },
     { "source": "/gift/:slug*", "destination": "/" },
     { "source": "/rome", "destination": "/" },
     { "source": "/australia", "destination": "/" },
