@@ -572,59 +572,12 @@ export default function App() {
         </Suspense>
       </WorldSection>
 
-      {/* ===== WORLD 2: GLOBE ===== */}
-      <WorldSection worldId="globe" fullHeight>
-        <section style={{ padding: '60px 0 0', position: 'relative' }}>
-          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
-            <Suspense
-              fallback={
-                <div
-                  style={{
-                    height: '50vh',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 12,
-                      color: '#8a8070',
-                      letterSpacing: 2,
-                    }}
-                  >
-                    LOADING GLOBE...
-                  </span>
-                </div>
-              }
-            >
-              <Globe />
-            </Suspense>
-          </div>
-        </section>
-        <div style={{ textAlign: 'center', padding: '40px 32px 80px' }}>
-          <Reveal>
-            <div
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 13,
-                color: '#8a8070',
-                letterSpacing: 3,
-              }}
-            >
-              21 CITIES &middot; 4 CONTINENTS &middot; 226 SPOTS
-            </div>
-          </Reveal>
-        </div>
-      </WorldSection>
-
       {/* ===== FEATURED WORK — Jordi + Vegas-Zion-Rise ===== */}
       <section
         style={{
           position: 'relative',
           zIndex: 2,
-          padding: '120px 32px 80px',
+          padding: '80px 32px 80px',
           maxWidth: 1200,
           margin: '0 auto',
         }}
@@ -817,6 +770,53 @@ export default function App() {
           ))}
         </div>
       </section>
+
+      {/* ===== WORLD 2: GLOBE ===== */}
+      <WorldSection worldId="globe" fullHeight>
+        <section style={{ padding: '60px 0 0', position: 'relative' }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
+            <Suspense
+              fallback={
+                <div
+                  style={{
+                    height: '50vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 12,
+                      color: '#8a8070',
+                      letterSpacing: 2,
+                    }}
+                  >
+                    LOADING GLOBE...
+                  </span>
+                </div>
+              }
+            >
+              <Globe />
+            </Suspense>
+          </div>
+        </section>
+        <div style={{ textAlign: 'center', padding: '40px 32px 80px' }}>
+          <Reveal>
+            <div
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 13,
+                color: '#8a8070',
+                letterSpacing: 3,
+              }}
+            >
+              21 CITIES &middot; 4 CONTINENTS &middot; 226 SPOTS
+            </div>
+          </Reveal>
+        </div>
+      </WorldSection>
 
       {/* ===== WORLD 3: CITIES ===== */}
       <WorldSection worldId="cities" fullHeight>
