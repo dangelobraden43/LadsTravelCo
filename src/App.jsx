@@ -7,7 +7,6 @@ import 'splitting/dist/splitting.css'
 import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
-const HoodieMockup = lazy(() => import('./worlds/HoodieMockup'))
 const Globe = lazy(() => import('./Globe'))
 
 /* ===== HOOKS ===== */
@@ -251,9 +250,9 @@ function DataSpectacle() {
   const stat3 = useRef(null)
   const subRef = useRef(null)
 
-  useCountUp(bigRef, 183)
-  useCountUp(stat1, 13)
-  useCountUp(stat2, 29)
+  useCountUp(bigRef, 226)
+  useCountUp(stat1, 11)
+  useCountUp(stat2, 21)
   useCountUp(stat3, 4)
 
   // Reveal subtitle via IntersectionObserver
@@ -614,7 +613,7 @@ export default function App() {
                 letterSpacing: 3,
               }}
             >
-              21 CITIES &middot; 4 CONTINENTS &middot; 285 SPOTS
+              21 CITIES &middot; 4 CONTINENTS &middot; 226 SPOTS
             </div>
           </Reveal>
         </div>
@@ -961,8 +960,8 @@ export default function App() {
               num: 'RUNG 2',
               title: 'Multi-Day Treks',
               desc: 'Three to ten days. Real preparation required. The Salkantay is the proof of concept.',
-              pills: [],
-              status: 'HAPPENING NOW',
+              pills: ['Salkantay', 'TMB', 'W Trek'],
+              status: null,
             },
             {
               num: 'RUNG 3',
@@ -1089,7 +1088,7 @@ export default function App() {
                   marginBottom: 2,
                 }}
               >
-                Brady is on this trek May 3{'\u2013'}13, 2026.
+                Brady completed the Salkantay trek in May 2026.
               </p>
               <p
                 style={{
@@ -1099,7 +1098,7 @@ export default function App() {
                   lineHeight: 1.5,
                 }}
               >
-                Full framework coming May 14.
+                Framework coming soon.
               </p>
             </div>
           </Reveal>
@@ -1113,220 +1112,6 @@ export default function App() {
               hasAudio={false}
               isActive={true}
             />
-          </div>
-        </section>
-      </WorldSection>
-
-      {/* ===== WORLD 5: SEASONS ===== */}
-      <WorldSection worldId="seasons">
-        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
-          <Reveal>
-            <div style={{ textAlign: 'center', marginBottom: 60 }}>
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: 4,
-                  color: '#b8886e',
-                  marginBottom: 16,
-                  textTransform: 'uppercase',
-                }}
-              >
-                WHEN TO GO
-              </div>
-              <h2
-                style={{
-                  fontFamily: "'Fraunces', var(--display)",
-                  fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                  color: 'var(--cream, #e8dcc8)',
-                  lineHeight: 1.15,
-                  marginBottom: 12,
-                }}
-              >
-                When to Travel
-              </h2>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 15,
-                  color: '#b8ad9a',
-                  maxWidth: 520,
-                  margin: '0 auto',
-                }}
-              >
-                Four seasons. Four causes. Every trip gives back.
-              </p>
-            </div>
-          </Reveal>
-
-          {/* Season Cards 2x2 Grid */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: 20,
-            }}
-          >
-            {[
-              {
-                season: 'Spring',
-                months: 'APR \u2013 MAY',
-                desc: 'Cherry blossoms in Japan, shoulder season in Europe.',
-                charity: 'National Parks Conservation Assoc.',
-                color: '#7ab87a',
-              },
-              {
-                season: 'Summer',
-                months: 'JUN \u2013 AUG',
-                desc: 'Peak Mediterranean, Iceland midnight sun.',
-                charity: 'TUFF \u2014 The Uniform Funding Foundation',
-                color: '#d4a843',
-              },
-              {
-                season: 'Fall',
-                months: 'SEP \u2013 OCT',
-                desc: 'Oktoberfest, autumn in New England, shoulder season deals.',
-                charity: 'Ginny L. Clements Breast Cancer Research',
-                color: '#b8886e',
-              },
-              {
-                season: 'Winter',
-                months: 'NOV \u2013 MAR',
-                desc: 'Christmas markets, ski season, Southern Hemisphere summer.',
-                charity: 'C.S. Mott Children\u2019s Hospital',
-                color: '#8a9ab0',
-              },
-            ].map((s, i) => (
-              <Reveal key={s.season} delay={i * 100}>
-                <div
-                  style={{
-                    background: '#1c1915',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    borderRadius: 12,
-                    padding: '32px 28px',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 10,
-                      letterSpacing: 3,
-                      color: s.color,
-                      marginBottom: 12,
-                    }}
-                  >
-                    {s.months}
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: "'Fraunces', serif",
-                      fontSize: 28,
-                      fontStyle: 'italic',
-                      fontWeight: 400,
-                      color: '#e8dcc8',
-                      marginBottom: 10,
-                    }}
-                  >
-                    {s.season}.
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: 14,
-                      color: '#b8ad9a',
-                      lineHeight: 1.6,
-                      marginBottom: 20,
-                      flex: 1,
-                    }}
-                  >
-                    {s.desc}
-                  </p>
-                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 9,
-                        letterSpacing: 2,
-                        color: '#8a8070',
-                        marginBottom: 6,
-                      }}
-                    >
-                      THIS SEASON&rsquo;S CAUSE
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 13,
-                        color: '#e8dcc8',
-                        marginBottom: 4,
-                      }}
-                    >
-                      {s.charity}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 10,
-                        color: '#d4a843',
-                      }}
-                    >
-                      100% to charity
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* 3D Hoodie — Fall 2026 Breast Cancer Awareness */}
-          <Reveal>
-            <div style={{ textAlign: 'center', marginTop: 80, marginBottom: 20 }}>
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: 4,
-                  color: '#d4a843',
-                  textTransform: 'uppercase',
-                }}
-              >
-                PRODUCT PREVIEW
-              </div>
-            </div>
-          </Reveal>
-          <div style={{ marginTop: 0 }}>
-            <Suspense
-              fallback={
-                <div
-                  style={{
-                    height: 500,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 12,
-                      color: '#8a8070',
-                      letterSpacing: 2,
-                    }}
-                  >
-                    LOADING MOCKUP...
-                  </span>
-                </div>
-              }
-            >
-              <HoodieMockup />
-            </Suspense>
           </div>
         </section>
       </WorldSection>
@@ -1371,7 +1156,7 @@ export default function App() {
                   margin: '0 auto',
                 }}
               >
-                285 spots. 10 countries. Built on data, not guesses.
+                226 spots. 11 countries. Built on data, not guesses.
               </p>
             </div>
           </Reveal>
@@ -1437,8 +1222,8 @@ export default function App() {
             }}
           >
             {[
-              { value: '285', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
-              { value: '10', label: 'COUNTRIES', sub: '4 continents. 21 cities.' },
+              { value: '226', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
+              { value: '11', label: 'COUNTRIES', sub: '4 continents. 21 cities.' },
               {
                 value: '6',
                 label: 'AI RESEARCH AGENTS',
