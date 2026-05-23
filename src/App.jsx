@@ -663,7 +663,7 @@ export default function App() {
               tag: 'CLIENT FRAMEWORK',
               title: 'Pack Your Bags',
               subtitle: 'Vegas + Zion + Rise Lantern Festival',
-              desc: 'Four nights, three worlds, one lantern festival in the Mojave. Built for Lexie.',
+              desc: 'Four nights, three worlds, one lantern festival in the Mojave.',
               img: 'https://res.cloudinary.com/doonck2rm/video/upload/so_5,w_1200,f_jpg/RiseLantern_xuegox.jpg',
               accent: '#f0a838',
             },
