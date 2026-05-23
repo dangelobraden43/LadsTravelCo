@@ -55,6 +55,10 @@ PHASE 4 (commit cecad99) — Framework Engine Pass B spec:
   ENGINE (default for 11 destinations)
 - 7 open questions surfaced for Brady review before Pass B implementation
 
+COPY (commit c47a409) — Removed Lexie's name from the Vegas-Zion-Rise homepage card.
+Description now reads: "Four nights, three worlds, one lantern festival in the Mojave."
+Vegas-Zion-Rise framework page itself uses "you/we" throughout — no other refs to her name.
+
 /STORY ROUTE (commit c7a0762) — Origin narrative + 14-entry timeline:
 - src/StoryPage.jsx + src/StoryPage.css (single file, App.jsx convention)
 - Four inline components: StoryHero, StoryLong (5 anchor-linked sections:
