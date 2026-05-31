@@ -36,16 +36,6 @@ function Reveal({ children, delay = 0, className = '' }) {
   )
 }
 
-const VEGAS_PROOF = {
-  href: '/vegas-zion-rise',
-  tag: 'VALIDATED · APRIL 2026',
-  title: 'Rise Festival',
-  location: 'Mojave Desert · Nevada',
-  desc: 'Four nights, three worlds, one lantern festival. The first Bucket List framework live on the site.',
-  img: 'https://res.cloudinary.com/doonck2rm/video/upload/so_5,w_1200,f_jpg/RiseLantern_xuegox.jpg',
-  accent: '#f0a838',
-}
-
 const EVENTS = [
   {
     name: 'Vivid Sydney',
@@ -118,34 +108,6 @@ export default function BucketListPage() {
             </p>
           </Reveal>
         </header>
-
-        {/* PROOF */}
-        <section className="bucket-proof" aria-labelledby="proof-h">
-          <Reveal>
-            <Link to={VEGAS_PROOF.href} className="proof-card">
-              <img
-                src={VEGAS_PROOF.img}
-                alt={VEGAS_PROOF.title}
-                className="proof-card-img"
-                loading="eager"
-              />
-              <div className="proof-card-tint" />
-              <div className="proof-card-body">
-                <div className="proof-card-tag" style={{ color: VEGAS_PROOF.accent }}>
-                  {VEGAS_PROOF.tag}
-                </div>
-                <h2 id="proof-h" className="proof-card-title">
-                  {VEGAS_PROOF.title}
-                </h2>
-                <div className="proof-card-location">{VEGAS_PROOF.location}</div>
-                <p className="proof-card-desc">{VEGAS_PROOF.desc}</p>
-                <div className="proof-card-cta" style={{ color: VEGAS_PROOF.accent }}>
-                  OPEN FRAMEWORK &rarr;
-                </div>
-              </div>
-            </Link>
-          </Reveal>
-        </section>
 
         {/* EVENTS */}
         <section className="bucket-events" aria-labelledby="events-h">
