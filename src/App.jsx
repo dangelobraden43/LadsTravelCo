@@ -6,6 +6,7 @@ import Splitting from 'splitting'
 import 'splitting/dist/splitting.css'
 import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
+import Footer from './Footer'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
 const Globe = lazy(() => import('./Globe'))
 
@@ -1511,6 +1512,8 @@ export default function App() {
         }
         [data-splitting] .char { display: inline-block; }
       `}</style>
+
+      <Footer />
     </WorldManager>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Nav, PhotoStrip } from './App'
+import Footer from './Footer'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES, HERO_IMAGES, HEIC_HERO_IMAGES } from './images-paths'
 import { gsap } from './utils/animations'
 import Splitting from 'splitting'
@@ -824,6 +825,7 @@ export default function ExplorePage() {
           }
         }
       `}</style>
+      <Footer />
     </>
   )
 }

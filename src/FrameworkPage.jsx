@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { SEO_DEFAULTS } from './utils/seo'
+import Footer from './Footer'
 import './FrameworkPage.css'
 
 export default function FrameworkPage({ data, heroImg }) {
@@ -363,6 +364,7 @@ export default function FrameworkPage({ data, heroImg }) {
           &larr; Back to all destinations
         </Link>
       </div>
+      <Footer />
     </div>
   )
 }
