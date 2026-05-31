@@ -3,8 +3,6 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Nav } from './App'
 import LadsSection from './LadsSection'
 import './LadsSection.css'
-import GivingBackFooter from './GivingBackFooter'
-import './GivingBackFooter.css'
 import Footer from './Footer'
 
 function useReveal(threshold = 0.15) {
@@ -91,8 +89,6 @@ export default function LadsPage() {
         </section>
 
         <LadsSection />
-
-        <GivingBackFooter />
       </div>
       <Footer />
     </>

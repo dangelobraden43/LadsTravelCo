@@ -54,13 +54,6 @@ const SEASONS = [
       { name: 'Barcelona', price: '$550 avg RT', spots: '30 spots' },
     ],
     nextLabel: 'SUMMER',
-    cause: {
-      label: 'Protecting Our Parks',
-      charity: 'National Parks Conservation Assoc.',
-      url: 'https://support.npca.org/page/94316/action/1',
-      story:
-        'We hike these parks. The trails we plan trips around \u2014 Olympic, Zion, Grand Canyon \u2014 exist because someone fought to protect them. NPCA is that fight. Every spring trip we help plan, we support keeping these places exactly as we found them.',
-    },
   },
   {
     id: 'summer',
@@ -74,13 +67,6 @@ const SEASONS = [
       { name: 'Australia', price: '$950 avg RT', spots: '19 spots' },
     ],
     nextLabel: 'FALL',
-    cause: {
-      label: 'Youth Athletics',
-      charity: 'TUFF \u2014 The Uniform Funding Foundation',
-      url: 'https://gettuff.org/donate',
-      story:
-        'All four of us are athletes. We know what sport gives you \u2014 discipline, identity, somewhere to put your energy. TUFF funds the uniforms that let kids who can\u2019t afford them stay in the game. This is our summer cause.',
-    },
   },
   {
     id: 'fall',
@@ -94,13 +80,6 @@ const SEASONS = [
       { name: 'Charleston', price: 'domestic', spots: '17 spots' },
     ],
     nextLabel: 'WINTER',
-    cause: {
-      label: 'Breast Cancer Research',
-      charity: 'Ginny L. Clements Breast Cancer Research',
-      url: 'https://cancercenter.arizona.edu/about/ginny-l-clements-breast-cancer-research-institute',
-      story:
-        'This cause is personal. Brady\u2019s girlfriend\u2019s family has lived this disease. September is when we push hardest for Europe \u2014 shoulder season, lower prices, better experiences. And every trip we help plan this window, we donate to research that matters to people we love.',
-    },
   },
   {
     id: 'winter',
@@ -114,13 +93,6 @@ const SEASONS = [
       { name: 'Domestic Road Trips', price: 'drive', spots: '' },
     ],
     nextLabel: null,
-    cause: {
-      label: "Children's Hospital",
-      charity: 'C.S. Mott Children\u2019s Hospital',
-      url: 'https://www.michiganmedicine.org/giving/areas-support/giving-cs-mott-childrens-hospital',
-      story:
-        'Brady spent a week in Mott Children\u2019s Hospital over Thanksgiving with a condition that took months to diagnose. The care there was extraordinary. The winter window \u2014 budget season, holiday markets, the trips most people skip \u2014 is when we give back to the people who were there when it mattered.',
-    },
   },
 ]
 
@@ -301,91 +273,6 @@ function SeasonSection({ season, index }) {
                 </span>
               </div>
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Cause section — normal flow after sticky */}
-      <div
-        style={{
-          background: '#1c1915',
-          padding: '64px 80px',
-        }}
-      >
-        <div style={{ maxWidth: 700 }}>
-          <div
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 10,
-              fontWeight: 600,
-              letterSpacing: 3,
-              color: '#b8886e',
-              marginBottom: 16,
-            }}
-          >
-            THIS SEASON&rsquo;S CAUSE
-          </div>
-          <h3
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(24px, 4vw, 32px)',
-              fontWeight: 600,
-              color: '#e8dcc8',
-              marginBottom: 16,
-            }}
-          >
-            {season.cause.charity}
-          </h3>
-          <p
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 15,
-              fontStyle: 'italic',
-              color: '#b8ad9a',
-              maxWidth: 600,
-              lineHeight: 1.8,
-              marginBottom: 24,
-            }}
-          >
-            {season.cause.story}
-          </p>
-          <a
-            href={season.cause.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: 1,
-              color: '#d4a843',
-              padding: '10px 24px',
-              borderRadius: 24,
-              border: '1px solid rgba(212,168,67,0.4)',
-              textDecoration: 'none',
-              transition: 'all 0.2s',
-            }}
-          >
-            DONATE DIRECTLY &rarr;
-          </a>
-          <div
-            style={{
-              borderTop: '1px solid rgba(212,168,67,0.12)',
-              marginTop: 32,
-              paddingTop: 16,
-            }}
-          >
-            <p
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 12,
-                color: '#8a8070',
-                textAlign: 'center',
-              }}
-            >
-              Free trip planning through 2026. Donations go directly &mdash; we take nothing.
-            </p>
           </div>
         </div>
       </div>

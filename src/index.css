@@ -2,7 +2,7 @@
 /* Light/dark rhythm. Stripe-quality polish. Same JSX class names. */
 
 :root {
-  /* — Dark palette (hero, giving back, footer) — */
+  /* — Dark palette (hero, footer) — */
   --bg: #141210;
   --bg-alt: #1a1816;
   --surface: #1c1915;
@@ -2698,9 +2698,6 @@ a {
   color: var(--light-muted);
 }
 
-/* ===== GIVING BACK — DARK ===== */
-/* The giving back section uses inline styles with borderTop. Override via parent context. */
-
 /* ===== FOOTER — DARK ===== */
 .site-footer {
   padding: 56px 24px;
@@ -2918,34 +2915,6 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-/* ===== GIVING BACK — DARK SECTION ===== */
-.giving-back-section {
-  position: relative;
-  background: var(--bg);
-  overflow: hidden;
-}
-.giving-back-section .section-title {
-  color: var(--cream);
-}
-.giving-back-section .section-title .muted {
-  color: var(--muted);
-}
-.giving-back-section .section-desc {
-  color: var(--muted);
-}
-.giving-back-section .section-label {
-  color: var(--gold);
-}
-.giving-back-bg {
-  position: absolute;
-  inset: 0;
-  opacity: 0.08;
-}
-.giving-back-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 .giving-back-card {
   background: var(--surface);
   border: 1px solid var(--border);
