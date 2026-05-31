@@ -116,7 +116,6 @@ function Nav({ scrolled }) {
     { label: 'Adventure', short: 'Trek', path: '/adventure' },
     { label: 'When', short: 'When', path: '/when' },
     { label: 'Plan', short: 'Plan', path: '/plan' },
-    { label: 'Story', short: 'Story', path: '/story' },
     { label: 'The Lads', short: 'Lads', path: '/lads' },
   ]
 
@@ -554,31 +553,6 @@ export default function App() {
               >
                 Free trip planning from two guys who've actually been there.
               </p>
-              <a
-                href="/story"
-                onClick={(e) => {
-                  e.preventDefault()
-                  navigate('/story')
-                }}
-                style={{
-                  display: 'inline-block',
-                  marginTop: 24,
-                  fontFamily: 'var(--mono)',
-                  fontSize: 12,
-                  fontWeight: 600,
-                  letterSpacing: '0.18em',
-                  textTransform: 'uppercase',
-                  color: 'var(--gold)',
-                  textDecoration: 'none',
-                  borderBottom: '1px solid transparent',
-                  paddingBottom: 3,
-                  transition: 'border-color 0.25s ease',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = 'var(--gold)')}
-                onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
-              >
-                Read the story <span aria-hidden="true">&rarr;</span>
-              </a>
             </div>
             <div
               style={{

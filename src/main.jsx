@@ -17,7 +17,6 @@ const WhenPage = lazy(() => import('./WhenPage'))
 const PlanPage = lazy(() => import('./PlanPage'))
 const LadsPage = lazy(() => import('./LadsPage'))
 const GiftPage = lazy(() => import('./GiftPage'))
-const StoryPage = lazy(() => import('./StoryPage'))
 
 Clarity.init('wbqqkbsekh')
 
@@ -92,7 +91,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/when" element={<WhenPage />} />
           <Route path="/plan" element={<PlanPage />} />
           <Route path="/lads" element={<LadsPage />} />
-          <Route path="/story" element={<StoryPage />} />
           <Route path="/gift/michigan" element={<GiftPage />} />
           {DESTINATIONS.map((slug) => (
             <Route key={slug} path={`/${slug}`} element={<LazyFramework slug={slug} />} />
