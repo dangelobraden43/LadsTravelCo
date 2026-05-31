@@ -442,6 +442,244 @@ function CursorGlow() {
   )
 }
 
+/* ===== FEATURED WORK ===== */
+const FEATURED = [
+  {
+    slug: 'dublin',
+    name: 'Dublin',
+    region: 'Ireland · Dublin + Galway',
+    lede: 'A week of pubs, cliffs, and the West coast. Both Lads were there.',
+    img: IMAGES.cliffs,
+    fallbackSpots: 34,
+  },
+  {
+    slug: 'spain',
+    name: 'Spain',
+    region: 'Barcelona + Madrid',
+    lede: "Two cities, one framework. Brady's study-abroad city, walked.",
+    img: IMAGES.sagrada,
+    fallbackSpots: 33,
+  },
+  {
+    slug: 'rome',
+    name: 'Rome',
+    region: 'Italy · Five days',
+    lede: 'Five days that reveal themselves slowly. The Eternal City done right.',
+    img: IMAGES.colosseum,
+    fallbackSpots: 24,
+  },
+]
+
+function countSpots(data) {
+  if (!data) return 0
+  let n = 0
+  const walk = (o) => {
+    if (!o) return
+    if (Array.isArray(o)) o.forEach(walk)
+    else if (typeof o === 'object') {
+      if (o.name && (o.description || o.notes)) n += 1
+      Object.values(o).forEach(walk)
+    }
+  }
+  walk(data)
+  return n
+}
+
+function FeaturedWork() {
+  const navigate = useNavigate()
+  const [counts, setCounts] = useState(
+    Object.fromEntries(FEATURED.map((f) => [f.slug, f.fallbackSpots]))
+  )
+
+  useEffect(() => {
+    let mounted = true
+    Promise.all(FEATURED.map((f) => import(`./data/${f.slug}.js`))).then((mods) => {
+      if (!mounted) return
+      const live = {}
+      mods.forEach((mod, i) => {
+        live[FEATURED[i].slug] = countSpots(mod.default || mod) || FEATURED[i].fallbackSpots
+      })
+      setCounts(live)
+    })
+    return () => {
+      mounted = false
+    }
+  }, [])
+
+  return (
+    <section
+      style={{
+        position: 'relative',
+        zIndex: 2,
+        padding: '80px 32px 80px',
+        maxWidth: 1200,
+        margin: '0 auto',
+      }}
+    >
+      <Reveal>
+        <div style={{ textAlign: 'center', marginBottom: 56 }}>
+          <div
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: 4,
+              color: '#d4a843',
+              marginBottom: 14,
+              textTransform: 'uppercase',
+            }}
+          >
+            THE WORK
+          </div>
+          <h2
+            style={{
+              fontFamily: "'Fraunces', serif",
+              fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              color: '#e8dcc8',
+              lineHeight: 1.15,
+              margin: 0,
+            }}
+          >
+            Real frameworks. Real places.
+          </h2>
+        </div>
+      </Reveal>
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 20,
+        }}
+      >
+        {FEATURED.map((card, i) => (
+          <Reveal key={card.slug} delay={i * 110}>
+            <a
+              href={`/${card.slug}`}
+              onClick={(e) => {
+                e.preventDefault()
+                navigate(`/${card.slug}`)
+              }}
+              style={{
+                display: 'block',
+                position: 'relative',
+                aspectRatio: '4 / 5',
+                borderRadius: 16,
+                overflow: 'hidden',
+                background: '#1c1915',
+                border: '1px solid rgba(255,255,255,0.06)',
+                textDecoration: 'none',
+                color: 'inherit',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)'
+                e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            >
+              <img
+                src={card.img}
+                alt={card.name}
+                loading="lazy"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'brightness(0.6) saturate(1.05)',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(to bottom, rgba(20,18,16,0.25) 0%, rgba(20,18,16,0.2) 45%, rgba(20,18,16,0.92) 100%)',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  padding: '32px 32px 28px',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: 3,
+                    color: '#d4a843',
+                    marginBottom: 14,
+                  }}
+                >
+                  VALIDATED &middot; {counts[card.slug]} SPOTS
+                </div>
+                <h3
+                  style={{
+                    fontFamily: "'Fraunces', serif",
+                    fontSize: 'clamp(2rem, 3.6vw, 2.6rem)',
+                    fontStyle: 'italic',
+                    fontWeight: 400,
+                    color: '#f4ecdb',
+                    lineHeight: 1.05,
+                    margin: '0 0 6px',
+                  }}
+                >
+                  {card.name}
+                </h3>
+                <div
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 13,
+                    color: '#e8dcc8',
+                    marginBottom: 14,
+                  }}
+                >
+                  {card.region}
+                </div>
+                <p
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 14,
+                    color: '#b8ad9a',
+                    lineHeight: 1.55,
+                    margin: '0 0 18px',
+                  }}
+                >
+                  {card.lede}
+                </p>
+                <div
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: 2,
+                    color: '#d4a843',
+                  }}
+                >
+                  OPEN FRAMEWORK &rarr;
+                </div>
+              </div>
+            </a>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 /* ===== MAIN APP (HOMEPAGE) ===== */
 export default function App() {
   const navigate = useNavigate()
@@ -571,6 +809,9 @@ export default function App() {
           </DepthHero>
         </Suspense>
       </WorldSection>
+
+      {/* ===== FEATURED WORK — Real frameworks, real places ===== */}
+      <FeaturedWork />
 
       {/* ===== WORLD 2: GLOBE ===== */}
       <WorldSection worldId="globe" fullHeight>
