@@ -69,3 +69,10 @@ temp_images/
 # Setup prompts (not deployed)
 master-setup-prompt.md
 site-audit-for-creative-director.md
+
+# Playwright MCP cache
+.playwright-mcp/
+
+# Visual QA screenshots (generated)
+audit/
+/jordi-*.png
