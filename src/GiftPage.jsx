@@ -702,7 +702,7 @@ function GiftFooter() {
           fontStyle: 'italic',
         }}
       >
-        Free through 2026. Seriously.
+        Built for a friend. The Lads launch Fall 2026.
       </p>
     </footer>
   )

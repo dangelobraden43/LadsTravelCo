@@ -262,9 +262,7 @@ export default function LadsSection({ quizData }) {
         <div className="lads-inner" style={{ textAlign: 'center' }}>
           <Reveal type="fade">
             <h3 className="lads-call-heading">Want to talk first?</h3>
-            <p className="lads-call-sub">
-              15 minutes. Free. We'll tell you if we can actually help.
-            </p>
+            <p className="lads-call-sub">15 minutes. We'll tell you if we can actually help.</p>
             <button
               className="lads-call-btn"
               data-cal-link="braden-dangelo/secret"
@@ -297,7 +295,7 @@ export default function LadsSection({ quizData }) {
                       ? 'Almost there. Just a few details.'
                       : "Tell Us Where You're Going"}
                   </h3>
-                  {!hasQuizData && <p>No cost through 2026. Seriously.</p>}
+                  {!hasQuizData && <p>A preview from The Lads. Launching Fall 2026.</p>}
                   {hasQuizData && quizData.destination && (
                     <div className="lads-form-prefill-tag">Planning: {quizData.destination}</div>
                   )}
