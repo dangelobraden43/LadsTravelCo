@@ -510,7 +510,7 @@ export default function App() {
                   textTransform: 'uppercase',
                 }}
               >
-                FREE PERSONAL TRAVEL CONSULTING THROUGH 2026
+                PREVIEW &middot; LAUNCHING FALL 2026
               </div>
               <h1 style={{ margin: 0, lineHeight: 1.1, marginBottom: 20 }}>
                 <span
@@ -524,7 +524,7 @@ export default function App() {
                     display: 'block',
                   }}
                 >
-                  Travel Like
+                  Step into your
                 </span>
                 <span
                   ref={heroLine2}
@@ -538,7 +538,7 @@ export default function App() {
                     display: 'block',
                   }}
                 >
-                  You Know Someone
+                  comfort zone.
                 </span>
               </h1>
               <p
@@ -551,7 +551,7 @@ export default function App() {
                   lineHeight: 1.6,
                 }}
               >
-                Free trip planning from two guys who've actually been there.
+                AI guesses. We know. Built by friends who've actually been there.
               </p>
             </div>
             <div
