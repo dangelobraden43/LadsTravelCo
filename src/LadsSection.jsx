@@ -206,6 +206,24 @@ export default function LadsSection({ quizData }) {
         </div>
       </section>
 
+      {/* Partners */}
+      <section className="lads-partners-section">
+        <div className="lads-inner">
+          <Reveal type="fade">
+            <div className="lads-partners-block">
+              <div className="lads-partners-eyebrow">PARTNERS</div>
+              <div className="lads-partners-name">
+                Jordi <span className="lads-partners-role">&middot; Barcelona Tour Guide</span>
+              </div>
+              <p className="lads-partners-body">
+                Jordi runs tours in Barcelona. He&rsquo;s the Lads&rsquo; first international
+                partner &mdash; when our clients head to Spain, he&rsquo;s who we point them to.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* Build Story Callout */}
       <section className="lads-build">
         <div className="lads-inner">
