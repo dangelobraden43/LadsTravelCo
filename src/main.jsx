@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import App from './App'
 import { IMAGES, BATCH3_IMAGES } from './images-paths'
 import { HelmetProvider } from 'react-helmet-async'
@@ -17,6 +17,9 @@ const WhenPage = lazy(() => import('./WhenPage'))
 const PlanPage = lazy(() => import('./PlanPage'))
 const LadsPage = lazy(() => import('./LadsPage'))
 const GiftPage = lazy(() => import('./GiftPage'))
+const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
+const BucketListPage = lazy(() => import('./BucketListPage'))
+const LocalPage = lazy(() => import('./LocalPage'))
 
 Clarity.init('wbqqkbsekh')
 
@@ -86,12 +89,20 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Suspense fallback={<div style={{ background: '#141210', height: '100vh' }} />}>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/adventure" element={<AdventurePage />} />
+          {/* Four-collection spine */}
+          <Route path="/global" element={<ExplorePage />} />
+          <Route path="/outdoors" element={<OutdoorsPage />} />
+          <Route path="/bucket-list" element={<BucketListPage />} />
+          <Route path="/local" element={<LocalPage />} />
+          {/* Kept reachable (out of nav) */}
           <Route path="/when" element={<WhenPage />} />
-          <Route path="/plan" element={<PlanPage />} />
           <Route path="/lads" element={<LadsPage />} />
           <Route path="/gift/michigan" element={<GiftPage />} />
+          {/* Old-path redirects */}
+          <Route path="/explore" element={<Navigate to="/global" replace />} />
+          <Route path="/adventure" element={<Navigate to="/outdoors" replace />} />
+          <Route path="/plan" element={<Navigate to="/" replace />} />
+          <Route path="/story" element={<Navigate to="/" replace />} />
           {DESTINATIONS.map((slug) => (
             <Route key={slug} path={`/${slug}`} element={<LazyFramework slug={slug} />} />
           ))}

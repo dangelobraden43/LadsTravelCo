@@ -5,11 +5,18 @@
   "framework": "vite",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/explore", "destination": "/global", "permanent": true },
+    { "source": "/adventure", "destination": "/outdoors", "permanent": true },
+    { "source": "/plan", "destination": "/", "permanent": true },
+    { "source": "/story", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/explore", "destination": "/" },
-    { "source": "/adventure", "destination": "/" },
+    { "source": "/global", "destination": "/" },
+    { "source": "/outdoors", "destination": "/" },
+    { "source": "/bucket-list", "destination": "/" },
+    { "source": "/local", "destination": "/" },
     { "source": "/when", "destination": "/" },
-    { "source": "/plan", "destination": "/" },
     { "source": "/lads", "destination": "/" },
     { "source": "/gift/:slug*", "destination": "/" },
     { "source": "/rome", "destination": "/" },

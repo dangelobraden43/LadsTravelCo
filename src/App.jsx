@@ -112,11 +112,10 @@ const strip3 = [
 function Nav({ scrolled }) {
   const navigate = useNavigate()
   const NAV_ITEMS = [
-    { label: 'Explore', short: 'Explore', path: '/explore' },
-    { label: 'Adventure', short: 'Trek', path: '/adventure' },
-    { label: 'When', short: 'When', path: '/when' },
-    { label: 'Plan', short: 'Plan', path: '/plan' },
-    { label: 'The Lads', short: 'Lads', path: '/lads' },
+    { label: 'Global', short: 'Global', path: '/global' },
+    { label: 'Outdoors', short: 'Outdoors', path: '/outdoors' },
+    { label: 'Bucket List', short: 'Bucket', path: '/bucket-list' },
+    { label: 'Local', short: 'Local', path: '/local' },
   ]
 
   return (
@@ -1320,7 +1319,7 @@ export default function App() {
 
       {/* ===== WORLD 7: PUB RETURN ===== */}
       <WorldSection worldId="pub-return">
-        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
+        <section id="team" style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 60 }}>
               <div
