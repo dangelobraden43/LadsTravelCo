@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: May 31, 2026
+## Last Updated: June 7, 2026
 
 ---
 
@@ -14,6 +14,58 @@ Posture: PREVIEW — paid services launch Fall 2026.
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: 11 React destination routes (no static flagships)
 Peru completed. Ford started May 18.
+
+---
+
+## WHAT WAS BUILT (June 7, 2026 — Globe pin data + homepage stats unification)
+
+Two commits, both shipped to ladstravel.com via fast-forward push to main.
+
+1. `ce8093e` — `fix(globe): derive pin counts from canonical data + add Michigan + research/validated split`
+   - `src/Globe.jsx` was hardcoded with `CITIES.n` values summing to 545 (Sydney 123,
+     Barcelona 115, etc.) and 5 validated cities (Reykjavik, Munich, Krakow, Bangkok,
+     Charleston) sat at `n: 0` and rendered as tiny indistinguishable pins.
+   - Now: each pin's count is derived programmatically from `src/data/*.js` at module
+     load. Same walker as App.jsx's Featured Work `countSpots`, bucketed by city/area.
+   - Attribution rule: every framework spot maps to exactly one pin. Sub-cities with
+     their own pin (Galway, Madrid, Tasmania, Vienna) take their bucket; everything
+     else (untagged, sub-regions without pins, the framework anchor) folds into the
+     framework's PRIMARY pin. Drift-proof — Globe always agrees with the data files.
+   - Added pins: Madrid (Barcelona→Madrid arc now lands on a real pin) and Michigan
+     (anchored at Grand Rapids).
+   - Added `validated` flag. Research-only cities (Costa Rica, Vancouver, Chicago,
+     San Juan, Seattle, Smoky Mtns, Phoenix) render in copper at a uniform small
+     size with no count; tooltip reads "Explored · framework coming." Cusco
+     comingSoon tooltip updated from stale "Coming May 2026" → "Coming soon."
+   - Sizing: `MAX_SPOTS` is the new top (Barcelona at 30). Formula
+     `0.020 + (n/MAX_SPOTS) * 0.016` keeps Tasmania (3) visible and caps Barcelona
+     at 0.036. Research/comingSoon pins uniform at 0.014.
+   - Default labels (`showLabel`) extended to Reykjavik + Michigan in addition to
+     the original five (Sydney, Barcelona, Rome, Dublin, Prague).
+   - Bundle impact: ~0 KB net — the 11 framework data files already exist as their
+     own chunks (built for FrameworkPage); Globe references the same chunks behind
+     its existing lazy boundary.
+
+2. `0aae698` — `fix(home): unify spot/city stats to 248 / 15 validated across homepage`
+   - The Globe fix landed correct counts on the globe (15 gold pins summing to 248),
+     but the homepage still showed three competing totals in one scroll:
+     DataSpectacle 226/21, Globe caption 21/226, System section 226/21.
+   - Aligned every on-screen total to the live-walk method:
+       DataSpectacle big counter:      226 → 248
+       DataSpectacle cities counter:    21 → 15
+       Globe caption:  "21 CITIES · 4 CONTINENTS · 226 SPOTS"
+                    → "15 VALIDATED CITIES · 4 CONTINENTS · 248 SPOTS"
+       System description: "226 spots. 11 countries..." → "248 spots. 11 countries..."
+       System stat card VALIDATED SPOTS: 226 → 248
+       System COUNTRIES card sub: "4 continents. 21 cities." → "4 continents. 15 cities."
+   - Verified `11 countries / 4 continents` against the framework data files:
+     Ireland, Spain, Italy, Australia, Iceland, Czech Republic, Austria, Germany,
+     Poland, Thailand, USA — spread across Europe (8), Oceania, Asia, North America.
+     11 frameworks == 11 distinct countries is a coincidence (Germany shared by
+     prague + munich, USA shared by charleston + michigan, prague contributes
+     three countries by itself).
+   - The "21 cities mentioned in data" stat is retired in favor of "15 validated
+     cities" — reproducible and matches the gold globe pins a visitor can count.
 
 ---
 
@@ -123,8 +175,15 @@ Sync command: `npm run sync` (pulls Airtable → src/data/)
 Export command: `npm run export` (src/data/ → CSV)
 Build: `npm run sync:build` (sync + build together)
 
-**Live counts on homepage Featured Work** (recomputed at mount via
-the inline `countSpots()` walker in App.jsx):
+**Canonical site-wide totals (June 7, 2026)** — used by Globe pins,
+Featured Work cards, DataSpectacle counters, Globe caption, and System
+section. Single source of truth: the 11 `src/data/*.js` files. Method:
+live-walk (any object with `name` AND `description|notes` is a spot).
+
+  248 spots  ·  15 validated cities  ·  11 countries  ·  4 continents
+
+Per-framework breakdown (live-walk via App.jsx `countSpots` /
+Globe.jsx `countSpotsByCity` — identical algorithm):
 
 | Framework | Live count (full walk) | Fully-structured spots |
 |---|---|---|
@@ -140,9 +199,11 @@ the inline `countSpots()` walker in App.jsx):
 | thailand | 13 | 13 |
 | munich | 11 | 9 |
 
-Featured Work cards show the live count. If you'd rather show the
-"fully-structured" number (neighborhood + category + validated + vibeTags
-all present), tighten `countSpots()` to require those fields.
+Old figures (`226 / 21`) are retired — they came from a stricter
+"fully-structured" count (spots with `neighborhood + category +
+validated + vibeTags` all present) but the site now uses the live-walk
+total everywhere for consistency. Do not reintroduce 226 or 21 as
+on-page numbers.
 
 Personal layer (ladsTake, forWho, story) mostly empty.
 Brady fills these — they cannot be AI-generated.
@@ -216,12 +277,6 @@ Data moment: Vivid Harbor Bridge drone
 DORMANT. Reference only. Not the active backlog item.
 
 Immediate candidates (no priority assigned — Brady picks):
-- **Globe pin data fix.** Hardcoded `CITIES` array in `src/Globe.jsx`
-  sums ~530 spots vs the canonical 226. Five cities (Reykjavik, Munich,
-  Krakow, Bangkok, Charleston) have `n: 0` and render as tiny pins
-  indistinguishable from validated cities. Sync `n` to real per-framework
-  counts, add a `validated` flag, differentiate validated vs research-
-  built pins by color/style.
 - Wire real social URLs into Footer (`#` placeholders today)
 - Salkantay framework build (homepage callout still says "coming soon")
 - /bucket-list build-out — page is thin (hero → events → calendar line)
@@ -305,12 +360,6 @@ The tech makes them faster. It doesn't make them less human.
 
 ## OPEN DECISIONS
 
-- **Globe pin data is stale** — hardcoded `CITIES` array in `src/Globe.jsx`
-  sums ~530 spots vs the canonical 226, and 5 cities (Reykjavik, Munich,
-  Krakow, Bangkok, Charleston) have `n: 0` and render as tiny
-  indistinguishable pins. Fix: sync `n` to real per-framework counts,
-  add a `validated` flag, differentiate validated vs research-built pins
-  by color/style.
 - Real social URLs for Footer (`#` placeholders today)
 - Salkantay framework — content + photos
 - /when route: keep dormant (out of nav, still reachable), redirect to
@@ -386,6 +435,20 @@ The tech makes them faster. It doesn't make them less human.
   entries with descriptions. `FeaturedWork` dynamic-imports each
   framework data file on mount and updates the counts. Fallback
   constants exist so cards never render empty.
+
+**Globe pin data is drift-proof (since June 7):**
+- `src/Globe.jsx` imports the 11 framework data files statically and
+  derives each pin's `n` via `countSpotsByCity(data)` — the same
+  walker as App.jsx's `countSpots`, bucketed by `city`/`area`.
+- Attribution rule: every spot maps to exactly one pin. Sub-cities
+  with their own pin (Galway, Madrid, Tasmania, Vienna) take their
+  bucket; everything else folds into the framework's PRIMARY pin
+  (`PIN_ATTRIBUTION` table in Globe.jsx). Sum across validated pins
+  = 248, matches the homepage.
+- `validated: true/false` flag distinguishes the 15 gold pins from
+  the 7 research-only copper pins. Cusco stays `comingSoon`.
+- When adding/removing spots from `src/data/*.js`, the Globe updates
+  on the next build automatically — do NOT hand-edit pin counts.
 
 **Workflow patterns that worked:**
 - For counting canonical stats, write a Node script that imports each
