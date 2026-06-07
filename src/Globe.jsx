@@ -5,38 +5,142 @@ import { useNavigate } from 'react-router-dom'
 import * as THREE from 'three'
 import './Globe.css'
 
-const R = 1.5
-const MAX_SPOTS = 123
+// Canonical spot data — derived from src/data/*.js so the Globe can't drift.
+import dublinData from './data/dublin'
+import spainData from './data/spain'
+import romeData from './data/rome'
+import australiaData from './data/australia'
+import icelandData from './data/iceland'
+import pragueData from './data/prague'
+import munichData from './data/munich'
+import polandData from './data/poland'
+import thailandData from './data/thailand'
+import charlestonData from './data/charleston'
+import michiganData from './data/michigan'
 
-const CITIES = [
-  { city: 'Sydney', n: 123, lat: -33.87, lng: 151.21, slug: 'australia', showLabel: true },
-  { city: 'Barcelona', n: 115, lat: 41.39, lng: 2.17, slug: 'spain', showLabel: true },
-  { city: 'Rome', n: 43, lat: 41.9, lng: 12.5, slug: 'rome', showLabel: true },
-  { city: 'Dublin', n: 39, lat: 53.35, lng: -6.26, slug: 'dublin', showLabel: true },
-  { city: 'Prague', n: 38, lat: 50.08, lng: 14.44, slug: 'prague', showLabel: true },
-  { city: 'Vienna', n: 37, lat: 48.21, lng: 16.37, slug: 'prague' },
-  { city: 'Costa Rica', n: 28, lat: 9.62, lng: -84.63 },
-  { city: 'Tasmania', n: 27, lat: -42.88, lng: 147.33, slug: 'australia' },
-  { city: 'Vancouver', n: 22, lat: 49.28, lng: -123.12 },
-  { city: 'Chicago', n: 15, lat: 41.88, lng: -87.63 },
-  { city: 'Galway', n: 15, lat: 53.27, lng: -9.06, slug: 'dublin' },
-  { city: 'San Juan', n: 14, lat: 18.47, lng: -66.11 },
-  { city: 'Seattle', n: 14, lat: 47.61, lng: -122.33 },
-  { city: 'Smoky Mtns', n: 8, lat: 35.61, lng: -83.43 },
-  { city: 'Phoenix', n: 7, lat: 33.45, lng: -112.07 },
-  { city: 'Reykjavik', n: 0, lat: 64.15, lng: -21.94, slug: 'iceland' },
-  { city: 'Munich', n: 0, lat: 48.14, lng: 11.58, slug: 'munich' },
-  { city: 'Krakow', n: 0, lat: 50.06, lng: 19.94, slug: 'poland' },
-  { city: 'Bangkok', n: 0, lat: 13.76, lng: 100.5, slug: 'thailand' },
-  { city: 'Charleston', n: 0, lat: 32.78, lng: -79.93, slug: 'charleston' },
-  { city: 'Cusco', n: 0, lat: -13.52, lng: -71.97, comingSoon: true },
-]
+const FRAMEWORK_DATA = {
+  dublin: dublinData,
+  spain: spainData,
+  rome: romeData,
+  australia: australiaData,
+  iceland: icelandData,
+  prague: pragueData,
+  munich: munichData,
+  poland: polandData,
+  thailand: thailandData,
+  charleston: charlestonData,
+  michigan: michiganData,
+}
+
+const R = 1.5
+
+/* ===== SPOT COUNTING ===== */
+// Same walker as App.jsx countSpots, but bucketed by city/area.
+// Any object with `name` AND (`description` || `notes`) is a spot.
+// Spots inherit their parent's city when their own city field is empty.
+function countSpotsByCity(data) {
+  const buckets = {}
+  let total = 0
+  const walk = (o, parentCity) => {
+    if (!o) return
+    if (Array.isArray(o)) return o.forEach((x) => walk(x, parentCity))
+    if (typeof o !== 'object') return
+    const city = o.city || o.area || parentCity
+    if (o.name && (o.description || o.notes)) {
+      const bucket = city || '__primary__'
+      buckets[bucket] = (buckets[bucket] || 0) + 1
+      total += 1
+    }
+    Object.values(o).forEach((v) => walk(v, city || parentCity))
+  }
+  walk(data, null)
+  return { buckets, total }
+}
+
+/* ===== ATTRIBUTION ===== */
+// Per Brady's spec: every spot maps to exactly one pin.
+// - A spot tagged to a city that has its own pin → counted on that city's pin.
+// - All other spots in the framework (untagged, sub-regions without pins,
+//   the framework's anchor city) → folded into the framework's PRIMARY pin.
+// `subs` maps pinCity → bucket key in the data file.
+const PIN_ATTRIBUTION = {
+  dublin: { primary: 'Dublin', subs: { Galway: 'Galway' } },
+  spain: { primary: 'Barcelona', subs: { Madrid: 'Madrid' } },
+  rome: { primary: 'Rome', subs: {} },
+  australia: { primary: 'Sydney', subs: { Tasmania: 'Hobart' } },
+  iceland: { primary: 'Reykjavik', subs: {} },
+  prague: { primary: 'Prague', subs: { Vienna: 'Vienna' } },
+  munich: { primary: 'Munich', subs: {} },
+  poland: { primary: 'Krakow', subs: {} },
+  thailand: { primary: 'Bangkok', subs: {} },
+  charleston: { primary: 'Charleston', subs: {} },
+  michigan: { primary: 'Michigan', subs: {} },
+}
+
+function derivePinCount(slug, pinCity) {
+  const attr = PIN_ATTRIBUTION[slug]
+  if (!attr) return 0
+  const { buckets, total } = countSpotsByCity(FRAMEWORK_DATA[slug])
+  if (pinCity === attr.primary) {
+    let subTotal = 0
+    for (const bucketKey of Object.values(attr.subs)) {
+      subTotal += buckets[bucketKey] || 0
+    }
+    return total - subTotal
+  }
+  const bucketKey = attr.subs[pinCity]
+  return bucketKey ? buckets[bucketKey] || 0 : 0
+}
+
+/* ===== CITIES ===== */
+// Validated cities: count derived from data, validated: true, gold pin.
+// Research-only: no framework yet, validated: false, copper pin, no count shown.
+// Cusco: comingSoon, separate copper treatment.
+const VALIDATED_PINS = [
+  { city: 'Dublin', lat: 53.35, lng: -6.26, slug: 'dublin', primary: true, showLabel: true },
+  { city: 'Galway', lat: 53.27, lng: -9.06, slug: 'dublin' },
+  { city: 'Barcelona', lat: 41.39, lng: 2.17, slug: 'spain', primary: true, showLabel: true },
+  { city: 'Madrid', lat: 40.42, lng: -3.7, slug: 'spain' },
+  { city: 'Rome', lat: 41.9, lng: 12.5, slug: 'rome', primary: true, showLabel: true },
+  { city: 'Sydney', lat: -33.87, lng: 151.21, slug: 'australia', primary: true, showLabel: true },
+  { city: 'Tasmania', lat: -42.88, lng: 147.33, slug: 'australia' },
+  { city: 'Reykjavik', lat: 64.15, lng: -21.94, slug: 'iceland', primary: true, showLabel: true },
+  { city: 'Prague', lat: 50.08, lng: 14.44, slug: 'prague', primary: true, showLabel: true },
+  { city: 'Vienna', lat: 48.21, lng: 16.37, slug: 'prague' },
+  { city: 'Munich', lat: 48.14, lng: 11.58, slug: 'munich', primary: true },
+  { city: 'Krakow', lat: 50.06, lng: 19.94, slug: 'poland', primary: true },
+  { city: 'Bangkok', lat: 13.76, lng: 100.5, slug: 'thailand', primary: true },
+  { city: 'Charleston', lat: 32.78, lng: -79.93, slug: 'charleston', primary: true },
+  // Michigan: new pin, anchored at Grand Rapids
+  { city: 'Michigan', lat: 42.96, lng: -85.67, slug: 'michigan', primary: true, showLabel: true },
+].map((c) => ({
+  ...c,
+  n: derivePinCount(c.slug, c.city),
+  validated: true,
+}))
+
+const RESEARCH_PINS = [
+  { city: 'Costa Rica', lat: 9.62, lng: -84.63 },
+  { city: 'Vancouver', lat: 49.28, lng: -123.12 },
+  { city: 'Chicago', lat: 41.88, lng: -87.63 },
+  { city: 'San Juan', lat: 18.47, lng: -66.11 },
+  { city: 'Seattle', lat: 47.61, lng: -122.33 },
+  { city: 'Smoky Mtns', lat: 35.61, lng: -83.43 },
+  { city: 'Phoenix', lat: 33.45, lng: -112.07 },
+].map((c) => ({ ...c, validated: false }))
+
+const COMING_SOON_PINS = [{ city: 'Cusco', lat: -13.52, lng: -71.97, comingSoon: true }]
+
+const CITIES = [...VALIDATED_PINS, ...RESEARCH_PINS, ...COMING_SOON_PINS]
+
+// Sizing reference: largest validated pin (currently Barcelona at 30).
+const MAX_SPOTS = Math.max(...VALIDATED_PINS.map((c) => c.n))
 
 const ARCS = [
-  { from: [53.35, -6.26], to: [53.27, -9.06] },
-  { from: [41.39, 2.17], to: [40.42, -3.7] },
-  { from: [-33.87, 151.21], to: [-42.88, 147.33] },
-  { from: [50.08, 14.44], to: [48.21, 16.37] },
+  { from: [53.35, -6.26], to: [53.27, -9.06] }, // Dublin → Galway
+  { from: [41.39, 2.17], to: [40.42, -3.7] }, // Barcelona → Madrid
+  { from: [-33.87, 151.21], to: [-42.88, 147.33] }, // Sydney → Tasmania
+  { from: [50.08, 14.44], to: [48.21, 16.37] }, // Prague → Vienna
 ]
 
 function ll2v(lat, lng, r) {
@@ -139,13 +243,25 @@ function Atmosphere() {
 }
 
 /* ===== PIN ===== */
+// Linear with high floor: smallest validated pin (Tasmania, 3) is clearly
+// visible at 0.020, largest (Barcelona, 30) caps at 0.036. Research-only
+// and coming-soon pins use a uniform small size, subordinate to validated.
+const VALIDATED_PIN_MIN = 0.02
+const VALIDATED_PIN_RANGE = 0.016
+const RESEARCH_PIN_SIZE = 0.014
+
+function pinSizeFor(city) {
+  if (city.validated === false || city.comingSoon) return RESEARCH_PIN_SIZE
+  return VALIDATED_PIN_MIN + (city.n / MAX_SPOTS) * VALIDATED_PIN_RANGE
+}
+
 function Pin({ city, index, entered, hovered, setHovered, onPinClick }) {
   const meshRef = useRef()
   const ringRef = useRef()
-  const pinSize = 0.012 + (city.n / MAX_SPOTS) * 0.022
+  const pinSize = pinSizeFor(city)
   const isHovered = hovered === city.city
   const [appeared, setAppeared] = useState(false)
-  const isComingSoon = city.comingSoon
+  const isValidated = city.validated !== false && !city.comingSoon
 
   const pos = useMemo(() => {
     const p = ll2v(city.lat, city.lng, R + 0.01)
@@ -169,7 +285,8 @@ function Pin({ city, index, entered, hovered, setHovered, onPinClick }) {
     }
   })
 
-  const pinColor = isComingSoon ? '#b8886e' : '#d4a843'
+  // Validated: gold. Research-only + comingSoon: copper (subordinate).
+  const pinColor = isValidated ? '#d4a843' : '#b8886e'
 
   return (
     <group position={pos}>
@@ -340,12 +457,15 @@ function TooltipOverlay({ hovered }) {
 
   if (!city) return null
 
+  let label
+  if (city.comingSoon) label = 'Coming soon'
+  else if (city.validated === false) label = 'Explored · framework coming'
+  else label = `${city.n} validated spots`
+
   return (
     <div className="globe-tooltip-fixed" style={{ left: mouse.x + 14, top: mouse.y - 10 }}>
       <div className="globe-tooltip-city">{city.city}</div>
-      <div className="globe-tooltip-count">
-        {city.comingSoon ? 'Coming May 2026' : `${city.n} validated spots`}
-      </div>
+      <div className="globe-tooltip-count">{label}</div>
       {city.slug && <div className="globe-tooltip-cta">Click to explore &rarr;</div>}
     </div>
   )
