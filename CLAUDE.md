@@ -16,6 +16,68 @@ Frameworks: 11 React destination routes (no static flagships)
 Peru completed. Ford started May 18.
 WIP: "Good News" Michigan map on `michigan` branch (unmerged, unpushed,
   main untouched) — see June 30 build + MICHIGAN MAP RUNWAY below.
+WIP: Scenic Shore charity merch — full 5-product DRAFT line in the Shopify
+  store (separate venture, NOT the website). Big order day July 1 — see
+  SCENIC SHORE + BIG DAY TOMORROW below.
+
+---
+
+## SCENIC SHORE MERCH (June 30, 2026 — separate venture, Shopify)
+
+Charity merch for the **Scenic Shore bike ride, July 25–26, 2026
+(Mequon, WI)** — Brady + Dawson ride; proceeds support **Velo Palmetto BCU
+(Blood Cancer United)**. NOT part of ladstravel.com — it is a Shopify line
+in **The Lads Travel Company** store (`ui5imc-dy.myshopify.com`), walled in
+a **"Scenic Shore" collection** (`/collections/520611889434`). The Lads'
+charity-off-the-site rule governs the website, not this separate storefront.
+
+Built this session (all DRAFT, $0.00 placeholder prices, NO proceeds/cause
+copy — those need Brady's explicit sign-off):
+- **Brand:** premium "travel club" aesthetic (ref **Dandy Worldwide**).
+  Logo = the **Seal** (gold double-ring crest, arched SCENIC SHORE,
+  sun-on-horizon, EST 2026). Co-brand "✦ by The Lads" (real globe mark,
+  kept subtle). Brand sheet / lookbook / storefront comps + **print-ready
+  files** in `C:\Users\brady\OneDrive\Desktop\scenic-shore-mockups\`.
+- **5 DRAFT products** in the collection: Tee (6 colors × S–XXL = 30
+  variants; Product 10296105894170), Cap (Sand/Navy), Bottle (Steel/Navy),
+  Mug (White/Navy), Tote (Natural). SKUs `SS-…`.
+- Full status + Shopify gotchas in memory **`project-scenic-shore`**.
+
+HARD RULES (real charity commerce): never publish, set prices, or state any
+proceeds/cause claim without Brady's explicit per-step sign-off. Product
+renders so far are **vector mockups (the ceiling)** — real photographic
+images come from **Printify's mockup generator** (Printify is NOT an MCP
+connector; it is Brady's manual admin).
+
+Shopify MCP gotcha: connector shows "Connected" but tool calls can return
+`token expired`. Fix that worked — be signed into Shopify in the browser as
+brady@ladstravel.com FIRST, then `/mcp` authorize, then call immediately.
+Images: `stagedUploadsCreate` → POST bytes to GCS → `productCreateMedia`
+(create-product `images` URLs fail; staged URLs are private).
+
+---
+
+## BIG DAY TOMORROW (July 1, 2026 — Scenic Shore: polish + order samples + go sellable)
+
+GOAL: team merch samples ordered + a full array of products ready to sell.
+🧍 = Brady (admin / payment / approvals)   🤖 = Claude can do via Shopify MCP
+
+1. 🧍 **Connect Printify** to the Shopify store (no MCP — manual).
+2. 🧍 **Upload the print-ready files** (`print-front-light/dark.png`,
+   `print-back-dark.png`, Desktop) into Printify; choose blanks for
+   tee/cap/bottle/mug/tote and place the seal + back art.
+3. → Printify **auto-generates real photographic mockups**.
+4. 🤖 **Swap those real mockups onto the Shopify products** (replace the
+   placeholder vector images) once they sync.
+5. 🤖 **Set prices** — Brady gives numbers per product (no invented prices).
+6. 🤖 **Place the exact cause/proceeds wording** — Brady brings the
+   literally-true BCU line. THE approval gate.
+7. 🧍 **Order team samples** (Printify sample order — payment).
+8. 🤖→🧍 **Publish** the collection live on Brady's explicit go.
+
+BRING TOMORROW (Brady): Printify login + payout set · price per product ·
+exact proceeds wording · team sample sizes/colors · ship-by math vs
+July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
 
 ---
 
