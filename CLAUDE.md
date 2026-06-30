@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: June 7, 2026
+## Last Updated: June 30, 2026
 
 ---
 
@@ -14,6 +14,92 @@ Posture: PREVIEW — paid services launch Fall 2026.
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: 11 React destination routes (no static flagships)
 Peru completed. Ford started May 18.
+WIP: "Good News" Michigan map on `michigan` branch (unmerged, unpushed,
+  main untouched) — see June 30 build + MICHIGAN MAP RUNWAY below.
+
+---
+
+## WHAT WAS BUILT (June 30, 2026 — "Good Brews · Good Views · Good News" Michigan map)
+
+Big build session. New immersive, illustrated Michigan road-trip map.
+Followed the superpowers sequence (brainstorming → writing-plans → phased
+execution with a report + STOP between every phase). Spec/plan at
+`docs/superpowers/plans/2026-06-30-good-news-michigan-map.md`.
+
+**Posture: SELF-CONTAINED + UNMERGED.** Lives on its own `/good-news`
+route, all in `src/GoodNews.jsx` + `src/GoodNews.css`. On the `michigan`
+branch ONLY — NOT merged, NOT pushed, `main` + live site untouched.
+The only files outside GoodNews.* are a one-line lazy route in
+`src/main.jsx` and a one-line `/good-news` rewrite in `vercel.json`
+(both branch-only, trivially revertible). `/michigan` is the EXISTING
+brewery/golf framework — do NOT collide with it; the new map is `/good-news`.
+
+Two commits this session:
+- `d5e803c` — rough hand-authored blob silhouette + 4 routes (Phase 1).
+- `c391836` — geo-traced silhouette + de-tangled routes (CURRENT). This
+  is the banked "tonight's win."
+
+**What's BUILT (Phase 1 + tracing pass only):**
+- Accurate Michigan silhouette traced from real state boundary GeoJSON
+  (glynnbird/usstatesgeojson — Michigan). Two largest polygons kept (LP +
+  UP), islands dropped, Douglas-Peucker simplified HARD (LP 1674→130 pts,
+  UP 2056→170 pts ≈ 300 total), equirectangular-projected (lat0 44.58°)
+  into `viewBox="0 0 1000 880"`. Reads instantly as Michigan — mitten,
+  thumb/Saginaw Bay, true UP form, real Mackinac gap at the Straits.
+- 4 routes drawn as REAL SVG `<path>` elements, VEHICLE-READY (a draggable
+  car rides them next via `getPointAtLength()` — no vehicle yet):
+  · Route 1 **West Coast** (teal, LIVE/validated) — New Buffalo→Kalamazoo
+    →Grand Rapids→Traverse City.
+  · Route 2 **Up North** (orange, LIVE/scouted) — Ann Arbor→UP, bridging
+    cleanly at the Straits (no UP overshoot).
+  · Route 3 **Motor City** (magenta, PROPOSED/dashed) — Detroit·Corktown.
+  · Route 4 **Harbor & Greens** (green, PROPOSED/dashed) — Harbor Country
+    + golf country; de-tangled from West Coast on the west side.
+- Shared `PLACES` + `AIRPORTS` coordinate table = real city lat/longs
+  projected through the SAME transform, so every point sits on the true
+  coastline. This is the single reference frame for routes/anchors/pins.
+- Styling (signature asset): water radial gradient, land depth-shadow,
+  coastline stroke, soft glow on the two live routes, dashed = proposed.
+- Verified at 1440 + 390 via Playwright; `npm run build` clean; bundle
+  ~7 KB raw / ~3 KB gzip (own lazy chunk).
+
+**Organizing model decided — Option C (NOT a toggle system):** one
+unified map; "Good Brews · Good Views · Good News" is the hero
+framing/banner over it. Brews = breweries/HOP/happy hours · Views =
+golf/fall colors/lakeshore/UP · News = Aug–Oct events (lead) + the
+lighter human/campus story. Do NOT build filter states.
+
+**HONESTY RULE applied (Brady's standing rule):** breweries + golf use
+real `michigan.js` data; events / HOP-passport / live-flight-prices are
+HONESTLY-LABELED PLACEHOLDERS ("coming — validated August"), never
+fabricated. No invented event names, dates, or prices.
+
+---
+
+## MICHIGAN MAP RUNWAY (what's next on the `michigan` branch)
+
+The traced map foundation is banked. Build sequence (each its own
+report+STOP phase per Brady's rule), all spec'd in the plan doc above:
+
+- **NEXT SESSION → Phase 2:** university anchors + ONE shared dismissible
+  story panel. GVSU/Grand Rapids (Brady): Padnos International Center,
+  Seidman College of Business, Honors College, GR = "Beer City USA."
+  Kalamazoo College (Dawson): football + broadcasting career, campus.
+- **THEN Phase 3:** big clickable GRR + DTW airport icons → "live flight
+  prices — coming soon" panel (API-ready structure, NO API yet).
+- **THEN Phase 4:** pin SYSTEM — unique icon per type (brewery / golf /
+  view / event / hidden gem), click + hover detail cards. REAL pins only
+  where `michigan.js` has data; events/HOP/gems labeled "coming —
+  validated August."
+- **THEN:** the "Good Brews · Good Views · Good News" banner + framing.
+- **LATER (own sessions):** draggable vehicle on the routes
+  (`getPointAtLength` ready) · real live-flight-price API · real Aug–Oct
+  events data · polish nits (bolder magenta Motor City loop; mobile
+  vertical centering) · homepage-placement decision (2nd hero vs.
+  embedded link — decide once the map is fuller).
+- **TRIP DEPENDENCIES (feed the pins/photos):** Brady validates Route 1
+  July 10–11; Dawson scouts Route 2 (UP) July 4. Their spots + photos
+  populate the real pins.
 
 ---
 
@@ -273,6 +359,9 @@ Data moment: Vivid Harbor Bridge drone
 
 ## SESSION SEQUENCE (what's next)
 
+**FOR NEXT /morning:** Michigan map foundation banked on `michigan` branch
+— next is Phase 2 anchors. See MICHIGAN MAP RUNWAY above.
+
 **Pass B framework engine spec** at `docs/framework-pass-b-spec.md` is
 DORMANT. Reference only. Not the active backlog item.
 
@@ -451,6 +540,17 @@ The tech makes them faster. It doesn't make them less human.
   on the next build automatically — do NOT hand-edit pin counts.
 
 **Workflow patterns that worked:**
+- Playwright is NOT installed in this repo. For screenshots: `npx playwright
+  install chromium` once, then `npm i playwright` inside the scratchpad and
+  run a small `.mjs` (chromium.launch → page per viewport → fullPage
+  screenshot). Verify frontend at **1440 + 390**; there is no unit-test
+  runner — build + screenshots IS the verification pattern.
+- To trace a real geographic silhouette into an SVG: fetch state GeoJSON
+  (e.g. glynnbird/usstatesgeojson), keep the largest rings (drop islands),
+  Douglas-Peucker simplify to a few hundred pts, then equirectangular-
+  project (`lon*cos(lat0)`, `lat`) fit to the target viewBox. Project any
+  place markers through the SAME transform so they land on the coastline.
+  (Used for the /good-news Michigan map — see scratchpad `trace.mjs`.)
 - For counting canonical stats, write a Node script that imports each
   `src/data/*.js` and tallies. Do NOT trust numbers already on the
   page — they drift.
