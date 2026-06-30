@@ -1,0 +1,41 @@
+/* ===== GOOD BREWS · GOOD VIEWS · GOOD NEWS — Michigan map ===== */
+
+.gn-root {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--sans);
+  display: flex;
+  flex-direction: column;
+}
+
+.gn-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.gn-map {
+  width: min(100%, 1100px);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.5));
+}
+
+.gn-route {
+  transition: stroke-width 0.2s var(--transition);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gn-route {
+    transition: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .gn-stage {
+    padding: 12px;
+  }
+}
