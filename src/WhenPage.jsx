@@ -76,8 +76,7 @@ const SEASONS = [
     tagline: 'The best month most people miss. Oktoberfest. Shoulder pricing. Still warm.',
     destinations: [
       { name: 'Munich', price: '$620 avg RT', spots: '9 spots' },
-      { name: 'Thailand', price: '$780 avg RT', spots: '13 spots' },
-      { name: 'Charleston', price: 'domestic', spots: '17 spots' },
+      { name: 'Thailand', price: '$780 avg RT', spots: '' },
     ],
     nextLabel: 'WINTER',
   },

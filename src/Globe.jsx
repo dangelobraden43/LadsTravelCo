@@ -14,8 +14,6 @@ import icelandData from './data/iceland'
 import pragueData from './data/prague'
 import munichData from './data/munich'
 import polandData from './data/poland'
-import thailandData from './data/thailand'
-import charlestonData from './data/charleston'
 import michiganData from './data/michigan'
 
 const FRAMEWORK_DATA = {
@@ -27,8 +25,6 @@ const FRAMEWORK_DATA = {
   prague: pragueData,
   munich: munichData,
   poland: polandData,
-  thailand: thailandData,
-  charleston: charlestonData,
   michigan: michiganData,
 }
 
@@ -72,8 +68,6 @@ const PIN_ATTRIBUTION = {
   prague: { primary: 'Prague', subs: { Vienna: 'Vienna' } },
   munich: { primary: 'Munich', subs: {} },
   poland: { primary: 'Krakow', subs: {} },
-  thailand: { primary: 'Bangkok', subs: {} },
-  charleston: { primary: 'Charleston', subs: {} },
   michigan: { primary: 'Michigan', subs: {} },
 }
 
@@ -109,8 +103,6 @@ const VALIDATED_PINS = [
   { city: 'Vienna', lat: 48.21, lng: 16.37, slug: 'prague' },
   { city: 'Munich', lat: 48.14, lng: 11.58, slug: 'munich', primary: true },
   { city: 'Krakow', lat: 50.06, lng: 19.94, slug: 'poland', primary: true },
-  { city: 'Bangkok', lat: 13.76, lng: 100.5, slug: 'thailand', primary: true },
-  { city: 'Charleston', lat: 32.78, lng: -79.93, slug: 'charleston', primary: true },
   // Michigan: new pin, anchored at Grand Rapids
   { city: 'Michigan', lat: 42.96, lng: -85.67, slug: 'michigan', primary: true, showLabel: true },
 ].map((c) => ({

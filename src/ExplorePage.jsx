@@ -64,20 +64,6 @@ const DESTINATIONS = [
     photo: NEW_IMAGES.pragueSkyline,
     spots: 12,
   },
-  {
-    name: 'Thailand',
-    slug: 'thailand',
-    line: 'NYE on the islands.',
-    photo: NEW_IMAGES.fitzroyBeach,
-    spots: 13,
-  },
-  {
-    name: 'Charleston',
-    slug: 'charleston',
-    line: 'The domestic trip worth treating like an international one.',
-    photo: BATCH3_IMAGES.smokyRockOverlook,
-    spots: 17,
-  },
 ]
 
 const strip2 = [
@@ -112,11 +98,6 @@ const HEADED = [
       {
         name: 'Oktoberfest \u2014 Munich',
         desc: 'Two weeks, the Theresienwiese, and every beer hall in the city.',
-        status: 'live',
-      },
-      {
-        name: 'Thailand NYE \u2014 Koh Phangan',
-        desc: 'Ring in the new year on the islands.',
         status: 'live',
       },
       {
@@ -336,7 +317,7 @@ export default function ExplorePage() {
                 Where do you want to go?
               </h1>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, color: '#8a8070' }}>
-                183 validated spots. 10 frameworks. One system.
+                219 validated spots &middot; 13 cities &middot; 10 countries &middot; 3 continents
               </p>
             </Reveal>
           </div>

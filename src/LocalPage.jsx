@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Nav } from './App'
 import Footer from './Footer'
-import { BATCH3_IMAGES, HERO_IMAGES } from './images-paths'
+import { HERO_IMAGES } from './images-paths'
 import './LocalPage.css'
 
 function useReveal(threshold = 0.15) {
@@ -45,15 +45,6 @@ const DESTINATIONS = [
     href: '/michigan',
     img: HERO_IMAGES.smokyMountainsCabinOverlook,
     accent: '#96782a',
-  },
-  {
-    name: 'Charleston',
-    region: 'South Carolina · Kiawah · the Lowcountry',
-    tag: 'PERSONALLY VALIDATED',
-    line: 'The domestic trip worth treating like an international one. Where the company was founded.',
-    href: '/charleston',
-    img: BATCH3_IMAGES.smokyRockOverlook,
-    accent: '#b8886e',
   },
 ]
 

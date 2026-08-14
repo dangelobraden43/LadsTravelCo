@@ -250,10 +250,10 @@ function DataSpectacle() {
   const stat3 = useRef(null)
   const subRef = useRef(null)
 
-  useCountUp(bigRef, 248)
-  useCountUp(stat1, 11)
-  useCountUp(stat2, 15)
-  useCountUp(stat3, 4)
+  useCountUp(bigRef, 219)
+  useCountUp(stat1, 10)
+  useCountUp(stat2, 13)
+  useCountUp(stat3, 3)
 
   // Reveal subtitle via IntersectionObserver
   useEffect(() => {
@@ -854,7 +854,7 @@ export default function App() {
                 letterSpacing: 3,
               }}
             >
-              15 VALIDATED CITIES &middot; 4 CONTINENTS &middot; 248 SPOTS
+              13 VALIDATED CITIES &middot; 3 CONTINENTS &middot; 219 SPOTS
             </div>
           </Reveal>
         </div>
@@ -1198,7 +1198,7 @@ export default function App() {
                   margin: '0 auto',
                 }}
               >
-                248 spots. 11 countries. Built on data, not guesses.
+                219 spots. 10 countries. Built on data, not guesses.
               </p>
             </div>
           </Reveal>
@@ -1264,8 +1264,8 @@ export default function App() {
             }}
           >
             {[
-              { value: '248', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
-              { value: '11', label: 'COUNTRIES', sub: '4 continents. 15 cities.' },
+              { value: '219', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
+              { value: '10', label: 'COUNTRIES', sub: '3 continents. 13 cities.' },
               {
                 value: '6',
                 label: 'AI RESEARCH AGENTS',

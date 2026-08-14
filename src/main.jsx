@@ -78,9 +78,7 @@ const DESTINATIONS = [
   'prague',
   'munich',
   'poland',
-  'thailand',
   'michigan',
-  'charleston',
 ]
 
 ReactDOM.createRoot(document.getElementById('root')).render(

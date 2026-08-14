@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: June 7, 2026
+## Last Updated: August 13, 2026
 
 ---
 
@@ -12,8 +12,37 @@ Stack: React + Vite, React Router, Three.js (react-three-fiber)
 Email: brady@ladstravel.com (Google Workspace active)
 Posture: PREVIEW — paid services launch Fall 2026.
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
-Frameworks: 11 React destination routes (no static flagships)
+Frameworks: 9 React destination routes (no static flagships)
 Peru completed. Ford started May 18.
+
+---
+
+## WHAT WAS BUILT (August 13, 2026 — Midwest-build session prep)
+
+Branch `midwest-map`. Two content agents (retire + outdoors) ran in
+parallel, then a numbers-propagation barrier.
+
+1. **Fully retired `thailand` + `charleston`** — dropped from `/global`
+   list, The List event, `/local` Charleston card, Globe pins, `main.jsx`
+   routes, `vercel.json` rewrites, and every dead link across
+   NorthAmericaSection / SystemSection (quiz repointed to `/spain`) /
+   WhenPage. Data files **preserved** in `retired/` (git mv, not deleted)
+   for possible revival.
+2. **Recomputed canonical totals** across all derived surfaces (Globe
+   caption, DataSpectacle, System section, `/global` hero):
+   `248→219 spots · 15→13 cities · 11→10 countries · 4→3 continents`.
+   Asia dropped (Thailand was the only Asian framework). Personal founder
+   bios keep "20+ cities, 4 continents" — travel history, not framework
+   coverage; the two are never blended.
+3. **/outdoors buffed** — validated Salkantay→Machu Picchu block expanded
+   with the real trek arc + stat chips; **Bruce Peninsula** added as an
+   on-the-board (copper/research) card, no validation claim.
+4. **Tooling** — custom skills modernized to React+Vite; Parallel Agent
+   Workflow section added (see bottom).
+
+Open follow-ups: `/audit-all` command still lists retired frameworks +
+omits michigan; `/thailand` `/charleston` have no redirect/404 route
+(Vercel 404s in prod; blank shell if typed in-SPA).
 
 ---
 
@@ -158,10 +187,10 @@ Workspace email live.
 
 | Collection | Path | Contains |
 |---|---|---|
-| **Lads Global** | `/global` | International frameworks (Dublin, Spain, Rome, Iceland, Prague, Australia, Munich, Poland, Thailand) |
+| **Lads Global** | `/global` | International frameworks (Dublin, Spain, Rome, Iceland, Prague, Australia, Munich, Poland) |
 | **Lads Outdoors** | `/outdoors` | Treks/hikes — Ladder concept (Base Camp · Multi-Day · Expedition). Salkantay is the first validated trek. |
 | **Lads Bucket List** | `/bucket-list` | Events/festivals/sports/holidays (Vivid Sydney, Oktoberfest, Ryder Cup '27, Christmas Markets). Calendar view planned. |
-| **Lads Local** | `/local` | Domestic + close-to-home (Michigan, Charleston). Engineered the same as international. |
+| **Lads Local** | `/local` | Domestic + close-to-home (Michigan). Engineered the same as international. |
 
 Footer carries: Follow Along (socials, blog later), The Lads (team),
 brand mark. Everything else in nav is dead.
@@ -175,12 +204,15 @@ Sync command: `npm run sync` (pulls Airtable → src/data/)
 Export command: `npm run export` (src/data/ → CSV)
 Build: `npm run sync:build` (sync + build together)
 
-**Canonical site-wide totals (June 7, 2026)** — used by Globe pins,
+**Canonical site-wide totals (August 13, 2026)** — used by Globe pins,
 Featured Work cards, DataSpectacle counters, Globe caption, and System
-section. Single source of truth: the 11 `src/data/*.js` files. Method:
+section. Single source of truth: the 9 `src/data/*.js` files. Method:
 live-walk (any object with `name` AND `description|notes` is a spot).
 
-  248 spots  ·  15 validated cities  ·  11 countries  ·  4 continents
+  219 spots  ·  13 validated cities  ·  10 countries  ·  3 continents
+
+(Thailand + Charleston retired Aug 13 — data preserved in `retired/`.
+Asia dropped: Thailand was the only Asian framework.)
 
 Per-framework breakdown (live-walk via App.jsx `countSpots` /
 Globe.jsx `countSpotsByCity` — identical algorithm):
@@ -194,9 +226,7 @@ Globe.jsx `countSpotsByCity` — identical algorithm):
 | iceland | 23 | 22 |
 | australia | 22 | 19 |
 | michigan | 21 | 21 (different schema) |
-| charleston | 16 | 16 |
 | poland | 15 | 12 |
-| thailand | 13 | 13 |
 | munich | 11 | 9 |
 
 Old figures (`226 / 21`) are retired — they came from a stricter
@@ -304,7 +334,7 @@ Immediate candidates (no priority assigned — Brady picks):
 /morning  — reads this file + sprint, outputs top 3 priorities
 /ship     — diff → commit message → confirm → push
 /perf     — build + bundle size report + Lighthouse
-/audit-all — checks all 11 framework data files
+/audit-all — checks all 9 framework data files
 /context-tag [destination] — tags spots with five-axis contexts
 
 ---
@@ -437,15 +467,15 @@ The tech makes them faster. It doesn't make them less human.
   constants exist so cards never render empty.
 
 **Globe pin data is drift-proof (since June 7):**
-- `src/Globe.jsx` imports the 11 framework data files statically and
+- `src/Globe.jsx` imports the 9 framework data files statically and
   derives each pin's `n` via `countSpotsByCity(data)` — the same
   walker as App.jsx's `countSpots`, bucketed by `city`/`area`.
 - Attribution rule: every spot maps to exactly one pin. Sub-cities
   with their own pin (Galway, Madrid, Tasmania, Vienna) take their
   bucket; everything else folds into the framework's PRIMARY pin
   (`PIN_ATTRIBUTION` table in Globe.jsx). Sum across validated pins
-  = 248, matches the homepage.
-- `validated: true/false` flag distinguishes the 15 gold pins from
+  = 219, matches the homepage.
+- `validated: true/false` flag distinguishes the 13 gold pins from
   the 7 research-only copper pins. Cusco stays `comingSoon`.
 - When adding/removing spots from `src/data/*.js`, the Globe updates
   on the next build automatically — do NOT hand-edit pin counts.
@@ -473,3 +503,18 @@ The tech makes them faster. It doesn't make them less human.
 - Always run `npm run build` before committing.
 - Always end sessions with CLAUDE.md updated.
 - Quality over deadline. Nothing ships until it's right.
+
+---
+
+## Parallel Agent Workflow
+
+Worktrees live OUTSIDE the repo (sibling folder) so the harness watcher on
+`.claude/` can't lock them on Windows (a `.claude/worktrees/` tree wedged Aug 13).
+
+    git worktree add ../lads-wt-<branch> -b <branch> main    # create off main
+    cd ../lads-wt-<branch> && claude                         # launch agent HERE (loads its .claude/ tooling)
+    #  ...work + commit on <branch> inside the worktree...
+    git -C ../lads-wt-<branch> push -u origin <branch>       # optional: push the branch
+    git checkout main && git pull && git merge --no-ff <branch> && git push
+    git worktree remove ../lads-wt-<branch>                  # remove worktree
+    git branch -d <branch>                                   # delete merged branch
