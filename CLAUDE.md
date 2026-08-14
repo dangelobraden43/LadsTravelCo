@@ -303,6 +303,18 @@ Data moment: Vivid Harbor Bridge drone
 
 ## SESSION SEQUENCE (what's next)
 
+**MIDWEST BUILD (active — branch `midwest-map`, next session):**
+- **Replace the Michigan hero photo.** `/local` card (`LocalPage.jsx`) and
+  `/michigan` both use `smokyMountainsCabinOverlook` (a Smoky Mtns placeholder).
+  NO Michigan photo exists in `src/images-*.js` yet — **Brady must supply one**
+  (Sleeping Bear, Torch Lake, Detroit, Grand Rapids…) before this can be fixed.
+- **Build the Michigan + Midwest interactive hero figure.** Net-new — no
+  scaffold exists; 3D/interactive per the core vision. Brainstorm design first.
+- **`/global` rework** to showcase all 9 current frameworks. CONFIRM intent
+  with Brady: re-skin the existing page vs. a fuller rebuild. (NOT re-adding
+  the retired thailand/charleston — "current frameworks" = the 9.)
+- **Quality-improvement pass across all 9 current frameworks** (data + pages).
+
 **Pass B framework engine spec** at `docs/framework-pass-b-spec.md` is
 DORMANT. Reference only. Not the active backlog item.
 
