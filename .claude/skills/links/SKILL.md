@@ -1,33 +1,33 @@
 ---
 name: links
-description: Replace placeholder framework links across all HTML files. Use when Brady says "update links", "replace links", "add URLs", or "Vercel URLs".
+description: Verify and fix internal route links + external affiliate/Maps links across the React site. Use when Brady says "update links", "check links", "fix links", or "broken links".
 ---
 
-# Link Replacement Workflow
+# Link Audit Workflow
 
-## When Brady provides Vercel URLs:
-1. Read index.html (main site)
-2. Find every `href="#"` that has "Open Framework" or "Open Full Framework" in its link text
-3. Map each to the correct framework URL based on the card's destination name
-4. Replace all placeholder links in one pass
-5. Show the diff before saving
-6. After confirmation, also check all other HTML files for cross-references
+Static HTML frameworks were deleted May 31, 2026. Framework links are now
+React Router routes `/<slug>` (dublin, spain, rome, australia, iceland,
+prague, munich, poland, thailand, michigan, charleston), plus the four
+collection routes `/global`, `/outdoors`, `/bucket-list`, `/local`.
 
-## Expected URL mapping (Brady fills in after Vercel deploy):
-```
-Dublin + Galway    → /dublin-galway.html
-Rome + Italy       → /rome-italy.html
-Barcelona + Madrid → /spain-2026.html
-Australia + NZ     → /australia-nz.html
-Iceland            → /iceland-2026.html
-Prague + Vienna    → /prague-vienna.html
-Munich Oktoberfest → /munich-oktoberfest.html
-Poland August      → /poland-august.html
-Thailand NYE       → /thailand-nye.html
-Lads Local         → /lads-local.html
-```
+## Internal Routes
+1. Scan `src/**/*.jsx` for framework/collection CTAs (`OPEN FRAMEWORK →`,
+   card links, nav, Footer).
+2. Confirm each points at a real route above via `<Link to="/slug">` /
+   `<Navigate>` — NOT an old `.html` path and not a leftover `href="#"`.
+3. For every React-only route, confirm a matching `vercel.json` rewrite
+   exists (`{ "source": "/slug", "destination": "/" }`); a missing rewrite
+   404s on direct hits / refresh.
+4. Confirm retired paths still redirect: /explore→/global, /adventure→/outdoors,
+   /plan→/, /story→/ (both `vercel.json` redirects and client `<Navigate replace>`).
+
+## External Links
+- Tour booking (Viator / GetYourGuide) and Google Maps list links live in
+  `src/data/<slug>.js`. Verify they are real URLs, not placeholders.
+- NEVER rewrite Google Maps or tour/affiliate links to different targets —
+  only flag broken or placeholder ones.
 
 ## Rules
-- Never change Google Maps links or tour booking links — only framework placeholder links
-- Show the full list of replacements before executing
-- Count total replacements made and confirm
+- Show the full list of proposed changes before executing.
+- One pass, then report count of links checked / fixed / flagged.
+- Do not touch affiliate or Maps destinations without Brady's confirmation.

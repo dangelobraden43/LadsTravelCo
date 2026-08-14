@@ -1,42 +1,36 @@
 ---
 name: optimize
-description: Optimize HTML files for performance. Use when Brady says "optimize", "compress", "speed up", "file size", or "PageSpeed".
+description: Optimize the React + Vite bundle and media for performance. Use when Brady says "optimize", "compress", "speed up", "bundle size", "file size", or "PageSpeed".
 ---
 
 # Optimization Workflow
 
-## Image Optimization
-1. Find all base64-embedded images in the specified HTML file
-2. Report each image's approximate size in KB
-3. For images over 150KB, suggest compression
-4. If Brady approves, use Python/Pillow to re-encode at lower quality:
-   ```python
-   from PIL import Image
-   import base64, io
-   img = Image.open(io.BytesIO(base64.b64decode(data)))
-   img = img.convert("RGB")
-   buf = io.BytesIO()
-   img.save(buf, format="JPEG", quality=72, optimize=True)
-   new_b64 = base64.b64encode(buf.getvalue()).decode()
-   ```
+The site is React + Vite (no static HTML). Optimize the production bundle
+and the media pipeline, not inline base64.
 
-## Meta Tags Check
-Verify every HTML file has:
-- `<meta charset="UTF-8">`
-- `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
-- `<meta name="description" content="...">`
-- `<meta property="og:title" content="...">`
-- `<meta property="og:description" content="...">`
-- `<meta property="og:type" content="website">`
-- `<title>` tag with destination name + "The Lads Travel Co."
+## Bundle Analysis
+1. Run `npm run build` and report per-chunk raw + gzip sizes from the Vite output.
+2. Known heavy chunk: `three-vendor` (~863 KB raw / 227 KB gzip) — used only by
+   the Globe/DepthHero. Confirm it stays behind its lazy boundary; never let it
+   into the homepage entry chunk.
+3. Verify every route is `lazy()`-loaded in `src/main.jsx` (framework chunks
+   should be 5–33 KB each, loaded on demand).
+4. Flag any new dependency that inflates `react-vendor` or the App entry.
 
-## Performance Checklist
-- [ ] Total HTML file size reported
-- [ ] Largest embedded image identified
-- [ ] Google Fonts loaded with preconnect
-- [ ] No render-blocking scripts
-- [ ] CSS minified where possible
-- [ ] All links valid (no broken hrefs)
+## Media
+- Images: run `npm run extract-images` (pipeline in `scripts/extract-images.js`).
+  Report the largest assets in `dist/assets`; flag anything oversized.
+- Video is served from Cloudinary, not bundled — confirm no video files landed
+  in `dist/`.
+- No base64-embedded images in source; if any exist, flag for extraction.
+
+## Runtime / Meta
+- [ ] Each route sets `<Helmet>` title + meta description + canonical (react-helmet-async).
+- [ ] All 5 fonts in `index.html` load with `preconnect`.
+- [ ] No render-blocking scripts added.
+- [ ] Analytics/SpeedInsights stay in the App shell only.
+- [ ] `prefers-reduced-motion` respected (GSAP hero + IntersectionObserver reveals).
 
 ## Output
-Report findings as a summary table, then ask Brady which fixes to apply.
+Report a summary table (chunk / raw / gzip / lazy?) plus the largest assets,
+then ask Brady which fixes to apply before changing anything.
