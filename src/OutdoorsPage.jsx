@@ -67,6 +67,11 @@ const COMING_SOON = [
   },
   { name: 'Everest Base Camp', region: 'Nepal', note: '130 km · 12 days · 5,364 m at camp' },
   { name: 'Kilimanjaro', region: 'Tanzania', note: '65 km · 7 days · 5,895 m at the summit' },
+  {
+    name: 'Bruce Peninsula',
+    region: 'Ontario, Canada',
+    note: 'Day hikes on the Bruce Trail along Georgian Bay — the Grotto and the cliffs out toward Tobermory.',
+  },
 ]
 
 export default function OutdoorsPage() {
@@ -159,9 +164,17 @@ export default function OutdoorsPage() {
               </h2>
               <p className="salk-card-body">
                 Our first validated trek &mdash; Brady completed Salkantay to Machu Picchu in May
-                2026. The first Lads Travel YouTube video is coming, and the full framework with it.
-                Follow along to see it first.
+                2026. The route ran Lima to Huacachina, then five days on the Salkantay trail: over
+                the Salkantay Pass at roughly 4,600 m, past the glacial turquoise of Humantay Lake,
+                and down through cloud forest to Machu Picchu itself. The first Lads Travel YouTube
+                video is coming, and the full framework with it. Follow along to see it first.
               </p>
+              <div className="salk-card-chips" aria-label="Trek at a glance">
+                <span className="salk-chip">5 days on trail</span>
+                <span className="salk-chip">~74 km</span>
+                <span className="salk-chip">4,600 m pass</span>
+                <span className="salk-chip">Humantay Lake</span>
+              </div>
               <a href="#follow-along" onClick={scrollToFollow} className="salk-card-cta">
                 Follow along <span aria-hidden="true">&darr;</span>
               </a>
