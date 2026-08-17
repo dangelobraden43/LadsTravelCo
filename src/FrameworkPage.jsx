@@ -256,14 +256,24 @@ export default function FrameworkPage({ data, heroImg }) {
                 {trip.ladsRating && <div className="fw-trip-rating">Lads: {trip.ladsRating}</div>}
               </div>
               <p className="fw-trip-desc">{trip.description}</p>
+              {/* ENDORSEMENT GRADIENT — a ladsRating is our recorded evidence that
+                  we actually did this. With one, the CTA is allowed to say so.
+                  Without one, the CTA must stay neutral and imply nothing. */}
               {trip.bookingUrl && (
                 <a
                   href={trip.bookingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="fw-trip-book"
+                  className={`fw-trip-book${trip.ladsRating ? ' fw-trip-book--endorsed' : ''}`}
                 >
-                  Book on {trip.bookingPlatform} &rarr;
+                  {trip.ladsRating ? (
+                    <>
+                      <span className="fw-trip-book-flag">WE DID THIS</span>
+                      Book on {trip.bookingPlatform} &rarr;
+                    </>
+                  ) : (
+                    <>Book this tour &rarr;</>
+                  )}
                 </a>
               )}
             </div>
