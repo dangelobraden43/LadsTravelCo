@@ -1,0 +1,240 @@
+/* PRIVACY — editorial long-form. Narrow measure, generous rhythm.
+   Uses the design system tokens in index.css :root. */
+
+.privacy-page {
+  background: var(--bg);
+  color: var(--cream);
+  padding-top: 96px;
+}
+
+/* HERO */
+.privacy-hero {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 72px 28px 56px;
+  border-bottom: 1px solid var(--gold-border);
+}
+
+.privacy-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+  margin-bottom: 22px;
+}
+
+.privacy-h1 {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+}
+
+.privacy-h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.privacy-lede {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2vw, 1.14rem);
+  line-height: 1.7;
+  color: rgba(232, 220, 200, 0.74);
+  max-width: 62ch;
+  margin: 0 0 28px;
+}
+
+.privacy-date {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232, 220, 200, 0.42);
+}
+
+/* BODY */
+.privacy-body {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 28px 120px;
+}
+
+.privacy-section {
+  padding: 52px 0;
+  border-bottom: 1px solid rgba(212, 168, 67, 0.1);
+}
+
+.privacy-section:last-child {
+  border-bottom: none;
+}
+
+.privacy-h2 {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+  letter-spacing: -0.01em;
+  margin: 0 0 24px;
+  color: var(--cream);
+}
+
+.privacy-block {
+  margin-bottom: 30px;
+}
+
+.privacy-block:last-child {
+  margin-bottom: 0;
+}
+
+.privacy-h3 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.97rem;
+  letter-spacing: 0.01em;
+  margin: 0 0 9px;
+  color: var(--cream);
+}
+
+.privacy-p {
+  font-family: var(--sans);
+  font-size: 0.97rem;
+  line-height: 1.78;
+  color: rgba(232, 220, 200, 0.72);
+  max-width: 66ch;
+  margin: 0 0 16px;
+}
+
+.privacy-p:last-child {
+  margin-bottom: 0;
+}
+
+.privacy-p strong {
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.privacy-p a,
+.privacy-back a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(212, 168, 67, 0.34);
+  transition: border-color 0.2s ease;
+}
+
+.privacy-p a:hover,
+.privacy-back a:hover {
+  border-bottom-color: var(--gold);
+}
+
+/* "What we don't do" list */
+.privacy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 66ch;
+}
+
+.privacy-list li {
+  position: relative;
+  padding-left: 26px;
+  margin-bottom: 14px;
+  font-family: var(--sans);
+  font-size: 0.97rem;
+  line-height: 1.72;
+  color: rgba(232, 220, 200, 0.72);
+}
+
+.privacy-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 11px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.65;
+}
+
+.privacy-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* THIRD-PARTY TABLE */
+.privacy-table {
+  margin-top: 28px;
+  border-top: 1px solid rgba(212, 168, 67, 0.14);
+}
+
+.privacy-row {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(212, 168, 67, 0.14);
+}
+
+.privacy-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+}
+
+.privacy-row-name {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--cream);
+}
+
+.privacy-row-role {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(212, 168, 67, 0.28);
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.privacy-row-detail {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(232, 220, 200, 0.64);
+  max-width: 66ch;
+  margin: 0;
+}
+
+/* CONTACT */
+.privacy-contact {
+  padding-bottom: 0;
+}
+
+.privacy-back {
+  margin-top: 34px;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 640px) {
+  /* The shared Nav wraps the brand name onto several lines under ~420px,
+     so it stands much taller here than on desktop. Clear it generously. */
+  .privacy-page {
+    padding-top: 96px;
+  }
+
+  .privacy-hero {
+    padding: 64px 20px 40px;
+  }
+
+  .privacy-body {
+    padding: 0 20px 84px;
+  }
+
+  .privacy-section {
+    padding: 40px 0;
+  }
+}

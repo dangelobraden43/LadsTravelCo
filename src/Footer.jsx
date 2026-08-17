@@ -68,6 +68,9 @@ export default function Footer() {
               <li>
                 <a href="mailto:brady@ladstravel.com">brady@ladstravel.com</a>
               </li>
+              <li>
+                <Link to="/privacy">Privacy</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -75,6 +78,9 @@ export default function Footer() {
 
       <div className="lads-footer-base">
         <span>&copy; {year} The Lads Travel Co.</span>
+        <span className="lads-footer-disclosure">
+          Some links may earn us a commission &mdash; never at extra cost to you.
+        </span>
         <span>ladstravel.com</span>
       </div>
     </footer>
