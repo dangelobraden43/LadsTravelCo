@@ -628,8 +628,16 @@
 }
 
 /* ===== COST TABLE ===== */
+/* The table can exceed a phone viewport. Contain the scroll here so the
+   page body never scrolls sideways. */
+.fw-cost-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
 .fw-cost-table {
   width: 100%;
+  min-width: 420px;
   border-collapse: collapse;
   margin-top: 32px;
   font-family: var(--mono);

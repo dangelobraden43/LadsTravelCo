@@ -334,29 +334,34 @@ export default function FrameworkPage({ data, heroImg }) {
             <h3 className="fw-section-title" style={{ fontSize: '1.4rem', marginTop: 48 }}>
               Cost Model (Per Person, Group of 4)
             </h3>
-            <table className="fw-cost-table">
-              <thead>
-                <tr>
-                  {data.costModel.headers.map((h, i) => (
-                    <th key={i}>{h}</th>
+            {/* Scroll container: the cost table has enough columns to exceed a
+                phone viewport and was pushing the whole page sideways at 390px.
+                It scrolls inside itself now instead of overflowing the body. */}
+            <div className="fw-cost-scroll">
+              <table className="fw-cost-table">
+                <thead>
+                  <tr>
+                    {data.costModel.headers.map((h, i) => (
+                      <th key={i}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.costModel.rows.map((row, i) => (
+                    <tr key={i}>
+                      {row.map((cell, j) => (
+                        <td key={j}>{cell}</td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {data.costModel.rows.map((row, i) => (
-                  <tr key={i}>
-                    {row.map((cell, j) => (
+                  <tr>
+                    {data.costModel.totals.map((cell, j) => (
                       <td key={j}>{cell}</td>
                     ))}
                   </tr>
-                ))}
-                <tr>
-                  {data.costModel.totals.map((cell, j) => (
-                    <td key={j}>{cell}</td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
             {data.costModel.lean && <p className="fw-cost-lean">{data.costModel.lean}</p>}
           </>
         )}
