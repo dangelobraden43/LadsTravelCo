@@ -114,7 +114,63 @@
   stroke: var(--cream);
 }
 
-/* ---------- shared story panel ---------- */
+/* ---------- airports: third tier ---------- */
+.gn-air {
+  cursor: pointer;
+  outline: none;
+}
+
+.gn-air-leader {
+  stroke: rgba(150, 200, 224, 0.5);
+  stroke-width: 1;
+}
+
+.gn-air-dot {
+  fill: #96c8e0;
+}
+
+.gn-air-chip {
+  fill: rgba(20, 34, 44, 0.88);
+  stroke: rgba(150, 200, 224, 0.55);
+  stroke-width: 1;
+  transition: fill 0.2s ease;
+}
+
+.gn-air-code {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  fill: #b6dcef;
+  pointer-events: none;
+  user-select: none;
+}
+
+.gn-air-hit {
+  fill: transparent;
+  stroke: none;
+}
+
+.gn-air:hover .gn-air-chip,
+.gn-air:focus-visible .gn-air-chip,
+.gn-air.is-active .gn-air-chip {
+  fill: rgba(40, 76, 96, 0.95);
+  stroke: #b6dcef;
+}
+
+/* ---------- shared panel (anchors + airports) ---------- */
+.gn-panel-status {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  color: #b6dcef;
+  border: 1px solid rgba(150, 200, 224, 0.4);
+  border-radius: 10px;
+  padding: 4px 10px;
+  margin-bottom: 16px;
+}
+
 .gn-panel {
   position: absolute;
   top: 40px;
@@ -261,6 +317,13 @@
   }
 
   .gn-anchor-label {
+    font-size: 16px;
+  }
+
+  /* The map scales to ~0.37 here, so map-space type has to grow to stay
+     legible. Chips keep their box size — only the code grows — so the
+     verified zero-collision layout is preserved. */
+  .gn-air-code {
     font-size: 16px;
   }
 }

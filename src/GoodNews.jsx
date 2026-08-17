@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { VIEWBOX, STATES, PLACES, ROUTE_PATHS } from './midwestGeo'
+import { VIEWBOX, STATES, PLACES, AIRPORTS, ROUTE_PATHS } from './midwestGeo'
 import './GoodNews.css'
 
 /* ===== SHARED GEOMETRY =====
@@ -98,7 +98,96 @@ const CITIES = [
   },
 ]
 
-function StoryPanel({ anchor, onClose }) {
+/* AIRPORTS — third tier of the pin hierarchy.
+   At Midwest zoom an airport sits 7-20px from its own city (MKE is 7px from
+   Milwaukee), so a second labelled dot per city would be unreadable mud. Each
+   airport is therefore drawn at its TRUE projected coordinate as a small dot,
+   with a leader line out to an IATA chip placed in clear space — standard
+   cartographic practice, and the marker never lies about where it is.
+
+   `searchUrl` is the ARCHITECTED AVIASALES SLOT (see CLAUDE.md / d6dd493).
+   Null today. When Travelpayouts flight links or an embedded widget land, the
+   panel switches from the coming-soon state to live data with no component
+   change and no hard-coded price copy to rip out. */
+const AIRPORT_LIST = [
+  {
+    iata: 'DTW',
+    name: 'Detroit Metropolitan Wayne County Airport',
+    city: 'Detroit, Michigan',
+    at: AIRPORTS.DTW,
+    chip: { x: 841, y: 600 },
+    searchUrl: null,
+  },
+  {
+    iata: 'GRR',
+    name: 'Gerald R. Ford International Airport',
+    city: 'Grand Rapids, Michigan',
+    at: AIRPORTS.GRR,
+    chip: { x: 710, y: 537 },
+    searchUrl: null,
+  },
+  {
+    iata: 'ORD',
+    name: "O'Hare International Airport",
+    city: 'Chicago, Illinois',
+    at: AIRPORTS.ORD,
+    chip: { x: 512, y: 636 },
+    searchUrl: null,
+  },
+  {
+    iata: 'MDW',
+    name: 'Chicago Midway International Airport',
+    city: 'Chicago, Illinois',
+    at: AIRPORTS.MDW,
+    chip: { x: 566, y: 636 },
+    searchUrl: null,
+  },
+  {
+    iata: 'MKE',
+    name: 'Milwaukee Mitchell International Airport',
+    city: 'Milwaukee, Wisconsin',
+    at: AIRPORTS.MKE,
+    chip: { x: 540, y: 548 },
+    searchUrl: null,
+  },
+  {
+    iata: 'MSP',
+    name: 'Minneapolis–Saint Paul International Airport',
+    city: 'Minneapolis, Minnesota',
+    at: AIRPORTS.MSP,
+    chip: { x: 236, y: 410 },
+    searchUrl: null,
+  },
+  {
+    iata: 'IND',
+    name: 'Indianapolis International Airport',
+    city: 'Indianapolis, Indiana',
+    at: AIRPORTS.IND,
+    chip: { x: 639, y: 816 },
+    searchUrl: null,
+  },
+  {
+    iata: 'CLE',
+    name: 'Cleveland Hopkins International Airport',
+    city: 'Cleveland, Ohio',
+    at: AIRPORTS.CLE,
+    chip: { x: 920, y: 668 },
+    searchUrl: null,
+  },
+  {
+    iata: 'CMH',
+    name: 'John Glenn Columbus International Airport',
+    city: 'Columbus, Ohio',
+    at: AIRPORTS.CMH,
+    chip: { x: 846, y: 786 },
+    searchUrl: null,
+  },
+]
+
+const CHIP_W = 46
+const CHIP_H = 20
+
+function Panel({ item, onClose }) {
   const closeRef = useRef(null)
 
   useEffect(() => {
@@ -110,14 +199,14 @@ function StoryPanel({ anchor, onClose }) {
     return () => document.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  if (!anchor) return null
+  if (!item) return null
 
   return (
     <div
       className="gn-panel"
       role="dialog"
       aria-modal="false"
-      aria-labelledby={`gn-panel-title-${anchor.id}`}
+      aria-labelledby={`gn-panel-title-${item.id}`}
     >
       <button
         ref={closeRef}
@@ -129,26 +218,60 @@ function StoryPanel({ anchor, onClose }) {
         &times;
       </button>
       <div className="gn-panel-scroll">
-        <div className="gn-panel-eyebrow">OUR ROOTS &middot; {anchor.who}</div>
-        <h2 className="gn-panel-title" id={`gn-panel-title-${anchor.id}`}>
-          {anchor.title}
+        <div className="gn-panel-eyebrow">{item.eyebrow}</div>
+        <h2 className="gn-panel-title" id={`gn-panel-title-${item.id}`}>
+          {item.title}
         </h2>
-        <div className="gn-panel-place">{anchor.place}</div>
-        {anchor.lines.map((l) => (
+        <div className="gn-panel-place">{item.place}</div>
+        {item.status && <div className="gn-panel-status">{item.status}</div>}
+        {item.lines.map((l) => (
           <p className="gn-panel-line" key={l}>
             {l}
           </p>
         ))}
-        <p className="gn-panel-tail">{anchor.tail}</p>
+        {item.tail && <p className="gn-panel-tail">{item.tail}</p>}
       </div>
     </div>
   )
 }
 
+/* Both tiers normalise into the same panel shape. */
+function anchorToPanel(a) {
+  return {
+    id: a.id,
+    eyebrow: `OUR ROOTS · ${a.who}`,
+    title: a.title,
+    place: a.place,
+    lines: a.lines,
+    tail: a.tail,
+  }
+}
+
+function airportToPanel(a) {
+  return {
+    id: `air-${a.iata}`,
+    eyebrow: `AIRPORT · ${a.iata}`,
+    title: a.name,
+    place: a.city,
+    status: a.searchUrl ? null : 'FLIGHT PRICES — COMING SOON',
+    lines: [
+      `Live flight intelligence from ${a.iata} is coming — average prices and best booking windows to our framework destinations.`,
+    ],
+  }
+}
+
 export default function GoodNews() {
   const [activeId, setActiveId] = useState(null)
-  const active = ANCHORS.find((a) => a.id === activeId) || null
   const close = useCallback(() => setActiveId(null), [])
+
+  const anchorHit = ANCHORS.find((a) => a.id === activeId)
+  const airportHit = AIRPORT_LIST.find((a) => `air-${a.iata}` === activeId)
+  const active = anchorHit
+    ? anchorToPanel(anchorHit)
+    : airportHit
+      ? airportToPanel(airportHit)
+      : null
+  const toggle = (id) => setActiveId((cur) => (cur === id ? null : id))
 
   return (
     <div className="gn-root">
@@ -277,6 +400,55 @@ export default function GoodNews() {
             </g>
           ))}
 
+          {/* AIRPORTS — dot at the true coordinate, leader out to an IATA chip */}
+          {AIRPORT_LIST.map((a) => {
+            const id = `air-${a.iata}`
+            const cx = a.chip.x + CHIP_W / 2
+            const cy = a.chip.y + CHIP_H / 2
+            return (
+              <g
+                key={id}
+                className={`gn-air${activeId === id ? ' is-active' : ''}`}
+                role="button"
+                tabIndex={0}
+                aria-label={`${a.iata} — ${a.name}`}
+                onClick={() => toggle(id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    toggle(id)
+                  }
+                }}
+              >
+                <line className="gn-air-leader" x1={a.at.x} y1={a.at.y} x2={cx} y2={cy} />
+                <circle className="gn-air-dot" cx={a.at.x} cy={a.at.y} r="3" />
+                <rect
+                  className="gn-air-chip"
+                  x={a.chip.x}
+                  y={a.chip.y}
+                  width={CHIP_W}
+                  height={CHIP_H}
+                  rx="6"
+                />
+                {/* Generous transparent hit area. At 390px the map scales to
+                    ~0.37, so the 46x20 chip alone is a ~17x7 CSS-px target —
+                    far under a thumb. This pads it out without moving the
+                    visible chip or risking a label collision. */}
+                <rect
+                  className="gn-air-hit"
+                  x={a.chip.x - 22}
+                  y={a.chip.y - 20}
+                  width={CHIP_W + 44}
+                  height={CHIP_H + 40}
+                />
+                <text className="gn-air-code" x={cx} y={cy + 4} textAnchor="middle">
+                  {a.iata}
+                </text>
+                <title>{`${a.iata} — ${a.name}. Flight prices coming soon.`}</title>
+              </g>
+            )
+          })}
+
           {/* OUR ROOTS anchors — gold, interactive */}
           {ANCHORS.map((a) => (
             <g
@@ -285,11 +457,11 @@ export default function GoodNews() {
               role="button"
               tabIndex={0}
               aria-label={`${a.title} — open story`}
-              onClick={() => setActiveId(activeId === a.id ? null : a.id)}
+              onClick={() => toggle(a.id)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
-                  setActiveId(activeId === a.id ? null : a.id)
+                  toggle(a.id)
                 }
               }}
             >
@@ -308,7 +480,7 @@ export default function GoodNews() {
           ))}
         </svg>
 
-        <StoryPanel anchor={active} onClose={close} />
+        <Panel item={active} onClose={close} />
       </div>
     </div>
   )
