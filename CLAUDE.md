@@ -14,9 +14,12 @@ Posture: PREVIEW — paid services launch Fall 2026.
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: 9 React destination routes (no static flagships)
 Peru completed. Ford started May 18.
-WIP: "Good News" Michigan map at `/good-news` — MERGED into main Aug 17,
-  still unpushed. Being expanded to a full Midwest map — see MIDWEST MAP
-  RUNWAY below.
+LIVE: `/good-news` — full MIDWEST map (MN·WI·MI·IL·IN·OH), three pin
+  tiers (roots anchors · city context · airports). Unlinked from nav,
+  `noindex`, reachable by URL. Phases 1–3 done; Phase 4 pins pending
+  Dawson's data. See MIDWEST MAP RUNWAY + TOMORROW'S QUEUE.
+LIVE: `/privacy` + footer affiliate disclosure. Travelpayouts verified
+  Aug 17 (marker `563356`, PayPal payout set).
 DONE: Scenic Shore ride happened July 25–26, 2026. Table run, crewnecks
   sold in person. The 5-product seal line is STILL DRAFT/$0.00 and was
   never published — see SCENIC SHORE below.
@@ -484,6 +487,66 @@ Data moment: Vivid Harbor Bridge drone
 /lads founders: Scooter to Trevi · /lads secondary: Smoky Mountains hike
 
 (RiseLantern was Vegas-Zion-Rise hero — flagship deleted, video unused.)
+
+---
+
+## TOMORROW'S QUEUE (written Aug 17 — /morning reads this first)
+
+Work them **in this order**. Everything below is unblocked unless it
+appears in BLOCKED-ON-BRADY.
+
+**a. `/shop` page.** Layout proposal → Brady approval → build → verify.
+  Featured lineup, real Shopify data ONLY, never invented:
+    · Scenic Shore Crewneck Sweatshirt — HERO ($50.48–57.45)
+    · Canvas Lunch Bag ($22.99)
+    · Kiss-Cut Vinyl Decals — rename on /shop to
+      "Lads Travel Co. Sticker — Kiss-Cut Vinyl Decal" (approved Aug 17;
+      apply the Shopify title change in the same pass)
+    · Travel Magnet "Explore the World" ($9.99) — LEAD magnet
+    · Lads Travel Co. Vintage Travel Badge Magnet ($9.99) — second
+    · Barcelona Gaudí Sticker + Prague Sticker ($4.99 each)
+  Cards link OUT to Shopify checkout. Shop link into the Footer.
+  This is a PUBLIC COMMERCIAL page — propose before building.
+
+**b. Affiliate URLs.** Brady returns the filled worksheet at
+  `internal/brady/affiliate-link-worksheet.md` (gitignored, on disk).
+  Then: pin the real Travelpayouts format from his sample links → wire
+  all 12 as a DATA-ONLY edit (no component changes needed, the
+  endorsement gradient already applies itself off `ladsRating`) → verify
+  the gradient renders on at least 3 (one endorsed, one neutral, one
+  pre-existing). Also REGENERATE the 4 existing raw links through
+  Travelpayouts — they are already public and currently earn nothing.
+
+**c. Phase 4 pins.** Brady provides Dawson's Google Maps exports. Build
+  the normalized-intermediate ingestion (`name, lat, lng, type, note,
+  source`) against REAL data — brewery/golf/view/event/gem icons, click
+  + hover cards. Do NOT build it against placeholders.
+
+**d. Digital product pilot.** First framework as a paid PDF / Shopify
+  digital product — the revenue milestone. The NFL planner follows once
+  the mechanism is proven. Not before (a)–(c).
+
+### BLOCKED ON BRADY (nothing moves on these until they land)
+- **Filled affiliate worksheet** — blocks (b)
+- **Dawson's Google Maps exports** (UP picks) — blocks (c)
+- **Travelpayouts sample links** — one real Viator + one real GYG
+  generated link, to pin the URL format instead of inferring it
+- **LLC filing status update**
+
+### POLISH BACKLOG (none are ship blockers)
+- **Airport touch targets at 390px.** Map scales to ~0.37 there, so the
+  IATA chips are 33x22 CSS px after the padded hit rect — still under
+  the 44px guideline. Nine airports across a 1000-unit region cannot all
+  clear 44px at that width without a zoom/pan or a companion list.
+  KNOWN, on an unlinked noindex route, acceptable to ship.
+- **320px `.globe-hint` overflow** — renders 318px wide on a 305px
+  viewport and pushes the homepage sideways. 360px and up are clean.
+- **Salkantay + Michigan photo processing** — folders still pending from
+  Brady. `/local` and `/michigan` still use a Smoky Mtns placeholder.
+- **Travel-tools affiliate surface** — the one home for Klook / Tiqets /
+  Yesim / Kiwitaxi / Localrent. Later block, see the hard rule above.
+- **Motor City at Michigan zoom** — waypoints preserved in the tracer +
+  `ROUTE_PATHS['motor-city']`, unused until a zoomed view exists.
 
 ---
 
