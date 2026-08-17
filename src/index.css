@@ -325,6 +325,21 @@ a {
     display: block;
   }
 }
+/* Visually-hidden headings. Lives here, not in a page chunk: it was only
+   defined in LocalPage.css, so any other page using .sr-only rendered the
+   heading as visible body text (caught on /shop — "Featured" and
+   "Everything else" were showing). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 /* Nav label show/hide for mobile */
 .nav-label-short {
   display: none;

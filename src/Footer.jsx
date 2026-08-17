@@ -7,6 +7,7 @@ const COLLECTIONS = [
   { label: 'Outdoors', path: '/outdoors' },
   { label: 'Bucket List', path: '/bucket-list' },
   { label: 'Local', path: '/local' },
+  { label: 'Shop', path: '/shop' },
 ]
 
 const SOCIALS = [
