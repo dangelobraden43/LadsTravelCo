@@ -490,10 +490,17 @@ Data moment: Vivid Harbor Bridge drone
 
 ---
 
-## TOMORROW'S QUEUE (written Aug 17 — /morning reads this first)
+## TOMORROW'S QUEUE — MONEY DAY (rev. Aug 17 late; /morning reads this first)
 
-Work them **in this order**. Everything below is unblocked unless it
-appears in BLOCKED-ON-BRADY.
+Work them **in this order**. The order is deliberate: (a) is the only
+item with nothing at all in front of it, (b) unlocks the instant Brady
+pastes, (c) unlocks as approvals clear on their own schedule, (d) is the
+capstone.
+
+**MORNING TASK ZERO (before any code): retry the LLC filing.** The Aug 17
+attempt hit a **MiLogin authentication wall**. If it fights again, call
+**LARA on 517-241-6470 — lines open 8am.** This gates a real claim we are
+already making in the pitch deck (see POLISH BACKLOG).
 
 **a. `/shop` page.** Layout proposal → Brady approval → build → verify.
   Featured lineup, real Shopify data ONLY, never invented:
@@ -508,24 +515,41 @@ appears in BLOCKED-ON-BRADY.
   Cards link OUT to Shopify checkout. Shop link into the Footer.
   This is a PUBLIC COMMERCIAL page — propose before building.
 
-**b. Affiliate URLs.** Brady returns the filled worksheet at
-  `internal/brady/affiliate-link-worksheet.md` (gitignored, on disk).
-  Then: pin the real Travelpayouts format from his sample links → wire
-  all 12 as a DATA-ONLY edit (no component changes needed, the
-  endorsement gradient already applies itself off `ladsRating`) → verify
-  the gradient renders on at least 3 (one endorsed, one neutral, one
-  pre-existing). Also REGENERATE the 4 existing raw links through
-  Travelpayouts — they are already public and currently earn nothing.
+**b. Phase 4 pins + HOP PASSPORT — starts the moment Brady pastes.**
+  Brady HAS access to the lists now; the only thing outstanding is the
+  CONTENTS. There is also a NEW list: a **Bruce Peninsula road trip
+  (Ontario, Canada)** — the map goes international.
+  ✅ **Projection cost already assessed Aug 17 — the answer is ZERO.**
+  The Bruce needs **no eastward bounds extension**; it already falls
+  inside the current canvas (Tobermory lands at x 910.8, y 346.5,
+  because Ohio's east edge at −80.519° is east of the Bruce). Do not
+  re-litigate this when building. The Ontario blocker is the LAND
+  POLYGON source, nothing else — see (c2).
 
-**c. Phase 4 pins + HOP PASSPORT.** Brady provides Dawson's Google Maps
-  list CONTENTS (the Aug 17 attempt pasted two authenticated list links
-  with no place names — links carry a list ID only, unreadable by
-  anyone but the owner; plain-text names are enough). Build the
-  normalized-intermediate ingestion (`name, lat, lng, type, note,
-  source`) against REAL data — brewery/golf/view/event/gem icons, click
-  + hover cards on the Panel/mobile-sheet pattern. Do NOT build it
+**c. Affiliate URLs — unblocks itself as approvals clear.**
+  Status Aug 17 night: **Viator connection is IN REVIEW at
+  Travelpayouts.** Brady queued a batch of deep links tonight; they
+  **auto-convert once Viator approves** (likely days, not hours).
+  ➜ **First action tomorrow: check whether GetYourGuide is already
+  approved.** If yes, the GYG-preference spots can be wired immediately
+  while Viator clears — that is rows 1, 3, 4, 5, 9, 10, 11, 12 on the
+  worksheet. Do not wait on Viator to start.
+  Then: pin the real Travelpayouts format → wire as a DATA-ONLY edit
+  (the endorsement gradient already applies itself off `ladsRating`) →
+  verify on at least 3 (one endorsed, one neutral, one pre-existing).
+  Also REGENERATE the 4 existing raw links — already public, currently
+  earning nothing.
+
+### (b) in full — the pin build
+
+  Build the normalized-intermediate ingestion (`name, lat, lng, type,
+  note, source`) against REAL data — brewery/golf/view/event/gem icons,
+  click + hover cards on the Panel/mobile-sheet pattern. Do NOT build it
   against placeholders. Geocode each name, verify, and FLAG ambiguous
   ones rather than pin them wrong (the Tivoli rule applies to geography).
+  Source attribution per pin: "Scouted by Dawson — July 2026" for the UP
+  list, and the equivalent for the Bruce list once its provenance is
+  confirmed.
 
   **Hop Passport = the brewery backbone** (Brady's Aug 17 direction).
   Intent: brewery pins are not loose dots, they hang off a passport
@@ -550,26 +574,42 @@ appears in BLOCKED-ON-BRADY.
 
 **d. Digital product pilot.** First framework as a paid PDF / Shopify
   digital product — the revenue milestone. The NFL planner follows once
-  the mechanism is proven. Not before (a)–(c).
+  the mechanism is proven. The day's CAPSTONE — take it on once (a)–(c)
+  are either done or parked waiting on someone else, not before.
 
 ### BLOCKED ON BRADY (nothing moves on these until they land)
-- **Filled affiliate worksheet** — blocks (b)
-- **Dawson's Maps list CONTENTS as plain text** — blocks (c). Bare
+- **Maps list CONTENTS pasted as plain text** — blocks (b). NOT blocked
+  on Dawson any more; Brady has access to the lists. Bare
   `maps.app.goo.gl` links do NOT work: they resolve to
   `/maps/@/data=…!11m2!2s<listID>`, an authenticated saved-list
   reference readable only by the owner. Place names as text, or a
-  Google Takeout CSV (which includes coordinates), or nothing.
+  Google Takeout CSV (which includes coordinates).
 - **"Hop Passport": third-party program or Lads concept?** — blocks the
-  brewery backbone in (c)
-- **A land/coastline polygon source for Ontario** — blocks (c2)
+  brewery backbone in (b). If third-party we cannot invent its rules,
+  members or branding.
 - **What the "Brady's Barrenjoy Trip 🇨🇦" list actually is** — labelled
   Brady's not Dawson's, and Barrenjoey is a headland in New South
-  Wales, Australia while the flag says Canada. Unresolved.
-- **Travelpayouts sample links** — one real Viator + one real GYG
-  generated link, to pin the URL format instead of inferring it
-- **LLC filing status update**
+  Wales, Australia while the flag says Canada. Possibly the Bruce list
+  mislabelled. Unresolved.
+- **A land/coastline polygon source for Ontario** — blocks (c2)
+- **Filled affiliate worksheet** — partially blocks (c)
+
+### CLEARING ON THEIR OWN (no action needed, just check status)
+- **Viator @ Travelpayouts — IN REVIEW.** Deep-link batch queued Aug 17;
+  auto-converts on approval. Days, not hours.
+- **GetYourGuide @ Travelpayouts — status unknown, CHECK FIRST THING.**
+  If already approved, GYG spots wire immediately without waiting on
+  Viator.
+- **LLC filing** — MiLogin auth wall Aug 17; retry is morning task zero.
 
 ### POLISH BACKLOG (none are ship blockers)
+- 🚩 **PITCH DECK SAYS "LLC FORMED" ON SLIDE 3.** Built in claude.ai
+  Aug 17. The filing did not complete that night (MiLogin wall), so as
+  written the claim is **not yet true**. Soften to "filed" / "in
+  formation", or confirm the filing landed, **before the deck is shown
+  to anyone.** Listed here so it is not forgotten — but this is an
+  accuracy item, not cosmetics: it is a factual claim to a prospect
+  about the company's legal status.
 - **Airport touch targets at 390px.** Map scales to ~0.37 there, so the
   IATA chips are 33x22 CSS px after the padded hit rect — still under
   the 44px guideline. Nine airports across a 1000-unit region cannot all
