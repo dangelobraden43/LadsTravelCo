@@ -507,6 +507,24 @@ full Midwest map (WI · IL · IN · OH · MN · MI). See MIDWEST MAP RUNWAY.
 **Pass B framework engine spec** at `docs/framework-pass-b-spec.md` is
 DORMANT. Reference only. Not the active backlog item.
 
+**LATER BLOCK — "Travel Tools" / Ways-to-Save surface (decided Aug 17,
+do NOT build yet):** Travelpayouts carries ready-made programs well
+beyond tours — Klook, Tiqets, Yesim (eSIM), Kiwitaxi (transfers),
+Localrent (car rental).
+
+  HARD RULE: booking links **on framework spots** stay
+  tours-we-can-vouch-for ONLY (Viator / GetYourGuide; Tiqets is a
+  candidate). The service-category programs get exactly ONE home — a
+  single "travel tools" / Ways-to-Save surface, clearly framed as
+  **services, not validated recommendations** — and are NEVER scattered
+  across framework spots. Mixing a car-rental affiliate into a validated
+  spot list would launder a service link as a Lads endorsement.
+
+**Endorsement gradient (in force since Aug 17):** a spot WITH a
+`ladsRating` gets the full Lads-endorsed CTA framing; a spot WITHOUT one
+gets neutral "Book this tour →" framing that implies no firsthand visit.
+Never imply we did something the data has no rating for.
+
 Immediate candidates (no priority assigned — Brady picks):
 - Wire real social URLs into Footer (`#` placeholders today)
 - Salkantay framework build (homepage callout still says "coming soon")

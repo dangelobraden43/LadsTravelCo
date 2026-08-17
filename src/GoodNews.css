@@ -1,4 +1,4 @@
-/* ===== GOOD BREWS · GOOD VIEWS · GOOD NEWS — Michigan map ===== */
+/* ===== GOOD BREWS · GOOD VIEWS · GOOD NEWS — Midwest map ===== */
 
 .gn-root {
   min-height: 100vh;
@@ -17,11 +17,38 @@
   padding: 24px;
 }
 
+/* The map is a near-square 1000x1017. Size it by HEIGHT so the whole
+   region fits the viewport without scrolling, and let width follow. */
 .gn-map {
-  width: min(100%, 1100px);
-  height: auto;
+  height: min(calc(100vh - 48px), 1017px);
+  width: auto;
+  max-width: 100%;
   display: block;
   filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.5));
+}
+
+/* Michigan is the subject; the other five states are context and sit back. */
+.gn-land--context {
+  opacity: 0.48;
+}
+
+.gn-state-label {
+  font-family: var(--mono);
+  font-size: 20px;
+  letter-spacing: 3px;
+  fill: rgba(232, 220, 200, 0.28);
+  pointer-events: none;
+  user-select: none;
+}
+
+.gn-state-label--focus {
+  fill: rgba(232, 220, 200, 0.55);
+  font-size: 24px;
+}
+
+.gn-tick {
+  fill: var(--cream);
+  opacity: 0.75;
 }
 
 .gn-route {
