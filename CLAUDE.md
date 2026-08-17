@@ -174,6 +174,14 @@ spec'd in the plan doc above:
 - **THEN Phase 3:** clickable airport icons → "flight prices coming
   soon" panels (API-ready structure, NO API yet). Now the MIDWEST set,
   minimum: DTW · GRR · ORD · MDW · MKE · MSP · IND · CLE · CMH.
+  **ARCHITECT FOR TRAVELPAYOUTS (decided Aug 17):** Travelpayouts is
+  live and verified, and its flight side (Aviasales/WayAway) is the
+  likely source of BOTH the real price data and the revenue on these
+  panels. Build the panel as a slot that can later host either an
+  embedded flight-search widget or affiliate deep links — keep the
+  airport record carrying an IATA code and an optional `searchUrl`, and
+  do NOT hard-code static price copy that a widget would have to
+  replace. No widget in Phase 3; just don't paint us into a corner.
 - **THEN Phase 4:** pin SYSTEM — unique icon per type (brewery / golf /
   view / event / hidden gem), click + hover detail cards. REAL pins only
   where real data exists. Pins ingest a NORMALIZED INTERMEDIATE
