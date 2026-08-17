@@ -96,6 +96,70 @@ July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
 
 ---
 
+## WHAT WAS BUILT (August 17, 2026 — big session: commerce, trust, the map)
+
+**5 production deploys, all verified live.** Branch history reconciled;
+`main` is now the single branch.
+
+**Commerce.**
+- Shopify store curated **28 → 11 active**: $999.99 calendar drafted,
+  5 joke-price test SKUs archived, the "Loads Travel Co." typo product
+  archived, `scenic-shore` collection deleted, storefront homepage
+  repointed off a **$0.00 draft** onto the real crewneck. Those 6 test
+  products were the ONLY ones published to all 4 channels — including
+  Google Shopping. Closed.
+- **`/shop` shipped** (`268f8bc`) — 7 real products linking OUT to
+  Shopify. Every price/image/URL pulled live from the store. Pre-flight
+  confirmed the storefront is genuinely public (no password gate) before
+  building a page of links to it. Sticker renamed in Shopify to
+  "Lads Travel Co. Sticker — Kiss-Cut Vinyl Decal" (handle unchanged).
+
+**Revenue plumbing.**
+- **Travelpayouts live + verified** (marker `563356`, PayPal set),
+  shipped isolated (`cc951ea`) so the WIP map didn't ride along.
+- **Endorsement gradient** (`77860a7`): `ladsRating` present → gold
+  "WE DID THIS"; absent → neutral "Book this tour". Driven off the data
+  so it applies itself to every link, present and future.
+- Link worksheet for the 12 approved day trips at
+  `internal/brady/affiliate-link-worksheet.md` (gitignored).
+
+**Trust.**
+- **`/privacy` shipped** (`706ab16`) — 10 disclosed third parties,
+  including Vercel Analytics and Google Fonts which were NOT on the
+  original list but are in the code. Footer affiliate disclosure.
+- Clarity de-duped — it was initialising twice (inline + npm package).
+
+**The map** — `/good-news`, Phases 1–3:
+- Michigan → **6-state Midwest**, 8,831 raw pts → 1,200, one shared
+  projection (`be00339`).
+- Routes converted from hand-tuned control points to **real lat/lng
+  waypoints** + Catmull-Rom, so they re-fit themselves.
+- Anchors + story panels + city context (`ec7fa96`); 9 airports with
+  leader-line IATA chips and the Aviasales slot pre-architected
+  (`a9f66f7`).
+- Geometry pipeline committed to `tools/` with clipping (`81f2a50`).
+
+**Bugs found and fixed** (several pre-existing):
+- **`/michigan` served a completely blank page** — `logistics: null`
+  dereferenced unguarded threw during render and unmounted the whole
+  tree. Guarded + honest placeholder, and a **route-level error boundary
+  added** so one bad field can never blank a page again (`78648b0`).
+- **Mobile nav** was broken site-wide — the existing `@media` rules had
+  NEVER applied because inline styles outranked them (`21915bd`).
+- Cost table overflowed the page body on mobile (`15cbf32`).
+- `.sr-only` was defined only in LocalPage.css, so hidden headings
+  rendered as visible text on `/shop`.
+
+**Three catches worth remembering:**
+1. GetYourGuide returns **Copenhagen** for "Tivoli" — a Rome-page link
+   would have sent readers to Denmark. Hence the disambiguated worksheet.
+2. Ontario's political boundary **includes the Great Lakes**, so it
+   renders as land over the water. Needs a coastline source.
+3. `maps.app.goo.gl` links resolve to an authenticated list ID that only
+   the owner can read — they carry no place data.
+
+---
+
 ## WHAT WAS BUILT (June 30, 2026 — "Good Brews · Good Views · Good News" Michigan map)
 
 Big build session. New immersive, illustrated Michigan road-trip map.
@@ -502,8 +566,10 @@ attempt hit a **MiLogin authentication wall**. If it fights again, call
 **LARA on 517-241-6470 — lines open 8am.** This gates a real claim we are
 already making in the pitch deck (see POLISH BACKLOG).
 
-**a. `/shop` page.** Layout proposal → Brady approval → build → verify.
-  Featured lineup, real Shopify data ONLY, never invented:
+**a. ✅ DONE Aug 17 night — `/shop` SHIPPED** (`268f8bc`), live with the
+  approved lineup, Shop in the top nav AND footer. Remaining follow-ups
+  are in NEW — RAISED AUG 17 NIGHT below (Paris sticker art, TP ad
+  layer). Original spec kept for reference:
     · Scenic Shore Crewneck Sweatshirt — HERO ($50.48–57.45)
     · Canvas Lunch Bag ($22.99)
     · Kiss-Cut Vinyl Decals — rename on /shop to
@@ -601,6 +667,23 @@ already making in the pitch deck (see POLISH BACKLOG).
   If already approved, GYG spots wire immediately without waiting on
   Viator.
 - **LLC filing** — MiLogin auth wall Aug 17; retry is morning task zero.
+
+### NEW — RAISED AUG 17 NIGHT, LOOK AT THESE TOMORROW
+- 🚩 **Travelpayouts is running an AD LAYER on the site, not just link
+  attribution.** Console on production shows `[tp] emerald monetization
+  enabled`, `[tp] link_switcher init`, and a request to
+  `securepubads.g.doubleclick.net` (which 400s). That is ad-serving
+  behaviour on every page, including `/privacy`. Two things to do:
+  (1) check the Travelpayouts dashboard for a setting to narrow it to
+  link attribution only; (2) if it stays, our `/privacy` entry for
+  Travelpayouts says "affiliate tracking", which is **softer than what
+  it actually does** — reword it to name the ad/monetization layer.
+  Disclosure has to match behaviour.
+- **"Lads Travel Co. Sticker" is Paris artwork.** The rename was
+  approved before either of us saw the image — it is an Eiffel Tower
+  design on a checkered transparency background (the checkerboard reads
+  as an unfinished export). Either rename it "Paris Sticker" to match
+  the art, or swap in real Lads artwork. It is live on `/shop` now.
 
 ### POLISH BACKLOG (none are ship blockers)
 - 🚩 **PITCH DECK SAYS "LLC FORMED" ON SLIDE 3.** Built in claude.ai
