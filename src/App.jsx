@@ -136,6 +136,7 @@ function Nav({ scrolled }) {
       }}
     >
       <div
+        className="nav-inner"
         style={{
           maxWidth: 1200,
           margin: '0 auto',
@@ -146,10 +147,12 @@ function Nav({ scrolled }) {
         }}
       >
         <div
+          className="nav-brand"
           onClick={() => navigate('/')}
           style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
         >
           <svg
+            className="nav-mark"
             width="32"
             height="32"
             viewBox="0 0 32 32"
@@ -163,6 +166,7 @@ function Nav({ scrolled }) {
             <line x1="16" y1="2" x2="16" y2="30" stroke="currentColor" strokeWidth="1.2" />
           </svg>
           <span
+            className="nav-wordmark"
             style={{
               fontFamily: 'var(--display)',
               fontSize: 16,

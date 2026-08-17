@@ -329,20 +329,67 @@ a {
 .nav-label-short {
   display: none;
 }
+
+/* The wordmark must never wrap. Before the fix it broke onto four lines
+   under ~420px, which pushed the nav to ~120px tall and shoved the pills
+   off-screen on every page. */
+.nav-wordmark {
+  white-space: nowrap;
+}
+.nav-brand {
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+/* NOTE: Nav is styled with inline styles in App.jsx, so every property
+   these media queries override must be !important or it silently loses
+   to the inline rule. (The old mobile pill rules here were dead for
+   exactly that reason — only the display toggles below ever worked.) */
 @media (max-width: 640px) {
+  .nav-inner {
+    padding: 0 20px !important;
+  }
   .nav-pills {
-    gap: 2px;
-    padding: 3px;
+    gap: 2px !important;
+    padding: 3px !important;
   }
   .nav-pill {
-    font-size: 11px;
-    padding: 6px 12px;
+    font-size: 11px !important;
+    padding: 6px 12px !important;
   }
   .nav-label-full {
     display: none;
   }
   .nav-label-short {
     display: inline;
+  }
+  .nav-wordmark {
+    font-size: 14px !important;
+  }
+}
+
+/* Below 540px the wordmark + four pills cannot both fit on one line
+   (measured: still 8px of overflow at 481px). Drop to the globe mark
+   alone — it is the brand mark used in the footer too, and the whole
+   brand block still routes home. */
+@media (max-width: 540px) {
+  .nav-inner {
+    padding: 0 16px !important;
+  }
+  .nav-brand {
+    gap: 0 !important;
+  }
+  .nav-wordmark {
+    display: none;
+  }
+  .nav-mark {
+    width: 26px;
+    height: 26px;
+  }
+  .nav-pill {
+    font-size: 10px !important;
+    padding: 6px 9px !important;
+    letter-spacing: 0.3px !important;
   }
 }
 
