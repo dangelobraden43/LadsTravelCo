@@ -310,24 +310,39 @@ export default function FrameworkPage({ data, heroImg }) {
       <section id="logistics" className="fw-section">
         <div className="fw-section-label">LOGISTICS</div>
         <h2 className="fw-section-title">Getting There &amp; Getting Around</h2>
-        <div className="fw-logistics-grid">
-          <div className="fw-logistics-card">
-            <div className="fw-logistics-label">FLIGHTS</div>
-            <p className="fw-logistics-text">{data.logistics.flights}</p>
+        {/* GUARDED. michigan.js has `logistics: null`, and dereferencing it
+            here threw "Cannot read properties of null (reading 'flights')",
+            which unmounted the whole tree and rendered /michigan as a blank
+            black page in production. Missing data must degrade to an honest
+            placeholder, never to a crash. */}
+        {data.logistics ? (
+          <div className="fw-logistics-grid">
+            <div className="fw-logistics-card">
+              <div className="fw-logistics-label">FLIGHTS</div>
+              <p className="fw-logistics-text">{data.logistics.flights}</p>
+            </div>
+            <div className="fw-logistics-card">
+              <div className="fw-logistics-label">IN-COUNTRY</div>
+              <p className="fw-logistics-text">{data.logistics.inCountry}</p>
+            </div>
+            <div className="fw-logistics-card">
+              <div className="fw-logistics-label">GETTING AROUND</div>
+              <p className="fw-logistics-text">{data.logistics.gettingAround}</p>
+            </div>
+            <div className="fw-logistics-card">
+              <div className="fw-logistics-label">TIPPING</div>
+              <p className="fw-logistics-text">{data.logistics.tipping}</p>
+            </div>
           </div>
-          <div className="fw-logistics-card">
-            <div className="fw-logistics-label">IN-COUNTRY</div>
-            <p className="fw-logistics-text">{data.logistics.inCountry}</p>
+        ) : (
+          <div className="fw-pending">
+            <div className="fw-pending-label">COMING SOON</div>
+            <p className="fw-pending-text">
+              Logistics for {data.name} are still being written up &mdash; flights, getting around
+              and the rest. The spots below are already validated.
+            </p>
           </div>
-          <div className="fw-logistics-card">
-            <div className="fw-logistics-label">GETTING AROUND</div>
-            <p className="fw-logistics-text">{data.logistics.gettingAround}</p>
-          </div>
-          <div className="fw-logistics-card">
-            <div className="fw-logistics-label">TIPPING</div>
-            <p className="fw-logistics-text">{data.logistics.tipping}</p>
-          </div>
-        </div>
+        )}
 
         {data.costModel && (
           <>

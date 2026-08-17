@@ -117,6 +117,7 @@ function Nav({ scrolled }) {
     { label: 'Outdoors', short: 'Outdoors', path: '/outdoors' },
     { label: 'Bucket List', short: 'Bucket', path: '/bucket-list' },
     { label: 'Local', short: 'Local', path: '/local' },
+    { label: 'Shop', short: 'Shop', path: '/shop' },
   ]
 
   return (

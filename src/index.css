@@ -383,7 +383,7 @@ a {
   }
 }
 
-/* Below 540px the wordmark + four pills cannot both fit on one line
+/* Below 540px the wordmark + the pills cannot both fit on one line
    (measured: still 8px of overflow at 481px). Drop to the globe mark
    alone — it is the brand mark used in the footer too, and the whole
    brand block still routes home. */
@@ -405,6 +405,23 @@ a {
     font-size: 10px !important;
     padding: 6px 9px !important;
     letter-spacing: 0.3px !important;
+  }
+}
+
+/* Adding Shop made it five pills. Five clears 360px and up, but overflowed
+   320px by 27px — tighten padding and gaps further down there. */
+@media (max-width: 360px) {
+  .nav-inner {
+    padding: 0 10px !important;
+  }
+  .nav-pills {
+    gap: 1px !important;
+    padding: 2px !important;
+  }
+  .nav-pill {
+    font-size: 9px !important;
+    padding: 6px 5px !important;
+    letter-spacing: 0 !important;
   }
 }
 
@@ -3096,4 +3113,87 @@ button:focus-visible {
   height: 100%;
   object-fit: cover;
   will-change: transform;
+}
+
+/* ===== ROUTE ERROR BOUNDARY =====
+   Shown only when a route throws during render. See RouteBoundary.jsx —
+   added after /michigan shipped as a blank black page. */
+.route-error {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+.route-error-inner {
+  max-width: 52ch;
+}
+.route-error-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--copper);
+  margin-bottom: 18px;
+}
+.route-error-title {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.12;
+  margin: 0 0 16px;
+}
+.route-error-text {
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(232, 220, 200, 0.72);
+  margin: 0 0 28px;
+}
+.route-error-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.route-error-btn {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--bg);
+  background: var(--gold);
+  padding: 11px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.route-error-link {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(212, 168, 67, 0.34);
+}
+
+/* Honest placeholder for a framework section with no data yet. */
+.fw-pending {
+  border: 1px dashed rgba(212, 168, 67, 0.3);
+  border-radius: var(--radius-sm, 10px);
+  padding: 26px 28px;
+  background: rgba(212, 168, 67, 0.04);
+}
+.fw-pending-label {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.fw-pending-text {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(232, 220, 200, 0.7);
+  margin: 0;
+  max-width: 60ch;
 }

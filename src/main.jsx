@@ -7,6 +7,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { reportWebVitals } from './utils/vitals'
+import RouteBoundary from './RouteBoundary'
 import Clarity from '@microsoft/clarity'
 import './index.css'
 
@@ -88,29 +89,31 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <HelmetProvider>
     <BrowserRouter>
       <Suspense fallback={<div style={{ background: '#141210', height: '100vh' }} />}>
-        <Routes>
-          <Route path="/" element={<App />} />
-          {/* Four-collection spine */}
-          <Route path="/global" element={<ExplorePage />} />
-          <Route path="/outdoors" element={<OutdoorsPage />} />
-          <Route path="/bucket-list" element={<BucketListPage />} />
-          <Route path="/local" element={<LocalPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/shop" element={<ShopPage />} />
-          {/* Kept reachable (out of nav) */}
-          <Route path="/good-news" element={<GoodNews />} />
-          <Route path="/when" element={<WhenPage />} />
-          <Route path="/lads" element={<LadsPage />} />
-          <Route path="/gift/michigan" element={<GiftPage />} />
-          {/* Old-path redirects */}
-          <Route path="/explore" element={<Navigate to="/global" replace />} />
-          <Route path="/adventure" element={<Navigate to="/outdoors" replace />} />
-          <Route path="/plan" element={<Navigate to="/" replace />} />
-          <Route path="/story" element={<Navigate to="/" replace />} />
-          {DESTINATIONS.map((slug) => (
-            <Route key={slug} path={`/${slug}`} element={<LazyFramework slug={slug} />} />
-          ))}
-        </Routes>
+        <RouteBoundary>
+          <Routes>
+            <Route path="/" element={<App />} />
+            {/* Four-collection spine */}
+            <Route path="/global" element={<ExplorePage />} />
+            <Route path="/outdoors" element={<OutdoorsPage />} />
+            <Route path="/bucket-list" element={<BucketListPage />} />
+            <Route path="/local" element={<LocalPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            {/* Kept reachable (out of nav) */}
+            <Route path="/good-news" element={<GoodNews />} />
+            <Route path="/when" element={<WhenPage />} />
+            <Route path="/lads" element={<LadsPage />} />
+            <Route path="/gift/michigan" element={<GiftPage />} />
+            {/* Old-path redirects */}
+            <Route path="/explore" element={<Navigate to="/global" replace />} />
+            <Route path="/adventure" element={<Navigate to="/outdoors" replace />} />
+            <Route path="/plan" element={<Navigate to="/" replace />} />
+            <Route path="/story" element={<Navigate to="/" replace />} />
+            {DESTINATIONS.map((slug) => (
+              <Route key={slug} path={`/${slug}`} element={<LazyFramework slug={slug} />} />
+            ))}
+          </Routes>
+        </RouteBoundary>
       </Suspense>
       <Analytics />
       <SpeedInsights />
