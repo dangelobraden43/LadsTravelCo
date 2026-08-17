@@ -15,6 +15,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
+  position: relative;
 }
 
 /* The map is a near-square 1000x1017. Size it by HEIGHT so the whole
@@ -42,13 +43,165 @@
 }
 
 .gn-state-label--focus {
-  fill: rgba(232, 220, 200, 0.55);
+  fill: rgba(232, 220, 200, 0.5);
   font-size: 24px;
 }
 
-.gn-tick {
-  fill: var(--cream);
+/* ---------- quiet city context ---------- */
+.gn-city-dot {
+  fill: rgba(232, 220, 200, 0.72);
+}
+
+.gn-city-label {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  fill: rgba(232, 220, 200, 0.6);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Detroit carries the proposed Motor City run until a Michigan-zoom view exists */
+.gn-city--flagged .gn-city-dot {
+  fill: #c073c0;
+}
+.gn-city--flagged .gn-city-label {
+  fill: rgba(216, 150, 216, 0.85);
+}
+.gn-city-ring {
+  fill: none;
+  stroke: #c073c0;
+  stroke-width: 1.2;
+  stroke-dasharray: 2 4;
   opacity: 0.75;
+}
+
+/* ---------- OUR ROOTS anchors ---------- */
+.gn-anchor {
+  cursor: pointer;
+  outline: none;
+}
+
+.gn-anchor-halo {
+  fill: var(--gold);
+  opacity: 0.16;
+  transition: opacity 0.2s ease;
+}
+
+.gn-anchor-dot {
+  fill: var(--gold);
+  stroke: #1a1712;
+  stroke-width: 2;
+}
+
+.gn-anchor-label {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  fill: var(--gold);
+  pointer-events: none;
+  user-select: none;
+}
+
+.gn-anchor:hover .gn-anchor-halo,
+.gn-anchor:focus-visible .gn-anchor-halo,
+.gn-anchor.is-active .gn-anchor-halo {
+  opacity: 0.38;
+}
+
+.gn-anchor:focus-visible .gn-anchor-dot {
+  stroke: var(--cream);
+}
+
+/* ---------- shared story panel ---------- */
+.gn-panel {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: min(380px, calc(100% - 80px));
+  max-height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  background: rgba(22, 20, 17, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius, 16px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  z-index: 5;
+}
+
+/* Scroll lives INSIDE the panel — the page never scroll-traps behind it. */
+.gn-panel-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 26px 26px 24px;
+}
+
+.gn-panel-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: rgba(232, 220, 200, 0.6);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.gn-panel-close:hover,
+.gn-panel-close:focus-visible {
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.gn-panel-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2.2px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.gn-panel-title {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.15;
+  margin: 0 0 6px;
+  color: var(--cream);
+  padding-right: 26px;
+}
+
+.gn-panel-place {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: rgba(232, 220, 200, 0.5);
+  margin-bottom: 16px;
+}
+
+.gn-panel-line {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.68;
+  color: rgba(232, 220, 200, 0.76);
+  margin: 0 0 12px;
+}
+
+.gn-panel-tail {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(212, 168, 67, 0.16);
 }
 
 .gn-route {
@@ -56,13 +209,58 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gn-route {
+  .gn-route,
+  .gn-anchor-halo {
     transition: none;
   }
 }
 
-@media (max-width: 520px) {
+/* ---------- mobile ---------- */
+@media (max-width: 640px) {
   .gn-stage {
     padding: 12px;
+  }
+
+  .gn-map {
+    height: auto;
+    width: 100%;
+    max-height: calc(100vh - 24px);
+  }
+
+  /* With the sheet open the map pins to the top of the stage and shrinks to
+     the space above it, so the anchor you just tapped stays on screen instead
+     of sitting behind the panel. */
+  .gn-stage.has-panel {
+    align-items: flex-start;
+  }
+
+  .gn-stage.has-panel .gn-map {
+    max-height: 46vh;
+    width: auto;
+    margin: 0 auto;
+  }
+
+  /* Bottom sheet. Capped height + internal scroll so it can never overflow
+     the viewport or trap the page behind it. */
+  .gn-panel {
+    top: auto;
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    width: auto;
+    max-height: 62vh;
+    border-radius: var(--radius, 16px);
+  }
+
+  .gn-panel-scroll {
+    padding: 22px 20px 20px;
+  }
+
+  .gn-city-label {
+    font-size: 15px;
+  }
+
+  .gn-anchor-label {
+    font-size: 16px;
   }
 }

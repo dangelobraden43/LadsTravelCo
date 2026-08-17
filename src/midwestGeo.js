@@ -89,6 +89,8 @@ export const PLACES = {
   minneapolis: { x: 250.3, y: 368 },
   duluth: { x: 316.5, y: 226.8 },
   mackinaw: { x: 736.4, y: 305.6 },
+  gvsu: { x: 670.2, y: 525.3 },
+  kalamazooCollege: { x: 686.6, y: 577.8 },
 }
 
 export const AIRPORTS = {

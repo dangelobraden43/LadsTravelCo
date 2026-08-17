@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { VIEWBOX, STATES, PLACES, ROUTE_PATHS } from './midwestGeo'
 import './GoodNews.css'
 
 /* ===== SHARED GEOMETRY =====
-   All silhouettes, cities, airports and routes come from src/midwestGeo.js,
+   All silhouettes, cities, anchors and routes come from src/midwestGeo.js,
    which is GENERATED from real state-boundary GeoJSON through ONE shared
    equirectangular projection (lat0 43.177). Nothing here is hand-placed —
    change the projection in the tracer and every layer re-fits together.
@@ -13,8 +13,15 @@ import './GoodNews.css'
    are context: same trace quality, deliberately subdued so the mitten still
    reads as the subject. */
 
-/* Four routes. status 'live' (solid) = validated/scouted;
-   'proposed' (dashed) = coming. Path data is generated from real waypoints. */
+/* Routes. status 'live' (solid) = validated/scouted;
+   'proposed' (dashed) = coming. Path data is generated from real waypoints.
+
+   MOTOR CITY IS DELIBERATELY NOT A ROUTE HERE (decided Aug 17). At Midwest
+   zoom Detroit metro is genuinely ~40px across, so the loop read as a stray
+   dash rather than a route. It is represented as the Detroit marker instead.
+   Its real waypoints are PRESERVED in the tracer + ROUTE_PATHS['motor-city']
+   so it can return the moment we build a Michigan-zoom view — do not delete
+   them from midwestGeo.js. */
 const ROUTES = [
   {
     id: 'west-coast',
@@ -31,13 +38,6 @@ const ROUTES = [
     note: 'Ann Arbor → the Straits → Marquette',
   },
   {
-    id: 'motor-city',
-    name: 'Motor City',
-    color: '#c073c0',
-    status: 'proposed',
-    note: 'Detroit · Corktown — proposed, validating soon',
-  },
-  {
     id: 'harbor-golf',
     name: 'Harbor & Greens',
     color: '#7fc06a',
@@ -46,17 +46,110 @@ const ROUTES = [
   },
 ]
 
-/* Neighbour-state labels, nudged to sit in open land rather than on a border. */
-const STATE_LABELS = [
-  { code: 'MN', x: 180, y: 300 },
-  { code: 'WI', x: 470, y: 420 },
-  { code: 'MI', x: 700, y: 470 },
-  { code: 'IL', x: 500, y: 700 },
-  { code: 'IN', x: 650, y: 720 },
-  { code: 'OH', x: 830, y: 690 },
+/* OUR ROOTS — gold anchors. Deliberately distinct from the quiet city dots:
+   these are the two campuses the Lads actually came out of. */
+const ANCHORS = [
+  {
+    id: 'gvsu',
+    at: PLACES.gvsu,
+    label: 'GVSU',
+    who: 'Brady',
+    title: 'Grand Valley State University',
+    place: 'Allendale + Grand Rapids, Michigan',
+    lines: [
+      'The Padnos International Center — the office that turns a Michigan student into someone with a passport and a plan.',
+      'The Seidman College of Business, and the Honors College.',
+      'And Grand Rapids itself: "Beer City USA," which is not a nickname the city gave itself quietly.',
+    ],
+    tail: 'Half of this company started here.',
+  },
+  {
+    id: 'kcollege',
+    at: PLACES.kalamazooCollege,
+    label: 'K-College',
+    // GVSU sits ~52px directly north; label below so the two never collide
+    labelBelow: true,
+    who: 'Dawson',
+    title: 'Kalamazoo College',
+    place: 'Kalamazoo, Michigan',
+    lines: [
+      'Football, and the start of a broadcasting career.',
+      'A small campus in a city most people drive past on I-94 without stopping.',
+    ],
+    tail: 'The other half started here.',
+  },
 ]
 
+/* Quiet geography context — NOT features yet. Real lat/lngs through the same
+   transform. `flag` marks Detroit as the home of the proposed Motor City run. */
+const CITIES = [
+  { id: 'chicago', at: PLACES.chicago, name: 'Chicago', anchor: 'end' },
+  { id: 'milwaukee', at: PLACES.milwaukee, name: 'Milwaukee', anchor: 'end' },
+  { id: 'minneapolis', at: PLACES.minneapolis, name: 'Minneapolis', anchor: 'middle' },
+  { id: 'indianapolis', at: PLACES.indianapolis, name: 'Indianapolis', anchor: 'middle' },
+  { id: 'columbus', at: PLACES.columbus, name: 'Columbus', anchor: 'start' },
+  { id: 'cleveland', at: PLACES.cleveland, name: 'Cleveland', anchor: 'start' },
+  {
+    id: 'detroit',
+    at: PLACES.detroit,
+    name: 'Detroit',
+    anchor: 'start',
+    flag: 'Motor City — proposed, validating soon',
+  },
+]
+
+function StoryPanel({ anchor, onClose }) {
+  const closeRef = useRef(null)
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    closeRef.current?.focus()
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  if (!anchor) return null
+
+  return (
+    <div
+      className="gn-panel"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby={`gn-panel-title-${anchor.id}`}
+    >
+      <button
+        ref={closeRef}
+        className="gn-panel-close"
+        onClick={onClose}
+        aria-label="Close"
+        type="button"
+      >
+        &times;
+      </button>
+      <div className="gn-panel-scroll">
+        <div className="gn-panel-eyebrow">OUR ROOTS &middot; {anchor.who}</div>
+        <h2 className="gn-panel-title" id={`gn-panel-title-${anchor.id}`}>
+          {anchor.title}
+        </h2>
+        <div className="gn-panel-place">{anchor.place}</div>
+        {anchor.lines.map((l) => (
+          <p className="gn-panel-line" key={l}>
+            {l}
+          </p>
+        ))}
+        <p className="gn-panel-tail">{anchor.tail}</p>
+      </div>
+    </div>
+  )
+}
+
 export default function GoodNews() {
+  const [activeId, setActiveId] = useState(null)
+  const active = ANCHORS.find((a) => a.id === activeId) || null
+  const close = useCallback(() => setActiveId(null), [])
+
   return (
     <div className="gn-root">
       <Helmet>
@@ -64,13 +157,13 @@ export default function GoodNews() {
         <meta name="robots" content="noindex" />
       </Helmet>
 
-      <div className="gn-stage">
+      <div className={`gn-stage${active ? ' has-panel' : ''}`}>
         <svg
           className="gn-map"
           viewBox={VIEWBOX}
           preserveAspectRatio="xMidYMid meet"
           role="img"
-          aria-label="Illustrated map of the Midwest — Minnesota, Wisconsin, Michigan, Illinois, Indiana and Ohio — with four Michigan road-trip routes"
+          aria-label="Illustrated map of the Midwest — Minnesota, Wisconsin, Michigan, Illinois, Indiana and Ohio — with Michigan road-trip routes and the two campuses the Lads came out of"
         >
           <defs>
             <radialGradient id="gn-water" cx="52%" cy="40%" r="78%">
@@ -97,7 +190,6 @@ export default function GoodNews() {
             </filter>
           </defs>
 
-          {/* water backdrop (Great Lakes feel) */}
           <rect x="0" y="0" width="100%" height="100%" fill="url(#gn-water)" />
 
           {/* context states first, so Michigan always draws on top */}
@@ -130,8 +222,15 @@ export default function GoodNews() {
             )}
           </g>
 
-          {/* state labels */}
-          {STATE_LABELS.map((l) => (
+          {/* state codes */}
+          {[
+            { code: 'MN', x: 180, y: 300 },
+            { code: 'WI', x: 470, y: 420 },
+            { code: 'MI', x: 760, y: 430 },
+            { code: 'IL', x: 500, y: 700 },
+            { code: 'IN', x: 640, y: 700 },
+            { code: 'OH', x: 860, y: 700 },
+          ].map((l) => (
             <text
               key={l.code}
               className={`gn-state-label${l.code === 'MI' ? ' gn-state-label--focus' : ''}`}
@@ -161,13 +260,55 @@ export default function GoodNews() {
             </path>
           ))}
 
-          {/* route endpoint ticks — the anchor/pin systems land here in later phases */}
-          {[PLACES.newBuffalo, PLACES.traverseCity, PLACES.marquette, PLACES.detroit].map(
-            (p, i) => (
-              <circle key={i} className="gn-tick" cx={p.x} cy={p.y} r="4" />
-            )
-          )}
+          {/* quiet city context */}
+          {CITIES.map((c) => (
+            <g key={c.id} className={`gn-city${c.flag ? ' gn-city--flagged' : ''}`}>
+              {c.flag && <circle className="gn-city-ring" cx={c.at.x} cy={c.at.y} r="8" />}
+              <circle className="gn-city-dot" cx={c.at.x} cy={c.at.y} r="3.5" />
+              <text
+                className="gn-city-label"
+                x={c.at.x + (c.anchor === 'end' ? -9 : c.anchor === 'start' ? 9 : 0)}
+                y={c.at.y + (c.anchor === 'middle' ? 20 : 4)}
+                textAnchor={c.anchor}
+              >
+                {c.name}
+              </text>
+              <title>{c.flag ? `${c.name} — ${c.flag}` : c.name}</title>
+            </g>
+          ))}
+
+          {/* OUR ROOTS anchors — gold, interactive */}
+          {ANCHORS.map((a) => (
+            <g
+              key={a.id}
+              className={`gn-anchor${activeId === a.id ? ' is-active' : ''}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`${a.title} — open story`}
+              onClick={() => setActiveId(activeId === a.id ? null : a.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setActiveId(activeId === a.id ? null : a.id)
+                }
+              }}
+            >
+              <circle className="gn-anchor-halo" cx={a.at.x} cy={a.at.y} r="16" />
+              <circle className="gn-anchor-dot" cx={a.at.x} cy={a.at.y} r="7" />
+              <text
+                className="gn-anchor-label"
+                x={a.at.x}
+                y={a.at.y + (a.labelBelow ? 34 : -24)}
+                textAnchor="middle"
+              >
+                {a.label}
+              </text>
+              <title>{`${a.title} — tap for the story`}</title>
+            </g>
+          ))}
         </svg>
+
+        <StoryPanel anchor={active} onClose={close} />
       </div>
     </div>
   )
