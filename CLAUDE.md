@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 13, 2026
+## Last Updated: August 17, 2026
 
 ---
 
@@ -14,6 +14,184 @@ Posture: PREVIEW — paid services launch Fall 2026.
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: 9 React destination routes (no static flagships)
 Peru completed. Ford started May 18.
+WIP: "Good News" Michigan map at `/good-news` — MERGED into main Aug 17,
+  still unpushed. Being expanded to a full Midwest map — see MIDWEST MAP
+  RUNWAY below.
+DONE: Scenic Shore ride happened July 25–26, 2026. Table run, crewnecks
+  sold in person. The 5-product seal line is STILL DRAFT/$0.00 and was
+  never published — see SCENIC SHORE below.
+
+---
+
+## SCENIC SHORE MERCH (June 30, 2026 — separate venture, Shopify)
+
+Charity merch for the **Scenic Shore bike ride, July 25–26, 2026
+(Mequon, WI)** — Brady + Dawson ride; proceeds support **Velo Palmetto BCU
+(Blood Cancer United)**. NOT part of ladstravel.com — it is a Shopify line
+in **The Lads Travel Company** store (myshopify domain `ui5imc-dy`,
+primary domain `ladstravel.myshopify.com`). The Lads' charity-off-the-site
+rule governs the website, not this separate storefront.
+
+**THE RIDE HAPPENED — July 25–26, 2026.** Table run, crewnecks sold in
+person. The 5-product seal line below was **never published** and is
+still DRAFT at $0.00. What actually sold is the separate ACTIVE Printify
+catalog in the same store. The old runway (mockups → prices → cause copy
+→ publish) is moot for the event; open question is whether the seal line
+gets retired, repriced for evergreen sale, or left dark.
+
+The `scenic-shore` collection was **deleted Aug 17** (its 5 products
+survive as drafts). The live collection is **"The Lads Travel Company
+Scenic Shore 2026"** (`521287336218`).
+
+Built June 30 (all DRAFT, $0.00 placeholder prices, NO proceeds/cause
+copy — those need Brady's explicit sign-off):
+- **Brand:** premium "travel club" aesthetic (ref **Dandy Worldwide**).
+  Logo = the **Seal** (gold double-ring crest, arched SCENIC SHORE,
+  sun-on-horizon, EST 2026). Co-brand "✦ by The Lads" (real globe mark,
+  kept subtle). Brand sheet / lookbook / storefront comps + **print-ready
+  files** in `C:\Users\brady\OneDrive\Desktop\scenic-shore-mockups\`.
+- **5 DRAFT products** in the collection: Tee (6 colors × S–XXL = 30
+  variants; Product 10296105894170), Cap (Sand/Navy), Bottle (Steel/Navy),
+  Mug (White/Navy), Tote (Natural). SKUs `SS-…`.
+- Full status + Shopify gotchas in memory **`project-scenic-shore`**.
+
+HARD RULES (real charity commerce): never publish, set prices, or state any
+proceeds/cause claim without Brady's explicit per-step sign-off. Product
+renders so far are **vector mockups (the ceiling)** — real photographic
+images come from **Printify's mockup generator** (Printify is NOT an MCP
+connector; it is Brady's manual admin).
+
+Shopify MCP gotcha: connector shows "Connected" but tool calls can return
+`token expired`. Fix that worked — be signed into Shopify in the browser as
+brady@ladstravel.com FIRST, then `/mcp` authorize, then call immediately.
+Images: `stagedUploadsCreate` → POST bytes to GCS → `productCreateMedia`
+(create-product `images` URLs fail; staged URLs are private).
+
+---
+
+## BIG DAY TOMORROW (July 1, 2026 — Scenic Shore: polish + order samples + go sellable)
+
+GOAL: team merch samples ordered + a full array of products ready to sell.
+🧍 = Brady (admin / payment / approvals)   🤖 = Claude can do via Shopify MCP
+
+1. 🧍 **Connect Printify** to the Shopify store (no MCP — manual).
+2. 🧍 **Upload the print-ready files** (`print-front-light/dark.png`,
+   `print-back-dark.png`, Desktop) into Printify; choose blanks for
+   tee/cap/bottle/mug/tote and place the seal + back art.
+3. → Printify **auto-generates real photographic mockups**.
+4. 🤖 **Swap those real mockups onto the Shopify products** (replace the
+   placeholder vector images) once they sync.
+5. 🤖 **Set prices** — Brady gives numbers per product (no invented prices).
+6. 🤖 **Place the exact cause/proceeds wording** — Brady brings the
+   literally-true BCU line. THE approval gate.
+7. 🧍 **Order team samples** (Printify sample order — payment).
+8. 🤖→🧍 **Publish** the collection live on Brady's explicit go.
+
+BRING TOMORROW (Brady): Printify login + payout set · price per product ·
+exact proceeds wording · team sample sizes/colors · ship-by math vs
+July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
+
+---
+
+## WHAT WAS BUILT (June 30, 2026 — "Good Brews · Good Views · Good News" Michigan map)
+
+Big build session. New immersive, illustrated Michigan road-trip map.
+Followed the superpowers sequence (brainstorming → writing-plans → phased
+execution with a report + STOP between every phase). Spec/plan at
+`docs/superpowers/plans/2026-06-30-good-news-michigan-map.md`.
+
+**Posture: SELF-CONTAINED + UNMERGED.** Lives on its own `/good-news`
+route, all in `src/GoodNews.jsx` + `src/GoodNews.css`. On the `michigan`
+branch ONLY — NOT merged, NOT pushed, `main` + live site untouched.
+The only files outside GoodNews.* are a one-line lazy route in
+`src/main.jsx` and a one-line `/good-news` rewrite in `vercel.json`
+(both branch-only, trivially revertible). `/michigan` is the EXISTING
+brewery/golf framework — do NOT collide with it; the new map is `/good-news`.
+
+Two commits this session:
+- `d5e803c` — rough hand-authored blob silhouette + 4 routes (Phase 1).
+- `c391836` — geo-traced silhouette + de-tangled routes (CURRENT). This
+  is the banked "tonight's win."
+
+**What's BUILT (Phase 1 + tracing pass only):**
+- Accurate Michigan silhouette traced from real state boundary GeoJSON
+  (glynnbird/usstatesgeojson — Michigan). Two largest polygons kept (LP +
+  UP), islands dropped, Douglas-Peucker simplified HARD (LP 1674→130 pts,
+  UP 2056→170 pts ≈ 300 total), equirectangular-projected (lat0 44.58°)
+  into `viewBox="0 0 1000 880"`. Reads instantly as Michigan — mitten,
+  thumb/Saginaw Bay, true UP form, real Mackinac gap at the Straits.
+- 4 routes drawn as REAL SVG `<path>` elements, VEHICLE-READY (a draggable
+  car rides them next via `getPointAtLength()` — no vehicle yet):
+  · Route 1 **West Coast** (teal, LIVE/validated) — New Buffalo→Kalamazoo
+    →Grand Rapids→Traverse City.
+  · Route 2 **Up North** (orange, LIVE/scouted) — Ann Arbor→UP, bridging
+    cleanly at the Straits (no UP overshoot).
+  · Route 3 **Motor City** (magenta, PROPOSED/dashed) — Detroit·Corktown.
+  · Route 4 **Harbor & Greens** (green, PROPOSED/dashed) — Harbor Country
+    + golf country; de-tangled from West Coast on the west side.
+- Shared `PLACES` + `AIRPORTS` coordinate table = real city lat/longs
+  projected through the SAME transform, so every point sits on the true
+  coastline. This is the single reference frame for routes/anchors/pins.
+- Styling (signature asset): water radial gradient, land depth-shadow,
+  coastline stroke, soft glow on the two live routes, dashed = proposed.
+- Verified at 1440 + 390 via Playwright; `npm run build` clean; bundle
+  ~7 KB raw / ~3 KB gzip (own lazy chunk).
+
+**Organizing model decided — Option C (NOT a toggle system):** one
+unified map; "Good Brews · Good Views · Good News" is the hero
+framing/banner over it. Brews = breweries/HOP/happy hours · Views =
+golf/fall colors/lakeshore/UP · News = Aug–Oct events (lead) + the
+lighter human/campus story. Do NOT build filter states.
+
+**HONESTY RULE applied (Brady's standing rule):** breweries + golf use
+real `michigan.js` data; events / HOP-passport / live-flight-prices are
+HONESTLY-LABELED PLACEHOLDERS, never fabricated. No invented event
+names, dates, or prices.
+
+**Placeholder label — RETIRED Aug 17:** the old spec said label pending
+data "coming — validated August." It IS August and the validation trips
+already happened, so that label is now self-contradicting. Use
+**"Dawson's UP picks — loading in"** (or the equivalent for whichever
+data is pending), never a month that has already passed.
+
+---
+
+## MIDWEST MAP RUNWAY (what's next — now on `main`)
+
+The traced Michigan foundation is banked and merged. It is being
+EXPANDED to a full Midwest regional map: WI · IL · IN · OH · MN · MI,
+re-traced from the same state GeoJSON source, same simplify-hard
+approach (~150–300 pts/state), one shared projection + viewBox, with
+the 4 existing routes re-fitted.
+
+Build sequence (each its own report+STOP phase per Brady's rule),
+spec'd in the plan doc above:
+
+- **NEXT SESSION → Phase 2:** university anchors + ONE shared dismissible
+  story panel. GVSU/Grand Rapids (Brady): Padnos International Center,
+  Seidman College of Business, Honors College, GR = "Beer City USA."
+  Kalamazoo College (Dawson): football + broadcasting career, campus.
+- **THEN Phase 3:** clickable airport icons → "flight prices coming
+  soon" panels (API-ready structure, NO API yet). Now the MIDWEST set,
+  minimum: DTW · GRR · ORD · MDW · MKE · MSP · IND · CLE · CMH.
+- **THEN Phase 4:** pin SYSTEM — unique icon per type (brewery / golf /
+  view / event / hidden gem), click + hover detail cards. REAL pins only
+  where real data exists. Pins ingest a NORMALIZED INTERMEDIATE
+  (`name, lat, lng, type, note, source`) so Dawson's Google Maps list
+  exports drop straight in. Pending data is labeled "Dawson's UP picks
+  — loading in", never a past month.
+- **THEN:** the "Good Brews · Good Views · Good News" banner + framing.
+- **LATER (own sessions):** draggable vehicle on the routes
+  (`getPointAtLength` ready) · real live-flight-price API · real Aug–Oct
+  events data · polish nits (bolder magenta Motor City loop; mobile
+  vertical centering) · homepage-placement decision (2nd hero vs.
+  embedded link — decide once the map is fuller).
+- **TRIP DEPENDENCIES — BOTH TRIPS ARE DONE (as of Aug 17):** Brady's
+  Route 1 drive (July 10–11) is COMPLETE. Dawson's Route 2 / UP scout
+  (July 4) is COMPLETE. **Validation data exists now.** Dawson's UP
+  picks live in Google Maps lists — Brady supplies the export or share
+  link; until then the UP pins are honestly labeled as loading, not
+  invented.
 
 ---
 
@@ -303,7 +481,7 @@ Data moment: Vivid Harbor Bridge drone
 
 ## SESSION SEQUENCE (what's next)
 
-**MIDWEST BUILD (active — branch `midwest-map`, next session):**
+**MIDWEST BUILD (active — on `main` since the Aug 17 reconciliation):**
 - **Replace the Michigan hero photo.** `/local` card (`LocalPage.jsx`) and
   `/michigan` both use `smokyMountainsCabinOverlook` (a Smoky Mtns placeholder).
   NO Michigan photo exists in `src/images-*.js` yet — **Brady must supply one**
@@ -314,6 +492,9 @@ Data moment: Vivid Harbor Bridge drone
   with Brady: re-skin the existing page vs. a fuller rebuild. (NOT re-adding
   the retired thailand/charleston — "current frameworks" = the 9.)
 - **Quality-improvement pass across all 9 current frameworks** (data + pages).
+
+**FOR NEXT /morning:** the Michigan map is merged and being expanded to a
+full Midwest map (WI · IL · IN · OH · MN · MI). See MIDWEST MAP RUNWAY.
 
 **Pass B framework engine spec** at `docs/framework-pass-b-spec.md` is
 DORMANT. Reference only. Not the active backlog item.
@@ -493,6 +674,17 @@ The tech makes them faster. It doesn't make them less human.
   on the next build automatically — do NOT hand-edit pin counts.
 
 **Workflow patterns that worked:**
+- Playwright is NOT installed in this repo. For screenshots: `npx playwright
+  install chromium` once, then `npm i playwright` inside the scratchpad and
+  run a small `.mjs` (chromium.launch → page per viewport → fullPage
+  screenshot). Verify frontend at **1440 + 390**; there is no unit-test
+  runner — build + screenshots IS the verification pattern.
+- To trace a real geographic silhouette into an SVG: fetch state GeoJSON
+  (e.g. glynnbird/usstatesgeojson), keep the largest rings (drop islands),
+  Douglas-Peucker simplify to a few hundred pts, then equirectangular-
+  project (`lon*cos(lat0)`, `lat`) fit to the target viewBox. Project any
+  place markers through the SAME transform so they land on the coastline.
+  (Used for the /good-news Michigan map — see scratchpad `trace.mjs`.)
 - For counting canonical stats, write a Node script that imports each
   `src/data/*.js` and tallies. Do NOT trust numbers already on the
   page — they drift.

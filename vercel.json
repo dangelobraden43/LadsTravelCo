@@ -17,6 +17,7 @@
     { "source": "/bucket-list", "destination": "/" },
     { "source": "/local", "destination": "/" },
     { "source": "/privacy", "destination": "/" },
+    { "source": "/good-news", "destination": "/" },
     { "source": "/when", "destination": "/" },
     { "source": "/lads", "destination": "/" },
     { "source": "/gift/:slug*", "destination": "/" },

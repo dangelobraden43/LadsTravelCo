@@ -21,6 +21,7 @@ const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
 const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
 const PrivacyPage = lazy(() => import('./PrivacyPage'))
+const GoodNews = lazy(() => import('./GoodNews'))
 
 Clarity.init('wbqqkbsekh')
 
@@ -95,6 +96,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/local" element={<LocalPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           {/* Kept reachable (out of nav) */}
+          <Route path="/good-news" element={<GoodNews />} />
           <Route path="/when" element={<WhenPage />} />
           <Route path="/lads" element={<LadsPage />} />
           <Route path="/gift/michigan" element={<GiftPage />} />
