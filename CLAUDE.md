@@ -517,10 +517,36 @@ appears in BLOCKED-ON-BRADY.
   pre-existing). Also REGENERATE the 4 existing raw links through
   Travelpayouts — they are already public and currently earn nothing.
 
-**c. Phase 4 pins.** Brady provides Dawson's Google Maps exports. Build
-  the normalized-intermediate ingestion (`name, lat, lng, type, note,
+**c. Phase 4 pins + HOP PASSPORT.** Brady provides Dawson's Google Maps
+  list CONTENTS (the Aug 17 attempt pasted two authenticated list links
+  with no place names — links carry a list ID only, unreadable by
+  anyone but the owner; plain-text names are enough). Build the
+  normalized-intermediate ingestion (`name, lat, lng, type, note,
   source`) against REAL data — brewery/golf/view/event/gem icons, click
-  + hover cards. Do NOT build it against placeholders.
+  + hover cards on the Panel/mobile-sheet pattern. Do NOT build it
+  against placeholders. Geocode each name, verify, and FLAG ambiguous
+  ones rather than pin them wrong (the Tivoli rule applies to geography).
+
+  **Hop Passport = the brewery backbone** (Brady's Aug 17 direction).
+  Intent: brewery pins are not loose dots, they hang off a passport
+  spine that gives brewery coverage a structure and a reason to return.
+  `michigan.js` already holds 21 real validated spots incl. Grand Rapids
+  breweries (Founders et al) with `rating / validated / validator /
+  tier` — that is the seed data, and it has **no coordinates**, so
+  geocoding is step one.
+  ⚠️ OPEN QUESTION BEFORE BUILDING: is "Hop Passport" a REAL third-party
+  program (e.g. a brewers-guild passport) or a LADS-BUILT concept? If
+  third-party we must not invent its rules, members or branding; if
+  ours, we are designing it and can. Do not start until this is answered.
+
+**c2. Ontario / Bruce Peninsula — unblocked except for one file.**
+  Clipping is BUILT and committed (`tools/`, 81f2a50). The Bruce needs
+  NO projection change; it already sits inside the canvas. The only
+  blocker is the data source: the available Ontario boundary is
+  POLITICAL and includes the Canadian halves of Superior and Huron, so
+  it renders as land over the lakes. Needs a LAND/coastline polygon
+  source (Natural Earth land polygons, or a lakes file to subtract).
+  Once supplied: add a `CLIPPED` entry, re-run, done. See tools/README.
 
 **d. Digital product pilot.** First framework as a paid PDF / Shopify
   digital product — the revenue milestone. The NFL planner follows once
@@ -528,7 +554,17 @@ appears in BLOCKED-ON-BRADY.
 
 ### BLOCKED ON BRADY (nothing moves on these until they land)
 - **Filled affiliate worksheet** — blocks (b)
-- **Dawson's Google Maps exports** (UP picks) — blocks (c)
+- **Dawson's Maps list CONTENTS as plain text** — blocks (c). Bare
+  `maps.app.goo.gl` links do NOT work: they resolve to
+  `/maps/@/data=…!11m2!2s<listID>`, an authenticated saved-list
+  reference readable only by the owner. Place names as text, or a
+  Google Takeout CSV (which includes coordinates), or nothing.
+- **"Hop Passport": third-party program or Lads concept?** — blocks the
+  brewery backbone in (c)
+- **A land/coastline polygon source for Ontario** — blocks (c2)
+- **What the "Brady's Barrenjoy Trip 🇨🇦" list actually is** — labelled
+  Brady's not Dawson's, and Barrenjoey is a headland in New South
+  Wales, Australia while the flag says Canada. Unresolved.
 - **Travelpayouts sample links** — one real Viator + one real GYG
   generated link, to pin the URL format instead of inferring it
 - **LLC filing status update**
