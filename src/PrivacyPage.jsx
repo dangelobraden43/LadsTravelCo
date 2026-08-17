@@ -94,6 +94,12 @@ const THIRD_PARTIES = [
     detail:
       'Some tour links point to these sites. If you follow one, they know you arrived from us.',
   },
+  {
+    name: 'Travelpayouts',
+    role: 'Affiliate tracking',
+    detail:
+      'Runs on every page and attributes bookings made through our travel affiliate links, so partners know a booking came from us. See the affiliate section below.',
+  },
 ]
 
 const COLLECTED = [
