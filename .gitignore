@@ -82,3 +82,6 @@ Peru26/
 # Visual QA screenshots (generated)
 audit/
 /jordi-*.png
+
+# rollup-plugin-visualizer output (local only, never deployed)
+.bundle-report.html

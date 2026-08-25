@@ -7,7 +7,11 @@ import sitemap from 'vite-plugin-sitemap';
 export default defineConfig({
   plugins: [
     react(),
-    visualizer({ open: false, gzipSize: true, filename: 'dist/bundle-report.html' }),
+    // Written OUTSIDE dist/ on purpose. At dist/bundle-report.html it was
+    // deploying to production with every build — 368 KB publicly readable at
+    // ladstravel.com/bundle-report.html, mapping the whole internal module
+    // structure. It is a local build artefact, not a page.
+    visualizer({ open: false, gzipSize: true, filename: '.bundle-report.html' }),
     viteCompression({ algorithm: 'gzip', threshold: 1024 }),
     viteCompression({ algorithm: 'brotliCompress', threshold: 1024 }),
     sitemap({
