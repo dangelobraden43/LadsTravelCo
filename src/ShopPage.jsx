@@ -53,14 +53,24 @@ const PRODUCTS = [
     meta: '3" × 3"',
     img: 'https://cdn.shopify.com/s/files/1/1001/6931/8682/files/5439777295802067698_1200.jpg?v=1783909104',
   },
-  {
-    handle: 'kiss-cut-vinyl-decals',
-    name: 'Lads Travel Co. Sticker',
-    sub: 'Kiss-cut vinyl decal',
-    price: '$6.99',
-    meta: 'Satin · 3" × 4"',
-    img: 'https://cdn.shopify.com/s/files/1/1001/6931/8682/files/416993754717300304_2048.jpg?v=1783345192',
-  },
+  /* PULLED Aug 25 2026 — `kiss-cut-vinyl-decals` ("Lads Travel Co.
+     Sticker", $6.99). The artwork is a genuine Lads Paris crest, but the
+     print file has a transparency checkerboard rasterized into it. All
+     four Printify mockups (flat, glass, fridge, laptop) render the
+     checker, which means it is in the uploaded print file, not just a bad
+     preview export — a buyer would receive a sticker with a printed grey
+     grid on it.
+
+     This is a PRODUCT defect, not a site bug: /shop was showing exactly
+     what Shopify has. The fix is in Printify (re-export with real alpha,
+     re-upload, regenerate mockups, re-sync) and Printify is manual admin,
+     not MCP. The product remains ACTIVE on Shopify by Brady's decision —
+     only the card is pulled from this page.
+
+     To restore: re-add the entry with the NEW image URL from Shopify, and
+     rename to "Paris Sticker" to match the art and sit alongside the
+     Barcelona and Prague city stickers. Do not restore against the old
+     image. */
   {
     handle: 'barcelona-gaudi-square-sticker-vintage-travel-decal',
     name: 'Barcelona Gaudí Sticker',
