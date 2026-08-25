@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 17, 2026
+## Last Updated: August 25, 2026
 
 ---
 
@@ -18,8 +18,19 @@ LIVE: `/good-news` — full MIDWEST map (MN·WI·MI·IL·IN·OH), three pin
   tiers (roots anchors · city context · airports). Unlinked from nav,
   `noindex`, reachable by URL. Phases 1–3 done; Phase 4 pins pending
   Dawson's data. See MIDWEST MAP RUNWAY + TOMORROW'S QUEUE.
-LIVE: `/privacy` + footer affiliate disclosure. Travelpayouts verified
-  Aug 17 (marker `563356`, PayPal payout set).
+LIVE: `/privacy` + footer affiliate disclosure.
+AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
+  Link format is PINNED from real dashboard links — append
+  `?pid=P00297284&mcid=42383&medium=link` to a Viator PRODUCT url. Use
+  `viatorLink()` in `src/utils/affiliate.js`; it is idempotent and
+  refuses to tag non-Viator hosts.
+  ⛔ **Travelpayouts was REMOVED Aug 25** — its programs denied us. Its
+  site-wide script (which was running an AD layer, not just attribution)
+  is gone. Do not re-add it.
+  ⛔ **GetYourGuide is DEAD** — we only ever reached it via Travelpayouts.
+  The 2 remaining `gyg.me` links (Wicklow, Pompeii) are live but earn
+  nothing; they await Viator equivalents. Do not delete them yet.
+LLC: **FILED** (confirmed Aug 24). The pitch-deck slide-3 claim is now true.
 DONE: Scenic Shore ride happened July 25–26, 2026. Table run, crewnecks
   sold in person. The 5-product seal line is STILL DRAFT/$0.00 and was
   never published — see SCENIC SHORE below.
@@ -93,6 +104,86 @@ GOAL: team merch samples ordered + a full array of products ready to sell.
 BRING TOMORROW (Brady): Printify login + payout set · price per product ·
 exact proceeds wording · team sample sizes/colors · ship-by math vs
 July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
+
+---
+
+## WHAT WAS BUILT (August 25, 2026 — partner purge, the Bruce, Ontario)
+
+**3 commits shipped to production, 4 more committed and awaiting `/ship`.**
+
+**Shipped** (`9b6b9ce`, `718fe98`, `d527d32`):
+- **Travelpayouts purged.** The `tpembars.com` loader in `index.html` was
+  the source of the Aug-17 ad-layer flag (`emerald monetization`,
+  `link_switcher`, the failing doubleclick call). Deleted; the
+  `/privacy` entry went with it. Attribution now rides in link URLs.
+- **A World Nomads travel-INSURANCE affiliate link** was still sitting in
+  `src/utils/affiliate.js` — a direct hard-rule violation that survived
+  the Aug-17 deletion pass. Gone, along with Airalo/Booking.com entries
+  using invented `ladstravel` IDs we never held.
+- 🚩 **`"priceRange":"Free"` was still in the homepage JSON-LD.** May 31
+  killed "free" from visible copy but missed the structured data — the
+  part Google actually reads. Removed (no substitute; preview = unpriced).
+- 🚩 **All three meta descriptions claimed "285+ spots / 12 frameworks".**
+  Canonical is 219/9. That is the text search results and link previews
+  render. Fixed.
+- **`viatorLink()` rebuilt** against real links. The old one read
+  `VITE_VIATOR_AFFILIATE_ID`, which was **never set in `.env.local`** —
+  it would have shipped untagged links that looked right in review.
+  Params are hardcoded now (they are public and account-level).
+- **Cliffs of Moher + Montserrat** wired through the partner account.
+- **Paris sticker pulled from `/shop`** — see PRINTIFY DEFECT below.
+
+**Committed, not pushed** (`7a8da65`, `3ecd0de`, `50d694e`, + CLAUDE.md):
+- **17 Bruce Peninsula places geocoded** → `src/data/brucePeninsula.js`.
+- **108 dead images deleted** — `dist` 53 MB → **41 MB**.
+- **Ontario renders** — the long-standing blocker is solved.
+
+### 🔑 THE MAPS-LIST BLOCKER IS LIFTED — this changes the workflow
+
+The Aug-17 note said `maps.app.goo.gl` links "carry no place data." That
+is true for `curl` (you get a generic Maps shell). But the **Playwright
+browser is signed in as brady@ladstravel.com**, so it IS the list owner
+and renders them fine. **Paste a Google Maps list link and it can be read
+directly.** No more "paste the contents as plain text."
+
+Better still, coordinates should come **by provenance, not by search**:
+click the saved place and Google puts its real lat/lng in the URL as
+`!3d<lat>!4d<lng>`, plus a stable Place ID. This is how all 17 Bruce
+places were geocoded, and it is why generic names (Grotto, The Sweet
+Shop, Crowsnest, Torched, Bad Apple) were safe — we never resolved a
+string. **The Tivoli rule is satisfied by provenance.** The list panel
+sits in a subframe, so page-context `evaluate` cannot see it; use
+`browser_run_code_unsafe` with Playwright-level locators.
+
+### Ontario — SOLVED (`50d694e`)
+
+Neither source works alone, in **opposite** directions:
+- The **political** boundary runs through the middle of the Great Lakes
+  (all of Georgian Bay, half of Huron) → paints land over water.
+- Natural Earth's **land** layer is "everything that is not ocean", so
+  mid-Lake-Huron tests as land too, and degenerates to a rectangle here.
+
+So the old README note — "just needs a land/coastline source" — was
+**wrong**; a land source alone reproduces the same bug. The fix is both:
+political boundary for real inland edges, lakes punched out via
+`fill-rule="evenodd"`. **Georgian Bay is a separate Natural Earth
+feature** — miss it and the peninsula's whole east side becomes land.
+
+367 pts / ~5 KB, AOI-scoped (full-canvas would be ~22.9 KB of mostly
+hidden lake outline). **Projection untouched — structurally, not by
+promise:** bounds come from the six US states, clipping runs after, so
+`midwestGeo.js` is byte-identical and no route needed re-fitting.
+
+### PRINTIFY DEFECT — the Paris sticker (needs Brady, manual)
+
+The `/shop` card was not wrong; it matched Shopify exactly. **All 4 media
+have a transparency checkerboard rasterized into the artwork** — flat art
+AND all three Printify lifestyle mockups. Printify composites the real
+print file, so a buyer receives a sticker with a printed grey grid.
+**Still ACTIVE and purchasable on Shopify at $6.99** (Brady's call — only
+the site card was pulled). Fix is a Printify re-export with real alpha.
+It IS genuine Lads art ("LADS TRAVEL CO. / PARIS") — rename to **"Paris
+Sticker"** when it returns, alongside the Barcelona and Prague stickers.
 
 ---
 
@@ -554,158 +645,106 @@ Data moment: Vivid Harbor Bridge drone
 
 ---
 
-## TOMORROW'S QUEUE — MONEY DAY (rev. Aug 17 late; /morning reads this first)
+## TOMORROW'S QUEUE (rev. Aug 25 night; /morning reads this first)
 
-Work them **in this order**. The order is deliberate: (a) is the only
-item with nothing at all in front of it, (b) unlocks the instant Brady
-pastes, (c) unlocks as approvals clear on their own schedule, (d) is the
-capstone.
+> **Date discipline.** The previous queue was written Aug 17 and was still
+> titled "TOMORROW'S QUEUE" on Aug 25, eight days stale, with items already
+> done and blockers already cleared. If you are reading this on a date well
+> past Aug 26, say so out loud before working from it.
 
-**MORNING TASK ZERO (before any code): retry the LLC filing.** The Aug 17
-attempt hit a **MiLogin authentication wall**. If it fights again, call
-**LARA on 517-241-6470 — lines open 8am.** This gates a real claim we are
-already making in the pitch deck (see POLISH BACKLOG).
+### ⛔ ANSWERS NEEDED FROM BRADY — these gate real work
 
-**a. ✅ DONE Aug 17 night — `/shop` SHIPPED** (`268f8bc`), live with the
-  approved lineup, Shop in the top nav AND footer. Remaining follow-ups
-  are in NEW — RAISED AUG 17 NIGHT below (Paris sticker art, TP ad
-  layer). Original spec kept for reference:
-    · Scenic Shore Crewneck Sweatshirt — HERO ($50.48–57.45)
-    · Canvas Lunch Bag ($22.99)
-    · Kiss-Cut Vinyl Decals — rename on /shop to
-      "Lads Travel Co. Sticker — Kiss-Cut Vinyl Decal" (approved Aug 17;
-      apply the Shopify title change in the same pass)
-    · Travel Magnet "Explore the World" ($9.99) — LEAD magnet
-    · Lads Travel Co. Vintage Travel Badge Magnet ($9.99) — second
-    · Barcelona Gaudí Sticker + Prague Sticker ($4.99 each)
-  Cards link OUT to Shopify checkout. Shop link into the Footer.
-  This is a PUBLIC COMMERCIAL page — propose before building.
+1. **The Bruce visited/not-visited split (17 places).** The trip ran
+   **Aug 8–12, 2026** (Brady + parents), so part of the list IS firsthand —
+   but the saved list is a SUPERSET of the trip and predates it. Every entry
+   currently ships `validated: false`. Visited ones flip to
+   `validated: true, validatedBy: 'Brady', visitedDate: '2026-08'`.
+   **Do not flip wholesale** — that would claim visits that did not happen.
+   The schema takes the flag per spot, so this is a data edit, nothing more.
+2. **`bookingEndorsed: false` — approve the schema addition?** Brady's policy
+   is that any product which is not the exact version we did wires NEUTRAL.
+   But the endorsement gradient is **binary on `ladsRating`**
+   (`FrameworkPage.jsx`), so today "neutral despite having a rating" cannot
+   be expressed without deleting the rating and its visible "Lads: X/10"
+   chip. A separate `bookingEndorsed` field fixes it. Blocks Blue Mountains
+   and Kilkenny.
+3. **Blue Mountains** — did we do the Featherdale + winery + ferry version?
+   **Kilkenny/Glendalough** — same operator we actually rode with?
+4. **GetYourGuide** — apply for a DIRECT partner account, or re-source all
+   8 GYG-preference worksheet rows as Viator products?
+5. **Dawson's UP list** — still missing. It is the half of Phase 4 that is
+   genuinely validated (his July 4 scout). Paste the link; it can be read
+   directly now (see the Maps-list note in the Aug 25 session log).
+6. **Seattle list provenance** — visited, or planned like the Bruce list was?
+   Default assumption is research-only/`validated: false`.
+7. **A real Michigan photo.** `/local` and `/michigan` still use a Smoky
+   Mountains placeholder. Nothing in `src/images-*.js` covers Michigan.
 
-**b. Phase 4 pins + HOP PASSPORT — starts the moment Brady pastes.**
-  Brady HAS access to the lists now; the only thing outstanding is the
-  CONTENTS. There is also a NEW list: a **Bruce Peninsula road trip
-  (Ontario, Canada)** — the map goes international.
-  ✅ **Projection cost already assessed Aug 17 — the answer is ZERO.**
-  The Bruce needs **no eastward bounds extension**; it already falls
-  inside the current canvas (Tobermory lands at x 910.8, y 346.5,
-  because Ohio's east edge at −80.519° is east of the Bruce). Do not
-  re-litigate this when building. The Ontario blocker is the LAND
-  POLYGON source, nothing else — see (c2).
+### a. PUSH THE BACKLOG (4 commits sitting on main, unpushed)
+`7a8da65` Bruce data · `3ecd0de` image prune (-12 MB) · `50d694e` Ontario ·
+plus this CLAUDE.md update. Verify the Vercel deploy reaches READY.
 
-**c. Affiliate URLs — unblocks itself as approvals clear.**
-  Status Aug 17 night: **Viator connection is IN REVIEW at
-  Travelpayouts.** Brady queued a batch of deep links tonight; they
-  **auto-convert once Viator approves** (likely days, not hours).
-  ➜ **First action tomorrow: check whether GetYourGuide is already
-  approved.** If yes, the GYG-preference spots can be wired immediately
-  while Viator clears — that is rows 1, 3, 4, 5, 9, 10, 11, 12 on the
-  worksheet. Do not wait on Viator to start.
-  Then: pin the real Travelpayouts format → wire as a DATA-ONLY edit
-  (the endorsement gradient already applies itself off `ladsRating`) →
-  verify on at least 3 (one endorsed, one neutral, one pre-existing).
-  Also REGENERATE the 4 existing raw links — already public, currently
-  earning nothing.
+### b. PHASE 4 PINS — the build
+Data and land are both ready: `src/data/brucePeninsula.js` (17 places, real
+coords) and Ontario now renders beneath them. Build the pin components
+**props-driven and NOT Midwest-hardcoded** — Thursday's Peru interactive
+framework map inherits them. Gold = validated, copper = research tier, per
+the established tier language. Cards reuse the existing `Panel`/mobile-sheet
+pattern in `GoodNews.jsx`.
+Renders honestly at research tier today; answer (1) above upgrades it.
 
-### (b) in full — the pin build
+### c. `/local` GRADUATION — PROPOSAL FIRST, Brady approves the layout
+The plan is for `/good-news` to graduate from an unlinked route to the
+centrepiece of Lads Local. **Three things flip from "known + acceptable" to
+"blocker" the moment it becomes public and linked:**
+- **Airport touch targets are 33×22 CSS px at 390px.** That was signed off
+  *explicitly because* the route was unlinked and `noindex`. On a public
+  flagship it is a real mobile failure.
+- **The route is `noindex`.** Graduating means canonical + sitemap + SEO
+  work that does not exist yet.
+- **`michigan.js`'s 21 validated spots have NO coordinates.** Relating them
+  to the map needs a second geocoding pass the size of the Bruce one. Use
+  the same provenance method, not name search.
+Also unresolved: **Hop Passport is confirmed THIRD-PARTY** (a real Michigan
+brewery passport program the Lads use). Attribute it as such; invent none of
+its rules, members, or branding.
 
-  Build the normalized-intermediate ingestion (`name, lat, lng, type,
-  note, source`) against REAL data — brewery/golf/view/event/gem icons,
-  click + hover cards on the Panel/mobile-sheet pattern. Do NOT build it
-  against placeholders. Geocode each name, verify, and FLAG ambiguous
-  ones rather than pin them wrong (the Tivoli rule applies to geography).
-  Source attribution per pin: "Scouted by Dawson — July 2026" for the UP
-  list, and the equivalent for the Bruce list once its provenance is
-  confirmed.
+### d. VIATOR CONTINUATION
+13 tagged links are stockpiled in `internal/brady/affiliate-link-worksheet.md`,
+grouped by why each cannot be wired yet. Two categories can move as soon as
+Brady answers: the ones matching real dayTrips, and the spot-level ones —
+though note **`bookingUrl` renders at exactly ONE place in the codebase**
+(`FrameworkPage.jsx`, inside the `dayTrips` block). Spots have no booking CTA
+at all, so Schönbrunn / Guinness / Camp Nou need a component change plus a
+decision on what signals endorsement for spots (they carry
+`validated`/`validator`, not `ladsRating`).
 
-  **Hop Passport = the brewery backbone** (Brady's Aug 17 direction).
-  Intent: brewery pins are not loose dots, they hang off a passport
-  spine that gives brewery coverage a structure and a reason to return.
-  `michigan.js` already holds 21 real validated spots incl. Grand Rapids
-  breweries (Founders et al) with `rating / validated / validator /
-  tier` — that is the seed data, and it has **no coordinates**, so
-  geocoding is step one.
-  ⚠️ OPEN QUESTION BEFORE BUILDING: is "Hop Passport" a REAL third-party
-  program (e.g. a brewers-guild passport) or a LADS-BUILT concept? If
-  third-party we must not invent its rules, members or branding; if
-  ours, we are designing it and can. Do not start until this is answered.
+### e. PERU26 FILM PREP (started Aug 25, mechanical only)
+`Peru26/` — 225 files, 932 MB, **gitignored** (raw media never enters git).
+Inventory + contact sheets + an ffmpeg capability check were kicked off.
+Manifest lands at `internal/brady/peru26-manifest.md`, contact sheets at
+`Peru26/review/`. **No editing until Brady's beat sheet exists.**
 
-**c2. Ontario / Bruce Peninsula — unblocked except for one file.**
-  Clipping is BUILT and committed (`tools/`, 81f2a50). The Bruce needs
-  NO projection change; it already sits inside the canvas. The only
-  blocker is the data source: the available Ontario boundary is
-  POLITICAL and includes the Canadian halves of Superior and Huron, so
-  it renders as land over the lakes. Needs a LAND/coastline polygon
-  source (Natural Earth land polygons, or a lakes file to subtract).
-  Once supplied: add a `CLIPPED` entry, re-run, done. See tools/README.
+### f. SMALL, UNAMBIGUOUS WINS
+- 🚩 **`bundle-report.html` (368 KB) is deploying to production** — publicly
+  reachable at `ladstravel.com/bundle-report.html`, mapping the whole
+  internal module structure. It is a build artefact, not a page.
+- **Paris sticker** — still ACTIVE on Shopify with a checkerboard in its
+  print file. Needs a Printify re-export (manual, Brady). Rename to "Paris
+  Sticker" when it returns.
+- **The 2 orphaned `gyg.me` links** (Wicklow, Pompeii) — awaiting Viator
+  equivalents. Flagged, deliberately not deleted.
 
-**d. Digital product pilot.** First framework as a paid PDF / Shopify
-  digital product — the revenue milestone. The NFL planner follows once
-  the mechanism is proven. The day's CAPSTONE — take it on once (a)–(c)
-  are either done or parked waiting on someone else, not before.
-
-### BLOCKED ON BRADY (nothing moves on these until they land)
-- **Maps list CONTENTS pasted as plain text** — blocks (b). NOT blocked
-  on Dawson any more; Brady has access to the lists. Bare
-  `maps.app.goo.gl` links do NOT work: they resolve to
-  `/maps/@/data=…!11m2!2s<listID>`, an authenticated saved-list
-  reference readable only by the owner. Place names as text, or a
-  Google Takeout CSV (which includes coordinates).
-- **"Hop Passport": third-party program or Lads concept?** — blocks the
-  brewery backbone in (b). If third-party we cannot invent its rules,
-  members or branding.
-- **What the "Brady's Barrenjoy Trip 🇨🇦" list actually is** — labelled
-  Brady's not Dawson's, and Barrenjoey is a headland in New South
-  Wales, Australia while the flag says Canada. Possibly the Bruce list
-  mislabelled. Unresolved.
-- **A land/coastline polygon source for Ontario** — blocks (c2)
-- **Filled affiliate worksheet** — partially blocks (c)
-
-### CLEARING ON THEIR OWN (no action needed, just check status)
-- **Viator @ Travelpayouts — IN REVIEW.** Deep-link batch queued Aug 17;
-  auto-converts on approval. Days, not hours.
-- **GetYourGuide @ Travelpayouts — status unknown, CHECK FIRST THING.**
-  If already approved, GYG spots wire immediately without waiting on
-  Viator.
-- **LLC filing** — MiLogin auth wall Aug 17; retry is morning task zero.
-
-### NEW — RAISED AUG 17 NIGHT, LOOK AT THESE TOMORROW
-- 🚩 **Travelpayouts is running an AD LAYER on the site, not just link
-  attribution.** Console on production shows `[tp] emerald monetization
-  enabled`, `[tp] link_switcher init`, and a request to
-  `securepubads.g.doubleclick.net` (which 400s). That is ad-serving
-  behaviour on every page, including `/privacy`. Two things to do:
-  (1) check the Travelpayouts dashboard for a setting to narrow it to
-  link attribution only; (2) if it stays, our `/privacy` entry for
-  Travelpayouts says "affiliate tracking", which is **softer than what
-  it actually does** — reword it to name the ad/monetization layer.
-  Disclosure has to match behaviour.
-- **"Lads Travel Co. Sticker" is Paris artwork.** The rename was
-  approved before either of us saw the image — it is an Eiffel Tower
-  design on a checkered transparency background (the checkerboard reads
-  as an unfinished export). Either rename it "Paris Sticker" to match
-  the art, or swap in real Lads artwork. It is live on `/shop` now.
-
-### POLISH BACKLOG (none are ship blockers)
-- 🚩 **PITCH DECK SAYS "LLC FORMED" ON SLIDE 3.** Built in claude.ai
-  Aug 17. The filing did not complete that night (MiLogin wall), so as
-  written the claim is **not yet true**. Soften to "filed" / "in
-  formation", or confirm the filing landed, **before the deck is shown
-  to anyone.** Listed here so it is not forgotten — but this is an
-  accuracy item, not cosmetics: it is a factual claim to a prospect
-  about the company's legal status.
-- **Airport touch targets at 390px.** Map scales to ~0.37 there, so the
-  IATA chips are 33x22 CSS px after the padded hit rect — still under
-  the 44px guideline. Nine airports across a 1000-unit region cannot all
-  clear 44px at that width without a zoom/pan or a companion list.
-  KNOWN, on an unlinked noindex route, acceptable to ship.
-- **320px `.globe-hint` overflow** — renders 318px wide on a 305px
-  viewport and pushes the homepage sideways. 360px and up are clean.
-- **Salkantay + Michigan photo processing** — folders still pending from
-  Brady. `/local` and `/michigan` still use a Smoky Mtns placeholder.
-- **Travel-tools affiliate surface** — the one home for Klook / Tiqets /
-  Yesim / Kiwitaxi / Localrent. Later block, see the hard rule above.
-- **Motor City at Michigan zoom** — waypoints preserved in the tracer +
+### POLISH BACKLOG (not ship blockers)
+- **320px `.globe-hint` overflow** — 318px wide on a 305px viewport, pushes
+  the homepage sideways. 360px and up are clean.
+- **Salkantay + Michigan photo processing** — folders pending from Brady.
+- **Travel-tools affiliate surface** — the single home for Klook / Tiqets /
+  Yesim / Kiwitaxi / Localrent. See the HARD RULE in SESSION SEQUENCE.
+- **Motor City at Michigan zoom** — waypoints preserved in the tracer and
   `ROUTE_PATHS['motor-city']`, unused until a zoomed view exists.
+- **`/audit-all` still lists retired frameworks** and omits michigan.
+- **`/thailand` `/charleston`** have no redirect/404 route.
 
 ---
 

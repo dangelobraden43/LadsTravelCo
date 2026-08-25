@@ -73,6 +73,12 @@ site-audit-for-creative-director.md
 # Playwright MCP cache
 .playwright-mcp/
 
+# Peru 2026 raw trip media (Miami→Lima→Salkantay→Machu Picchu).
+# ~30 videos + 200+ photos. Raw media NEVER enters git history — it is
+# large, binary, and unrecoverable from a repo without bloating every
+# future clone. Generated review artefacts live under Peru26/review/.
+Peru26/
+
 # Visual QA screenshots (generated)
 audit/
 /jordi-*.png
