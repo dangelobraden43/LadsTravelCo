@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { VIEWBOX, STATES, PLACES, AIRPORTS, ROUTE_PATHS } from './midwestGeo'
+import { ONTARIO_PENINSULA } from './ontarioGeo'
 import './GoodNews.css'
 
 /* ===== SHARED GEOMETRY =====
@@ -302,6 +303,29 @@ export default function GoodNews() {
               <stop offset="0%" stopColor="#24503a" />
               <stop offset="100%" stopColor="#173324" />
             </linearGradient>
+            {/* Ontario is clipped to a tight AOI, so its north and south edges
+                are straight cut lines sitting in open water. Its east edge is
+                fine — that is the map's true east bound, the same line Ohio
+                ends on. Fading the two cut edges is a render-side fix: buying
+                real geometry up there would mean the full-canvas polygon at
+                ~22.9 KB, almost all of it lake outline hidden under the US
+                states. This costs nothing and reads as "continues off-map". */}
+            <linearGradient
+              id="gn-ontario-fade"
+              x1="0"
+              y1="249.2"
+              x2="0"
+              y2="561.5"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0%" stopColor="#fff" stopOpacity="0" />
+              <stop offset="14%" stopColor="#fff" stopOpacity="1" />
+              <stop offset="86%" stopColor="#fff" stopOpacity="1" />
+              <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+            </linearGradient>
+            <mask id="gn-ontario-mask" maskUnits="userSpaceOnUse">
+              <rect x="820" y="245" width="200" height="322" fill="url(#gn-ontario-fade)" />
+            </mask>
             <filter id="gn-land-shadow" x="-10%" y="-10%" width="120%" height="120%">
               <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="#000" floodOpacity="0.45" />
             </filter>
@@ -318,6 +342,24 @@ export default function GoodNews() {
 
           {/* context states first, so Michigan always draws on top */}
           <g filter="url(#gn-land-shadow)">
+            {/* Ontario sits UNDER the US states. It is drawn from the political
+                boundary with the lakes punched out (fill-rule evenodd) — see
+                src/ontarioGeo.js for why neither source works alone. Rendered
+                a step dimmer than the US context states: it is across a border
+                and carries no framework of its own, so it should read as the
+                far shore rather than as another state we cover. */}
+            <path
+              className="gn-land gn-land--context gn-land--foreign"
+              d={ONTARIO_PENINSULA}
+              mask="url(#gn-ontario-mask)"
+              fillRule="evenodd"
+              fill="url(#gn-land-dim)"
+              opacity="0.72"
+              stroke="#6e9e7d"
+              strokeWidth="0.8"
+              strokeOpacity="0.65"
+              strokeLinejoin="round"
+            />
             {STATES.filter((s) => !s.focus).map((s) =>
               s.rings.map((d, i) => (
                 <path
