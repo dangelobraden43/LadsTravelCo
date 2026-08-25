@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 25, 2026
+## Last Updated: August 25, 2026 (queue dated Aug 26)
 
 ---
 
@@ -645,99 +645,128 @@ Data moment: Vivid Harbor Bridge drone
 
 ---
 
-## TOMORROW'S QUEUE (rev. Aug 25 night; /morning reads this first)
+## THE QUEUE — Wednesday, August 26, 2026 (/morning reads this first)
 
-> **Date discipline.** The previous queue was written Aug 17 and was still
-> titled "TOMORROW'S QUEUE" on Aug 25, eight days stale, with items already
-> done and blockers already cleared. If you are reading this on a date well
-> past Aug 26, say so out loud before working from it.
+> **Date discipline.** This queue is dated. If today is not Aug 26, say so out
+> loud before working from it — a previous queue sat titled "TOMORROW'S QUEUE"
+> for eight days with cleared blockers still listed as blockers.
 
-### ⛔ ANSWERS NEEDED FROM BRADY — these gate real work
+### 🎯 SESSION GOAL — /local graduates
 
-1. **The Bruce visited/not-visited split (17 places).** The trip ran
-   **Aug 8–12, 2026** (Brady + parents), so part of the list IS firsthand —
-   but the saved list is a SUPERSET of the trip and predates it. Every entry
-   currently ships `validated: false`. Visited ones flip to
-   `validated: true, validatedBy: 'Brady', visitedDate: '2026-08'`.
-   **Do not flip wholesale** — that would claim visits that did not happen.
-   The schema takes the flag per spot, so this is a data edit, nothing more.
-2. **`bookingEndorsed: false` — approve the schema addition?** Brady's policy
-   is that any product which is not the exact version we did wires NEUTRAL.
-   But the endorsement gradient is **binary on `ladsRating`**
-   (`FrameworkPage.jsx`), so today "neutral despite having a rating" cannot
-   be expressed without deleting the rating and its visible "Lads: X/10"
-   chip. A separate `bookingEndorsed` field fixes it. Blocks Blue Mountains
-   and Kilkenny.
-3. **Blue Mountains** — did we do the Featherdale + winery + ferry version?
-   **Kilkenny/Glendalough** — same operator we actually rode with?
-4. **GetYourGuide** — apply for a DIRECT partner account, or re-source all
-   8 GYG-preference worksheet rows as Viator products?
-5. **Dawson's UP list** — still missing. It is the half of Phase 4 that is
-   genuinely validated (his July 4 scout). Paste the link; it can be read
-   directly now (see the Maps-list note in the Aug 25 session log).
-6. **Seattle list provenance** — visited, or planned like the Bruce list was?
-   Default assumption is research-only/`validated: false`.
-7. **A real Michigan photo.** `/local` and `/michigan` still use a Smoky
-   Mountains placeholder. Nothing in `src/images-*.js` covers Michigan.
+**The broken Lads Michigan page becomes the interactive Midwest hub.** This is
+the day's headline build, and everything below serves it.
 
-### a. PUSH THE BACKLOG (4 commits sitting on main, unpushed)
-`7a8da65` Bruce data · `3ecd0de` image prune (-12 MB) · `50d694e` Ontario ·
-plus this CLAUDE.md update. Verify the Vercel deploy reaches READY.
+### ⏰ TIMING — Aug 26 is ACTION DAY
 
-### b. PHASE 4 PINS — the build
-Data and land are both ready: `src/data/brucePeninsula.js` (17 places, real
-coords) and Ontario now renders beneath them. Build the pin components
-**props-driven and NOT Midwest-hardcoded** — Thursday's Peru interactive
-framework map inherits them. Gold = validated, copper = research tier, per
-the established tier language. Cards reuse the existing `Panel`/mobile-sheet
-pattern in `GoodNews.jsx`.
-Renders honestly at research tier today; answer (1) above upgrades it.
+Brady is on fundraising until early afternoon. **Session starts ~afternoon.**
+**Evening is reserved for Peru26 film assembly** — the beat sheet is arriving
+from claude.ai. If the /local build runs long, the film takes priority over
+**polish items**, but NOT over the graduation itself. Ship the graduation,
+drop the nice-to-haves, then cut film.
 
-### c. `/local` GRADUATION — PROPOSAL FIRST, Brady approves the layout
-The plan is for `/good-news` to graduate from an unlinked route to the
-centrepiece of Lads Local. **Three things flip from "known + acceptable" to
-"blocker" the moment it becomes public and linked:**
-- **Airport touch targets are 33×22 CSS px at 390px.** That was signed off
-  *explicitly because* the route was unlinked and `noindex`. On a public
-  flagship it is a real mobile failure.
-- **The route is `noindex`.** Graduating means canonical + sitemap + SEO
-  work that does not exist yet.
-- **`michigan.js`'s 21 validated spots have NO coordinates.** Relating them
-  to the map needs a second geocoding pass the size of the Bruce one. Use
-  the same provenance method, not name search.
-Also unresolved: **Hop Passport is confirmed THIRD-PARTY** (a real Michigan
-brewery passport program the Lads use). Attribute it as such; invent none of
-its rules, members, or branding.
+---
 
-### d. VIATOR CONTINUATION
-13 tagged links are stockpiled in `internal/brady/affiliate-link-worksheet.md`,
-grouped by why each cannot be wired yet. Two categories can move as soon as
-Brady answers: the ones matching real dayTrips, and the spot-level ones —
-though note **`bookingUrl` renders at exactly ONE place in the codebase**
-(`FrameworkPage.jsx`, inside the `dayTrips` block). Spots have no booking CTA
-at all, so Schönbrunn / Guinness / Camp Nou need a component change plus a
-decision on what signals endorsement for spots (they carry
-`validated`/`validator`, not `ladsRating`).
+### PHASE 1 — PIN DATA COMPLETE
 
-### e. PERU26 FILM PREP (started Aug 25, mechanical only)
-`Peru26/` — 225 files, 932 MB, **gitignored** (raw media never enters git).
-Inventory + contact sheets + an ffmpeg capability check were kicked off.
-Manifest lands at `internal/brady/peru26-manifest.md`, contact sheets at
-`Peru26/review/`. **No editing until Brady's beat sheet exists.**
+1. **Ingest Brady's Bruce visited-split** (pending tonight/morning). All 17 in
+   `src/data/brucePeninsula.js` currently ship `validated: false`. Visited ones
+   flip to `validated: true, validatedBy: 'Brady', visitedDate: '2026-08'`.
+   The trip ran Aug 8–12 but the saved list is a SUPERSET of it — **never flip
+   wholesale.** Pure data edit; the schema already carries the flag per spot.
+2. **Geocode the 21 `michigan.js` spots.** They have no coordinates at all,
+   which is what blocks relating them to the map. **Provenance-first**: several
+   are known Grand Rapids / Michigan businesses with unambiguous locations. For
+   anything generic, the Tivoli rule applies — do not resolve a bare string.
+   The method that worked for the Bruce: open the place from a saved Google
+   list in the signed-in Playwright browser and read `!3d<lat>!4d<lng>` off the
+   URL. Note the list panel is in a subframe, so page-context `evaluate` is
+   blind to it — use `browser_run_code_unsafe` with Playwright locators.
+3. **`bookingEndorsed: false` is APPROVED** — apply it. The endorsement
+   gradient is binary on `ladsRating` (`FrameworkPage.jsx`), so today a spot
+   cannot be "neutral despite having a rating" without deleting the rating and
+   its visible "Lads: X/10" chip. The new field separates the two. This
+   unblocks Blue Mountains and Kilkenny, which wire NEUTRAL per Brady's
+   standing rule: any product that is not the exact version we did makes no
+   WE DID THIS claim.
 
-### f. SMALL, UNAMBIGUOUS WINS
-- 🚩 **`bundle-report.html` (368 KB) is deploying to production** — publicly
-  reachable at `ladstravel.com/bundle-report.html`, mapping the whole
-  internal module structure. It is a build artefact, not a page.
-- **Paris sticker** — still ACTIVE on Shopify with a checkerboard in its
-  print file. Needs a Printify re-export (manual, Brady). Rename to "Paris
-  Sticker" when it returns.
-- **The 2 orphaned `gyg.me` links** (Wicklow, Pompeii) — awaiting Viator
+### PHASE 2 — PHASE 4 PIN BUILD
+
+Props-driven reusable pin components. **Nothing Midwest-hardcoded** — Thursday's
+Peru interactive framework map inherits these directly, and that map is the
+2027 paid-product prototype.
+
+- Render honestly off the data: **gold = validated, copper = research tier**,
+  per the established tier language. `validatedBy` / `visitedDate` surface in
+  the card, never invented.
+- Pin cards reuse the existing `Panel` / mobile-sheet pattern in
+  `GoodNews.jsx` rather than a new pattern.
+- Both sets render: Bruce (17, Ontario land is now beneath them) and the
+  Michigan spots once Phase 1.2 lands.
+
+### PHASE 3 — /local GRADUATION — **PROPOSAL FIRST, Brady approves before build**
+
+Propose the new `/local` structure with screenshots:
+- Map as the **hero experience**, not a card below the fold.
+- **"Good Brews · Good Views · Good News"** identity carried onto the page.
+- How the 21 Michigan spots relate to the pins.
+- Nav entry, and the `/good-news` **redirect-or-coexist** decision.
+
+**The three standing flags get fixed as part of this — they were only ever
+acceptable because the route was unlinked and `noindex`:**
+1. **The Tennessee-photo-as-Michigan-hero DIES.** `/local` and `/michigan` both
+   use `smokyMountainsCabinOverlook`. Use a real Michigan shot from the
+   processed photos, or Brady supplies one. Shipping a public Michigan
+   flagship fronted by a Smoky Mountains photo is not an option.
+2. **Airport touch targets are 33×22 CSS px at 390px** — under the 44px
+   guideline. Propose the fix rather than assuming one: zoom/pan, a companion
+   list, or a tap-target redesign.
+3. **Any 320px overflow** — `.globe-hint` renders 318px wide on a 305px
+   viewport and pushes the homepage sideways. 360px and up are clean.
+
+Also: graduating means dropping `noindex`, which pulls in canonical + sitemap
++ SEO work that does not exist yet. Scope it in the proposal.
+
+**Hop Passport is THIRD-PARTY** — a real Michigan brewery passport program the
+Lads use, not ours. Attribute it as such; invent none of its rules, members or
+branding.
+
+### PHASE 4 — VERIFY + SHIP
+
+Full sweep at **1440 and 390**. `npm run build` clean. `/ship` on Brady's go.
+
+---
+
+### STILL WAITING ON BRADY (not blocking the above unless noted)
+
+- **Dawson's UP list** — the genuinely validated half of Phase 4 (his July 4
+  scout). Paste the link; it can be read directly now.
+- **Seattle list provenance** — visited, or planned like the Bruce list was?
+  17 places already extracted, banked for the Seattle framework runway.
+  Default assumption stays research-only.
+- **GetYourGuide** — direct partner account, or re-source the 8 GYG-preference
+  worksheet rows as Viator products? GYG earns nothing today.
+- **Blue Mountains / Kilkenny** — did we do those exact versions? (With
+  `bookingEndorsed` approved these can ship neutral without an answer.)
+
+### CARRIED FORWARD
+
+- **Peru26 film prep** — `Peru26/` is **gitignored** (225 files, 932 MB; raw
+  media never enters git). Manifest at `internal/brady/peru26-manifest.md`,
+  contact sheets at `Peru26/review/`. **No editing until the beat sheet.**
+- **13 tagged Viator links stockpiled** in
+  `internal/brady/affiliate-link-worksheet.md`, grouped by why each cannot be
+  wired. Note `bookingUrl` renders at exactly ONE place in the codebase
+  (`FrameworkPage.jsx`, inside `dayTrips`) — spots have no booking CTA at all,
+  so Schönbrunn / Guinness / Camp Nou need a component change plus a decision
+  on what signals endorsement for spots.
+- **Paris sticker** — still ACTIVE on Shopify with a checkerboard rasterized
+  into the print file. Printify re-export needed (manual, Brady). Rename to
+  "Paris Sticker" when it returns.
+- **2 orphaned `gyg.me` links** (Wicklow, Pompeii) — awaiting Viator
   equivalents. Flagged, deliberately not deleted.
 
-### POLISH BACKLOG (not ship blockers)
-- **320px `.globe-hint` overflow** — 318px wide on a 305px viewport, pushes
-  the homepage sideways. 360px and up are clean.
+### POLISH BACKLOG (drop these first if the day runs long)
+
 - **Salkantay + Michigan photo processing** — folders pending from Brady.
 - **Travel-tools affiliate surface** — the single home for Klook / Tiqets /
   Yesim / Kiwitaxi / Localrent. See the HARD RULE in SESSION SEQUENCE.
