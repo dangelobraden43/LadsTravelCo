@@ -1,0 +1,285 @@
+/* BRUCE PENINSULA / LAKE HURON SHORE — normalized pin intermediate
+ *
+ * Source: Brady's Google Maps saved list (titled "Brady's Barrenjoy Trip 🇨🇦"
+ * — a misnomer; there is no Barrenjoy National Park and every place in it is
+ * in Ontario. Treated as "Bruce Peninsula" everywhere per Brady, Aug 25 2026).
+ *
+ * COORDINATES ARE NOT GEOCODED FROM NAMES. Each entry was opened from Brady's
+ * own saved list in a signed-in browser and its lat/lng read straight off
+ * Google's place record, along with the stable Google Place ID. That is why
+ * generically-named entries (Grotto, The Sweet Shop, Crowsnest, Torched, Bad
+ * Apple) are safe: we never resolved a string, we followed the saved place.
+ * The Tivoli rule is satisfied by provenance rather than by disambiguation.
+ *
+ * The list held 18 entries; "Grotto" (4.9, 291 reviews, "Hiking area") and
+ * "The Grotto, Bruce Peninsula National Park" (4.8, 3,772 reviews, "Scenic
+ * spot") are the same landmark saved twice. Per Brady the 3,772-review record
+ * is canonical and the other is dropped, leaving 17.
+ *
+ * VALIDATION STATE — READ BEFORE RENDERING.
+ * Brady's Bruce trip ran August 8–12, 2026 (with his parents), so parts of
+ * this list ARE now firsthand. But the per-spot visited/not-visited split has
+ * NOT been supplied yet. Every entry therefore ships `validated: false` and
+ * renders research-tier (copper, no claim). When the split arrives, flip only
+ * the visited ones to:
+ *     validated: true, validatedBy: 'Brady', visitedDate: '2026-08'
+ * Do NOT flip them wholesale — the list is a superset of the trip.
+ *
+ * `googleCategory` is Google's own category string, recorded verbatim as
+ * factual provenance. `type` is our own icon bucket, derived from it.
+ */
+
+export const BRUCE_SOURCE = {
+  label: "Brady's Google Maps list — Bruce Peninsula",
+  capturedAt: '2026-08-25',
+  tripDates: 'August 8–12, 2026',
+  note: 'Saved list predates the trip; visited/not-visited split pending.',
+}
+
+export const BRUCE_PLACES = [
+  // ── TOBERMORY / BRUCE PENINSULA PROPER (45.2–45.3°N) ──
+  {
+    name: 'The Grotto, Bruce Peninsula National Park',
+    lat: 45.2452258,
+    lng: -81.5243061,
+    type: 'view',
+    googleCategory: 'Scenic spot',
+    rating: 4.8,
+    reviews: 3772,
+    placeId: '0x4d2d062bec46ad1b:0xec9dc7da5d7ccc24',
+    note: 'The landmark of the peninsula. Canonical record; a duplicate saved entry was dropped.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Flowerpot Island Lighthouse',
+    lat: 45.3071295,
+    lng: -81.6142898,
+    type: 'view',
+    googleCategory: 'Historical landmark',
+    rating: 4.8,
+    reviews: 251,
+    placeId: '0x4d2da0b9fed434d3:0x5424800c516bd651',
+    note: 'Offshore in Fathom Five — boat access only from Tobermory harbour.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Tobermory Brewing Company & Grill',
+    lat: 45.2547826,
+    lng: -81.6630724,
+    type: 'brewery',
+    googleCategory: 'Restaurant',
+    rating: 4.2,
+    reviews: 2824,
+    price: 'CA$20–40',
+    placeId: '0x4d2d0baa0ef564ff:0xa071eb4a618510d4',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Crowsnest Pub & Restaurant',
+    lat: 45.25475,
+    lng: -81.665412,
+    type: 'food',
+    googleCategory: 'Restaurant',
+    rating: 4.1,
+    reviews: 1735,
+    price: 'CA$20–30',
+    placeId: '0x4d2d0b00c5d386bf:0xe6baf6c7360f28fe',
+    note: 'On Little Tub Harbour.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Little Tub Sub & Smokehouse',
+    lat: 45.2541487,
+    lng: -81.6659983,
+    type: 'food',
+    googleCategory: 'Sandwich',
+    rating: 4.9,
+    reviews: 217,
+    price: 'CA$10–20',
+    placeId: '0x4d2d0bda28de5083:0x2fc43af40d8c0dc5',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'The Hungry Hiker Tobermory',
+    lat: 45.2506144,
+    lng: -81.6620619,
+    type: 'food',
+    googleCategory: 'Coffee stand',
+    rating: 4.8,
+    reviews: 516,
+    price: 'CA$10–20',
+    placeId: '0x4d2d0b013756a5db:0xf75f204bc3085abf',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'The Sweet Shop',
+    lat: 45.2543155,
+    lng: -81.6636575,
+    type: 'food',
+    googleCategory: 'Ice Cream',
+    rating: 4.1,
+    reviews: 465,
+    placeId: '0x4d2d0b00a882f9d1:0x22394d684f949dfa',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+
+  // ── LAKE HURON SHORE, SOUTH OF THE PENINSULA (43.0–44.2°N) ──
+  {
+    name: 'Kincardine Beach volleyball',
+    lat: 44.1755409,
+    lng: -81.6402587,
+    type: 'view',
+    googleCategory: 'Beach volleyball court',
+    rating: 4.7,
+    reviews: 424,
+    placeId: '0x8828519f21f699db:0x37242130231b0efd',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Point Clark Lighthouse National Historic Site',
+    lat: 44.0727924,
+    lng: -81.7572696,
+    type: 'view',
+    googleCategory: 'Historical landmark',
+    rating: 4.6,
+    reviews: 404,
+    placeId: '0x8828f667f11b6827:0xfc9695e4e964a948',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Neustadt Springs Brewery',
+    lat: 44.0748579,
+    lng: -81.0034904,
+    type: 'brewery',
+    googleCategory: 'Brewery',
+    rating: 4.8,
+    reviews: 343,
+    placeId: '0x88299d3cad57bf9d:0x5726f20cca6397a',
+    note: 'The one genuinely inland stop — ~60 km east of the shore.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'East Street Cider Co.',
+    lat: 43.7428385,
+    lng: -81.7050708,
+    type: 'brewery',
+    googleCategory: 'Brewery',
+    rating: 4.9,
+    reviews: 68,
+    placeId: '0x8828c3d0428084c7:0x981b2620219907ea',
+    note: 'Goderich.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Vinylly Vintage',
+    lat: 43.7391099,
+    lng: -81.70719,
+    type: 'gem',
+    googleCategory: 'Record store',
+    rating: 4.5,
+    reviews: 51,
+    placeId: '0x8828c36578452af1:0x38c71067fb8857ee',
+    note: 'Goderich.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: "St. Christopher's Beach",
+    lat: 43.7397548,
+    lng: -81.7263921,
+    type: 'view',
+    googleCategory: 'Public beach',
+    rating: 4.6,
+    reviews: 463,
+    placeId: '0x8828c30d2924c315:0x4357a05a714779da',
+    note: 'Goderich.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Bayfield Berry Farm, Winery & Distillery',
+    lat: 43.6009788,
+    lng: -81.6854248,
+    type: 'brewery',
+    googleCategory: 'Distillery',
+    rating: 4.6,
+    reviews: 130,
+    placeId: '0x8829fd63077f30ef:0x62179a96c627558f',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Bad Apple Brewing Company Ltd.',
+    lat: 43.4442176,
+    lng: -81.7036895,
+    type: 'brewery',
+    googleCategory: 'Brewery',
+    rating: 4.8,
+    reviews: 358,
+    placeId: '0x882f326531559003:0x8db1b7efa4afec4e',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Torched Brewing Company',
+    lat: 43.3138756,
+    lng: -81.7549877,
+    type: 'brewery',
+    googleCategory: 'Brewery',
+    rating: 4.4,
+    reviews: 84,
+    placeId: '0x882f3b3c8da440f9:0x842240304e954b6b',
+    note: null,
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+  {
+    name: 'Stonepicker Brewing Company',
+    lat: 43.0609528,
+    lng: -82.0062071,
+    type: 'brewery',
+    googleCategory: 'Brewery',
+    rating: 4.8,
+    reviews: 332,
+    placeId: '0x882f6f13a141084b:0xf9d22cb8e253966f',
+    note: 'Southernmost stop — near Sarnia, directly across the border from Port Huron, Michigan.',
+    validated: false,
+    validatedBy: null,
+    visitedDate: null,
+  },
+]
