@@ -105,10 +105,11 @@ const CITIES = [
    with a leader line out to an IATA chip placed in clear space — standard
    cartographic practice, and the marker never lies about where it is.
 
-   `searchUrl` is the ARCHITECTED AVIASALES SLOT (see CLAUDE.md / d6dd493).
-   Null today. When Travelpayouts flight links or an embedded widget land, the
-   panel switches from the coming-soon state to live data with no component
-   change and no hard-coded price copy to rip out. */
+   `searchUrl` is a PROVIDER-NEUTRAL FLIGHT-SEARCH SLOT. Null today, and no
+   flight provider is signed — Travelpayouts (the original candidate) was
+   dropped Aug 25. When a provider does land, the panel switches from the
+   coming-soon state to live data with no component change and no hard-coded
+   price copy to rip out. */
 const AIRPORT_LIST = [
   {
     iata: 'DTW',

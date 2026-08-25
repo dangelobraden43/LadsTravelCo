@@ -29,6 +29,7 @@ export default [
         FormData: 'readonly',
         fetch: 'readonly',
         Buffer: 'readonly',
+        URL: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: { jsx: true },

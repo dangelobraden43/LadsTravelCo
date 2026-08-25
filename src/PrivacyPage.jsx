@@ -5,7 +5,7 @@ import { Nav } from './App'
 import Footer from './Footer'
 import './PrivacyPage.css'
 
-const EFFECTIVE = 'August 17, 2026'
+const EFFECTIVE = 'August 25, 2026'
 
 function useReveal(threshold = 0.15) {
   const ref = useRef(null)
@@ -38,7 +38,7 @@ function Reveal({ children, delay = 0, className = '' }) {
 }
 
 // Every third party the site actually loads or sends data to, audited from
-// index.html + src/ on August 17, 2026. Keep this table in sync with the code —
+// index.html + src/ on August 25, 2026. Keep this table in sync with the code —
 // if a service is added or removed, it changes here in the same commit.
 const THIRD_PARTIES = [
   {
@@ -93,12 +93,6 @@ const THIRD_PARTIES = [
     role: 'Tour booking partners',
     detail:
       'Some tour links point to these sites. If you follow one, they know you arrived from us.',
-  },
-  {
-    name: 'Travelpayouts',
-    role: 'Affiliate tracking',
-    detail:
-      'Runs on every page and attributes bookings made through our travel affiliate links, so partners know a booking came from us. See the affiliate section below.',
   },
 ]
 
