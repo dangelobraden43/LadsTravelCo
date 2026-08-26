@@ -664,9 +664,11 @@ Data moment: Vivid Harbor Bridge drone
 > loud before working from it — a previous queue sat titled "TOMORROW'S QUEUE"
 > for eight days with cleared blockers still listed as blockers.
 
-**START STATE (verified end-of-night Aug 25):** working tree clean, `main` ==
-`origin/main`, all 8 Aug-25 commits deployed. Nothing carried over uncommitted.
-One stash exists — `stash@{0}`, dated **April 11**, "WIP on main: Reimagine
+**START STATE (verified end-of-night Aug 25):** working tree clean, nothing
+carried over uncommitted, and every Aug-25 **code** commit is deployed. A late
+docs-only CLAUDE.md commit may still be unpushed — open with
+`git status --branch` and `git log --oneline origin/main..HEAD` rather than
+assuming. One stash exists — `stash@{0}`, dated **April 11**, "WIP on main: Reimagine
 Tab 1 as magazine-style destination layout". It predates the React rebrand and
 almost certainly will not apply; decide to drop it or leave it, do not try to
 pop it blind.
@@ -771,9 +773,50 @@ Full sweep at **1440 and 390**. `npm run build` clean. `/ship` on Brady's go.
 
 ### CARRIED FORWARD
 
-- **Peru26 film prep** — `Peru26/` is **gitignored** (225 files, 932 MB; raw
-  media never enters git). Manifest at `internal/brady/peru26-manifest.md`,
-  contact sheets at `Peru26/review/`. **No editing until the beat sheet.**
+- **Peru26 film prep — MECHANICAL PREP IS DONE (Aug 25 night).** `Peru26/` is
+  **gitignored** (225 files, 932 MB; raw media never enters git), as is
+  `internal/`. **No editing until the beat sheet** — that rule still stands;
+  only inventory and capability tests were run, no real footage was touched.
+  - **Manifest:** `internal/brady/peru26-manifest.md` (353 lines) — summary,
+    flags, full videos table, photos grouped by day.
+  - **Contact sheets:** `Peru26/review/` — 3 video sheets (10 clips each,
+    start/mid/end frames labeled) + 10 photo sheets (~20 each, chronological).
+    `Peru26/review/tmp_video_frames/` holds the 90 individual labeled stills
+    as a fallback if a tiled frame is hard to read.
+  - **Inventory:** 225 files / 0.91 GB / **0 corrupt**. 30 videos totalling
+    only **3:35** (longest clip 14.8s — all Live-Photo-style captures, none
+    over 60s) + 195 photos. Trip arc from GPS EXIF: Miami (F1 GP) → Lima →
+    Ica/Paracas (Ballestas boat + dune buggy) → Cusco → Salkantay → Machu
+    Picchu, May 2–11 2026. Place *names* are inferred from coordinates, not
+    from an itinerary — verify before putting any of them on screen.
+
+  **🔧 THREE GOTCHAS FOR THE EDIT — read before running any ffmpeg:**
+  1. **`transpose=2` is mandatory per input.** 28/30 clips are portrait iPhone
+     HEVC carrying a -90° rotation flag. ffmpeg auto-applies rotation in a
+     simple `-vf` chain but **NOT inside `-filter_complex`** — so any
+     multi-clip assembly renders sideways unless each rotated input gets an
+     explicit `transpose=2` before scaling/concat. Found by test render.
+  2. **Use the right ffmpeg binary.** There is no system ffmpeg/ffprobe/
+     exiftool on this machine. An OBS-bundled `ffmpeg.exe` exists inside an
+     Overwolf extension folder and its banner claims "full_build", but
+     **`drawtext` is compiled out** — it fails with `Unknown filter 'drawtext'`.
+     Use the `imageio-ffmpeg` pip package's binary (gyan.dev essentials 7.1)
+     for anything with text. The OBS `ffprobe` is fine for probing.
+     Font: `C:\Windows\Fonts\arial.ttf` works. HEIC/EXIF reading was done with
+     Python `Pillow` + `pillow-heif` (installed) since exiftool is absent.
+  3. **Sort by Apple's timestamp, not the generic one.** 10 of 30 videos have a
+     generic QuickTime `creation_time` that disagrees with the file's own
+     `com.apple.quicktime.creationdate` (which carries the real `-05:00` Peru
+     offset). 4 are wildly off — `IMG_1944.MOV`'s generic tag claims **Aug 25**
+     when it is May 5 dune-buggy footage; `IMG_1128` / `IMG_2406` / `IMG_3030`
+     are mis-stamped into late May. Re-export artifacts. The manifest already
+     sorts by the corrected time and tables every correction.
+
+  **⚠️ ONE FILE NEEDS BRADY:** `72581579-9d47-4394-9304-fbad79f114c1.mp4` has no
+  Apple metadata, no GPS, no device tag — only a generic `creation_time` of
+  May 20, outside the May 2–11 cluster. Placed there by default but genuinely
+  unplaceable. Also odd: `IMG_2760.JPG` is 1980×3520, unlike any native camera
+  output in the set (possibly a screenshot/re-export).
 - **13 tagged Viator links stockpiled** in
   `internal/brady/affiliate-link-worksheet.md`, grouped by why each cannot be
   wired. Note `bookingUrl` renders at exactly ONE place in the codebase
