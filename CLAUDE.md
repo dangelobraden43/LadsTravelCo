@@ -109,9 +109,10 @@ July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
 
 ## WHAT WAS BUILT (August 25, 2026 — partner purge, the Bruce, Ontario)
 
-**3 commits shipped to production, 4 more committed and awaiting `/ship`.**
+**8 commits — ALL SHIPPED to production. Nothing is pending `/ship`.**
+Verified end-of-night Aug 25: working tree clean, `main` == `origin/main`.
 
-**Shipped** (`9b6b9ce`, `718fe98`, `d527d32`):
+**First push** (`9b6b9ce`, `718fe98`, `d527d32`):
 - **Travelpayouts purged.** The `tpembars.com` loader in `index.html` was
   the source of the Aug-17 ad-layer flag (`emerald monetization`,
   `link_switcher`, the failing doubleclick call). Deleted; the
@@ -133,10 +134,21 @@ July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
 - **Cliffs of Moher + Montserrat** wired through the partner account.
 - **Paris sticker pulled from `/shop`** — see PRINTIFY DEFECT below.
 
-**Committed, not pushed** (`7a8da65`, `3ecd0de`, `50d694e`, + CLAUDE.md):
+**Second push** (`7a8da65`, `3ecd0de`, `50d694e`, `9fe4dfc`):
 - **17 Bruce Peninsula places geocoded** → `src/data/brucePeninsula.js`.
 - **108 dead images deleted** — `dist` 53 MB → **41 MB**.
 - **Ontario renders** — the long-standing blocker is solved.
+- `Peru26/` gitignored (225 files, 932 MB of raw media never enters git).
+
+**Late** (`0d96f4e`, `7555098`):
+- 🚩 **`dist/bundle-report.html` was being deployed.** `rollup-plugin-visualizer`
+  wrote it into `dist/`, so every deploy published 368 KB laying out the
+  entire internal module structure, dependency weights and file names at
+  `ladstravel.com/bundle-report.html`. Nothing linked to it; it is a local
+  build artefact, not a page. Moved to `.bundle-report.html` at the repo
+  root and gitignored — still generated every build, still there for
+  `/perf`, just not shipped. `dist` 41 MB → **40 MB**.
+- The Aug 26 queue itself.
 
 ### 🔑 THE MAPS-LIST BLOCKER IS LIFTED — this changes the workflow
 
@@ -597,7 +609,8 @@ Footer:              3 KB raw / 1 KB gzip
 Framework chunks:  5–33 KB each (lazy)
 index.html:          4 KB raw / 2 KB gzip
 dist/assets:       2.5 MB across 40 chunks
-dist/ total:       53 MB (incl. all images)
+dist/ total:       40 MB (incl. all images) — was 53 MB until Aug 25
+                   (-12 MB dead images, -368 KB bundle-report.html)
 ```
 
 vs Session 6 (May 22): dropped /story chunk (-14 KB), jordi.html
@@ -651,6 +664,13 @@ Data moment: Vivid Harbor Bridge drone
 > loud before working from it — a previous queue sat titled "TOMORROW'S QUEUE"
 > for eight days with cleared blockers still listed as blockers.
 
+**START STATE (verified end-of-night Aug 25):** working tree clean, `main` ==
+`origin/main`, all 8 Aug-25 commits deployed. Nothing carried over uncommitted.
+One stash exists — `stash@{0}`, dated **April 11**, "WIP on main: Reimagine
+Tab 1 as magazine-style destination layout". It predates the React rebrand and
+almost certainly will not apply; decide to drop it or leave it, do not try to
+pop it blind.
+
 ### 🎯 SESSION GOAL — /local graduates
 
 **The broken Lads Michigan page becomes the interactive Midwest hub.** This is
@@ -668,7 +688,8 @@ drop the nice-to-haves, then cut film.
 
 ### PHASE 1 — PIN DATA COMPLETE
 
-1. **Ingest Brady's Bruce visited-split** (pending tonight/morning). All 17 in
+1. **Ingest Brady's Bruce visited-split** — still not supplied as of end-of-night
+   Aug 25, so this is a morning ask, not a done deal. All 17 in
    `src/data/brucePeninsula.js` currently ship `validated: false`. Visited ones
    flip to `validated: true, validatedBy: 'Brady', visitedDate: '2026-08'`.
    The trip ran Aug 8–12 but the saved list is a SUPERSET of it — **never flip
