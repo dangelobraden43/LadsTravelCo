@@ -1049,6 +1049,10 @@ export default {
       bookingUrl: 'https://gyg.me/V0UrxNUe',
       bookingPlatform: 'GetYourGuide',
       ladsRating: '8.5/10',
+      // We did Wicklow/Glendalough and Kilkenny — the rating stands. This
+      // bookable product is not confirmed to be the exact version we did, so
+      // the CTA stays neutral and makes no "WE DID THIS" claim.
+      bookingEndorsed: false,
     },
     {
       name: 'Cliffs of Moher & The Burren',

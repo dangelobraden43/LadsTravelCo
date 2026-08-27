@@ -246,38 +246,49 @@ export default function FrameworkPage({ data, heroImg }) {
         <div className="fw-section-label">DAY TRIPS</div>
         <h2 className="fw-section-title">{data.dayTrips.length} Day Trips We Recommend</h2>
         <div className="fw-trips-grid">
-          {data.dayTrips.map((trip, i) => (
-            <div key={i} className="fw-trip">
-              <div className="fw-trip-header">
-                <div>
-                  <div className="fw-trip-name">{trip.name}</div>
-                  <div className="fw-trip-from">FROM {trip.from.toUpperCase()}</div>
+          {data.dayTrips.map((trip, i) => {
+            /* ENDORSEMENT GRADIENT — two separate questions, two separate fields.
+               1. Did we do the PLACE?   → `ladsRating`. Drives the visible chip.
+               2. Is the BOOKABLE PRODUCT the exact version we did?
+                                        → `bookingEndorsed` (optional).
+               A rating is our recorded evidence for (1). It used to drive the CTA
+               too, which meant the only way to get a neutral CTA was to delete the
+               rating — deleting a true fact to avoid an untrue claim.
+               `bookingEndorsed: false` now forces the neutral CTA while the rating
+               chip stays. Absent/undefined = the original behaviour exactly.
+               `true` is only meaningful alongside a rating: without evidence we
+               still refuse to make the claim. */
+            const endorsed = Boolean(trip.ladsRating) && trip.bookingEndorsed !== false
+            return (
+              <div key={i} className="fw-trip">
+                <div className="fw-trip-header">
+                  <div>
+                    <div className="fw-trip-name">{trip.name}</div>
+                    <div className="fw-trip-from">FROM {trip.from.toUpperCase()}</div>
+                  </div>
+                  {trip.ladsRating && <div className="fw-trip-rating">Lads: {trip.ladsRating}</div>}
                 </div>
-                {trip.ladsRating && <div className="fw-trip-rating">Lads: {trip.ladsRating}</div>}
+                <p className="fw-trip-desc">{trip.description}</p>
+                {trip.bookingUrl && (
+                  <a
+                    href={trip.bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`fw-trip-book${endorsed ? ' fw-trip-book--endorsed' : ''}`}
+                  >
+                    {endorsed ? (
+                      <>
+                        <span className="fw-trip-book-flag">WE DID THIS</span>
+                        Book on {trip.bookingPlatform} &rarr;
+                      </>
+                    ) : (
+                      <>Book this tour &rarr;</>
+                    )}
+                  </a>
+                )}
               </div>
-              <p className="fw-trip-desc">{trip.description}</p>
-              {/* ENDORSEMENT GRADIENT — a ladsRating is our recorded evidence that
-                  we actually did this. With one, the CTA is allowed to say so.
-                  Without one, the CTA must stay neutral and imply nothing. */}
-              {trip.bookingUrl && (
-                <a
-                  href={trip.bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`fw-trip-book${trip.ladsRating ? ' fw-trip-book--endorsed' : ''}`}
-                >
-                  {trip.ladsRating ? (
-                    <>
-                      <span className="fw-trip-book-flag">WE DID THIS</span>
-                      Book on {trip.bookingPlatform} &rarr;
-                    </>
-                  ) : (
-                    <>Book this tour &rarr;</>
-                  )}
-                </a>
-              )}
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
