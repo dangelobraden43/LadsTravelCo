@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { VIEWBOX, STATES, PLACES, AIRPORTS, ROUTE_PATHS } from './midwestGeo'
+import { VIEWBOX, VB_W, STATES, PLACES, AIRPORTS, ROUTE_PATHS, project } from './midwestGeo'
 import { ONTARIO_PENINSULA } from './ontarioGeo'
+import MapPins, { placeToPanel, makePinId } from './MapPins'
+import { BRUCE_PLACES, BRUCE_SOURCE } from './data/brucePeninsula'
 import './GoodNews.css'
 
 /* ===== SHARED GEOMETRY =====
@@ -189,6 +191,33 @@ const AIRPORT_LIST = [
 const CHIP_W = 46
 const CHIP_H = 20
 
+/* PINS — Phase 4, first data set.
+ *
+ * The 17 Bruce Peninsula places from Brady's saved Google list, projected
+ * through the SAME transform as everything else on this canvas (see
+ * `project` in midwestGeo.js) and drawn by the reusable MapPins layer. The
+ * Ontario land they sit on landed in 50a4d8b, so they finally have ground
+ * beneath them.
+ *
+ * ALL 17 RENDER COPPER. Brady's trip ran Aug 8–12 2026 and part of this
+ * list IS now firsthand, but the per-spot visited/not-visited split has not
+ * been supplied and the list is a superset of the trip. Copper is therefore
+ * the correct render, not a bug — see the header of brucePeninsula.js.
+ * Flipping the flags is a data edit for whoever ingests the split.
+ *
+ * MICHIGAN IS NOT PINNED HERE, deliberately. The 21 spots in
+ * src/data/michigan.js carry no lat/lng at all — nothing in that file can be
+ * placed on a map without geocoding it first, and guessing at coordinates
+ * would be inventing data. The layer below takes them the moment they have
+ * real coordinates: same component, same props, one more <MapPins> element. */
+const BRUCE_PREFIX = 'bruce'
+
+/* Five Tobermory places sit inside ~0.5 viewBox units of each other, so
+ * without declustering they are one unhittable dot. `stackDist` decides what
+ * counts as a true stack worth fanning onto a ring; `minDist` is the floor
+ * every glyph is relaxed out to. Geometry only — MapPins owns the algorithm. */
+const PIN_CLUSTER = { minDist: 20, stackDist: 6 }
+
 function Panel({ item, onClose }) {
   const closeRef = useRef(null)
 
@@ -205,7 +234,7 @@ function Panel({ item, onClose }) {
 
   return (
     <div
-      className="gn-panel"
+      className={`gn-panel${item.side === 'left' ? ' gn-panel--left' : ''}`}
       role="dialog"
       aria-modal="false"
       aria-labelledby={`gn-panel-title-${item.id}`}
@@ -225,19 +254,30 @@ function Panel({ item, onClose }) {
           {item.title}
         </h2>
         <div className="gn-panel-place">{item.place}</div>
-        {item.status && <div className="gn-panel-status">{item.status}</div>}
-        {item.lines.map((l) => (
-          <p className="gn-panel-line" key={l}>
+        {item.status && (
+          <div
+            className={`gn-panel-status${
+              item.statusTone ? ` gn-panel-status--${item.statusTone}` : ''
+            }`}
+          >
+            {item.status}
+          </div>
+        )}
+        {item.lines.map((l, i) => (
+          <p className="gn-panel-line" key={`${item.id}-${i}`}>
             {l}
           </p>
         ))}
         {item.tail && <p className="gn-panel-tail">{item.tail}</p>}
+        {/* provenance, not voice — where the record came from */}
+        {item.note && <p className="gn-panel-note">{item.note}</p>}
       </div>
     </div>
   )
 }
 
-/* Both tiers normalise into the same panel shape. */
+/* Every tier normalises into the same panel shape. Pins bring their own
+   adapter, `placeToPanel` in MapPins.jsx, which follows this convention. */
 function anchorToPanel(a) {
   return {
     id: a.id,
@@ -268,12 +308,27 @@ export default function GoodNews() {
 
   const anchorHit = ANCHORS.find((a) => a.id === activeId)
   const airportHit = AIRPORT_LIST.find((a) => `air-${a.iata}` === activeId)
+  const bruceHit = BRUCE_PLACES.find((p) => makePinId(BRUCE_PREFIX, p) === activeId)
   const active = anchorHit
     ? anchorToPanel(anchorHit)
     : airportHit
       ? airportToPanel(airportHit)
-      : null
-  const toggle = (id) => setActiveId((cur) => (cur === id ? null : id))
+      : bruceHit
+        ? {
+            ...placeToPanel(bruceHit, {
+              idPrefix: BRUCE_PREFIX,
+              sourceLabel: BRUCE_SOURCE.label,
+            }),
+            /* The panel is pinned top-right, and every Bruce pin is in the
+               far-right third of the canvas — so opening one would hide the
+               thing you just tapped, and its whole cluster with it. Flip the
+               panel to the empty left side for anything out there. Desktop
+               only; the mobile sheet already solves this by shrinking the map
+               to the space above it. */
+            side: project(bruceHit.lat, bruceHit.lng).x > VB_W * 0.55 ? 'left' : 'right',
+          }
+        : null
+  const toggle = useCallback((id) => setActiveId((cur) => (cur === id ? null : id)), [])
 
   return (
     <div className="gn-root">
@@ -288,7 +343,7 @@ export default function GoodNews() {
           viewBox={VIEWBOX}
           preserveAspectRatio="xMidYMid meet"
           role="img"
-          aria-label="Illustrated map of the Midwest — Minnesota, Wisconsin, Michigan, Illinois, Indiana and Ohio — with Michigan road-trip routes and the two campuses the Lads came out of"
+          aria-label="Illustrated map of the Midwest — Minnesota, Wisconsin, Michigan, Illinois, Indiana and Ohio, plus the Ontario shore — with Michigan road-trip routes, the two campuses the Lads came out of, and research pins along the Bruce Peninsula and Lake Huron shore"
         >
           <defs>
             <radialGradient id="gn-water" cx="52%" cy="40%" r="78%">
@@ -491,6 +546,16 @@ export default function GoodNews() {
               </g>
             )
           })}
+
+          {/* PINS — reusable layer, nothing Midwest-specific inside it */}
+          <MapPins
+            places={BRUCE_PLACES}
+            project={project}
+            idPrefix={BRUCE_PREFIX}
+            activeId={activeId}
+            onToggle={toggle}
+            cluster={PIN_CLUSTER}
+          />
 
           {/* OUR ROOTS anchors — gold, interactive */}
           {ANCHORS.map((a) => (

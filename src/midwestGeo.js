@@ -17,6 +17,36 @@ export const VIEWBOX = '0 0 1000 1017'
 export const VB_W = 1000
 export const VB_H = 1017
 
+/* THE SHARED TRANSFORM, exported.
+ * Until now the only way onto this canvas was to be in the tracer's own
+ * place table and get re-emitted as a hard x/y. Anything geocoded later —
+ * pin sets, Dawson's list, a second region — had no way in without either
+ * re-running the tracer or hand-placing coordinates.
+ *
+ * `project(lat, lng)` is the identical equirectangular maths the tracer
+ * applies to the state rings, the cities and the airports, so a point put
+ * through it lands on the same coastline they do. Verified against every
+ * emitted PLACES/AIRPORTS entry: exact to the emitted 0.1px, except a
+ * single rounding tie on Indianapolis.
+ *
+ * NOTE the argument order is (lat, lng) — the data files store lat first.
+ * The tracer's internal project() is (lon, lat), GeoJSON order. */
+export const PROJECTION = {
+  pad: 24,
+  minLon: -97.23915,
+  maxLat: 49.38384,
+  k: 0.729183, // cos(lat0), lat0 = 43.177
+  scale: 78.082663, // px per degree of latitude
+}
+
+export function project(lat, lng) {
+  const p = PROJECTION
+  return {
+    x: +(p.pad + (lng - p.minLon) * p.k * p.scale).toFixed(1),
+    y: +(p.pad + (p.maxLat - lat) * p.scale).toFixed(1), // y flips: north is up
+  }
+}
+
 /* Each state is one or more closed rings. Michigan keeps two (LP + UP). */
 export const STATES = [
   {

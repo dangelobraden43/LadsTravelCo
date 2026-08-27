@@ -246,6 +246,9 @@ console.log(`  TOTAL kept: ${totalPts} pts`)
 
 writeFileSync(
   'midwest-out.json',
-  JSON.stringify({ viewBox: `0 0 ${VB_W} ${VB_H}`, VB_W, VB_H, lat0, K, scale, paths: out, places: proj(PLACES), airports: proj(AIRPORTS) }, null, 2)
+  // minLon/maxLat/PAD ride along so the emitter can export the transform
+  // itself (src/midwestGeo.js `project()`), not just its output. Anything
+  // geocoded after this run projects into the same frame without a re-trace.
+  JSON.stringify({ viewBox: `0 0 ${VB_W} ${VB_H}`, VB_W, VB_H, lat0, K, scale, minLon, maxLon, minLat, maxLat, PAD, paths: out, places: proj(PLACES), airports: proj(AIRPORTS) }, null, 2)
 )
 console.log('\nwrote midwest-out.json')

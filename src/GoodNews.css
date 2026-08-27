@@ -171,6 +171,32 @@
   margin-bottom: 16px;
 }
 
+/* Tier tones for the status chip. Default (no tone) stays the airport blue.
+   gold = validated, copper = research — the same language as the pins and
+   the Globe, so the chip and the marker can never disagree. */
+.gn-panel-status--gold {
+  color: var(--gold);
+  border-color: rgba(212, 168, 67, 0.4);
+}
+
+.gn-panel-status--copper {
+  color: var(--copper);
+  border-color: rgba(184, 136, 110, 0.4);
+}
+
+/* Where the record came from. Deliberately quiet and NOT in the gold
+   editorial voice of .gn-panel-tail — this is provenance, not a Lads line. */
+.gn-panel-note {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.4px;
+  line-height: 1.6;
+  color: rgba(232, 220, 200, 0.36);
+  margin: 18px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(232, 220, 200, 0.1);
+}
+
 .gn-panel {
   position: absolute;
   top: 40px;
@@ -186,6 +212,14 @@
   border-radius: var(--radius, 16px);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   z-index: 5;
+}
+
+/* Mirrored to the empty left side when the open marker is out on the right,
+   so the panel never covers the thing that was just tapped. Desktop only —
+   the mobile sheet below overrides both edges. */
+.gn-panel--left {
+  right: auto;
+  left: 40px;
 }
 
 /* Scroll lives INSIDE the panel — the page never scroll-traps behind it. */

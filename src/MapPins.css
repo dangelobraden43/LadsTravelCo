@@ -1,0 +1,99 @@
+/* ===== REUSABLE MAP PIN LAYER =====
+   Palette comes from src/index.css :root only. Nothing here is map-specific,
+   so a second map (Peru) picks up the identical tier language for free.
+
+   TIER IS CARRIED BY FORM AS WELL AS COLOUR, deliberately: gold pins are
+   SOLID (we filled this in — we were there), copper pins are HOLLOW (an
+   outline, still to be filled). A reader who cannot separate the two hues
+   can still separate solid from outline.
+
+   Tier colours are set ONCE per pin as custom properties and consumed below.
+   Do NOT colour .mp-glyph with a descendant rule: it out-specifies the
+   fill/stroke mode rules and lands a unit-space stroke on fill glyphs, which
+   at pin scale bloats every icon into the same blob. */
+
+.mp-pin {
+  cursor: pointer;
+  outline: none;
+}
+
+.mp-pin--gold {
+  --mp-tier: var(--gold);
+  --mp-ink: #221b0c; /* glyph sits ON the gold disc, so it goes dark */
+  --mp-leader: rgba(212, 168, 67, 0.5);
+}
+
+.mp-pin--copper {
+  --mp-tier: var(--copper);
+  --mp-ink: var(--copper); /* hollow disc, so the glyph carries the colour */
+  --mp-leader: rgba(184, 136, 110, 0.45);
+}
+
+/* leader from the true coordinate out to a declustered glyph */
+.mp-leader {
+  stroke: var(--mp-leader, rgba(232, 220, 200, 0.32));
+  stroke-width: 1;
+}
+
+.mp-truth {
+  fill: var(--mp-tier, rgba(232, 220, 200, 0.65));
+}
+
+.mp-hit {
+  fill: transparent;
+  stroke: none;
+}
+
+.mp-halo {
+  fill: var(--mp-tier);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mp-disc {
+  stroke-width: 1.6;
+}
+
+.mp-pin--gold .mp-disc {
+  fill: var(--gold);
+  stroke: #14110c;
+}
+
+.mp-pin--copper .mp-disc {
+  fill: rgba(28, 25, 21, 0.9); /* --surface, held back so the ring reads */
+  stroke: var(--copper);
+}
+
+/* Glyph geometry is authored in a unit box and scaled by the pin radius, so
+   stroke-width here is in unit space too — 0.2 stays proportional at any r. */
+.mp-glyph--fill {
+  fill: var(--mp-ink);
+  stroke: none;
+  stroke-width: 0;
+}
+
+.mp-glyph--stroke {
+  fill: none;
+  stroke: var(--mp-ink);
+  stroke-width: 0.16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- states ---------- */
+.mp-pin:hover .mp-halo,
+.mp-pin:focus-visible .mp-halo,
+.mp-pin.is-active .mp-halo {
+  opacity: 0.32;
+}
+
+.mp-pin:focus-visible .mp-disc,
+.mp-pin.is-active .mp-disc {
+  stroke: var(--cream);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mp-halo {
+    transition: none;
+  }
+}
