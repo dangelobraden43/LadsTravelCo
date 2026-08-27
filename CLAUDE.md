@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 25, 2026 (queue dated Aug 26)
+## Last Updated: August 27, 2026 (queue dated Aug 27 — Aug 26 was a no-op day)
 
 ---
 
@@ -107,10 +107,84 @@ July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
 
 ---
 
+## WHAT WAS BUILT (August 27, 2026 — pins, Peru data, paused mid-session)
+
+**Session PAUSED by Brady mid-afternoon; resuming later today.** 4 commits
+shipped. Aug 26 was a no-op day (zero commits) — the whole Aug-26 queue was
+still outstanding when this session opened.
+
+**Shipped** (`2acea81`, `3f5a093`, `b701cd7`, + this):
+- **`src/data/peru.js`** — 10 day anchors from camera-EXIF GPS provenance.
+  The Peru map had NO data file at all. See PERU below.
+- **`bookingEndorsed`** — booking endorsement split from `ladsRating`.
+  `const endorsed = Boolean(trip.ladsRating) && trip.bookingEndorsed !== false`.
+  Absent = unchanged; `false` = neutral CTA but KEEPS the rating chip;
+  `true` deliberately cannot manufacture a claim where no rating exists.
+  Applied to **Kilkenny** (live gyg.me link, now neutral) and **Blue
+  Mountains** (no `bookingUrl` yet, so prospective — it fires when a link
+  is wired). `bookingUrl` re-verified as rendering at exactly ONE place.
+- **`src/MapPins.jsx` + `MapPins.css`** — the reusable pin layer. Knows
+  nothing about the Midwest: places, `project(lat,lng)`, panel state and
+  icons all arrive as props, so the Peru map inherits it directly.
+  All 17 Bruce places render **copper**, which is CORRECT — the
+  visited-split still has not been supplied and no flag was flipped to make
+  the map look better. Declustering follows the airport pattern: marker
+  stays on the TRUE coordinate, glyph pushed onto a ring with a leader
+  line, so a pin never lies about position.
+- **`midwestGeo.js` is PURELY ADDITIVE** — 30 insertions, 0 deletions,
+  verified by `--numstat`. The projection is structurally untouched; every
+  ring, PLACE, AIRPORT and ROUTE_PATH is byte-identical. The transform had
+  only ever existed inside `tools/trace-midwest.mjs`, so there was no way
+  to put lat/lng on the canvas; it is now exported as `PROJECTION` +
+  `project(lat, lng)`. **Mind the argument order** — `(lat, lng)`, because
+  data files store lat first while the tracer's internal one is GeoJSON
+  `(lon, lat)`.
+
+### 🔑 EVERY FILE IN `src/data/` BECOMES A BUNDLE CHUNK — found Aug 27
+
+`src/App.jsx:501` does `import(\`./data/${f.slug}.js\`)`. A template-literal
+dynamic import cannot be statically resolved, so Rollup emits a **separate
+lazy chunk for every file in `src/data/`** — confirmed: `peru`,
+`brucePeninsula` and `michigan` all have chunks in `dist/assets/`, though
+`FEATURED` only ever fetches dublin/spain/rome at runtime.
+
+So a new data file is **not** free and **not** truly inert. It is a lazy
+chunk no visitor downloads (peru = 2.57 KB gzip), which is harmless — but
+do not claim "imported by nothing." `dist` holds at **40 MB**.
+
+### PERU — data foundation only, NOT a published framework
+
+`peru.js` is day anchors, nothing more. No route in `main.jsx`, no
+`vercel.json` entry, no Globe pin, and **no change to 219/13/10/3**. Day
+anchors are not spots and must never be counted by the live-walk counter.
+
+**🚩 THE MANIFEST'S TREK DAY LABELS ARE OFF BY ONE.** May 7 is labelled
+"Salkantay day 1" but sits at `-13.86,-71.30` — ~150 km from every other
+trek day (which cluster between -72.53 and -72.66) and matching **Vinicunca
+/ Rainbow Mountain** to ~0.01°. Independently, `SystemSection.jsx:436`
+records the pre-trip intent as "Salkantay Trek, Rainbow Mountain". So May 7
+was a Rainbow Mountain day trip and Salkantay proper starts May 8.
+Coordinate kept verbatim, caption withheld pending Brady.
+
+**Paracas is not supported** by the day-4 coordinate (~50 km away);
+Ica/Huacachina is, and agrees with Brady's own /outdoors prose.
+**Brady confirmed Aug 27:** the Islas Ballestas boat tour DID happen — a
+Lima day tour before Cusco. Firsthand, so it may be named; it still has no
+coordinate, so it stays unpinned and is not a waypoint.
+
+Humantay Lake and the Salkantay Pass are named in Brady's validated prose
+but have **no coordinate in the manifest**, so they are deliberately not
+pins. Geocoding them from the name would break the Tivoli rule.
+
+---
+
 ## WHAT WAS BUILT (August 25, 2026 — partner purge, the Bruce, Ontario)
 
-**8 commits — ALL SHIPPED to production. Nothing is pending `/ship`.**
-Verified end-of-night Aug 25: working tree clean, `main` == `origin/main`.
+**11 commits — ALL SHIPPED to production. Nothing is pending `/ship`.**
+Verified Aug 27 by commit count, not by memory: `git log --since=2026-08-25
+--until=2026-08-26` returns 11; working tree clean, `main` == `origin/main`.
+(The last two, `b6b273a` + `aee5d40`, are the docs close-out and the Peru26
+prep record — both pushed.)
 
 **First push** (`9b6b9ce`, `718fe98`, `d527d32`):
 - **Travelpayouts purged.** The `tpembars.com` loader in `index.html` was
@@ -658,33 +732,89 @@ Data moment: Vivid Harbor Bridge drone
 
 ---
 
-## THE QUEUE — Wednesday, August 26, 2026 (/morning reads this first)
+## THE QUEUE — Thursday, August 27, 2026 (/morning reads this first)
 
-> **Date discipline.** This queue is dated. If today is not Aug 26, say so out
+> **Date discipline.** This queue is dated. If today is not Aug 27, say so out
 > loud before working from it — a previous queue sat titled "TOMORROW'S QUEUE"
 > for eight days with cleared blockers still listed as blockers.
 
-**START STATE (verified end-of-night Aug 25):** working tree clean, nothing
-carried over uncommitted, and every Aug-25 **code** commit is deployed. A late
-docs-only CLAUDE.md commit may still be unpushed — open with
-`git status --branch` and `git log --oneline origin/main..HEAD` rather than
-assuming. One stash exists — `stash@{0}`, dated **April 11**, "WIP on main: Reimagine
-Tab 1 as magazine-style destination layout". It predates the React rebrand and
-almost certainly will not apply; decide to drop it or leave it, do not try to
-pop it blind.
+### ⚠️ AUGUST 26 DID NOT HAPPEN
 
-### 🎯 SESSION GOAL — /local graduates
+`git log` shows **zero commits on Aug 26**. The entire Aug-26 queue — the /local
+graduation, both pin phases, all of it — went untouched and is carried forward
+below unchanged. Do not read the Aug-26 plan as partially done; nothing against
+it shipped. The last commit of any kind is `aee5d40`, Aug 25 22:11.
 
-**The broken Lads Michigan page becomes the interactive Midwest hub.** This is
-the day's headline build, and everything below serves it.
+**START STATE (verified Aug 27):** working tree clean, `main` == `origin/main`,
+all 11 Aug-25 commits deployed. One stash still sits there — `stash@{0}`, dated
+**April 11**, "WIP on main: Reimagine Tab 1 as magazine-style destination
+layout". It predates the React rebrand and almost certainly will not apply;
+decide to drop it or leave it, do not pop it blind.
 
-### ⏰ TIMING — Aug 26 is ACTION DAY
+### ▶️ RESUME POINT — paused mid-afternoon Aug 27, resuming later the same day
 
-Brady is on fundraising until early afternoon. **Session starts ~afternoon.**
-**Evening is reserved for Peru26 film assembly** — the beat sheet is arriving
-from claude.ai. If the /local build runs long, the film takes priority over
-**polish items**, but NOT over the graduation itself. Ship the graduation,
-drop the nice-to-haves, then cut film.
+**Everything finished is committed and pushed. Working tree is clean except
+CLAUDE.md.** Done today: `2acea81` Peru data · `3f5a093` bookingEndorsed ·
+`b701cd7` pin system. `npm run build` verified passing on the committed state.
+
+**Pick up here, in this order:**
+
+1. **READ BRADY'S MACHU PICCHU LIST — the top item.** He supplied it Aug 27:
+   `https://maps.app.goo.gl/dkDQgdoXWFS2prtNA?g_st=i`
+   It was NOT read — the signed-in Playwright browser was held by a parallel
+   agent all session. **Do not read it with an isolated/signed-out profile**;
+   that returns a generic Maps shell with no place data, which is the entire
+   reason the provenance method exists. Signed in as brady@ladstravel.com,
+   open each saved place, take lat/lng from the URL's `!3d<lat>!4d<lng>` plus
+   the Place ID. The list panel is in a SUBFRAME — page-context `evaluate` is
+   blind to it, use `browser_run_code_unsafe` with Playwright locators.
+   **Scope Brady stated:** Machu Picchu only. It does NOT cover Lima,
+   Huacachina, or the Ballestas boat tour. Do not expect it to fill the
+   earlier days.
+2. **Check the Peru26 video agent's output** — it was still running at the
+   pause. Look for `internal/brady/peru26-video-plan.md` and
+   `Peru26/review/rough-cut-v1.mp4`. Both paths are gitignored, which is
+   correct. **Verify the rough cut is UPRIGHT before trusting it** (the
+   `transpose=2` trap). Nothing publishes without Brady's explicit go.
+3. **Then** the /local graduation proposal (Phase 3) — still proposal-first,
+   still blocked on a real Michigan photo.
+
+**Do NOT re-do:** the pin components, the endorsement gradient, or peru.js.
+All three are shipped and verified.
+
+### 🎯 SESSION GOAL — two builds, running in parallel
+
+Aug 26's goal (**/local graduates** — the broken Michigan page becomes the
+interactive Midwest hub) now shares the day with what the old queue called
+"Thursday's Peru map". Today IS that Thursday.
+
+### 🚧 FOUR THINGS ARE STILL BLOCKED ON BRADY — verified Aug 27, not assumed
+
+| Blocked item | Verified state |
+|---|---|
+| Bruce visited-split | **18 of 19 entries still `validated: false`** — never supplied |
+| Michigan geocoding | **0 coordinates** in `michigan.js` — nothing to pin |
+| Michigan hero photo | still `smokyMountainsCabinOverlook` (a Smoky Mtns shot) |
+| Peru26 beat sheet | **not in `internal/brady/`** — never arrived from claude.ai |
+
+The film cannot start without the beat sheet, and `/local` cannot ship publicly
+fronted by a Tennessee photo. Neither is a reason to idle — the two builds below
+are unblocked and were launched around them.
+
+### 🔑 THE PERU MAP HAS A REAL FOUNDATION — and it is not the framework data
+
+There is **no `src/data/peru.js`**. Peru lives only as prose in the /outdoors
+Salkantay block plus images. But `internal/brady/peru26-manifest.md` carries
+**GPS-confirmed coordinates for all 10 trip days**, read out of Brady's own
+camera EXIF — Miami → Lima → Ica/Paracas → Cusco → three Salkantay days →
+Aguas Calientes → Machu Picchu, May 2–11 2026.
+
+That is the **same provenance standard that made the Bruce pins safe**: the
+coordinates were followed, never resolved from a string, so the Tivoli rule is
+satisfied by provenance. A GPS fix proves Brady stood there on that date. It
+proves **nothing** about any named business, operator, hotel or restaurant —
+so day anchors may carry `validated: true`, and commercial spots may not exist
+at all until Brady supplies them.
 
 ---
 
@@ -704,27 +834,49 @@ drop the nice-to-haves, then cut film.
    list in the signed-in Playwright browser and read `!3d<lat>!4d<lng>` off the
    URL. Note the list panel is in a subframe, so page-context `evaluate` is
    blind to it — use `browser_run_code_unsafe` with Playwright locators.
-3. **`bookingEndorsed: false` is APPROVED** — apply it. The endorsement
-   gradient is binary on `ladsRating` (`FrameworkPage.jsx`), so today a spot
-   cannot be "neutral despite having a rating" without deleting the rating and
-   its visible "Lads: X/10" chip. The new field separates the two. This
-   unblocks Blue Mountains and Kilkenny, which wire NEUTRAL per Brady's
-   standing rule: any product that is not the exact version we did makes no
-   WE DID THIS claim.
+3. **`bookingEndorsed: false`** ✅ **DONE Aug 27 (3f5a093).**
+   The endorsement gradient is binary on `ladsRating` (`FrameworkPage.jsx`), so
+   today a spot cannot be "neutral despite having a rating" without deleting the
+   rating and its visible "Lads: X/10" chip. The new field separates the two.
+   Absent → today's behaviour unchanged; `false` → force neutral framing while
+   KEEPING the rating chip. This unblocks Blue Mountains and Kilkenny, which
+   wire NEUTRAL per Brady's standing rule: any product that is not the exact
+   version we did makes no WE DID THIS claim.
 
-### PHASE 2 — PHASE 4 PIN BUILD
+### PHASE 2 — PHASE 4 PIN BUILD ✅ DONE Aug 27 (b701cd7)
 
-Props-driven reusable pin components. **Nothing Midwest-hardcoded** — Thursday's
-Peru interactive framework map inherits these directly, and that map is the
-2027 paid-product prototype.
+Props-driven reusable pin components. **Nothing Midwest-hardcoded** — the Peru
+interactive framework map inherits these directly, and that map is the 2027
+paid-product prototype. This is the whole reason the components are generic:
+state names, projection and coordinate bounds all arrive as props.
 
 - Render honestly off the data: **gold = validated, copper = research tier**,
   per the established tier language. `validatedBy` / `visitedDate` surface in
   the card, never invented.
 - Pin cards reuse the existing `Panel` / mobile-sheet pattern in
-  `GoodNews.jsx` rather than a new pattern.
-- Both sets render: Bruce (17, Ontario land is now beneath them) and the
-  Michigan spots once Phase 1.2 lands.
+  `GoodNews.jsx` (see `Panel` at ~:192 and the `anchorToPanel` / `airportToPanel`
+  adapter convention at ~:241/:252) rather than a new pattern.
+- Bruce renders **all 17 copper** — that is CORRECT, not a bug, because the
+  visited-split never arrived. Do not "fix" it by flipping flags.
+- Michigan CANNOT render yet: zero coordinates. Build for drop-in, fabricate
+  nothing.
+
+### PHASE 2B — PERU DATA FOUNDATION ✅ DONE Aug 27 (2acea81)
+
+Creating `src/data/peru.js` as a normalized pin intermediate on the
+`brucePeninsula.js` schema and commenting discipline, sourced ONLY from the
+GPS-confirmed manifest days + the existing validated /outdoors Salkantay prose.
+Includes a `PERU_SOURCE` block and the trek as ordered real lat/lng waypoints
+(real waypoints + Catmull-Rom downstream, never hand-tuned control points).
+
+**Creating this file does NOT make Peru a published framework.** Deliberately
+out of scope until Brady says otherwise: no route in `main.jsx`, no
+`vercel.json` rewrite, no Globe pin, and **no change to the canonical totals**
+(219 spots · 13 cities · 10 countries · 3 continents).
+
+Watch the one wrinkle: the manifest's GPS arc says **Ica/Paracas**, while
+Brady's own /outdoors prose says **Lima to Huacachina**. Huacachina is the
+oasis beside Ica, so they agree — record the distinction, don't silently pick.
 
 ### PHASE 3 — /local GRADUATION — **PROPOSAL FIRST, Brady approves before build**
 
@@ -760,6 +912,25 @@ Full sweep at **1440 and 390**. `npm run build` clean. `/ship` on Brady's go.
 ---
 
 ### STILL WAITING ON BRADY (not blocking the above unless noted)
+
+**🔴 THE FOUR HARD BLOCKERS — all four have now missed a full session:**
+1. **Bruce visited-split** — which of the 17 you actually hit Aug 8–12. The
+   saved list is a SUPERSET of the trip, so it cannot be inferred. Until this
+   lands every Bruce pin renders copper and claims nothing. **BLOCKING Phase 1.1.**
+2. **Michigan coordinates** — or a Google Maps saved list to read them from by
+   provenance. **BLOCKING Phase 1.2 and any Michigan pin.**
+3. **A real Michigan photo** — Sleeping Bear, Torch Lake, Detroit, Grand Rapids.
+   None exists in `src/images-*.js`. **BLOCKING the /local graduation**, because
+   a public Michigan flagship cannot be fronted by a Smoky Mountains shot.
+4. **The Peru26 beat sheet** — never arrived from claude.ai. **BLOCKING all film
+   assembly**; the "no editing until the beat sheet" rule still stands.
+
+**Peru-specific, needed before `peru.js` can become a published framework:**
+- Named spots. GPS proves location, not businesses — so there are no
+  restaurants, hotels, operators or ratings in the data and there must not be
+  until Brady supplies them firsthand.
+- The unplaceable clip `72581579-…mp4` (no GPS, no Apple metadata, stamped
+  May 20, outside the May 2–11 cluster) — where does it belong?
 
 - **Dawson's UP list** — the genuinely validated half of Phase 4 (his July 4
   scout). Paste the link; it can be read directly now.
