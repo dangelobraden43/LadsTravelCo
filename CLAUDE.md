@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 27, 2026 (queue dated Aug 27 — Aug 26 was a no-op day)
+## Last Updated: August 28, 2026 (queue dated Aug 27; Aug 26 was a no-op day)
 
 ---
 
@@ -104,6 +104,72 @@ GOAL: team merch samples ordered + a full array of products ready to sell.
 BRING TOMORROW (Brady): Printify login + payout set · price per product ·
 exact proceeds wording · team sample sizes/colors · ship-by math vs
 July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
+
+---
+
+## WHAT WAS BUILT (August 28, 2026 — the Machu list, the film, the Michigan lie)
+
+**3 commits shipped** (`3744a70`, `f03c97c`, `393fac6`).
+
+### The 22 Peru spots — the "zero spots" gap is closed
+
+Brady supplied his **"Machu"** Maps list (`maps.app.goo.gl/7N98pQtXNVr2R1Xy7`).
+All 22 read **by provenance** in the signed-in browser: each place opened from
+his own saved list, lat/lng taken off the URL's `!3d/!4d` plus the stable Place
+ID. All 22 Place IDs unique. Coverage: Cusco 14 · Lima 3 · Machu Picchu 2 ·
+Aguas Calientes 1 · Santa Teresa 1 · Vinicunca 1.
+
+All ship `validated: false` (research tier). **Awaiting Brady's visited-split**
+— a saved list is a superset, exactly as with the Bruce. Do not flip wholesale.
+
+🚩 **A SAVED COORDINATE IS WHERE GOOGLE'S RECORD SITS, NOT WHERE THE EXPERIENCE
+HAPPENS.** Two entries are tour-operator records in central Cusco, ~100 km from
+what they name: **"Salkantay Trek"** (Plaza de Armas block) and **"Red Valley
+Cusco"** (Cusco city; the real Valle Rojo is beside Vinicunca). Both carry
+`recordIsOffice: true`. Pinned at face value the map would claim Brady hiked
+Salkantay downtown. **This is a general trap for every Maps-list ingest.**
+
+ℹ️ Brady said on Aug 27 the list excludes Lima. **It does not** — three
+Miraflores places at ~-12.13,-77.03. Recorded as found, not as remembered.
+
+### 🎬 THE FIRST YOUTUBE VIDEO EXISTS — rough cut, not for publication
+
+`Peru26/review/rough-cut-v1.mp4` — **5:02**, 1920×1080, h264+AAC, 127 MB.
+Plan at `internal/brady/peru26-video-plan.md`. Both gitignored. Frames were
+extracted and eyeballed: upright throughout, chronology correct, titled
+"ROUGH CUT – NOT FOR PUBLICATION". 226 source files untouched, nothing uploaded.
+
+**Runtime maths, honestly:** 3:23 is the absolute ceiling of motion. This cut is
+**2:24 of video against 2:10 of stills** — less than half is video. More length
+means more photos; there is no more footage. **28 of 30 clips are vertical**, so
+16:9 pillarboxes nearly everything and **9:16 is arguably the honest format**.
+
+🚩 **`/outdoors` says "five days on trail"; the media evidences only FOUR dated
+trek days.** Not necessarily wrong — it rests on Brady's record, not the
+footage. Nothing was changed. Flagged so nobody "corrects" it either way.
+
+### MAY 7 = RAINBOW MOUNTAIN — settled from four directions
+
+1. Coordinate matches Vinicunca to ~0.01°.
+2. `SystemSection.jsx:436` records the pre-trip intent.
+3. **`IMG_2212.HEIC` photographs a sign reading "Rainbow Mountain"**; another
+   shows a marker reading "MIRADOR VALLE ROJO". The day ends at **16:37 in
+   Cusco's Plaza de Armas** — impossible on trek day 1.
+4. Brady's own Machu list contains **Vinicunca** at -13.8701658, -71.3029901.
+
+**The manifest's trek day labels are off by one. Salkantay starts May 8.**
+
+### /local no longer fronts Michigan with a Tennessee photo
+
+`smokyMountainsCabinOverlook` is gone from the Michigan card. Swapping was
+impossible — **no Michigan photograph exists in `src/images-*.js`** — so rather
+than trade one placeholder for another the card renders the **real traced
+Midwest geometry** from `midwestGeo.js`, Michigan in gold, four real projected
+PLACES as dots. It previews what is being built instead of standing in for it.
+Purely presentational: no data, copy or route changed, and **nothing links to
+`/good-news`**, so the noindex map stays unlinked and the graduation decision
+is untouched. `preserveAspectRatio` is **`meet`, not `slice`** — slice cropped
+Michigan's eastern edge in the 4:5 card at 390px.
 
 ---
 
@@ -790,12 +856,14 @@ interactive Midwest hub) now shares the day with what the old queue called
 
 ### 🚧 FOUR THINGS ARE STILL BLOCKED ON BRADY — verified Aug 27, not assumed
 
-| Blocked item | Verified state |
+| Blocked item | State as of Aug 28 |
 |---|---|
-| Bruce visited-split | **18 of 19 entries still `validated: false`** — never supplied |
-| Michigan geocoding | **0 coordinates** in `michigan.js` — nothing to pin |
-| Michigan hero photo | still `smokyMountainsCabinOverlook` (a Smoky Mtns shot) |
-| Peru26 beat sheet | **not in `internal/brady/`** — never arrived from claude.ai |
+| Bruce visited-split | ❌ **18 of 19 still `validated: false`** — never supplied |
+| **Peru visited-split** | ❌ **NEW** — all 22 Machu-list places are research tier |
+| Michigan geocoding | ❌ **0 coordinates** in `michigan.js` — nothing to pin |
+| Michigan hero photo | ✅ **NEUTRALISED Aug 28** — the Tennessee photo is gone from `/local`, replaced by the real map preview. A genuine Michigan photo is still wanted, but it no longer blocks anything. |
+| Peru26 beat sheet | ✅ **SUPERSEDED** — never arrived; Brady directed the work anyway and a proposed beat sheet now exists in `peru26-video-plan.md` |
+| Licensed music | ❌ **NEW, hard blocker on publishing the film.** None sourced, downloaded or embedded — and none will be. |
 
 The film cannot start without the beat sheet, and `/local` cannot ship publicly
 fronted by a Tennessee photo. Neither is a reason to idle — the two builds below
