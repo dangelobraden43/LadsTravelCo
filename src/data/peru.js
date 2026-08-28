@@ -51,7 +51,11 @@
  * trail: over the Salkantay Pass at roughly 4,600 m, past the glacial turquoise
  * of Humantay Lake, and down through cloud forest to Machu Picchu itself."
  * Note that Humantay Lake and the Salkantay Pass are named in that prose but
- * have NO coordinate of their own in the manifest, so they are not pins here.
+ * have NO coordinate of their own in the manifest, so they are not DAY ANCHORS
+ * here. UPDATE Aug 28: Brady added Humantay Lake to his Maps list, so it now
+ * exists with provenance in PERU_SAVED_PLACES at the bottom of this file —
+ * still not a day anchor, but no longer absent. The Salkantay Pass remains
+ * unpinned: it is in the prose and in no list, and must not be geocoded.
  *
  * ── FLAGS (do not silently resolve these; they need Brady) ──
  *
@@ -74,6 +78,17 @@
  *    the event, not a position — so it remains unpinned and is NOT a waypoint.
  *    Do not attach it to the day-4 Ica/Huacachina anchor: different place.
  *    "Huacachina" stays the label for the day-4 dune footage (Brady's own word).
+ *
+ *    ✅ FULLY RESOLVED Aug 28. Brady added all three places to his Maps list, so
+ *    each now has provenance in PERU_SAVED_PLACES:
+ *      · Huacachina Oasis -14.0873, -75.7631 — lands ON the day-4 anchor, so
+ *        the Huacachina reading is confirmed and "Ica / Paracas" is not.
+ *      · Paracas          -13.8332, -76.2478 — the real Paracas, ~70 km NW of
+ *        the day-4 anchor. No photo GPS puts Brady there, so the boat tour is
+ *        firsthand on his word while the position comes from his saved place.
+ *        Kept OFF the route and off every day anchor.
+ *    The manifest's day-4 heading conflated two places ~70 km apart. It did not
+ *    invent the boat tour; it attached it to the wrong coordinate.
  *
  * 2. DAY 6 IS A GEOGRAPHIC OUTLIER. The manifest labels day 6 "Salkantay trek,
  *    day 1 (Andes)" at -13.86, -71.30. Every other trek day sits between
@@ -504,9 +519,9 @@ export const PERU_SAVED_SOURCE = {
   label: 'Brady’s Google Maps list — "Machu"',
   url: 'https://maps.app.goo.gl/7N98pQtXNVr2R1Xy7',
   owner: "Brady D'Angelo",
-  capturedAt: '2026-08-28',
+  capturedAt: '2026-08-28 (22 places); re-read same day after Brady added 3 more',
   tripDates: 'May 2–11, 2026',
-  count: 22,
+  count: 25,
   note: 'Saved list; visited/not-visited split not yet supplied. All entries research tier.',
 }
 
@@ -523,6 +538,42 @@ const saved = (name, lat, lng, type, googleCategory, area, extra = {}) => ({
 })
 
 export const PERU_SAVED_PLACES = [
+  // ── ADDED BY BRADY Aug 28, after the first read (list went 22 → 25) ──
+  // These three fill the exact gaps flagged when the list held 22, and two of
+  // them independently corroborate the EXIF day anchors.
+  saved(
+    'Huacachina Oasis',
+    -14.0873523,
+    -75.7631058,
+    'view',
+    'Tourist attraction',
+    'Ica / Huacachina',
+    {
+      placeId: '0x9110e374cdcb726b:0x42ff9caf41c46386',
+      note:
+        'Sits on the May 5 EXIF day anchor (-14.07, -75.74). Confirms "Huacachina" as ' +
+        'the label for the day-4 dune footage, matching Brady’s own /outdoors prose ' +
+        '("Lima to Huacachina") over the manifest’s "Ica / Paracas" heading.',
+    }
+  ),
+  saved('Humantay Lake', -13.3793789, -72.5844385, 'view', 'Lake', 'Salkantay trail', {
+    placeId: '0x916da38e1c529e59:0xe604354f8bf53662',
+    note:
+      'Named in Brady’s validated /outdoors prose but deliberately NOT pinned before ' +
+      'now, because geocoding it from the name would have broken the Tivoli rule. It ' +
+      'arrives here with provenance. It lands on the May 8 EXIF anchor (-13.39, ' +
+      '-72.58), which independently confirms May 8 as the first real Salkantay day.',
+  }),
+  saved('Paracas', -13.8331701, -76.2477865, 'city', 'Locality', 'Paracas', {
+    placeId: '0x911062d8942674f3:0xb292160966de04cb',
+    note:
+      'Brady confirmed the Islas Ballestas boat tour happened as a Lima day tour ' +
+      'before Cusco. This is the real Paracas — about 70 km northwest of the May 5 ' +
+      'Huacachina anchor, so NO photo GPS places him here. The event is firsthand on ' +
+      'Brady’s word; the position is his saved place. It is deliberately NOT attached ' +
+      'to any day anchor and is NOT a route waypoint.',
+  }),
+
   // ── LIMA / MIRAFLORES (~-12.13, -77.03) ──
   saved('Ambra Rooftop Bar', -12.1296777, -77.0296405, 'food', 'Bar', 'Lima — Miraflores', {
     placeId: '0x9105c9b7351218b3:0xe5e35f8b3a416144',
