@@ -451,3 +451,221 @@ export const PERU_BOUNDS = PERU_ROUTE.reduce(
   }),
   { minLat: Infinity, maxLat: -Infinity, minLng: Infinity, maxLng: -Infinity }
 )
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * PERU_SAVED_PLACES — Brady's "Machu" Google Maps list, 22 places
+ *
+ * Source: Brady supplied https://maps.app.goo.gl/7N98pQtXNVr2R1Xy7 on Aug 28
+ * 2026 and confirmed it is his Machu Picchu list. Google's own header reads
+ * "Machu · Brady D'Angelo · 22 places". All 22 were read Aug 28.
+ *
+ * COORDINATES ARE NOT GEOCODED FROM NAMES. Each place was opened from Brady's
+ * own saved list in a browser signed in as brady@ladstravel.com and its
+ * lat/lng read straight off Google's place record in the URL (!3d/!4d), along
+ * with the stable Place ID. Same provenance method as brucePeninsula.js, so
+ * generically-named entries are safe: we never resolved a string.
+ *
+ * VALIDATION STATE — READ BEFORE RENDERING.
+ * Every entry ships `validated: false` and renders RESEARCH TIER (copper, no
+ * claim). Brady's Peru trip is firsthand, but a saved list is a SUPERSET of
+ * what was actually visited — the exact lesson the Bruce list taught, where 17
+ * places still sit unflipped for want of a visited-split. Do NOT flip these
+ * wholesale. When Brady supplies the split, flip only the visited ones to
+ * `validated: true, validatedBy: 'Brady', visitedDate: '2026-05'`.
+ *
+ * A SAVED COORDINATE IS WHERE GOOGLE'S RECORD SITS, NOT WHERE THE EXPERIENCE
+ * HAPPENS. Two entries here are tour-operator records in central Cusco, NOT
+ * the attractions they are named after:
+ *   - 'Salkantay Trek'   -13.5167, -71.9798 — Plaza de Armas block, Cusco.
+ *     The actual trek is ~100 km away.
+ *   - 'Red Valley Cusco' -13.5142, -71.9667 — Cusco city. The real Valle Rojo
+ *     sits beside Vinicunca at roughly -13.87, -71.30.
+ * Both carry `recordIsOffice: true`. Pin them at face value and the map will
+ * imply Brady hiked Salkantay in downtown Cusco. Never draw them as features.
+ *
+ * VINICUNCA CLOSES THE DAY-6 QUESTION. This list contains Vinicunca at
+ * -13.8701658, -71.3029901. The manifest's day-6 EXIF anchor is -13.86,
+ * -71.30 — the same place. With the "Rainbow Mountain" sign photographed in
+ * IMG_2212.HEIC and the trip intent in SystemSection.jsx:436, the May 7 =
+ * Rainbow Mountain reading is settled from four independent directions, and
+ * the manifest's trek day labels are confirmed off by one.
+ *
+ * SCOPE NOTE: on Aug 27 Brady said this list does not cover Lima. It does —
+ * three Miraflores places (Ambra Rooftop Bar, Canos del Santero, Sol Coffee)
+ * sit at about -12.13, -77.03. Recorded as found, not as remembered. It
+ * carries no Ica/Huacachina place and nothing for the Ballestas boat tour.
+ *
+ * `googleCategory` is Google's own category string, verbatim as provenance.
+ * `type` is our icon bucket, derived from it. Adds `stay` and `shop` to the
+ * vocabulary — deliberate extensions, flagged like `city`/`trail` above.
+ * ──────────────────────────────────────────────────────────────────────── */
+
+export const PERU_SAVED_SOURCE = {
+  label: 'Brady’s Google Maps list — "Machu"',
+  url: 'https://maps.app.goo.gl/7N98pQtXNVr2R1Xy7',
+  owner: "Brady D'Angelo",
+  capturedAt: '2026-08-28',
+  tripDates: 'May 2–11, 2026',
+  count: 22,
+  note: 'Saved list; visited/not-visited split not yet supplied. All entries research tier.',
+}
+
+const saved = (name, lat, lng, type, googleCategory, area, extra = {}) => ({
+  name,
+  lat,
+  lng,
+  type,
+  googleCategory,
+  area,
+  source: 'maps-list:Machu',
+  validated: false,
+  ...extra,
+})
+
+export const PERU_SAVED_PLACES = [
+  // ── LIMA / MIRAFLORES (~-12.13, -77.03) ──
+  saved('Ambra Rooftop Bar', -12.1296777, -77.0296405, 'food', 'Bar', 'Lima — Miraflores', {
+    placeId: '0x9105c9b7351218b3:0xe5e35f8b3a416144',
+  }),
+  saved(
+    'Caños del Santero Miraflores',
+    -12.1296194,
+    -77.0299098,
+    'brewery',
+    'Craft beer & burgers',
+    'Lima — Miraflores',
+    {
+      placeId: '0x9105c99bb93d38af:0xc9f0399cfd9bacbe',
+      fullName: 'Caños del Santero Miraflores - Craft beer & burgers - Cerveza artesanal',
+    }
+  ),
+  saved(
+    'Sol Coffee — Cafecito Here',
+    -12.1299101,
+    -77.029215,
+    'food',
+    'Coffee shop',
+    'Lima — Miraflores',
+    {
+      placeId: '0x9105c99a09db25df:0x9745400969b74283',
+    }
+  ),
+
+  // ── CUSCO (~-13.51 to -13.52, -71.97 to -71.99) ──
+  saved('Plaza de Armas', -13.5167567, -71.9788134, 'gem', 'Plaza', 'Cusco', {
+    placeId: '0x916dd6739cd7f175:0x27c9a9082fc6343',
+    note:
+      'Cusco’s main square. The May 7 media ends here at 16:37 local, which is what ' +
+      'proves that day was a Rainbow Mountain day trip rather than trek day 1.',
+  }),
+  saved('7 Vidas Taproom Cusco', -13.5164598, -71.9756759, 'brewery', 'Gastropub', 'Cusco', {
+    placeId: '0x916dd7d7147a2611:0x2e36ccc8734be690',
+  }),
+  saved('LLAMA CAFÉ I', -13.5165406, -71.974113, 'food', 'Cafe', 'Cusco', {
+    placeId: '0x916dd7c1099faa1f:0xd5d735debfb698b8',
+  }),
+  saved('ARTESANÍAS ASUNTA', -13.5160324, -71.9758829, 'shop', 'Handicraft', 'Cusco', {
+    placeId: '0x916dd6734b05a28d:0x8e5de2f7deb5d650',
+  }),
+  saved('Wild Rover Cusco', -13.5143269, -71.9852479, 'stay', '2-star hotel', 'Cusco', {
+    placeId: '0x916dd675b47561ab:0xc555ecc7bdfbfbe1',
+  }),
+  saved('Magicpacker hostel', -13.5218665, -71.9864214, 'stay', '2-star hotel', 'Cusco', {
+    placeId: '0x916dd677b1eba443:0xfbee812c6db3b2ac',
+  }),
+  saved('KUSYKAY Peruvian Craft Food', -13.5165588, -71.9772618, 'food', 'Restaurant', 'Cusco', {
+    placeId: '0x916e7f3a2235fbcf:0xae765f540c8eeae8',
+  }),
+  saved(
+    'Cervecería Del Valle Sagrado Cusco Centro',
+    -13.5166129,
+    -71.9800146,
+    'brewery',
+    'Brewery',
+    'Cusco',
+    { placeId: '0x916dd7ee1c5d2e0b:0x556cd706211fce46' }
+  ),
+  saved('Yaku Restaurant', -13.5167753, -71.9809574, 'food', 'Restaurant', 'Cusco', {
+    placeId: '0x916dd7c619ddc2ff:0x6275addeac59957a',
+  }),
+  saved('Moray Peruvian Cuisine', -13.5195018, -71.9816068, 'food', 'Restaurant', 'Cusco', {
+    placeId: '0x916dd7c91315a7dd:0xb6d26b168d83e3cd',
+  }),
+  saved('Restobar by Viajero Cusco', -13.5198087, -71.9786581, 'food', 'Restobar', 'Cusco', {
+    placeId: '0x916dd70a114fa749:0x7193a33289094738',
+  }),
+  saved('Black Llama Coffee', -13.519981, -71.9804106, 'food', 'Coffee shop', 'Cusco', {
+    placeId: '0x916dd770416c97df:0xe8a684f293a54e85',
+  }),
+
+  // ── OPERATOR RECORDS IN CUSCO — NOT the attractions they name ──
+  saved(
+    'Salkantay Trek (Cusco operator record)',
+    -13.5166606,
+    -71.9797794,
+    'gem',
+    'Tourist attraction',
+    'Cusco',
+    {
+      placeId: '0x916dd67344da9265:0x1d547786216fd1e8',
+      recordIsOffice: true,
+      note:
+        'Google’s record sits on the Plaza de Armas block in Cusco. The trek itself is ' +
+        '~100 km away. Do NOT render this as the trek’s location.',
+    }
+  ),
+  saved(
+    'Red Valley Cusco (Cusco operator record)',
+    -13.5141596,
+    -71.966743,
+    'gem',
+    'Outdoor',
+    'Cusco',
+    {
+      placeId: '0x916dd7144b848a29:0x421940b6215f93e',
+      recordIsOffice: true,
+      note:
+        'Google’s record is in Cusco city. The real Valle Rojo sits beside Vinicunca at ' +
+        'roughly -13.87, -71.30. Do NOT render this as the valley’s location.',
+    }
+  ),
+
+  // ── VINICUNCA / RAINBOW MOUNTAIN ──
+  saved('Vinicunca', -13.8701658, -71.3029901, 'view', 'Mountain peak', 'Vinicunca', {
+    placeId: '0x916ee6d8f2a9511b:0x1999fa34ef3c2636',
+    note:
+      'Rainbow Mountain. Matches the manifest’s May 7 EXIF anchor (-13.86, -71.30) — ' +
+      'the fourth independent confirmation that May 7 was a day trip here, not trek day 1.',
+  }),
+
+  // ── MACHU PICCHU / AGUAS CALIENTES ──
+  saved(
+    'Historic Sanctuary of Machu Picchu',
+    -13.1631988,
+    -72.5452621,
+    'gem',
+    'Historical place',
+    'Machu Picchu',
+    { placeId: '0x916d9a5f89555555:0x3a10370ea4a01a27' }
+  ),
+  saved('Huayna Picchu', -13.1562092, -72.5464495, 'view', 'Mountain peak', 'Machu Picchu', {
+    placeId: '0x916d9af39d171929:0x1a0650ff9fea69d6',
+  }),
+  saved('Avenida Hermanos Ayar', -13.155341, -72.5296569, 'city', 'Street', 'Aguas Calientes', {
+    placeId: '0x916d9a8429f5580b:0x7ca3790ddee16b8f',
+  }),
+  saved(
+    'Salkantay zipline',
+    -13.2101962,
+    -72.6166989,
+    'gem',
+    'Tourist attraction',
+    'Santa Teresa area',
+    {
+      placeId: '0x916d9df14a2c9b91:0x24f2146f877afe6b',
+      note:
+        'Unlike the two operator records above, this coordinate is out in the Santa Teresa ' +
+        'area, consistent with an actual zipline site rather than a Cusco office.',
+    }
+  ),
+]
