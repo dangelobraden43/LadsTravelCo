@@ -962,17 +962,31 @@ Full sweep at **1440 and 390**. `npm run build` clean. `/ship` on Brady's go.
     from an itinerary — verify before putting any of them on screen.
 
   **🔧 THREE GOTCHAS FOR THE EDIT — read before running any ffmpeg:**
-  1. **`transpose=2` is mandatory per input.** 28/30 clips are portrait iPhone
-     HEVC carrying a -90° rotation flag. ffmpeg auto-applies rotation in a
-     simple `-vf` chain but **NOT inside `-filter_complex`** — so any
-     multi-clip assembly renders sideways unless each rotated input gets an
-     explicit `transpose=2` before scaling/concat. Found by test render.
+  1. **ROTATION — ⚠️ THE `transpose=2` NOTE WAS WRONG. CORRECTED Aug 28.**
+     The premise holds: 28/30 clips are portrait iPhone HEVC with a -90°
+     rotation flag, ffmpeg auto-rotates in a simple `-vf` chain but **NOT
+     inside `-filter_complex`**, so a multi-clip assembly renders sideways
+     unless handled per input.
+     **But `transpose=2` is the wrong direction on the ffmpeg installed here**
+     (imageio-ffmpeg's bundled **v4.2.2** — note that is NOT the 7.1 the Aug-25
+     note claimed). It was derived from a small test render and never checked
+     against a real multi-clip cut; the first Aug-27 render using it came out
+     visibly sideways.
+     ✅ **What actually works, proven by a rendered 5:02 cut whose frames were
+     pulled and eyeballed:** `-noautorotate` on the input, then **`transpose=1`**,
+     applied ONLY where the probed rotation is -90. Probe each file's real
+     rotation rather than assuming — do not blanket-apply either value.
+     **Lesson worth keeping: verify a rotation fix on the real assembly and
+     LOOK at extracted frames. A test-clip result did not survive contact with
+     the actual cut.**
   2. **Use the right ffmpeg binary.** There is no system ffmpeg/ffprobe/
      exiftool on this machine. An OBS-bundled `ffmpeg.exe` exists inside an
      Overwolf extension folder and its banner claims "full_build", but
      **`drawtext` is compiled out** — it fails with `Unknown filter 'drawtext'`.
-     Use the `imageio-ffmpeg` pip package's binary (gyan.dev essentials 7.1)
-     for anything with text. The OBS `ffprobe` is fine for probing.
+     Use the `imageio-ffmpeg` pip package's binary for anything with text —
+     path via `python -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())"`.
+     **It is v4.2.2, not the 7.1 recorded Aug 25** — that misreading is what
+     produced the wrong rotation advice above. The OBS `ffprobe` is fine for probing.
      Font: `C:\Windows\Fonts\arial.ttf` works. HEIC/EXIF reading was done with
      Python `Pillow` + `pillow-heif` (installed) since exiftool is absent.
   3. **Sort by Apple's timestamp, not the generic one.** 10 of 30 videos have a
@@ -982,12 +996,22 @@ Full sweep at **1440 and 390**. `npm run build` clean. `/ship` on Brady's go.
      when it is May 5 dune-buggy footage; `IMG_1128` / `IMG_2406` / `IMG_3030`
      are mis-stamped into late May. Re-export artifacts. The manifest already
      sorts by the corrected time and tables every correction.
+  4. **🚩 THE MANIFEST MIXES TIMEZONES — found Aug 28, and it is the nastiest
+     one.** In `peru26-manifest.md` the **video** times are **UTC** while the
+     **photo** times are **local**, with nothing on the page labelling the
+     difference. That is a silent **5-hour** offset. Interleave the two tables
+     naively — the obvious way to build a chronological edit — and every clip
+     lands in the wrong part of every day. Normalise to Peru local
+     (`-05:00`) before merging photos and videos.
 
-  **⚠️ ONE FILE NEEDS BRADY:** `72581579-9d47-4394-9304-fbad79f114c1.mp4` has no
-  Apple metadata, no GPS, no device tag — only a generic `creation_time` of
-  May 20, outside the May 2–11 cluster. Placed there by default but genuinely
-  unplaceable. Also odd: `IMG_2760.JPG` is 1980×3520, unlike any native camera
-  output in the set (possibly a screenshot/re-export).
+  **⚠️ ONE FILE NEEDS BRADY:** `72581579-9d47-4394-9304-fbad79f114c1.mp4` —
+  **identified Aug 28**: interior of a van/coach shot from a seat, someone
+  reclined across the seating, bright daylight. No window content, signage or
+  terrain that would place it. Only non-iPhone file in the set (plain .mp4,
+  UUID name, no GPS, no Apple metadata, stamped May 20). Surfaced, NOT placed
+  and NOT silently dropped — only Brady can say if it is trip footage.
+  ✅ `IMG_2760.JPG` is **cleared** — not a screenshot, a real photo of a
+  ladder-bridge crossing. The 1980×3520 oddity was a red herring.
 - **13 tagged Viator links stockpiled** in
   `internal/brady/affiliate-link-worksheet.md`, grouped by why each cannot be
   wired. Note `bookingUrl` renders at exactly ONE place in the codebase
