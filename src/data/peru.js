@@ -563,6 +563,107 @@ export const BRADY_TAKE_SOURCE = {
   note: 'Verbatim. The only source for the personal layer in this file.',
 }
 
+/* A COLLECTIVE endorsement, in Brady's words, covering the restaurants he did
+ * not single out. Brady, Aug 28:
+ *
+ *   "The best Cusco food spot that we had was Moray. We stayed at Magicpacker,
+ *    but Wild Rover offered an amazing patio overlooking the city and was a
+ *    great place to hang out and meet people. The restaurants — you can do some
+ *    research for taglines, but truly all of the restaurants were as good as
+ *    advertised."
+ *
+ * RENDER THIS AS A GROUP STATEMENT, NEVER SPLIT PER SPOT. "All of the
+ * restaurants were as good as advertised" is one sentence about a set. Slicing
+ * it into a per-restaurant blurb would manufacture a firsthand opinion Brady
+ * never gave about that specific place, which is the exact failure the
+ * personal-layer rule exists to prevent.
+ *
+ * Brady offered "you can do some research for taglines". Deliberately NOT taken
+ * up as Lads-voice copy: a researched blurb sitting in a Lads card reads as
+ * firsthand when it is not. What IS attached instead is GOOGLE_LISTING below —
+ * Google's own category, rating and price band, factual and clearly sourced. */
+export const LADS_COLLECTIVE_TAKE = {
+  scope: 'Cusco + Lima restaurants and bars not individually called out',
+  text: 'Truly all of the restaurants were as good as advertised.',
+  by: 'Brady',
+  capturedAt: '2026-08-28',
+  framing: 'Peruvian culture and food really run throughout this entire trip.',
+}
+
+/* GOOGLE'S OWN LISTING DATA, read verbatim off Brady's saved list on Aug 28.
+ * NOT Lads ratings and NOT Lads prices. `ladsRating` is deliberately absent
+ * everywhere in this file — these are Google's public numbers, recorded as
+ * provenance so a card can show something factual without us inventing copy.
+ * If any of this is ever rendered it MUST be labelled as Google's, never as
+ * ours, and the price bands are Google's PEN bands, not quoted prices. */
+export const GOOGLE_LISTING = {
+  'Moray Peruvian Cuisine': {
+    rating: 4.9,
+    reviews: 1181,
+    price: 'PEN 40–120',
+    category: 'Restaurant',
+  },
+  'Yaku Restaurant': { rating: 4.9, reviews: 7685, price: 'PEN 40–140', category: 'Peruvian' },
+  'KUSYKAY Peruvian Craft Food': {
+    rating: 4.9,
+    reviews: 13483,
+    price: 'PEN 60–100',
+    category: 'Peruvian',
+  },
+  'Restobar by Viajero Cusco': {
+    rating: 5.0,
+    reviews: 1366,
+    price: 'PEN 20–40',
+    category: 'Restaurant',
+  },
+  'Cervecería Del Valle Sagrado Cusco Centro': {
+    rating: 4.8,
+    reviews: 1404,
+    price: 'PEN 20–60',
+    category: 'Brewpub',
+  },
+  '7 Vidas Taproom Cusco': { rating: 4.5, reviews: 233, price: 'PEN 40–60', category: 'Gastropub' },
+  'LLAMA CAFÉ I': { rating: 4.7, reviews: 2017, price: 'PEN 20–40', category: 'Cafe' },
+  'Black Llama Coffee': { rating: 4.8, reviews: 455, price: 'PEN 20–40', category: 'Cafe' },
+  'ARTESANÍAS ASUNTA': { rating: 4.5, reviews: 609, category: 'Handicraft' },
+  'Wild Rover Cusco': { rating: 4.7, reviews: 4031, category: '2-star hotel' },
+  'Magicpacker hostel': { rating: 4.5, reviews: 246, category: '2-star hotel' },
+  'Plaza de Armas': { rating: 4.8, reviews: 81593, category: 'Plaza' },
+  'Ambra Rooftop Bar': { rating: 4.4, reviews: 420, category: 'Bar' },
+  'Caños del Santero Miraflores': {
+    rating: 4.7,
+    reviews: 1700,
+    price: 'PEN 40–120',
+    category: 'Grill',
+  },
+  'Sol Coffee — Cafecito Here': {
+    rating: 4.9,
+    reviews: 263,
+    price: 'PEN 1–20',
+    category: 'Coffee shop',
+  },
+  'Humantay Lake': { rating: 4.8, reviews: 805, category: 'Lake' },
+  'Huacachina Oasis': { rating: 4.6, reviews: 4929, category: 'Tourist attraction' },
+  Vinicunca: { rating: 4.7, reviews: 1168, category: 'Mountain peak' },
+  'Huayna Picchu': { rating: 4.9, reviews: 1195, category: 'Mountain peak' },
+  'Historic Sanctuary of Machu Picchu': {
+    rating: 4.8,
+    reviews: 85225,
+    category: 'Historical place',
+  },
+  'Salkantay zipline': { rating: 4.9, reviews: 27, category: 'Tourist attraction' },
+  'Salkantay Trek (Cusco operator record)': {
+    rating: 4.5,
+    reviews: 11,
+    category: 'Tourist attraction',
+  },
+  'Red Valley Cusco (Cusco operator record)': {
+    rating: 4.8,
+    reviews: 5,
+    category: 'Outdoor activity organiser',
+  },
+}
+
 const saved = (name, lat, lng, type, googleCategory, area, extra = {}) => ({
   name,
   lat,
@@ -665,9 +766,15 @@ export const PERU_SAVED_PLACES = [
   }),
   saved('Wild Rover Cusco', -13.5143269, -71.9852479, 'stay', '2-star hotel', 'Cusco', {
     placeId: '0x916dd675b47561ab:0xc555ecc7bdfbfbe1',
+    ladsTake: 'An amazing patio overlooking the city — a great place to hang out and meet people.',
+    ladsTakeBy: 'Brady',
+    note: 'Brady did NOT stay here; he stayed at Magicpacker. This is a hangout recommendation, not a stay recommendation.',
   }),
   saved('Magicpacker hostel', -13.5218665, -71.9864214, 'stay', '2-star hotel', 'Cusco', {
     placeId: '0x916dd677b1eba443:0xfbee812c6db3b2ac',
+    ladsTake: 'Where we stayed in Cusco.',
+    ladsTakeBy: 'Brady',
+    stayedHere: true,
   }),
   saved('KUSYKAY Peruvian Craft Food', -13.5165588, -71.9772618, 'food', 'Restaurant', 'Cusco', {
     placeId: '0x916e7f3a2235fbcf:0xae765f540c8eeae8',
@@ -686,6 +793,9 @@ export const PERU_SAVED_PLACES = [
   }),
   saved('Moray Peruvian Cuisine', -13.5195018, -71.9816068, 'food', 'Restaurant', 'Cusco', {
     placeId: '0x916dd7c91315a7dd:0xb6d26b168d83e3cd',
+    ladsTake: 'The best Cusco food spot we had.',
+    ladsTakeBy: 'Brady',
+    standout: true,
   }),
   saved('Restobar by Viajero Cusco', -13.5198087, -71.9786581, 'food', 'Restobar', 'Cusco', {
     placeId: '0x916dd70a114fa749:0x7193a33289094738',
