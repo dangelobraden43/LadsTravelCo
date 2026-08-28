@@ -86,6 +86,53 @@
   object-fit: cover;
   filter: brightness(0.6) saturate(1.05);
 }
+
+/* Map preview — replaces the old Smoky-Mountains-as-Michigan photo. Renders
+   the real traced geometry from midwestGeo.js, so it previews the interactive
+   map rather than standing in for a photo we do not have. */
+.local-card-map {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 12%, rgba(212, 168, 67, 0.09) 0%, transparent 62%),
+    linear-gradient(170deg, #191713 0%, #131110 100%);
+}
+.local-card-map svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.lcm-state {
+  fill: rgba(232, 220, 200, 0.05);
+  stroke: rgba(232, 220, 200, 0.16);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+.lcm-state--focus {
+  fill: rgba(212, 168, 67, 0.14);
+  stroke: rgba(212, 168, 67, 0.62);
+  stroke-width: 2.2;
+}
+.lcm-dot {
+  fill: var(--gold, #d4a843);
+  opacity: 0.9;
+}
+.local-card:hover .lcm-state--focus {
+  fill: rgba(212, 168, 67, 0.2);
+  stroke: rgba(212, 168, 67, 0.8);
+}
+.lcm-state,
+.lcm-state--focus {
+  transition:
+    fill 0.3s ease,
+    stroke 0.3s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lcm-state,
+  .lcm-state--focus {
+    transition: none;
+  }
+}
 .local-card-tint {
   position: absolute;
   inset: 0;

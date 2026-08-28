@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Nav } from './App'
 import Footer from './Footer'
-import { HERO_IMAGES } from './images-paths'
+import { STATES, PLACES, VIEWBOX } from './midwestGeo'
 import './LocalPage.css'
 
 function useReveal(threshold = 0.15) {
@@ -43,10 +43,43 @@ const DESTINATIONS = [
     tag: 'HOME TURF',
     line: 'Breweries, golf, concerts, road trips. Every region across both peninsulas, validated.',
     href: '/michigan',
-    img: HERO_IMAGES.smokyMountainsCabinOverlook,
     accent: '#96782a',
   },
 ]
+
+/* The Michigan card used to be fronted by `smokyMountainsCabinOverlook` — a
+ * Smoky Mountains photograph standing in for Michigan. No Michigan photo
+ * exists in src/images-*.js, so rather than swap one placeholder for another
+ * this renders the REAL traced Midwest geometry from midwestGeo.js: the same
+ * silhouettes and the same projection the interactive map uses. It is a
+ * genuine preview of what is being built, not a stand-in for it.
+ * Replace with a real Michigan photograph only if Brady supplies one. */
+function MidwestPreview() {
+  const dots = [
+    PLACES.grandRapids,
+    PLACES.traverseCity,
+    PLACES.newBuffalo,
+    PLACES.kalamazoo,
+  ].filter(Boolean)
+  return (
+    <div className="local-card-map" aria-hidden="true">
+      <svg viewBox={VIEWBOX} preserveAspectRatio="xMidYMid meet" focusable="false">
+        {STATES.map((s) =>
+          s.rings.map((d, i) => (
+            <path
+              key={`${s.code}-${i}`}
+              d={d}
+              className={s.name === 'Michigan' ? 'lcm-state lcm-state--focus' : 'lcm-state'}
+            />
+          ))
+        )}
+        {dots.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r="7" className="lcm-dot" />
+        ))}
+      </svg>
+    </div>
+  )
+}
 
 export default function LocalPage() {
   useEffect(() => {
@@ -88,7 +121,7 @@ export default function LocalPage() {
             {DESTINATIONS.map((d, i) => (
               <Reveal key={d.name} delay={i * 120}>
                 <Link to={d.href} className="local-card" style={{ '--card-accent': d.accent }}>
-                  <img src={d.img} alt={d.name} className="local-card-img" loading="lazy" />
+                  <MidwestPreview />
                   <div className="local-card-tint" />
                   <div className="local-card-body">
                     <div className="local-card-tag">{d.tag}</div>
