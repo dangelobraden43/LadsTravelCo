@@ -480,13 +480,21 @@ export const PERU_BOUNDS = PERU_ROUTE.reduce(
  * with the stable Place ID. Same provenance method as brucePeninsula.js, so
  * generically-named entries are safe: we never resolved a string.
  *
- * VALIDATION STATE — READ BEFORE RENDERING.
- * Every entry ships `validated: false` and renders RESEARCH TIER (copper, no
- * claim). Brady's Peru trip is firsthand, but a saved list is a SUPERSET of
- * what was actually visited — the exact lesson the Bruce list taught, where 17
- * places still sit unflipped for want of a visited-split. Do NOT flip these
- * wholesale. When Brady supplies the split, flip only the visited ones to
- * `validated: true, validatedBy: 'Brady', visitedDate: '2026-05'`.
+ * ✅ VALIDATION STATE — RESOLVED BY BRADY, Aug 28 2026.
+ * These were held at research tier pending a visited-split, on the Bruce
+ * precedent that a saved list is a superset of a trip. Brady closed that on
+ * Aug 28, in his own words:
+ *
+ *     "everything on the List we would recommend I removed some bad spots"
+ *
+ * That is a curation statement, not just a visit claim: the list has been
+ * pruned to what the Lads stand behind. All entries therefore now carry
+ * `validated: true, validatedBy: 'Brady', visitedDate: '2026-05'`, with
+ * `validationBasis` recording that it rests on that statement rather than on
+ * EXIF (the day anchors above are the EXIF-backed layer; these are not).
+ *
+ * The two `recordIsOffice` entries stay flagged — Brady endorsing the
+ * EXPERIENCE does not move where Google's record sits. See below.
  *
  * A SAVED COORDINATE IS WHERE GOOGLE'S RECORD SITS, NOT WHERE THE EXPERIENCE
  * HAPPENS. Two entries here are tour-operator records in central Cusco, NOT
@@ -525,6 +533,36 @@ export const PERU_SAVED_SOURCE = {
   note: 'Saved list; visited/not-visited split not yet supplied. All entries research tier.',
 }
 
+/* BRADY'S OWN WORDS — Aug 28 2026, verbatim, lightly punctuated only.
+ * This is the entire source for every `ladsTake` below. Nothing in this file's
+ * personal layer was written by an AI; where Brady did not speak about a place,
+ * that place has NO ladsTake and NO description, and it must stay that way
+ * until he supplies one. CLAUDE.md: the personal layer cannot be AI-generated.
+ *
+ *   "Everything on the list we would recommend — I removed some bad spots.
+ *    This trip was mostly self-guided and a lot of tours. But the ATV tour in
+ *    the Red Valley and Rainbow Mountains was truly a one of a kind
+ *    experience, and the Salkantay trek was the most rewarding and scenic hike
+ *    I have ever taken — such diverse biomes and regions, it was truly
+ *    unforgettable. And Machu Picchu was obviously unreal, along with Huayna
+ *    Picchu really taking things to the next level. And the boat tour was also
+ *    just crazy — to see Paracas and the Candelabra trident and see all of the
+ *    wildlife. Peruvian culture and food really run throughout this entire
+ *    trip."
+ *
+ * Note: Brady wrote "calarbra trident". That is the Paracas Candelabra
+ * (El Candelabro), the geoglyph on the Paracas peninsula seen from the
+ * Ballestas boat tour. Spelling normalised, meaning unchanged.
+ *
+ * Corroboration worth recording: the May 7 footage shows RED ATVs, which is
+ * independent confirmation of Brady's "ATV tour in the Red Valley and Rainbow
+ * Mountains" and explains the day completely. */
+export const BRADY_TAKE_SOURCE = {
+  capturedAt: '2026-08-28',
+  medium: 'Brady, direct to Claude Code in session',
+  note: 'Verbatim. The only source for the personal layer in this file.',
+}
+
 const saved = (name, lat, lng, type, googleCategory, area, extra = {}) => ({
   name,
   lat,
@@ -533,7 +571,10 @@ const saved = (name, lat, lng, type, googleCategory, area, extra = {}) => ({
   googleCategory,
   area,
   source: 'maps-list:Machu',
-  validated: false,
+  validated: true,
+  validatedBy: 'Brady',
+  visitedDate: '2026-05',
+  validationBasis: 'brady-curation-2026-08-28',
   ...extra,
 })
 
@@ -572,6 +613,10 @@ export const PERU_SAVED_PLACES = [
       'Huacachina anchor, so NO photo GPS places him here. The event is firsthand on ' +
       'Brady’s word; the position is his saved place. It is deliberately NOT attached ' +
       'to any day anchor and is NOT a route waypoint.',
+    ladsTake:
+      'The boat tour was just crazy — seeing Paracas and the Candelabra trident, and all ' +
+      'of the wildlife.',
+    ladsTakeBy: 'Brady',
   }),
 
   // ── LIMA / MIRAFLORES (~-12.13, -77.03) ──
@@ -662,7 +707,12 @@ export const PERU_SAVED_PLACES = [
       recordIsOffice: true,
       note:
         'Google’s record sits on the Plaza de Armas block in Cusco. The trek itself is ' +
-        '~100 km away. Do NOT render this as the trek’s location.',
+        '~100 km away. Do NOT render this as the trek’s location. Brady’s endorsement ' +
+        'below is of the TREK, not of this Cusco record.',
+      ladsTake:
+        'The Salkantay trek was the most rewarding and scenic hike I have ever taken — ' +
+        'such diverse biomes and regions. It was truly unforgettable.',
+      ladsTakeBy: 'Brady',
     }
   ),
   saved(
@@ -677,7 +727,14 @@ export const PERU_SAVED_PLACES = [
       recordIsOffice: true,
       note:
         'Google’s record is in Cusco city. The real Valle Rojo sits beside Vinicunca at ' +
-        'roughly -13.87, -71.30. Do NOT render this as the valley’s location.',
+        'roughly -13.87, -71.30. Do NOT render this as the valley’s location. Brady ' +
+        'confirmed Aug 28 that he did the Red Valley by ATV on the same day as Rainbow ' +
+        'Mountain, so this is very likely the operator he actually used — but that is ' +
+        'an endorsement of the EXPERIENCE, not evidence about where this record sits.',
+      ladsTake:
+        'The ATV tour in the Red Valley and Rainbow Mountains was truly a one of a kind ' +
+        'experience.',
+      ladsTakeBy: 'Brady',
     }
   ),
 
@@ -686,7 +743,12 @@ export const PERU_SAVED_PLACES = [
     placeId: '0x916ee6d8f2a9511b:0x1999fa34ef3c2636',
     note:
       'Rainbow Mountain. Matches the manifest’s May 7 EXIF anchor (-13.86, -71.30) — ' +
-      'the fourth independent confirmation that May 7 was a day trip here, not trek day 1.',
+      'the fourth independent confirmation that May 7 was a day trip here, not trek day 1. ' +
+      'Brady reached it by ATV; the May 7 footage shows red ATVs, which corroborates it.',
+    ladsTake:
+      'The ATV tour in the Red Valley and Rainbow Mountains was truly a one of a kind ' +
+      'experience.',
+    ladsTakeBy: 'Brady',
   }),
 
   // ── MACHU PICCHU / AGUAS CALIENTES ──
@@ -697,10 +759,16 @@ export const PERU_SAVED_PLACES = [
     'gem',
     'Historical place',
     'Machu Picchu',
-    { placeId: '0x916d9a5f89555555:0x3a10370ea4a01a27' }
+    {
+      placeId: '0x916d9a5f89555555:0x3a10370ea4a01a27',
+      ladsTake: 'Machu Picchu was obviously unreal.',
+      ladsTakeBy: 'Brady',
+    }
   ),
   saved('Huayna Picchu', -13.1562092, -72.5464495, 'view', 'Mountain peak', 'Machu Picchu', {
     placeId: '0x916d9af39d171929:0x1a0650ff9fea69d6',
+    ladsTake: 'Huayna Picchu really took things to the next level.',
+    ladsTakeBy: 'Brady',
   }),
   saved('Avenida Hermanos Ayar', -13.155341, -72.5296569, 'city', 'Street', 'Aguas Calientes', {
     placeId: '0x916d9a8429f5580b:0x7ca3790ddee16b8f',
