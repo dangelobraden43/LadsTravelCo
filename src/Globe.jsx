@@ -12,6 +12,7 @@ import romeData from './data/rome'
 import australiaData from './data/australia'
 import icelandData from './data/iceland'
 import pragueData from './data/prague'
+import viennaData from './data/vienna'
 import munichData from './data/munich'
 import polandData from './data/poland'
 import michiganData from './data/michigan'
@@ -23,6 +24,7 @@ const FRAMEWORK_DATA = {
   australia: australiaData,
   iceland: icelandData,
   prague: pragueData,
+  vienna: viennaData,
   munich: munichData,
   poland: polandData,
   michigan: michiganData,
@@ -65,7 +67,8 @@ const PIN_ATTRIBUTION = {
   rome: { primary: 'Rome', subs: {} },
   australia: { primary: 'Sydney', subs: { Tasmania: 'Hobart' } },
   iceland: { primary: 'Reykjavik', subs: {} },
-  prague: { primary: 'Prague', subs: { Vienna: 'Vienna' } },
+  prague: { primary: 'Prague', subs: {} },
+  vienna: { primary: 'Vienna', subs: {} },
   munich: { primary: 'Munich', subs: {} },
   poland: { primary: 'Krakow', subs: {} },
   michigan: { primary: 'Michigan', subs: {} },
@@ -100,7 +103,7 @@ const VALIDATED_PINS = [
   { city: 'Tasmania', lat: -42.88, lng: 147.33, slug: 'australia' },
   { city: 'Reykjavik', lat: 64.15, lng: -21.94, slug: 'iceland', primary: true, showLabel: true },
   { city: 'Prague', lat: 50.08, lng: 14.44, slug: 'prague', primary: true, showLabel: true },
-  { city: 'Vienna', lat: 48.21, lng: 16.37, slug: 'prague' },
+  { city: 'Vienna', lat: 48.21, lng: 16.37, slug: 'vienna', primary: true },
   { city: 'Munich', lat: 48.14, lng: 11.58, slug: 'munich', primary: true },
   { city: 'Krakow', lat: 50.06, lng: 19.94, slug: 'poland', primary: true },
   // Michigan: new pin, anchored at Grand Rapids

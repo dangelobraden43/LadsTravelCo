@@ -19,7 +19,7 @@ export default defineConfig({
       dynamicRoutes: [
         '/',
         '/global', '/outdoors', '/bucket-list', '/local',
-        '/dublin', '/rome', '/spain', '/australia', '/iceland', '/prague',
+        '/dublin', '/rome', '/spain', '/australia', '/iceland', '/prague', '/vienna',
         '/munich', '/poland', '/thailand', '/charleston', '/michigan',
       ],
       changefreq: 'weekly',
@@ -27,7 +27,7 @@ export default defineConfig({
         '/': 1.0,
         '/global': 0.9, '/outdoors': 0.9, '/bucket-list': 0.9, '/local': 0.9,
         '/dublin': 0.9, '/rome': 0.9, '/spain': 0.9,
-        '/australia': 0.8, '/iceland': 0.8, '/prague': 0.8,
+        '/australia': 0.8, '/iceland': 0.8, '/prague': 0.8, '/vienna': 0.8,
         '/munich': 0.7, '/poland': 0.7, '/thailand': 0.8, '/charleston': 0.7,
         '/michigan': 0.7,
       },

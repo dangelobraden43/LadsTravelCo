@@ -48,7 +48,14 @@ const DESTINATIONS = [
     slug: 'prague',
     line: 'The cheapest great city in Europe.',
     photo: IMAGES.stvitus,
-    spots: 23,
+    spots: 15,
+  },
+  {
+    name: 'Vienna',
+    slug: 'vienna',
+    line: 'Coffee houses, palaces, and Klimt. The grand one.',
+    photo: HERO_IMAGES.schonbrunnPalaceGardensVienna,
+    spots: 8,
   },
   {
     name: 'Munich',

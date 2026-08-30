@@ -25,6 +25,7 @@
     { "source": "/rome", "destination": "/" },
     { "source": "/australia", "destination": "/" },
     { "source": "/prague", "destination": "/" },
+    { "source": "/vienna", "destination": "/" },
     { "source": "/dublin", "destination": "/" },
     { "source": "/michigan", "destination": "/" },
     { "source": "/spain", "destination": "/" },

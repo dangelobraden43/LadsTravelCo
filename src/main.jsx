@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import App from './App'
-import { IMAGES, BATCH3_IMAGES } from './images-paths'
+import { IMAGES, BATCH3_IMAGES, HERO_IMAGES as PHOTO_HEROES } from './images-paths'
 import { HelmetProvider } from 'react-helmet-async'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
@@ -34,6 +34,7 @@ const HERO_IMAGES = {
   australia: IMAGES.opera,
   iceland: IMAGES.iceland,
   prague: IMAGES.stvitus,
+  vienna: PHOTO_HEROES.schonbrunnPalaceGardensVienna,
   munich: BATCH3_IMAGES.munichMarienplatz,
 }
 
@@ -80,6 +81,7 @@ const DESTINATIONS = [
   'australia',
   'iceland',
   'prague',
+  'vienna',
   'munich',
   'poland',
   'michigan',
