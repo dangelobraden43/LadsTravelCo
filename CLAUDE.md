@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 28, 2026 (queue dated Aug 27; Aug 26 was a no-op day)
+## Last Updated: August 29, 2026
 
 ---
 
@@ -12,7 +12,8 @@ Stack: React + Vite, React Router, Three.js (react-three-fiber)
 Email: brady@ladstravel.com (Google Workspace active)
 Posture: PREVIEW — paid services launch Fall 2026.
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
-Frameworks: 9 React destination routes (no static flagships)
+Frameworks: **10** React destination routes (Vienna split from Prague Aug 29)
+⭐ **READ `THE NEW FRAMEWORK AGENDA` FIRST — it is the September build slate.**
 Peru completed. Ford started May 18.
 LIVE: `/good-news` — full MIDWEST map (MN·WI·MI·IL·IN·OH), three pin
   tiers (roots anchors · city context · airports). Unlinked from nav,
@@ -107,9 +108,125 @@ July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
 
 ---
 
+## WHAT WAS BUILT (August 29, 2026 — the great ingestion, the Vienna split)
+
+### BLOCK 1 — 162 PLACES INGESTED FROM 8 SAVED LISTS
+
+All read in the signed-in Playwright browser as brady@ladstravel.com, by provenance.
+**Integrity: parsed count == Google's own header count on all 8 lists. 162/162 unique
+feature IDs. 162/162 coordinates.** Everything defaults `validated: false`.
+
+🔑 **THE METHOD CHANGED — the old note is now WRONG.** CLAUDE.md said the list panel
+sits in a subframe and each place must be CLICKED to read `!3d/!4d` off the URL. Neither
+still holds: the panel is in the **main frame**, and the entire list — name, address,
+lat/lng, feature ID, Google KG mid, **and Brady's own per-place notes** — parses out of
+the page's embedded `APP_INITIALIZATION_STATE` payload in ONE pass with no clicking.
+162 places took one page load each. Clicking also proved fragile: `goBack()` broke
+navigation after the first place.
+
+**Michigan: 8 of 21 zero-coordinate spots SOLVED** — Brewery Vivant, New Holland, Mitten,
+Short's, Journeyman, Beer Church, Arcadia Bluffs, Forest Dunes.
+⚠️ **Loose fuzzy matching was tried and REJECTED** — it paired Founders→Arvon and Sugar
+House→O'Toole's off shared words like "brewing" and "house". Only strict token
+containment + a distance sanity check was trusted. **Do not lower that bar.**
+❌ **13 still unsolved. FOUR ARE DETROIT and there is no Detroit list** — Brady is
+compiling one (said Aug 29, expected that weekend). It closes 4 in one step.
+
+🚩 **Short's Brewing is a live Tivoli-class trap.** `michigan.js` records it as
+**Bellaire**; Brady's saved place is the **Elk Rapids Pull Barn**, a different venue 17 km
+off. Same brand, wrong building. **Still awaiting his ruling** — as is whether Brewery
+Vivant follows Google's rename to "Vivant Brewery and Spirits".
+
+### BLOCK 2 — PRAGUE/VIENNA SPLIT (`/vienna` is live as a route)
+
+`prague.js` was a **THREE**-city framework (Prague + Vienna + **Dresden**), not two.
+**Brady approved: Dresden STAYS with Prague** — it is a 2-hour day trip and still carries
+its own `from: 'Prague'` dayTrip entry; Vienna is 250 km the other way.
+
+**COUNT GATE PASSED EXACTLY:** prague 25 → **17** (Prague 11 + Dresden 4 + 2 day trips),
+vienna **8**. 17+8=25. **Site total 219 UNCHANGED. Globe pin sum 219 across 13 gold pins
+UNCHANGED.** Countries 10 / continents 3 / cities 13 all unchanged. The Globe pin VALUES
+did not even move — Prague was already 25 minus an 8-spot Vienna sub-bucket, so the split
+only promoted Vienna from sub-bucket to primary pin.
+
+⚠️ **ONE canonical number DID change: frameworks 9 → 10.** Updated in all three
+`index.html` meta descriptions (the text search results actually render) + a peru.js
+comment. **Do not "correct" it back to 9.**
+
+Separation, not rewriting: all 8 Vienna spots moved verbatim. Framework-level prose that
+became FALSE was rewritten (hero stats claiming 3 countries, 3 Vienna itinerary days, the
+2-column Prague/Vienna cost table, the "Skipping Vienna Beisl" mistake, and the Cafe
+Central renovation callout which moved to Vienna). Vienna palette `#a85c62` — its own,
+per the never-reuse-a-palette rule.
+
+### 🔧 TOOLING GOTCHA — cost real time this session
+
+**The Bash heredoc eats backslashes.** `<<'PYEOF'` did NOT preserve `
+
+	` or `'`
+into Python — they arrived as real control characters, producing broken JS regexes and
+failed string matches. **Workarounds that work:** build strings with `chr(39)` / 
+`String.fromCharCode()`, replace whole lines by index instead of matching text containing
+apostrophes, or use the Write tool for any content with quotes/accents.
+
+**Also:** the Playwright MCP `browser_run_code_unsafe` VM has **no `fs` and no dynamic
+import** — it cannot write files. Return compact delimited text and write it locally.
+Its file access is restricted to the repo root + `.playwright-mcp/`.
+
+🚩 **A STALE PLAYWRIGHT BROWSER BLOCKS THE PROFILE.** Aug 28's browser was still
+running and held the signed-in profile, throwing "Browser is already in use" — the exact
+failure that killed the Aug 27 Machu read. **Fix: kill the leftover chrome tree; cookies
+live on disk so the profile stays signed in.** Close the browser at session end.
+
+---
+
 ## WHAT WAS BUILT (August 28, 2026 — the Machu list, the film, the Michigan lie)
 
-**3 commits shipped** (`3744a70`, `f03c97c`, `393fac6`).
+**6 commits shipped** (`3744a70`, `f03c97c`, `393fac6`, `5114547`, and then
+three that this file did not record until Aug 29: `cab0f6d`, `165a6d7`,
+`973db6b`). The docs commit landed at 12:07 and three data commits landed
+*after* it — which is exactly how a session's own record goes stale. **Write
+the docs commit last.**
+
+### ➕ THE THREE LATE COMMITS — recorded Aug 29, they change the Peru picture
+
+- **`cab0f6d` — Humantay, Huacachina Oasis, Paracas (22 → 25 places).** These
+  close every open geography flag in this file. **Humantay Lake**
+  `-13.3793789,-72.5844385` was named in Brady's validated prose but
+  deliberately left unpinned (geocoding a bare name breaks the Tivoli rule);
+  it now arrives with provenance and lands on the **May 8 EXIF anchor**,
+  independently confirming May 8 as the first real Salkantay day — the
+  off-by-one correction now has a fourth witness. **Huacachina Oasis** lands on
+  the May 5 anchor, settling Brady's "Huacachina" over the manifest's
+  "Ica / Paracas". **Paracas** sits ~70 km northwest of that anchor, so the
+  manifest's day-4 heading had **conflated two places 70 km apart** — it did
+  not invent the Ballestas boat tour, it attached it to the wrong point.
+  Paracas is therefore attached to **no day** and kept **off the route**.
+  The Salkantay Pass stays unpinned: in the prose, in no list.
+- **`165a6d7` — Brady's endorsement + his own words on 6 places.** He closed the
+  validation question himself: *"everything on the List we would recommend I
+  removed some bad spots."* That is a **curation** statement, not merely a visit
+  claim, so all 25 move to `validated: true` with `validationBasis` recording
+  that it rests on **his word, not EXIF**. `BRADY_TAKE_SOURCE` holds the
+  statement verbatim and is the ONLY source for the personal layer here.
+  Normalised "calarbra trident" → the **Paracas Candelabra** (El Candelabro) —
+  spelling only, meaning intact.
+- **`973db6b` — Moray, Wild Rover, Magicpacker + Google listing provenance.**
+  Moray is "the best Cusco food spot that we had"; Magicpacker is where they
+  actually stayed; **Wild Rover is a HANGOUT recommendation, not a stay one**,
+  and the entry says so explicitly so the two are never conflated.
+  `LADS_COLLECTIVE_TAKE` carries "truly all of the restaurants were as good as
+  advertised" and is marked **render-as-a-group, never split per spot** —
+  slicing a sentence about a set into per-restaurant blurbs would manufacture a
+  firsthand opinion. Brady offered "you can do some research for taglines";
+  **deliberately not taken up**, because a researched blurb in a Lads card reads
+  as firsthand. Instead `GOOGLE_LISTING` carries Google's own category, rating,
+  review count and PEN band for **23 of 25**, read verbatim off the saved list.
+  **If rendered it must be labelled as Google's, never ours**, and the bands are
+  Google's, not quoted prices.
+
+**Net: 9 of 25 carry Brady's voice. 16 are silent and stay that way.**
+`ladsRating` is absent throughout, so nothing here can be read as a Lads score.
 
 ### The 22 Peru spots — the "zero spots" gap is closed
 
@@ -463,6 +580,140 @@ data "coming — validated August." It IS August and the validation trips
 already happened, so that label is now self-contradicting. Use
 **"Dawson's UP picks — loading in"** (or the equivalent for whichever
 data is pending), never a month that has already passed.
+
+---
+
+## ✅ APPROVED BUILDS (Brady, Aug 29, 2026) — not yet built
+
+### BLOCK 3 — /local GRADUATION — **APPROVED AS PROPOSED**
+
+`/local` becomes the map-as-hero experience. Proposal artifact:
+`https://claude.ai/code/artifact/024e7bb9-bcf6-4c15-85bc-16b1d29778a8`
+
+- Map is the hero, **"Good Brews · Good Views · Good News"** as the banner identity of
+  Lads Local — not a separate destination.
+- **Tiers: gold 8 validated / copper 69 candidate / 13 unpinnable** (4 Detroit, closing
+  when Brady's list lands). Candidates are list-sourced, NOT visited-verified: they show
+  Google's category + rating **labelled as Google's**, no Lads take, no rating.
+- **`/good-news` → `/local` PERMANENT REDIRECT** (approved). Same retirement pattern as
+  `/explore` and `/adventure`. Nothing links to it today.
+- **Touch targets — FIX GLOBALLY, not just airports.** Brady: *"13.2px pins fail everyone,
+  not just airports — fix the pin hit-areas globally, visual size can stay elegant while
+  tap targets go 44px+."* Measured at 390: `.mp-pin` **13.2×13.2**, `.gn-anchor`
+  16×21 to 37×20. Method: **transparent 44px hit area centred on the true coordinate**
+  + a companion list below the map. ⛔ **Do NOT enlarge the glyphs** — that would force
+  nudging pins off true position in the Grand Rapids cluster.
+- Also in this build: mobile map fills the viewport at 390 (today it centres in dead
+  space); **closed venues suppressed entirely, not greyed** (Graydon's Crossing +
+  Flanagan's are Temporarily closed); the Michigan card's **"Every region across both
+  peninsulas, validated"** line reworded — unsupportable at 8-of-21 coordinates.
+- Graduating drops `noindex`, which requires: canonical + meta description, sitemap entry,
+  JSON-LD, an OG image, and the `.globe-hint` 320px overflow fix.
+- **Hop Passport is THIRD-PARTY.** Attribute as such; invent none of its rules or branding.
+
+### BLOCK 4 — TRAVEL WINDOWS — **APPROVED**
+
+🔑 **THE FINDING: 9 of 10 frameworks already carry `timingWindows`. ZERO render it.**
+`FrameworkPage.jsx` consumes 14 data keys and that is not one of them. ~24 windows of
+complete researched content ship in the bundle and reach nobody. `mistakes` and
+`specialCallouts` are dead the same way.
+
+🚩 **FIRST ACTION, BEFORE ANYTHING RENDERS — Iceland's stale window.** Its
+`august` window is about the **Aug 12, 2026 eclipse** and still reads *"already booked…
+avoid unless you planned 18 months ago."* That date has PASSED. Brady: *"a dead 'already
+booked, avoid' claim going visible is exactly the AI-error embarrassment we exist to
+prevent."* **Fix or remove it, then staleness-audit the other 8 frameworks the same pass.**
+
+- **Schema extends, never reinvents.** Keep `id / name / recommended / atmosphere /
+  crowdMix / pubExperience / priceTier / primaryDraw / verdict / detail`. **Add four:**
+  `driver` (weather|events|pricing|logistics), `months` (machine-readable),
+  `datedUntil` (ISO, optional — the Iceland fix, so one-time events self-expire),
+  `sourcing` ({basis, checkedOn, sources[]}).
+- **3–4 windows per destination, typed by driver.** Semantics currently diverge with
+  nothing recording it: Munich's windows are Oktoberfest weekend-vs-midweek, Spain's are
+  seasons. **Pricing is the axis nobody writes honestly — the one most worth owning.**
+- **Renders as a "When to go" section** between Overview and the spot categories, entered
+  in `navSections`. Recommended windows take a gold border; driver is a chip; the sourcing
+  line sits at the foot of every card.
+- **THE SOURCING RULE:** every window states the reasoning that produced it — shoulder
+  season, monsoon, festival, fare curve, published closure. **A window that cannot name
+  its driver does not ship.** No invented specifics. Pipeline-researched,
+  **human-sanity-checked before publish**. ⛔ **Never apply a Lads voice to a researched
+  window** — same rule that keeps the 16 silent Peru places silent. The window explains
+  the world; only Brady speaks for the Lads.
+- **Peru gets the full template treatment first**, exercising all four drivers.
+
+---
+
+## 🚩 THE NEW FRAMEWORK AGENDA — SEPTEMBER BUILD SLATE (approved Aug 29, 2026)
+
+> **/morning MUST surface this queue every session until it is empty.** These are
+> **not parked ideas.** Brady approved this sequence on Aug 29. Work the numbers in
+> order unless he re-prioritises.
+
+**Every queue entry ships the same four things:**
+1. **Pipeline research pass** — researched, then human-sanity-checked. Never published raw.
+2. **Travel windows** — the `timingWindows` layer, 3–4 windows typed by `driver`
+   (weather / events / pricing / logistics), each stating its reasoning. See TRAVEL
+   WINDOWS below.
+3. **Peru-template structure** — whatever #1 establishes is what #2–#5 inherit.
+4. **Honest validation tiers** — gold = validated, copper = research. Never flip a tier
+   to make a map look fuller. A saved list is a SUPERSET of a trip.
+
+### 1 — PERU: THE STANDARD-SETTER ⭐ next major session
+
+The template every later framework copies. Interactive country map + motion language +
+travel windows. **Peru gets the full travel-windows treatment FIRST**; its four windows
+exercise all four drivers and become the worked example.
+
+Data is already banked and unusually strong: `src/data/peru.js` — 10 GPS day anchors +
+**25 saved places**, all `validated: true` on Brady's own curation statement, 9 carrying
+his voice, **16 deliberately silent**. `GOOGLE_LISTING` covers 23 of 25.
+**Do not write copy for the silent 16.**
+
+### 2 — SAN JUAN, PUERTO RICO (real trip behind it)
+
+**13 places, all coordinates, all unique IDs.** Google rating on 12/13 (avg 4,326
+reviews — the highest-confidence listing data of any list). Street address on 8/13.
+Spread 35 km: a tight Old San Juan core (bar crawl + two castles) plus El Yunque and
+Casa BacardÍ as outliers. **Zero closed venues. Zero Brady notes.**
+➡️ **Brady flags validated spots PER-SPOT.** Real trip, but the list is still a superset.
+
+### 3 — COSTA RICA (San José + Jacó, real trip behind it)
+
+**59 places** — the largest ingest: San José 35 + Jacó 24. All coordinates, all unique
+IDs. Rating on 52/59, address on 41/59. Spread 42 km (the two cities, ~2 h apart).
+San José splits cleanly into the Barrio Escalante food/bar scene and the museum core;
+Jacó is 22-of-24 inside ~3 km of beach town.
+⚠️ **ONE FRAMEWORK OR TWO IS STILL BRADY'S CALL** — it moves the canonical country count.
+➡️ Per-spot validation, same as San Juan.
+⚠️ `Oz Poolside Bar` and `Oz Hotel and Sport Bar` share an identical coordinate — pins
+will stack, declustering required.
+
+### 4 — BRUCE PENINSULA (geocoded, blocked on Brady)
+
+17 places geocoded by provenance in `src/data/brucePeninsula.js`, plus Brady's Aug 8–12
+trip. **❌ STILL AWAITING THE VISITED-SPLIT** — 18 of 19 ship `validated: false` and
+every pin renders copper. That is CORRECT, not a bug. Do not flip wholesale.
+
+### 5 — VANCOUVER (pure research tier — the pipeline showcase)
+
+**21 places** from two lists that should merge (6 "things to do" + 15 bars/restaurants).
+All coordinates, rating on 20/21 (avg 6,362 reviews — highest of any list).
+**⚠️ Address on 0/21 — thinnest metadata of the three destinations.**
+No trip behind it, so **honest copper throughout** — this is the framework that proves
+the research pipeline stands on its own without a Lads visit.
+⚠️ **`House of Funk Brewing` is PERMANENTLY CLOSED** per Google. Must not render.
+ℹ️ Carries the ONLY human note in all 162 ingested places: Grouse Mountain →
+*"Grouse Grind Hike or Gondola"*.
+
+### WHERE THE DATA IS BANKED
+
+- `internal/brady/maps-lists-2026-08-29.txt` — all 162 places, pipe-delimited (gitignored).
+- `internal/brady/ROUTING-TABLE-2026-08-29.md` — the routing table + honesty flags.
+- ⚠️ **ACCENTS WERE FLATTENED** in the staging file (`Lúpulo→Lupulo`, `Jacó→Jaco`) by a
+  shell-encoding limit. **Re-read names with accents from the browser when building real
+  data files.** Do NOT build a data file from the ASCII staging text.
 
 ---
 
@@ -854,20 +1105,24 @@ Aug 26's goal (**/local graduates** — the broken Michigan page becomes the
 interactive Midwest hub) now shares the day with what the old queue called
 "Thursday's Peru map". Today IS that Thursday.
 
-### 🚧 FOUR THINGS ARE STILL BLOCKED ON BRADY — verified Aug 27, not assumed
+### 🚧 BLOCKED ON BRADY — re-verified Aug 29 against the data, not from memory
 
 | Blocked item | State as of Aug 28 |
 |---|---|
 | Bruce visited-split | ❌ **18 of 19 still `validated: false`** — never supplied |
-| **Peru visited-split** | ❌ **NEW** — all 22 Machu-list places are research tier |
+| **Peru visited-split** | ✅ **RESOLVED Aug 28** — Brady: "everything on the List we would recommend I removed some bad spots". A curation statement, so all **25** saved places carry `validated: true / validatedBy: 'Brady' / visitedDate: '2026-05'`, with `validationBasis` recording that this rests on his word, NOT on EXIF. 9 carry his voice; **16 are still silent and stay that way.** |
 | Michigan geocoding | ❌ **0 coordinates** in `michigan.js` — nothing to pin |
 | Michigan hero photo | ✅ **NEUTRALISED Aug 28** — the Tennessee photo is gone from `/local`, replaced by the real map preview. A genuine Michigan photo is still wanted, but it no longer blocks anything. |
 | Peru26 beat sheet | ✅ **SUPERSEDED** — never arrived; Brady directed the work anyway and a proposed beat sheet now exists in `peru26-video-plan.md` |
 | Licensed music | ❌ **NEW, hard blocker on publishing the film.** None sourced, downloaded or embedded — and none will be. |
 
-The film cannot start without the beat sheet, and `/local` cannot ship publicly
-fronted by a Tennessee photo. Neither is a reason to idle — the two builds below
-are unblocked and were launched around them.
+Of the original four, **two are closed** (Peru split, Michigan photo). What
+actually remains: the **Bruce split**, **Michigan coordinates**, and **licensed
+music**. Block 1 of Aug 29 attacks the Michigan-coordinates one directly.
+
+⚠️ **Do not count `validated: true` with a raw grep.** `peru.js` sets it inside a
+`saved()` helper (~:667), so a line-grep reports 13 where the real figure is 35
+(10 day anchors + 25 saved places). Import the module and count.
 
 ### 🔑 THE PERU MAP HAS A REAL FOUNDATION — and it is not the framework data
 
@@ -981,22 +1236,29 @@ Full sweep at **1440 and 390**. `npm run build` clean. `/ship` on Brady's go.
 
 ### STILL WAITING ON BRADY (not blocking the above unless noted)
 
-**🔴 THE FOUR HARD BLOCKERS — all four have now missed a full session:**
+**🔴 THE HARD BLOCKERS — down from four to three (re-verified Aug 29):**
 1. **Bruce visited-split** — which of the 17 you actually hit Aug 8–12. The
    saved list is a SUPERSET of the trip, so it cannot be inferred. Until this
    lands every Bruce pin renders copper and claims nothing. **BLOCKING Phase 1.1.**
 2. **Michigan coordinates** — or a Google Maps saved list to read them from by
    provenance. **BLOCKING Phase 1.2 and any Michigan pin.**
-3. **A real Michigan photo** — Sleeping Bear, Torch Lake, Detroit, Grand Rapids.
-   None exists in `src/images-*.js`. **BLOCKING the /local graduation**, because
-   a public Michigan flagship cannot be fronted by a Smoky Mountains shot.
-4. **The Peru26 beat sheet** — never arrived from claude.ai. **BLOCKING all film
-   assembly**; the "no editing until the beat sheet" rule still stands.
+3. **Licensed music for the Peru26 film** — none sourced, and none will be
+   invented. **BLOCKING publication of the cut**, not its assembly.
+   ~~A real Michigan photo~~ — ✅ **NO LONGER BLOCKING (Aug 28).** `/local` renders
+   the real traced Midwest geometry instead of the Tennessee photo. A genuine
+   Michigan shot is still wanted; it gates nothing.
+   ~~The Peru26 beat sheet~~ — ✅ **SUPERSEDED.** Brady directed the work directly;
+   a proposed beat sheet lives in `peru26-video-plan.md`.
 
 **Peru-specific, needed before `peru.js` can become a published framework:**
-- Named spots. GPS proves location, not businesses — so there are no
-  restaurants, hotels, operators or ratings in the data and there must not be
-  until Brady supplies them firsthand.
+- ✅ **Named spots ARRIVED Aug 28** — 25 of them, by provenance off Brady's own
+  "Machu" list. `ladsRating` is still absent everywhere in the file, so the
+  endorsement gradient cannot mistake any of it for a Lads score.
+- ❌ **Still missing: the personal layer for 16 of the 25.** No `ladsTake`, no
+  `description`. They stay silent — the rule that the personal layer cannot be
+  AI-generated is exactly what stops 12 Cusco restaurants getting plausible copy.
+  Because the live-walk counts only spots carrying `description`/`notes`, those
+  16 also do not move the canonical totals.
 - The unplaceable clip `72581579-…mp4` (no GPS, no Apple metadata, stamped
   May 20, outside the May 2–11 cluster) — where does it belong?
 
@@ -1101,6 +1363,14 @@ Full sweep at **1440 and 390**. `npm run build` clean. `/ship` on Brady's go.
   `ROUTE_PATHS['motor-city']`, unused until a zoomed view exists.
 - **`/audit-all` still lists retired frameworks** and omits michigan.
 - **`/thailand` `/charleston`** have no redirect/404 route.
+- 🚩 **IMAGE DELIVERY STRATEGY (CDN / lazy tiers) — flagged Aug 29, NOT fixed.**
+  `dist` is **40 MB against an 8 MB target**, and the JS is not the problem:
+  `dist/assets` is only **2.7 MB**. The overage is ~37 MB of images shipped as
+  build output. Options to weigh when this comes up: move images to a CDN
+  (Cloudinary is already a paid service here and already hosts the videos),
+  responsive `srcset` tiers instead of one full-size file per photo, and
+  modern formats (AVIF/WebP). **Do not start this mid-session** — it touches
+  every framework's imagery and deserves its own block.
 
 ---
 
