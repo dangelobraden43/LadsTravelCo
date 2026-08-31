@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 29, 2026
+## Last Updated: August 31, 2026
 
 ---
 
@@ -132,10 +132,22 @@ containment + a distance sanity check was trusted. **Do not lower that bar.**
 ❌ **13 still unsolved. FOUR ARE DETROIT and there is no Detroit list** — Brady is
 compiling one (said Aug 29, expected that weekend). It closes 4 in one step.
 
-🚩 **Short's Brewing is a live Tivoli-class trap.** `michigan.js` records it as
-**Bellaire**; Brady's saved place is the **Elk Rapids Pull Barn**, a different venue 17 km
-off. Same brand, wrong building. **Still awaiting his ruling** — as is whether Brewery
-Vivant follows Google's rename to "Vivant Brewery and Spirits".
+✅ **SHORT'S BREWING — RULED Aug 31, 2026. Brady has been to BOTH.**
+`michigan.js` records Short's as **Bellaire / TC**; the saved place is the **Elk Rapids
+Pull Barn**, a different venue 17 km off. Brady: *"shorts is the elk rapids pull barn I
+would like on the list but I have been to both."*
+➡️ **Therefore they are TWO venues, both genuinely visited — not a correction.**
+⛔ **Do NOT overwrite the Bellaire entry with the Elk Rapids coordinate.** Elk Rapids
+(`44.9035254, -85.4069907`) has provenance and can pin now. Bellaire is a real visit with
+**no coordinate yet** and stays unpinned until one arrives by provenance.
+🚩 **COUNT IMPLICATION — needs Brady's ok at build time.** Adding Elk Rapids as its own
+spot with a description moves michigan **21 → 22** and the site total **219 → 220**.
+Canonical totals do not move silently. Options: (a) add it and update every derived
+surface, or (b) carry Elk Rapids as a map pin attached to the existing Short's spot so no
+counter moves. **Ask before building.**
+
+❓ **STILL OPEN: Brewery Vivant.** Google now lists it as "Vivant Brewery and Spirits" at
+the same address (925 Cherry St SE). Keep our name or follow the rename? Not yet ruled.
 
 ### BLOCK 2 — PRAGUE/VIENNA SPLIT (`/vienna` is live as a route)
 
@@ -583,6 +595,26 @@ data is pending), never a month that has already passed.
 
 ---
 
+## 📍 SESSION START STATE — verified Aug 31, 2026
+
+**Working tree clean. `main` == `origin/main`. Nothing pending `/ship`.**
+Last commits: `a3288e9` + `088b539`, both **Aug 29 22:11–22:12**.
+
+⚠️ **AUGUST 30 WAS A NO-OP DAY — zero commits.** The Aug 29 session ended immediately
+after announcing the Block 3 build, so **the /local build never started.** Nothing
+against Block 3 or Block 4 exists in the repo. Both remain APPROVED-BUT-UNBUILT below.
+(This is the second time a queue outlived its session — Aug 26 was the same. When a
+session ends mid-intent, say so in the record rather than leaving an announced build
+looking done.)
+
+**✅ What IS live:** the Vienna split (10 frameworks, 219 verified), the Aug-29 record
+corrections, and the September build queue.
+
+**🚩 `/good-news` currently rewrites to `/` in `vercel.json:21` — it is NOT yet the
+approved `/local` redirect.** That is part of the unbuilt Block 3.
+
+---
+
 ## ✅ APPROVED BUILDS (Brady, Aug 29, 2026) — not yet built
 
 ### BLOCK 3 — /local GRADUATION — **APPROVED AS PROPOSED**
@@ -685,7 +717,11 @@ Casa BacardÍ as outliers. **Zero closed venues. Zero Brady notes.**
 IDs. Rating on 52/59, address on 41/59. Spread 42 km (the two cities, ~2 h apart).
 San José splits cleanly into the Barrio Escalante food/bar scene and the museum core;
 Jacó is 22-of-24 inside ~3 km of beach town.
-⚠️ **ONE FRAMEWORK OR TWO IS STILL BRADY'S CALL** — it moves the canonical country count.
+✅ **ONE FRAMEWORK — RULED BY BRADY, Aug 31, 2026.** San José and Jacó ship as a single
+**Costa Rica** framework (the Spain multi-city model), not two.
+📐 **Count impact when it ships:** countries **10 → 11**. Continents stay **3** — Costa
+Rica is North America, already represented. Spots rise by however many survive his
+per-spot validation pass; the total is not 219 + 59 by default.
 ➡️ Per-spot validation, same as San Juan.
 ⚠️ `Oz Poolside Bar` and `Oz Hotel and Sport Bar` share an identical coordinate — pins
 will stack, declustering required.
@@ -1049,7 +1085,12 @@ Data moment: Vivid Harbor Bridge drone
 
 ---
 
-## THE QUEUE — Thursday, August 27, 2026 (/morning reads this first)
+## ⛔ ARCHIVED QUEUE — Thursday, August 27, 2026 (HISTORICAL, DO NOT WORK FROM THIS)
+
+> **Superseded Aug 31, 2026.** The live plan is **THE NEW FRAMEWORK AGENDA** plus
+> **APPROVED BUILDS**, both above. This section is kept only for the flags and
+> context inside it. Its blocker table and phase list are STALE — several items
+> listed here as blocking have since closed.
 
 > **Date discipline.** This queue is dated. If today is not Aug 27, say so out
 > loud before working from it — a previous queue sat titled "TOMORROW'S QUEUE"
