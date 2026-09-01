@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: August 31, 2026
+## Last Updated: September 1, 2026
 
 ---
 
@@ -10,10 +10,13 @@ Vercel fallback: lads-travel-co.vercel.app
 Repo: dangelobraden43/LadsTravelCo
 Stack: React + Vite, React Router, Three.js (react-three-fiber)
 Email: brady@ladstravel.com (Google Workspace active)
-Posture: PREVIEW — paid services launch Fall 2026.
+Posture: PREVIEW — **launch target JANUARY 1, 2027, quality-gated.**
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: **10** React destination routes (Vienna split from Prague Aug 29)
-⭐ **READ `THE NEW FRAMEWORK AGENDA` FIRST — it is the September build slate.**
+Canonical total: **220 spots · 13 validated cities · 10 countries · 3 continents**
+  (219 → 220 on Aug 31 via Short's Elk Rapids in michigan.js)
+⭐ **READ `THE VISION AND THE TIMELINE` FIRST** — it is the plan everything
+  serves. Then `THE NEW FRAMEWORK AGENDA`, which is the September build slate.
 Peru completed. Ford started May 18.
 LIVE: `/good-news` — full MIDWEST map (MN·WI·MI·IL·IN·OH), three pin
   tiers (roots anchors · city context · airports). Unlinked from nav,
@@ -38,6 +41,144 @@ DONE: Scenic Shore ride happened July 25–26, 2026. Table run, crewnecks
 
 ---
 
+## ⭐ THE VISION AND THE TIMELINE (set September 1, 2026 — read this before the queue)
+
+> This section replaces `internal/brady/3-WEEK-SPRINT.md`, which was an April 11 –
+> May 3, 2026 document and had been stale for four months. It is **archived** at
+> `internal/brady/archive/3-WEEK-SPRINT-2026-04-11--05-03-ARCHIVED.md`. Do not plan
+> from it and do not resurrect its tiers. `/morning` no longer reads it.
+
+### THE VISION
+
+**The Lads Travel Company is the trust layer of travel.**
+
+AI researches. Founders validate on foot. Travelers get plans they can stake a
+weekend on.
+
+**2027 is the year strangers pay for it.**
+
+Everything below exists to make that sentence true on schedule, and every rule
+already in this file — the endorsement gradient, the Tivoli rule, gold-vs-copper
+tiers, "never invent spots, prices, or recommendations," the silence of the 16
+Peru places — is not friction against that goal. It **is** the product. The trust
+layer is the only thing being sold.
+
+### JANUARY 1, 2027 — TARGET, QUALITY-GATED
+
+Launch **aims** at January 1, 2027. **Slipping to February is acceptable if the
+product is not right.** The date is a target, not a promise, and it is the thing
+that moves when a gate fails.
+
+**Launch day is BOTH of these, not one:**
+
+- **(a)** Digital frameworks **purchasable by strangers** — not a preview, not a
+  waitlist, a real checkout that delivers a real product.
+- **(b)** The **Lads Travel Club opens**, with a **FOUNDING-MEMBER CAP** set by a
+  **December capacity review** of the research pipeline. The question that review
+  answers is *how many members can we serve excellently* — and that number,
+  **honestly derived**, is the cap. Everyone beyond it goes on a waitlist.
+
+⚠️ **The cap is a capacity finding, not a marketing number.** It is derived in
+December from real pipeline throughput. Do not pick a round number because it
+sounds good, and do not raise it after the fact to fit demand. A cap we exceed is
+the trust layer failing on day one.
+
+### THE FALL SEQUENCE — the thesis everything serves
+
+    /local ships now  →  Peru sets the product bar  →  enrichment scales the count
+
+**Everything else supports one of those three.** When a new idea arrives mid-fall,
+the test is which of the three it serves. If the answer is "none," it is a
+backlog item, not this fall's work.
+
+### THE QUALITY GATES — what "launch-ready" means
+
+**The December review runs against this checklist. If any gate fails, the DATE
+moves, not the BAR.**
+
+- [ ] **1. Purchasable frameworks.** Peru-template frameworks purchasable with a
+      clean checkout and clean delivery. A stranger can pay and receive.
+- [ ] **2. Travel Windows everywhere.** Rendering on every purchasable framework,
+      with **zero stale windows**. (See BLOCK 4 — the Iceland `august` eclipse
+      window is the worked example of exactly what must never ship. `datedUntil`
+      exists so one-time events expire themselves.)
+- [ ] **3. Count: 300+ published-and-described**, every spot honest per the
+      endorsement gradient. Today the canonical live-walk total is **220**.
+      ⛔ The gate is **published and described** — spots carrying a real
+      `description`/`notes`. It is NOT a raw ingest count. The 162 ingested
+      places are not 162 spots, and padding the number with silent entries fails
+      this gate rather than passing it.
+- [ ] **4. `/local` + `/live` running as the free proof-of-quality surface.** The
+      thing a stranger sees before paying anything, and the reason they believe
+      the paid product.
+- [ ] **5. Club capacity review done**; cap set and the founding offer defined.
+- [ ] **6. Zero known rendering errors, zero stale claims, mobile-polished at
+      390.** "Known" means known to us — the December review includes a full
+      sweep at 1440 and 390, not a memory of one.
+- [ ] **7. Pricing decided by founders after the five conversations.** Pricing is
+      a founder decision. ⛔ **Never invent, suggest-as-settled, or publish a
+      price.** Same rule that governs the Scenic Shore line.
+
+### 🚩 GATE 6 HAS A LIVE FAILURE ALREADY — found Sept 1, 2026, NOT fixed
+
+**The site tells strangers it is "LAUNCHING FALL 2026" in seven places, and it is
+now Fall 2026.** The real target is January 1, 2027. Every day this stands, the
+homepage badge reads as "any day now" to anyone who lands on it.
+
+    src/App.jsx:756        PREVIEW · LAUNCHING FALL 2026     (homepage hero badge)
+    src/Footer.jsx:34      "A travel intelligence company. Launching Fall 2026."
+    src/Footer.jsx:60      "We launch Fall 2026 — follow the build."
+    src/GiftPage.jsx:705   "Built for a friend. The Lads launch Fall 2026."
+    src/LadsSection.jsx:316 "A preview from The Lads. Launching Fall 2026."
+    src/PlanPage.jsx:85    "The full thing lands Fall 2026."
+    src/PrivacyPage.jsx:279 "...heading toward a Fall 2026 launch..."
+
+⛔ **Deliberately NOT rewritten without Brady.** Public launch-date copy is a
+founder decision, and there is a real choice inside it: printing "January 1,
+2027" on the homepage commits us publicly to a date the plan explicitly allows to
+slip to February. The honest options are (a) a specific date and accept the
+commitment, (b) a season — "Launching early 2027", or (c) drop the date and say
+"Launching soon" / nothing. **Brady picks; then all seven change in one pass.**
+
+This is exactly the class of thing Gate 6 exists to catch, and it is the same
+failure as the Iceland eclipse window: a true claim that quietly went stale
+because a date arrived.
+
+### MILESTONES, BACKWARDS FROM JANUARY 1
+
+| Month | What must be true by the end of it |
+|---|---|
+| **December 2026** | Launch staging: pages in draft, **capacity review run**, cap set, **Travel Tuesday executed Dec 1**, pricing locked. |
+| **November 2026** | Framework slate complete — **San Juan, Costa Rica, Bruce, Vancouver** (research-tier). Q4 commerce. **Phocuswright decision executed.** |
+| **October 2026** | **Peru LIVE as the standard-setter** — it is the bar. First digital product **sold** (pilot). The ride documented. The film released. |
+| **September 2026** | **`/local` shipped polished.** `/live` first pass. Enrichment engine **proven** through the Notion queue. Both study-abroad emails out. **Sept 18 fundraising banked.** |
+
+**September is the month we are in.** The month's work is the top of this table,
+and `THE NEW FRAMEWORK AGENDA` below is how the framework half of it gets built.
+
+### CADENCE — and the rule that ends the recurring failure
+
+**3+ sessions per week.** Every session **opens** with `/morning` against this
+plan and **closes** with the runway updated and the work **COMMITTED AND PUSHED**.
+
+🚩 **A SESSION IS NOT OVER UNTIL `origin/main` HAS IT.** This has now failed three
+times — Aug 26 (a whole queue outlived its session), Aug 28 (three data commits
+landed *after* the docs commit that was supposed to record them), and Aug 31 (the
+Michigan/220 work sat uncommitted in the working tree overnight and was only found
+by the next `/morning`). **That failure mode ends September 1, 2026.**
+
+Concretely, in this order, every session:
+
+1. Build and verify.
+2. `npm run build` clean.
+3. Commit — **write the docs/CLAUDE.md commit LAST**, so it cannot go stale the
+   moment it lands.
+4. **Push.** Then confirm the Vercel deploy reaches **READY**, not just that the
+   push succeeded.
+5. If a session ends mid-intent, **say so in the record** rather than leaving an
+   announced build looking done.
+
+---
 ## SCENIC SHORE MERCH (June 30, 2026 — separate venture, Shopify)
 
 Charity merch for the **Scenic Shore bike ride, July 25–26, 2026
@@ -987,30 +1128,44 @@ Sync command: `npm run sync` (pulls Airtable → src/data/)
 Export command: `npm run export` (src/data/ → CSV)
 Build: `npm run sync:build` (sync + build together)
 
-**Canonical site-wide totals (August 13, 2026)** — used by Globe pins,
-Featured Work cards, DataSpectacle counters, Globe caption, and System
-section. Single source of truth: the 9 `src/data/*.js` files. Method:
-live-walk (any object with `name` AND `description|notes` is a spot).
+**Canonical site-wide totals (re-counted September 1, 2026)** — used by Globe
+pins, Featured Work cards, DataSpectacle counters, Globe caption, and System
+section. Single source of truth: the 10 `src/data/*.js` framework files.
+Method: live-walk (any object with `name` AND `description|notes` is a spot).
 
-  219 spots  ·  13 validated cities  ·  10 countries  ·  3 continents
+  220 spots  ·  13 validated cities  ·  10 countries  ·  3 continents
 
 (Thailand + Charleston retired Aug 13 — data preserved in `retired/`.
 Asia dropped: Thailand was the only Asian framework.)
 
-Per-framework breakdown (live-walk via App.jsx `countSpots` /
-Globe.jsx `countSpotsByCity` — identical algorithm):
+Per-framework breakdown — **verified Sept 1, 2026 by importing every file and
+tallying, not by reading the page.** Same walker as App.jsx `countSpots` /
+Globe.jsx `countSpotsByCity`:
 
-| Framework | Live count (full walk) | Fully-structured spots |
+| Framework | Live count (full walk) | Note |
 |---|---|---|
-| dublin | 37 | 34 |
-| spain | 38 | 33 |
-| rome | 27 | 24 |
-| prague | 25 | 23 |
-| iceland | 23 | 22 |
-| australia | 22 | 19 |
-| michigan | 21 | 21 (different schema) |
-| poland | 15 | 12 |
-| munich | 11 | 9 |
+| spain | 38 | |
+| dublin | 37 | |
+| rome | 27 | |
+| iceland | 23 | |
+| australia | 22 | |
+| michigan | 22 | was 21; +1 for Short's Elk Rapids Pull Barn, Aug 31 |
+| prague | 17 | was 25; Vienna split out Aug 29 (Prague 11 + Dresden 4 + 2 day trips) |
+| poland | 15 | |
+| munich | 11 | |
+| vienna | 8 | new file, Aug 29 |
+| **TOTAL** | **220** | |
+
+⚠️ The "fully-structured spots" column that used to sit here is GONE. It came
+from the retired 226/21 method and had not been re-counted since Aug 13, so it
+sat quietly stale beside a live column. If that figure is wanted again,
+re-derive it — do not copy the old numbers forward.
+
+🚩 **NOT counted here, deliberately:** `peru.js` (10 day anchors + 25 saved
+places) and `brucePeninsula.js` (17 places). Neither is a published framework,
+and day anchors are not spots. The **300+ launch gate counts published AND
+described spots**, so ingested-but-silent places do not advance it — the 16
+silent Peru places are the worked example.
 
 Old figures (`226 / 21`) are retired — they came from a stricter
 "fully-structured" count (spots with `neighborhood + category +
@@ -1469,10 +1624,14 @@ Immediate candidates (no priority assigned — Brady picks):
 - Site on autopilot
 - Brady: calls evenings/weekends only
 
-**FALL 2026:**
-- Paid services launch (no specific date set)
+**LAUNCH — JANUARY 1, 2027 (target, quality-gated):**
+- Digital frameworks purchasable by strangers
+- Lads Travel Club opens, founding-member cap from the December capacity review
 - Real social presence begins
 - /bucket-list calendar view
+See THE VISION AND THE TIMELINE for the seven quality gates and the
+month-by-month milestones. Slipping to February is acceptable; lowering
+the bar is not.
 
 ---
 
@@ -1502,7 +1661,7 @@ Immediate candidates (no priority assigned — Brady picks):
 | Google Workspace | brady@/dawson@/stew@ ladstravel.com |
 
 (MailerLite, Printify, Buffer all paused or unused — re-evaluate before
-the Fall 2026 launch.)
+the January 2027 launch.)
 
 ---
 
@@ -1527,7 +1686,9 @@ The tech makes them faster. It doesn't make them less human.
 - The older `audit_results.md` "Insurance is non-negotiable" rule is
   STALE — ignore it.
 - We do NOT sell direct bookings or fulfillment. Revenue = affiliate
-  tour commissions (Viator/GYG), merch (future), paid consulting (Fall 2026).
+  tour commissions (Viator/GYG), merch (future), paid consulting, and from
+  January 2027 the two launch products: purchasable digital frameworks and
+  Lads Travel Club membership.
 - We do NOT sell / operate our own flights, hotels, or tours.
 - We are an **LLC, not a nonprofit**. Charity/fundraising lives on
   social media only — never on the site, in copy, in components, or
@@ -1657,7 +1818,10 @@ The tech makes them faster. It doesn't make them less human.
 - Never reuse another framework's palette.
 - Never add insurance content to any framework.
 - **Charity and fundraising live on social media only — never on the site, in copy, in components, or in data.**
-- Never add "free" / "free through 2026" / "no cost" pricing copy. The site is a PREVIEW; paid services launch Fall 2026.
+- Never add "free" / "free through 2026" / "no cost" pricing copy. The site is a PREVIEW until the January 1, 2027 launch.
+- **Never invent or publish a PRICE.** Pricing is a founder decision, made after
+  the five conversations and locked in December. This covers the site, the
+  frameworks, the Club, and merch.
 - Always run `npm run build` before committing.
 - Always end sessions with CLAUDE.md updated.
 - Quality over deadline. Nothing ships until it's right.
