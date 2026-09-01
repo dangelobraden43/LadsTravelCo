@@ -132,7 +132,7 @@
  * ── SCOPE — THIS IS NOT A PUBLISHED FRAMEWORK ──
  * This is a data foundation for the interactive map, nothing more. Peru is not
  * one of the 10 frameworks. Creating this file does NOT change the canonical
- * site-wide totals (219 spots · 13 validated cities · 10 countries ·
+ * site-wide totals (220 spots · 13 validated cities · 10 countries ·
  * 3 continents), does NOT add a Globe pin, does NOT add a route, and does NOT
  * make South America a fourth continent on any counter. Those are downstream
  * decisions for Brady. Day anchors are not spots and must never be counted as

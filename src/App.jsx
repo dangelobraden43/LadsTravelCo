@@ -255,7 +255,7 @@ function DataSpectacle() {
   const stat3 = useRef(null)
   const subRef = useRef(null)
 
-  useCountUp(bigRef, 219)
+  useCountUp(bigRef, 220)
   useCountUp(stat1, 10)
   useCountUp(stat2, 13)
   useCountUp(stat3, 3)
@@ -859,7 +859,7 @@ export default function App() {
                 letterSpacing: 3,
               }}
             >
-              13 VALIDATED CITIES &middot; 3 CONTINENTS &middot; 219 SPOTS
+              13 VALIDATED CITIES &middot; 3 CONTINENTS &middot; 220 SPOTS
             </div>
           </Reveal>
         </div>
@@ -1203,7 +1203,7 @@ export default function App() {
                   margin: '0 auto',
                 }}
               >
-                219 spots. 10 countries. Built on data, not guesses.
+                220 spots. 10 countries. Built on data, not guesses.
               </p>
             </div>
           </Reveal>
@@ -1269,7 +1269,7 @@ export default function App() {
             }}
           >
             {[
-              { value: '219', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
+              { value: '220', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
               { value: '10', label: 'COUNTRIES', sub: '3 continents. 13 cities.' },
               {
                 value: '6',

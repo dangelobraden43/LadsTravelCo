@@ -12,7 +12,7 @@
 //
 // COUNT DISCIPLINE: prague.js was a 25-spot live-walk before the split
 // (Prague 11 + Vienna 8 + Dresden 4 + 2 day trips). After the split it is
-// prague 17 + vienna 8 = 25. The canonical site total of 219 is UNCHANGED —
+// prague 17 + vienna 8 = 25. The canonical site total was 219 at the time of this split (220 since Aug 31 2026, via michigan.js) —
 // spots moved between files, none were created or destroyed.
 //
 // The personal layer (ladsTake / story / forWho) is blank here exactly as it

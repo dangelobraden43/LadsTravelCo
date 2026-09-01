@@ -324,7 +324,7 @@ export default function ExplorePage() {
                 Where do you want to go?
               </h1>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, color: '#8a8070' }}>
-                219 validated spots &middot; 13 cities &middot; 10 countries &middot; 3 continents
+                220 validated spots &middot; 13 cities &middot; 10 countries &middot; 3 continents
               </p>
             </Reveal>
           </div>

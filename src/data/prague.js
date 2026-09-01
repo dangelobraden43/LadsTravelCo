@@ -9,7 +9,7 @@
 //
 // COUNT DISCIPLINE: this file was a 25-spot live-walk before the split
 // (Prague 11 + Vienna 8 + Dresden 4 + 2 day trips). It is now 17, and
-// vienna.js is 8. 17 + 8 = 25. The canonical site total of 219 is UNCHANGED.
+// vienna.js is 8. 17 + 8 = 25. The canonical site total was 219 at the time of this split; it moved to 220 on Aug 31 2026 when Short's Pull Barn (Elk Rapids) was added to michigan.js. The split itself changed nothing.
 
 export default {
   id: 'prague',
