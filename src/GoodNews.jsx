@@ -199,17 +199,18 @@ const CHIP_H = 20
  * Ontario land they sit on landed in 50a4d8b, so they finally have ground
  * beneath them.
  *
- * ALL 17 RENDER COPPER. Brady's trip ran Aug 8–12 2026 and part of this
- * list IS now firsthand, but the per-spot visited/not-visited split has not
- * been supplied and the list is a superset of the trip. Copper is therefore
- * the correct render, not a bug — see the header of brucePeninsula.js.
- * Flipping the flags is a data edit for whoever ingests the split.
+ * ALL 17 NOW RENDER GOLD. From Aug 25 to Sept 1 2026 they all rendered
+ * copper, which was correct — the per-spot visited/not-visited split was
+ * outstanding and a saved list is a superset of a trip. Brady closed it on
+ * Sept 1: he visited all 17 on the Aug 8–12 trip. The tier is not hardcoded
+ * here; MapPins reads `validated` off each place, so the flip was a pure
+ * data edit in brucePeninsula.js and this layer followed it.
  *
- * MICHIGAN IS NOT PINNED HERE, deliberately. The 21 spots in
- * src/data/michigan.js carry no lat/lng at all — nothing in that file can be
- * placed on a map without geocoding it first, and guessing at coordinates
- * would be inventing data. The layer below takes them the moment they have
- * real coordinates: same component, same props, one more <MapPins> element. */
+ * MICHIGAN IS NOT PINNED HERE YET, but it is no longer blocked. 8 of the 22
+ * spots in src/data/michigan.js now carry lat/lng, matched by provenance to
+ * Brady's own saved lists (Aug 29–31 2026). The other 14 have none and must
+ * stay off the canvas rather than be geocoded from their names. Adding the
+ * layer is one more <MapPins> element with the same props. */
 const BRUCE_PREFIX = 'bruce'
 
 /* Five Tobermory places sit inside ~0.5 viewBox units of each other, so
@@ -343,7 +344,7 @@ export default function GoodNews() {
           viewBox={VIEWBOX}
           preserveAspectRatio="xMidYMid meet"
           role="img"
-          aria-label="Illustrated map of the Midwest — Minnesota, Wisconsin, Michigan, Illinois, Indiana and Ohio, plus the Ontario shore — with Michigan road-trip routes, the two campuses the Lads came out of, and research pins along the Bruce Peninsula and Lake Huron shore"
+          aria-label="Illustrated map of the Midwest — Minnesota, Wisconsin, Michigan, Illinois, Indiana and Ohio, plus the Ontario shore — with Michigan road-trip routes, the two campuses the Lads came out of, and validated pins along the Bruce Peninsula and Lake Huron shore"
         >
           <defs>
             <radialGradient id="gn-water" cx="52%" cy="40%" r="78%">

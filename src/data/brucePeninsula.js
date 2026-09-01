@@ -16,14 +16,20 @@
  * spot") are the same landmark saved twice. Per Brady the 3,772-review record
  * is canonical and the other is dropped, leaving 17.
  *
- * VALIDATION STATE — READ BEFORE RENDERING.
- * Brady's Bruce trip ran August 8–12, 2026 (with his parents), so parts of
- * this list ARE now firsthand. But the per-spot visited/not-visited split has
- * NOT been supplied yet. Every entry therefore ships `validated: false` and
- * renders research-tier (copper, no claim). When the split arrives, flip only
- * the visited ones to:
+ * VALIDATION STATE — RESOLVED September 1, 2026. ALL 17 ARE VALIDATED.
+ * Brady's Bruce trip ran August 8–12, 2026 (with his parents). The per-spot
+ * visited/not-visited split was outstanding from Aug 25 to Sept 1, and for
+ * that whole period every entry correctly shipped `validated: false` and
+ * rendered research-tier copper rather than guess. Brady closed it on
+ * Sept 1, 2026: he visited every one of the 17. All now carry
  *     validated: true, validatedBy: 'Brady', visitedDate: '2026-08'
- * Do NOT flip them wholesale — the list is a superset of the trip.
+ * and render gold.
+ *
+ * ⚠️ This was a RULING, not an inference. The standing rule still holds for
+ * every other saved list: a saved list is a SUPERSET of a trip and must never
+ * be flipped wholesale on its own. This one was flipped wholesale because the
+ * founder stated the superset and the trip were the same set here — not
+ * because the list looked visited.
  *
  * `googleCategory` is Google's own category string, recorded verbatim as
  * factual provenance. `type` is our own icon bucket, derived from it.
@@ -33,7 +39,10 @@ export const BRUCE_SOURCE = {
   label: "Brady's Google Maps list — Bruce Peninsula",
   capturedAt: '2026-08-25',
   tripDates: 'August 8–12, 2026',
-  note: 'Saved list predates the trip; visited/not-visited split pending.',
+  note: 'Saved list predates the trip. Brady ruled Sept 1, 2026 that he visited all 17, so the list and the trip are the same set here.',
+  validationRuledOn: '2026-09-01',
+  validationBasis:
+    "Brady's own statement that he visited every place on the list. Not EXIF, not inferred from the saved list.",
 }
 
 export const BRUCE_PLACES = [
@@ -48,9 +57,9 @@ export const BRUCE_PLACES = [
     reviews: 3772,
     placeId: '0x4d2d062bec46ad1b:0xec9dc7da5d7ccc24',
     note: 'The landmark of the peninsula. Canonical record; a duplicate saved entry was dropped.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Flowerpot Island Lighthouse',
@@ -62,9 +71,9 @@ export const BRUCE_PLACES = [
     reviews: 251,
     placeId: '0x4d2da0b9fed434d3:0x5424800c516bd651',
     note: 'Offshore in Fathom Five — boat access only from Tobermory harbour.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Tobermory Brewing Company & Grill',
@@ -77,9 +86,9 @@ export const BRUCE_PLACES = [
     price: 'CA$20–40',
     placeId: '0x4d2d0baa0ef564ff:0xa071eb4a618510d4',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Crowsnest Pub & Restaurant',
@@ -92,9 +101,9 @@ export const BRUCE_PLACES = [
     price: 'CA$20–30',
     placeId: '0x4d2d0b00c5d386bf:0xe6baf6c7360f28fe',
     note: 'On Little Tub Harbour.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Little Tub Sub & Smokehouse',
@@ -107,9 +116,9 @@ export const BRUCE_PLACES = [
     price: 'CA$10–20',
     placeId: '0x4d2d0bda28de5083:0x2fc43af40d8c0dc5',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'The Hungry Hiker Tobermory',
@@ -122,9 +131,9 @@ export const BRUCE_PLACES = [
     price: 'CA$10–20',
     placeId: '0x4d2d0b013756a5db:0xf75f204bc3085abf',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'The Sweet Shop',
@@ -136,9 +145,9 @@ export const BRUCE_PLACES = [
     reviews: 465,
     placeId: '0x4d2d0b00a882f9d1:0x22394d684f949dfa',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
 
   // ── LAKE HURON SHORE, SOUTH OF THE PENINSULA (43.0–44.2°N) ──
@@ -152,9 +161,9 @@ export const BRUCE_PLACES = [
     reviews: 424,
     placeId: '0x8828519f21f699db:0x37242130231b0efd',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Point Clark Lighthouse National Historic Site',
@@ -166,9 +175,9 @@ export const BRUCE_PLACES = [
     reviews: 404,
     placeId: '0x8828f667f11b6827:0xfc9695e4e964a948',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Neustadt Springs Brewery',
@@ -180,9 +189,9 @@ export const BRUCE_PLACES = [
     reviews: 343,
     placeId: '0x88299d3cad57bf9d:0x5726f20cca6397a',
     note: 'The one genuinely inland stop — ~60 km east of the shore.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'East Street Cider Co.',
@@ -194,9 +203,9 @@ export const BRUCE_PLACES = [
     reviews: 68,
     placeId: '0x8828c3d0428084c7:0x981b2620219907ea',
     note: 'Goderich.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Vinylly Vintage',
@@ -208,9 +217,9 @@ export const BRUCE_PLACES = [
     reviews: 51,
     placeId: '0x8828c36578452af1:0x38c71067fb8857ee',
     note: 'Goderich.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: "St. Christopher's Beach",
@@ -222,9 +231,9 @@ export const BRUCE_PLACES = [
     reviews: 463,
     placeId: '0x8828c30d2924c315:0x4357a05a714779da',
     note: 'Goderich.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Bayfield Berry Farm, Winery & Distillery',
@@ -236,9 +245,9 @@ export const BRUCE_PLACES = [
     reviews: 130,
     placeId: '0x8829fd63077f30ef:0x62179a96c627558f',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Bad Apple Brewing Company Ltd.',
@@ -250,9 +259,9 @@ export const BRUCE_PLACES = [
     reviews: 358,
     placeId: '0x882f326531559003:0x8db1b7efa4afec4e',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Torched Brewing Company',
@@ -264,9 +273,9 @@ export const BRUCE_PLACES = [
     reviews: 84,
     placeId: '0x882f3b3c8da440f9:0x842240304e954b6b',
     note: null,
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
   {
     name: 'Stonepicker Brewing Company',
@@ -278,8 +287,8 @@ export const BRUCE_PLACES = [
     reviews: 332,
     placeId: '0x882f6f13a141084b:0xf9d22cb8e253966f',
     note: 'Southernmost stop — near Sarnia, directly across the border from Port Huron, Michigan.',
-    validated: false,
-    validatedBy: null,
-    visitedDate: null,
+    validated: true,
+    validatedBy: 'Brady',
+    visitedDate: '2026-08',
   },
 ]
