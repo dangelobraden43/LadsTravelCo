@@ -9,7 +9,8 @@
     { "source": "/explore", "destination": "/global", "permanent": true },
     { "source": "/adventure", "destination": "/outdoors", "permanent": true },
     { "source": "/plan", "destination": "/", "permanent": true },
-    { "source": "/story", "destination": "/", "permanent": true }
+    { "source": "/story", "destination": "/", "permanent": true },
+    { "source": "/good-news", "destination": "/local", "permanent": true }
   ],
   "rewrites": [
     { "source": "/global", "destination": "/" },
@@ -18,7 +19,6 @@
     { "source": "/local", "destination": "/" },
     { "source": "/privacy", "destination": "/" },
     { "source": "/shop", "destination": "/" },
-    { "source": "/good-news", "destination": "/" },
     { "source": "/when", "destination": "/" },
     { "source": "/lads", "destination": "/" },
     { "source": "/gift/:slug*", "destination": "/" },

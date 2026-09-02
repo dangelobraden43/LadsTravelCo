@@ -1,7 +1,6 @@
 /* ===== GOOD BREWS · GOOD VIEWS · GOOD NEWS — Midwest map ===== */
 
 .gn-root {
-  min-height: 100vh;
   background: var(--bg);
   color: var(--cream);
   font-family: var(--sans);
@@ -9,8 +8,11 @@
   flex-direction: column;
 }
 
+/* NOT min-height:100vh any more. This was a standalone full-bleed page until
+   Sept 2 2026; it is now a section inside /local, under a nav and a hero, so
+   a forced viewport height would push the map a screen further down and leave
+   a band of dead space above it. The stage sizes to the map instead. */
 .gn-stage {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +23,7 @@
 /* The map is a near-square 1000x1017. Size it by HEIGHT so the whole
    region fits the viewport without scrolling, and let width follow. */
 .gn-map {
-  height: min(calc(100vh - 48px), 1017px);
+  height: min(calc(100vh - 140px), 1017px);
   width: auto;
   max-width: 100%;
   display: block;
@@ -82,10 +84,16 @@
   outline: none;
 }
 
+/* pointer-events:none is load-bearing. The halo is decorative glow at r=16 —
+   more than twice the 7px dot — and while it accepted pointer events it
+   silently swallowed clicks aimed at anything underneath it, which is how the
+   Grand Rapids cluster marker became unclickable. Decorative geometry should
+   never take a click. */
 .gn-anchor-halo {
   fill: var(--gold);
   opacity: 0.16;
   transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
 .gn-anchor-dot {
@@ -311,10 +319,20 @@
     padding: 12px;
   }
 
+  /* FILL THE VIEWPORT WIDTH. Before this the map sat centred inside its own
+     padding with a band of empty stage either side, which at 390px is the
+     difference between a readable map and a postage stamp. Negative margins
+     pull it out to the true screen edge; the map is the content here, so it
+     gets the whole width. */
+  .gn-stage {
+    padding: 8px 0 12px;
+  }
+
   .gn-map {
     height: auto;
-    width: 100%;
-    max-height: calc(100vh - 24px);
+    width: 100vw;
+    max-width: 100vw;
+    max-height: none;
   }
 
   /* With the sheet open the map pins to the top of the stage and shrinks to
@@ -360,4 +378,276 @@
   .gn-air-code {
     font-size: 16px;
   }
+}
+
+/* ===========================================================================
+   COMPANION LIST — the accessible surface, added Sept 2 2026 with /local's
+   graduation.
+
+   WHY IT EXISTS: the map cannot give 44px tap targets at Midwest zoom without
+   swallowing neighbouring pins (see MapPins.jsx). Rather than ship a canvas of
+   13px targets as the only way in, every pin also appears here as a full-width
+   row with a 48px minimum height, reachable by keyboard, wired to the same
+   toggle as the pin. This is where the 44px guideline is actually met.
+   =========================================================================== */
+.gn-list {
+  border-top: 1px solid rgba(212, 168, 67, 0.16);
+  background: #141210;
+}
+
+.gn-list-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 32px 72px;
+}
+
+.gn-list-h {
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 38px);
+  color: var(--cream, #e8dcc8);
+  margin: 0 0 12px;
+}
+
+.gn-list-lede {
+  font-family: var(--sans, Inter, sans-serif);
+  font-size: 15px;
+  line-height: 1.65;
+  color: #b8ad9a;
+  max-width: 660px;
+  margin: 0 0 36px;
+}
+
+.gn-t-gold {
+  color: var(--gold, #d4a843);
+}
+.gn-t-copper {
+  color: var(--copper, #b8886e);
+}
+
+.gn-list-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.gn-list-sub {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--cream, #e8dcc8);
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+.gn-list-col > .gn-list-sub:not(:first-child) {
+  margin-top: 34px;
+}
+.gn-list-sub--minor {
+  border-bottom: none;
+  color: #b8ad9a;
+  letter-spacing: 1.8px;
+  margin-top: 22px;
+  padding-bottom: 2px;
+}
+
+.gn-count {
+  color: var(--copper, #b8886e);
+  font-weight: 400;
+}
+
+.gn-list-note {
+  font-family: var(--sans, Inter, sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #8f8577;
+  margin: 0 0 14px;
+}
+
+.gn-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 48px min-height is the point of this whole block — do not shrink it to fit
+   more rows on screen. */
+.gn-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 10px;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.16s ease;
+}
+.gn-row--static {
+  cursor: default;
+}
+
+.gn-row:hover,
+.gn-row:focus-visible {
+  background: rgba(255, 255, 255, 0.05);
+}
+.gn-row:focus-visible {
+  outline: 2px solid var(--gold, #d4a843);
+  outline-offset: -2px;
+}
+.gn-row.is-active {
+  background: rgba(212, 168, 67, 0.13);
+}
+
+/* Tier is carried by fill as well as colour, matching the pins: gold is solid
+   (we filled this in), copper is hollow (on the list, nothing more). */
+.gn-row-tier {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.gn-row-tier--gold {
+  background: var(--gold, #d4a843);
+}
+.gn-row-tier--copper {
+  background: transparent;
+  border: 1.5px solid var(--copper, #b8886e);
+}
+
+.gn-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.gn-row-name {
+  font-family: var(--sans, Inter, sans-serif);
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--cream, #e8dcc8);
+}
+
+.gn-row-meta {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #8f8577;
+}
+
+@media (max-width: 1000px) {
+  .gn-list-cols {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .gn-list-inner {
+    padding: 40px 20px 56px;
+  }
+  .gn-list-cols {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+/* ---------- COLLAPSED CITY CLUSTER ----------
+   One marker for a dense group of saved places. Hollow copper like every other
+   research-tier marker — the collapse changes how many things are drawn, never
+   what tier they are. Sized larger than a pin because it stands for many, and
+   because it has to hold a legible number. */
+.gn-cluster {
+  cursor: pointer;
+}
+
+.gn-cluster-disc {
+  fill: rgba(20, 18, 16, 0.86);
+  stroke: var(--copper, #b8886e);
+  stroke-width: 2;
+  transition:
+    stroke-width 0.16s ease,
+    fill 0.16s ease;
+}
+
+.gn-cluster-count {
+  fill: var(--copper, #b8886e);
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 17px;
+  font-weight: 700;
+  pointer-events: none;
+  user-select: none;
+}
+
+.gn-cluster-halo {
+  fill: rgba(184, 136, 110, 0.14);
+  opacity: 0;
+  transition: opacity 0.16s ease;
+  pointer-events: none;
+}
+
+.gn-cluster:hover .gn-cluster-halo,
+.gn-cluster:focus-visible .gn-cluster-halo,
+.gn-cluster.is-active .gn-cluster-halo {
+  opacity: 1;
+}
+
+.gn-cluster:focus-visible {
+  outline: none;
+}
+.gn-cluster:focus-visible .gn-cluster-disc,
+.gn-cluster.is-active .gn-cluster-disc {
+  stroke-width: 3.5;
+  fill: rgba(184, 136, 110, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gn-cluster-disc,
+  .gn-cluster-halo {
+    transition: none;
+  }
+}
+
+/* Leader + truth dot for a cluster pushed clear of a roots anchor. Same
+   convention as the airport chips: the glyph moves, the dot stays honest. */
+.gn-cluster-leader {
+  stroke: var(--copper, #b8886e);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.gn-cluster-truth {
+  fill: var(--copper, #b8886e);
+  opacity: 0.85;
+}
+
+/* Transparent tap target for a roots anchor. fill:transparent (not
+   fill:none) — `none` paints nothing AND receives nothing, which is exactly
+   the bug this exists to fix. */
+.gn-anchor-hit {
+  fill: transparent;
+  pointer-events: auto;
+}
+.gn-anchor-dot,
+.gn-anchor-label {
+  pointer-events: none;
+}
+
+/* Decorative, like every other leader on this canvas. It was covering the
+   GVSU anchor's centre at 390px and killing that anchor's click. */
+.gn-cluster-leader,
+.gn-cluster-truth,
+.gn-cluster-count {
+  pointer-events: none;
 }

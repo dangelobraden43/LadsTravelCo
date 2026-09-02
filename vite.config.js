@@ -20,7 +20,11 @@ export default defineConfig({
         '/',
         '/global', '/outdoors', '/bucket-list', '/local',
         '/dublin', '/rome', '/spain', '/australia', '/iceland', '/prague', '/vienna',
-        '/munich', '/poland', '/thailand', '/charleston', '/michigan',
+        '/munich', '/poland', '/michigan',
+        // thailand + charleston were RETIRED Aug 13 2026 and have no route.
+        // They sat in this sitemap for three weeks pointing search engines at
+        // two 404s. Removed Sept 2 2026 - do not re-add them unless the
+        // frameworks come back out of retired/.
       ],
       changefreq: 'weekly',
       priority: {
@@ -28,7 +32,7 @@ export default defineConfig({
         '/global': 0.9, '/outdoors': 0.9, '/bucket-list': 0.9, '/local': 0.9,
         '/dublin': 0.9, '/rome': 0.9, '/spain': 0.9,
         '/australia': 0.8, '/iceland': 0.8, '/prague': 0.8, '/vienna': 0.8,
-        '/munich': 0.7, '/poland': 0.7, '/thailand': 0.8, '/charleston': 0.7,
+        '/munich': 0.7, '/poland': 0.7,
         '/michigan': 0.7,
       },
     }),

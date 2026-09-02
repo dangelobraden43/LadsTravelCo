@@ -237,3 +237,161 @@
     transition: none;
   }
 }
+
+/* ===========================================================================
+   /local GRADUATED — Sept 2 2026. The map is the hero.
+   =========================================================================== */
+
+/* Tighter than the old hero: the map needs to be reachable without a scroll on
+   desktop, so the words above it earn their space rather than fill it. */
+/* The map is the hero, so the words above it are kept to what earns its
+   place. At 1440x900 this puts the top of the canvas at ~430px, so the
+   mitten is visible without scrolling rather than sitting entirely below
+   the fold. */
+.local-hero--map {
+  max-width: 760px;
+  padding: 96px 32px 22px;
+}
+.local-hero--map .local-h1 {
+  font-size: clamp(34px, 4.6vw, 56px);
+  margin-bottom: 14px;
+}
+.local-hero--map .local-lede {
+  font-size: 16px;
+  max-width: 620px;
+}
+
+.local-h1-dot {
+  color: var(--gold, #d4a843);
+  font-style: normal;
+  padding: 0 2px;
+}
+
+/* THE KEY. This is the page's central claim rendered as UI — two tiers, named,
+   with the same fill/hollow language the pins and the list rows use. */
+.local-key {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  gap: 26px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-family: var(--sans, Inter, sans-serif);
+  font-size: 13px;
+  color: #b8ad9a;
+}
+.local-key li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.local-key strong {
+  color: var(--cream, #e8dcc8);
+  font-weight: 600;
+}
+.local-key-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.local-key-dot--gold {
+  background: var(--gold, #d4a843);
+}
+.local-key-dot--copper {
+  background: transparent;
+  border: 1.5px solid var(--copper, #b8886e);
+}
+
+.local-map-wrap {
+  position: relative;
+}
+
+.local-map-loading {
+  min-height: 52vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #8f8577;
+}
+
+.local-section-h {
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(24px, 3vw, 34px);
+  color: var(--cream, #e8dcc8);
+  margin: 0 0 26px;
+}
+
+/* The framework card is no longer a 4:5 photo card — there is no Michigan
+   photograph, and the map above is now doing the visual work. A flat card
+   keeps it from competing with the map. */
+.local-card--flat {
+  aspect-ratio: auto;
+  border-color: rgba(212, 168, 67, 0.2);
+}
+.local-card--flat .local-card-body {
+  position: static;
+  padding: 30px 28px;
+}
+
+/* ===== METHOD / HONESTY BLOCK ===== */
+.local-method {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 32px 120px;
+}
+.local-method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.local-method-grid h3 {
+  font-family: var(--sans, Inter, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold, #d4a843);
+  margin: 0 0 10px;
+}
+.local-method-grid p {
+  font-family: var(--sans, Inter, sans-serif);
+  font-size: 14px;
+  line-height: 1.65;
+  color: #b8ad9a;
+  margin: 0;
+}
+.local-method-note {
+  font-family: var(--sans, Inter, sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #8f8577;
+  margin: 30px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+@media (max-width: 900px) {
+  .local-method-grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+}
+
+@media (max-width: 820px) {
+  .local-hero--map {
+    padding: 108px 20px 20px;
+  }
+  .local-key {
+    gap: 16px;
+    font-size: 12.5px;
+  }
+  .local-method {
+    padding: 12px 20px 80px;
+  }
+}

@@ -23,7 +23,6 @@ const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
 const PrivacyPage = lazy(() => import('./PrivacyPage'))
 const ShopPage = lazy(() => import('./ShopPage'))
-const GoodNews = lazy(() => import('./GoodNews'))
 
 Clarity.init('wbqqkbsekh')
 
@@ -102,7 +101,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/shop" element={<ShopPage />} />
             {/* Kept reachable (out of nav) */}
-            <Route path="/good-news" element={<GoodNews />} />
             <Route path="/when" element={<WhenPage />} />
             <Route path="/lads" element={<LadsPage />} />
             <Route path="/gift/michigan" element={<GiftPage />} />
@@ -111,6 +109,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/adventure" element={<Navigate to="/outdoors" replace />} />
             <Route path="/plan" element={<Navigate to="/" replace />} />
             <Route path="/story" element={<Navigate to="/" replace />} />
+            {/* /good-news graduated INTO /local on Sept 2 2026 — the map is
+                now the hero of /local rather than an unlinked noindex page.
+                Same retirement pattern as /explore and /adventure. The
+                permanent redirect also lives in vercel.json for direct hits. */}
+            <Route path="/good-news" element={<Navigate to="/local" replace />} />
             {DESTINATIONS.map((slug) => (
               <Route key={slug} path={`/${slug}`} element={<LazyFramework slug={slug} />} />
             ))}

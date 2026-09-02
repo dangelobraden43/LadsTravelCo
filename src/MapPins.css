@@ -33,10 +33,12 @@
 .mp-leader {
   stroke: var(--mp-leader, rgba(232, 220, 200, 0.32));
   stroke-width: 1;
+  pointer-events: none;
 }
 
 .mp-truth {
   fill: var(--mp-tier, rgba(232, 220, 200, 0.65));
+  pointer-events: none;
 }
 
 .mp-hit {
@@ -44,10 +46,16 @@
   stroke: none;
 }
 
+/* DECORATIVE GEOMETRY MUST NOT TAKE CLICKS. The halo is r = pin * 2.1, so it
+   is more than four times the disc's area, and while it accepted pointer
+   events it silently ate clicks aimed at nearby pins — Short's Pull Barn's
+   halo was covering the centre of The Chief Golf Course. Only .mp-hit and
+   .mp-disc are meant to be hittable. */
 .mp-halo {
   fill: var(--mp-tier);
   opacity: 0;
   transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
 .mp-disc {

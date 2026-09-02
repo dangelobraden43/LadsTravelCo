@@ -41,6 +41,21 @@ export const PIN_ICONS = {
     { d: 'M -0.62 -0.06 L 0.62 -0.06 A 0.62 0.62 0 0 1 -0.62 -0.06 Z', mode: 'fill' },
     { d: 'M -0.8 -0.06 L 0.8 -0.06', mode: 'stroke' },
   ],
+  // Cocktail glass: bowl, stem, foot. A bar is NOT a brewery — Google files
+  // 17 of the Midwest candidates as Bar / Pub / Lounge / Cocktail bar, and
+  // giving them the mug would state a brewery where the record says bar.
+  bar: [
+    { d: 'M -0.62 -0.52 L 0.62 -0.52 L 0.06 0.08 L -0.06 0.08 Z', mode: 'fill' },
+    { d: 'M 0 0.08 L 0 0.5', mode: 'stroke' },
+    { d: 'M -0.34 0.58 L 0.34 0.58', mode: 'stroke' },
+  ],
+  // Wine glass: a deeper, narrower bowl than the cocktail glass so the two
+  // stay distinguishable at pin scale.
+  winery: [
+    { d: 'M -0.4 -0.56 L 0.4 -0.56 A 0.42 0.5 0 0 1 -0.4 -0.56 Z', mode: 'fill' },
+    { d: 'M 0 -0.06 L 0 0.5', mode: 'stroke' },
+    { d: 'M -0.3 0.58 L 0.3 0.58', mode: 'stroke' },
+  ],
   gem: [{ d: 'M 0 -0.62 L 0.6 -0.04 L 0 0.62 L -0.6 -0.04 Z', mode: 'fill' }],
   golf: [
     { d: 'M -0.3 0.62 L -0.3 -0.62', mode: 'stroke' },
@@ -62,6 +77,8 @@ const FALLBACK_ICON = [
 export const PIN_TYPE_LABELS = {
   view: 'View',
   brewery: 'Brewery',
+  bar: 'Bar',
+  winery: 'Winery',
   food: 'Food',
   gem: 'Hidden gem',
   golf: 'Golf',
@@ -354,11 +371,18 @@ export default function MapPins({
               </>
             )}
             <circle className="mp-halo" cx={pin.gx} cy={pin.gy} r={r * 2.1} />
-            {/* Transparent tap target. NOTE: at a 390px viewport this map
-                scales to ~0.37, so hitR 18 is only ~13 CSS px — under the 44px
-                guideline, the same open issue the airport chips carry. Left as
-                a prop rather than silently padded, because the real fix
-                (zoom/pan, or a companion list) is a page-level decision. */}
+            {/* Transparent tap target, centred on the pin's drawn position so
+                it never shifts what the pin claims.
+                ⚠️ THE 44px GUIDELINE CANNOT BE MET ON THE MAP ITSELF AT THIS
+                ZOOM, and pretending otherwise would be the lie. Declustering
+                spreads neighbours to `minDist` viewBox units; at 390px the
+                canvas scales to ~0.37, so even neighbours pushed 34 units
+                apart sit ~13 CSS px from each other. A 44px target would
+                swallow its neighbours and make them unreachable — a
+                regression dressed as a fix. hitR is therefore set to the
+                largest value that stays inside minDist/2, and the real 44px
+                surface is the companion list the page renders beside the map,
+                where every row is a full-width 44px+ target. */}
             <circle className="mp-hit" cx={pin.gx} cy={pin.gy} r={hitR} />
             <circle className="mp-disc" cx={pin.gx} cy={pin.gy} r={r} />
             {/* 0.62 leaves a clear ring of disc around the glyph. Tuned at the

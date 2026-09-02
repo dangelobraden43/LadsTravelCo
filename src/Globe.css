@@ -24,6 +24,25 @@
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
+  /* 320px OVERFLOW FIX. This line renders ~318px wide with its 3px tracking,
+     so on a 305px viewport it pushed the whole homepage sideways — a
+     horizontal scrollbar on the front page, caused by a decorative hint.
+     Constrain it to the viewport and let the tracking collapse instead of the
+     layout. */
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Below ~360px the full hint cannot fit at any sane tracking, so it wraps to
+   two lines rather than being clipped mid-word. */
+@media (max-width: 360px) {
+  .globe-hint {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 1.5px;
+  }
 }
 
 /* ===== FIXED TOOLTIP (follows mouse) ===== */
