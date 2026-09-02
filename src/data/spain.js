@@ -47,6 +47,13 @@ export default {
       verdict: 'Best window',
       detail:
         "Temperatures 18–24°C. Terraces open across Barcelona. Madrid's Retiro Park in full bloom. Shoulder season pricing on flights and accommodation.",
+      driver: 'weather',
+      months: [4, 5],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'summer',
@@ -60,6 +67,13 @@ export default {
       verdict: 'Too hot, too crowded',
       detail:
         '35°C+ in Madrid. Barcelona beaches packed. Prices peak. Locals leave both cities in August. If you must go, early June is best.',
+      driver: 'weather',
+      months: [6, 7, 8],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'fall',
@@ -73,6 +87,13 @@ export default {
       verdict: 'Excellent alternative to spring',
       detail:
         'September still warm (25–28°C). October cools to low 20s. Locals back from summer holidays. La Merce festival in Barcelona late September.',
+      driver: 'weather',
+      months: [9, 10],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
   ],
 

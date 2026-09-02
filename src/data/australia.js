@@ -46,6 +46,13 @@ export default {
       verdict: 'The window',
       detail:
         'March-May: autumn, still warm (20-25°C). September-November: spring, jacaranda season. Flights drop 15-20% from summer peak.',
+      driver: 'weather',
+      months: [3, 4, 5, 9, 10, 11],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'summer',
@@ -59,6 +66,13 @@ export default {
       verdict: 'Expensive and hot',
       detail:
         '30-40°C in Sydney. Bondi and Manly packed. Flights $1,500-2,000. NYE at the Harbour is a once-in-a-lifetime event but book everything 6+ months out.',
+      driver: 'weather',
+      months: [12, 1, 2],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
   ],
 

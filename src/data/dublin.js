@@ -47,6 +47,13 @@ export default {
       verdict: 'Best for this group',
       detail:
         'Late December. Dublin Castle Christmas Market. Galway\u2019s Eyre Square Market (50+ chalets, 32-meter Big Wheel, German Bier Keller). Dec 25 full closure. Dec 26 = St. Stephen\u2019s Day (Wren Day) \u2014 wrenboy parades, pub sessions noon to midnight.',
+      driver: 'events',
+      months: [12],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'stpatricks',
@@ -60,6 +67,13 @@ export default {
       verdict: 'Energy yes, crowds no',
       detail:
         '4-day festival, 500,000 people. After Dark concerts March 14\u201316. Galway substantially better in this window. Book 9\u201312 months out. Flights from ORD $900\u2013$1,300.',
+      driver: 'events',
+      months: [3],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'summer',
@@ -72,7 +86,15 @@ export default {
       primaryDraw: 'Heineken Big Top',
       verdict: 'Worth it for GIAF',
       detail:
-        'Galway Arts Festival July 13\u201326, 2026. Heineken Big Top at Nimmo\u2019s Pier. Roisin Dubh and Monroe\u2019s run official festival gigs. Accommodation doubles, books 6\u20138 months out.',
+        'Galway International Arts Festival takes over the second half of July \u2014 it recurs annually, so confirm the current year\u2019s dates before booking. Heineken Big Top at Nimmo\u2019s Pier. Roisin Dubh and Monroe\u2019s run official festival gigs. Accommodation doubles, books 6\u20138 months out.',
+      driver: 'events',
+      months: [7],
+      sourcing: {
+        basis:
+          "Rewritten Sept 2 2026: the festival's 2026 dates had passed. Stated as the recurring annual pattern instead of a fixed date.",
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
   ],
 

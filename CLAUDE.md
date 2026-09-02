@@ -181,6 +181,39 @@ Concretely, in this order, every session:
 5. If a session ends mid-intent, **say so in the record** rather than leaving an
    announced build looking done.
 
+### 🔒 CHECKPOINT COMMITS + AUTO-PUSH — STANDING RULE, effective September 2, 2026
+
+**Every verified phase commits to the feature branch AND pushes immediately.**
+Not at the end of the session. Not once the whole block is done. **The moment a
+phase verifies, it is committed and pushed.**
+
+- Work happens on a **feature branch** (`feature/<thing>`). `/ship` remains the
+  **only** merge to `main` — that gate does not move.
+- **Nothing ever lives only on this machine again.** A phase that builds clean but
+  is not pushed is not finished, it is at risk.
+- A checkpoint commit need not be a shippable increment. It needs to be **true** —
+  a real state of the work with an honest message. Half-built is fine in a
+  checkpoint; *misdescribed* is not.
+
+**WHY THIS RULE EXISTS — four incidents, and the fourth was not discipline:**
+Aug 26 (a queue outlived its session), Aug 28 (data commits landed after the docs
+commit meant to record them), Aug 31 (the Michigan/220 work sat uncommitted
+overnight), and **Sept 2 — the machine lost power at ~13:38 with the entire Block 3
+build unstaged.** The first three were discipline failures. The fourth was a power
+cut, which is the whole point: **discipline is not what protects the work, pushing
+is.** Block 3 survived only because the files happened to still be on disk.
+
+⚠️ **CONCURRENCY IS REAL — Sept 2 proved it.** Two sessions worked this repo the same
+afternoon. One committed, pushed and deployed Block 3 while another was mid-write on
+a CLAUDE.md record describing that same work as uncommitted, and would have merged a
+branch reintroducing "BUILT BUT NOT COMMITTED" as fact. **Before writing any status
+into CLAUDE.md, re-read `git log` and `git status` — never describe the repo from
+memory of how you left it.** A confident stale record is worse than no record.
+
+➡️ **Corollary for parallel work:** a second session builds in a **worktree on its
+own branch** (see Parallel Agent Workflow at the foot of this file), never in the
+shared checkout someone else is serving localhost from.
+
 ---
 ## SCENIC SHORE MERCH (June 30, 2026 — separate venture, Shopify)
 

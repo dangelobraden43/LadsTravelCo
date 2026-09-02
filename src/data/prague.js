@@ -55,6 +55,13 @@ export default {
       primaryDraw: 'Beer gardens open, pleasant weather',
       verdict: 'Best window',
       detail: '15-22°C. Letna and Vitkarka beer gardens open. Shoulder pricing on flights.',
+      driver: 'weather',
+      months: [4, 5],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'christmas',
@@ -68,6 +75,13 @@ export default {
       verdict: 'Magical if you embrace the cold',
       detail:
         "Prague Old Town Square market and Dresden Striezelmarkt (Germany's oldest). Below freezing but the markets make it worth it.",
+      driver: 'events',
+      months: [12],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'summer',
@@ -81,6 +95,13 @@ export default {
       verdict: 'Crowded and hot',
       detail:
         '30°C+ in Prague. Tourist crush on Charles Bridge. Beer garden season peaks but so do prices.',
+      driver: 'weather',
+      months: [6, 7, 8],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
   ],
 
