@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 1, 2026
+## Last Updated: September 2, 2026 (status recovered after a mid-session power loss)
 
 ---
 
@@ -18,10 +18,17 @@ Canonical total: **220 spots · 13 validated cities · 10 countries · 3 contine
 ⭐ **READ `THE VISION AND THE TIMELINE` FIRST** — it is the plan everything
   serves. Then `THE NEW FRAMEWORK AGENDA`, which is the September build slate.
 Peru completed. Ford started May 18.
-LIVE: `/good-news` — full MIDWEST map (MN·WI·MI·IL·IN·OH), three pin
-  tiers (roots anchors · city context · airports). Unlinked from nav,
-  `noindex`, reachable by URL. Phases 1–3 done; Phase 4 pins pending
-  Dawson's data. See MIDWEST MAP RUNWAY + TOMORROW'S QUEUE.
+🚨 **NOT LIVE — BUILT AND SITTING UNCOMMITTED.** The Block 3 `/local`
+  graduation was built Sept 2 and the machine died before it was committed.
+  It is in the **working tree of `C:\Users\brady\lads-travel-co` only** —
+  11 files, unstaged, **nothing on `origin/main`.** Read
+  `SESSION START STATE` below BEFORE editing any of those files.
+`/local` (pending that commit) = **Lads Local — "Good Brews · Good Views ·
+  Good News"**, the Midwest map promoted to page hero. 39 gold validated
+  (michigan 22 + bruce 17) · 58 copper candidates · dense cities collapse to
+  one counted marker. `/good-news` redirects here and its route is gone.
+LIVE ON PROD RIGHT NOW: `/good-news` is still the old unlinked `noindex` map
+  and `/local` is still the two-card page. Prod is at `8ebb137`.
 LIVE: `/privacy` + footer affiliate disclosure.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
@@ -736,29 +743,103 @@ data is pending), never a month that has already passed.
 
 ---
 
-## 📍 SESSION START STATE — verified Aug 31, 2026
+## 📍 SESSION START STATE — verified September 2, 2026
 
-**Working tree clean. `main` == `origin/main`. Nothing pending `/ship`.**
-Last commits: `a3288e9` + `088b539`, both **Aug 29 22:11–22:12**.
+### 🚨 THE POWER DIED MID-SESSION. BLOCK 3 IS BUILT AND UNCOMMITTED.
 
-⚠️ **AUGUST 30 WAS A NO-OP DAY — zero commits.** The Aug 29 session ended immediately
-after announcing the Block 3 build, so **the /local build never started.** Nothing
-against Block 3 or Block 4 exists in the repo. Both remain APPROVED-BUT-UNBUILT below.
-(This is the second time a queue outlived its session — Aug 26 was the same. When a
-session ends mid-intent, say so in the record rather than leaving an announced build
-looking done.)
+**This is the exact failure mode the CADENCE rule was written to end — except this
+time nobody chose it. The machine lost power at ~13:38 on Sept 2, between the final
+verification sweep and the commit.** The work is intact. It is just not banked.
 
-**✅ What IS live:** the Vienna split (10 frameworks, 219 verified), the Aug-29 record
-corrections, and the September build queue.
+**`main` is at `8ebb137` and so is `origin/main`.** Prod is serving the *pre*-Block-3
+site. **The dirty working tree is the entire /local graduation:**
 
-**🚩 `/good-news` currently rewrites to `/` in `vercel.json:21` — it is NOT yet the
-approved `/local` redirect.** That is part of the unbuilt Block 3.
+    M src/GoodNews.jsx        (+498 −40)   map → embeddable component, 3 pin layers
+    M src/GoodNews.css        (+295 −5)
+    M src/LocalPage.jsx       (+154 −70)   map is now the hero; SEO + JSON-LD
+    M src/LocalPage.css       (+158)
+    M src/MapPins.jsx         (+29 −5)     new bar + winery glyphs
+    M src/MapPins.css         (+8)
+    M src/Globe.css           (+19)        the 320px .globe-hint overflow fix
+    M src/main.jsx            (+5 −2)      /good-news → <Navigate to="/local">
+    M vercel.json             (+2 −2)      /good-news permanent redirect
+    M vite.config.js          (+6 −2)      thailand + charleston out of the sitemap
+    ?? src/data/midwestCandidates.js       NEW, 1006 lines, 58 candidates
+
+**✅ VERIFIED BEFORE THE CRASH, and re-verified Sept 2 after it:**
+- `npm run build` **passes clean** on the dirty tree.
+- Renders correctly at **1440 and 390** — screenshots survive in
+  `.playwright-mcp/ship-*.png` and `ship2-desktop-top.png` (13:37–13:38).
+- Console is clean apart from the `_vercel/insights` + `speed-insights` 404s,
+  which are **expected under `vite preview`** and do not occur on Vercel.
+- Hero counters read **39 validated · 58 on the list**, and both numbers are
+  *derived at module load*, not typed.
+
+➡️ **THE ONLY THING THIS WORK NEEDS IS `/ship`.** Do not rebuild it, do not
+re-derive it, and do not "fix" the copper pins. Show Brady the diff and commit.
+
+⚠️ **A CLAUDE.md-only commit may be sitting on branch `docs/status-sept2-recovery`**
+(this record). That branch does **not** contain the src changes above — they were
+still uncommitted in the main checkout when it was written. Merging the doc branch
+does not ship Block 3.
+
+### The counts the new page prints, and where they come from
+
+| Number | Derivation | Verified |
+|---|---|---|
+| **39 validated** (gold) | michigan.js live-walk **22** + brucePeninsula **17** | ✅ by import |
+| **8 of 22 pinned** | only 8 michigan spots carry lat/lng; 14 have none | ✅ by import |
+| **58 candidates** (copper) | `MIDWEST_CANDIDATES`, of 69 ingested | ✅ by count |
+| Canonical site total | **unchanged at 220** — candidates carry no description | ✅ |
+
+**The 14 unpinned Michigan spots are named in the companion list under a heading
+that says why they are not on the map.** Four are Detroit and close together when
+Brady's Detroit list lands. Nothing was geocoded from a name.
+
+### ✅ Bruce blocker CLOSED — the older tables below are stale on this
+
+`e0cff0d` resolved the visited-split: **all 17 Bruce places are `validated: true`**,
+confirmed by importing the module. Any table below still listing "18 of 19
+`validated: false`" or the Bruce split as a HARD BLOCKER is **out of date** — it was
+the longest-standing blocker in this file and it is done. Do not re-open it.
+
+**🚩 Still genuinely blocked on Brady:** the **Detroit list** (closes the last 4
+Michigan coordinates) and **licensed music** for the Peru26 film.
 
 ---
 
-## ✅ APPROVED BUILDS (Brady, Aug 29, 2026) — not yet built
+## ✅ APPROVED BUILDS (Brady, Aug 29, 2026) — Block 3 BUILT, Block 4 not started
 
-### BLOCK 3 — /local GRADUATION — **APPROVED AS PROPOSED**
+### BLOCK 3 — /local GRADUATION — ✅ **BUILT Sept 2, 2026 · UNCOMMITTED**
+
+> **Status: done, verified, and sitting in the working tree.** See
+> `SESSION START STATE` above for the file list. The spec below is kept as the
+> record of what was approved; **two things were built differently on purpose,
+> and both are flagged in-code:**
+>
+> 1. **THE 44px TAP TARGET COULD NOT BE MET ON THE MAP, and was not faked.**
+>    Declustering spreads pins to `minDist`; at 390px the canvas scales to
+>    ~0.37, so a 44px circle would swallow its own neighbours and make them
+>    unreachable — a regression dressed as a fix. `hitR` is set to the largest
+>    radius that stays inside `minDist/2`, and **the 44px surface is the
+>    companion list**, where every row is a full-width 44px+ target and every
+>    pin appears. The glyphs were NOT enlarged, per the standing instruction.
+> 2. **DENSE CITIES COLLAPSE TO A COUNTED MARKER.** 32 of the 58 candidates are
+>    Grand Rapids bars. `minDist: 34` fanned that one city across ~190 viewBox
+>    units and put GR bars in Lake Michigan and over Wisconsin — leader lines
+>    made it not-strictly-a-lie, but nobody reads a leader line before they read
+>    a position. Groups of 6+ now collapse to ONE marker **at the group's real
+>    centroid**, carrying the count, with every member named in its panel.
+>    `minDist` went back to 22. The honest cost is recorded in-file: the map is
+>    not the way to reach a downtown GR pin on a phone — the list is.
+>
+> **Also done, beyond the approved scope:** `thailand` + `charleston` were
+> removed from the `vite.config.js` sitemap. They were retired Aug 13 and had
+> been pointing search engines at two 404s for three weeks.
+>
+> **Deliberately NOT done:** no custom OG image. `/local` falls through to the
+> site-wide default rather than referencing a file that does not exist. A map
+> screenshot is the obvious candidate once one is cut.
 
 `/local` becomes the map-as-hero experience. Proposal artifact:
 `https://claude.ai/code/artifact/024e7bb9-bcf6-4c15-85bc-16b1d29778a8`
@@ -867,11 +948,14 @@ per-spot validation pass; the total is not 219 + 59 by default.
 ⚠️ `Oz Poolside Bar` and `Oz Hotel and Sport Bar` share an identical coordinate — pins
 will stack, declustering required.
 
-### 4 — BRUCE PENINSULA (geocoded, blocked on Brady)
+### 4 — BRUCE PENINSULA (geocoded, ✅ UNBLOCKED)
 
 17 places geocoded by provenance in `src/data/brucePeninsula.js`, plus Brady's Aug 8–12
-trip. **❌ STILL AWAITING THE VISITED-SPLIT** — 18 of 19 ship `validated: false` and
-every pin renders copper. That is CORRECT, not a bug. Do not flip wholesale.
+trip. ✅ **VISITED-SPLIT RESOLVED — `e0cff0d`. All 17 are `validated: true`** and render
+GOLD, verified by importing the module. They are 17 of the 39 gold pins on the new
+`/local` map. The old "18 of 19 copper, do not flip wholesale" note is **retired** —
+Brady supplied the split; nothing was flipped to make the map look fuller.
+**Remaining work here is the framework itself**, not the data.
 
 ### 5 — VANCOUVER (pure research tier — the pipeline showcase)
 
