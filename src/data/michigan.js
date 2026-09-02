@@ -57,6 +57,106 @@ const michiganData = {
     budget: 'See individual runs for cost estimates',
   },
 
+  /* TIMING WINDOWS — written Sept 2 2026. Michigan was the one framework of the
+   * ten carrying no windows at all.
+   *
+   * ⚠️ THE SOURCING LINE HERE IS DOING REAL WORK. Brady's Michigan validation
+   * covers the SPOTS — he has walked into them. It does not cover these
+   * windows, which are researched seasonal pattern. Those are two different
+   * claims and the data must not let them blur into one, because "personally
+   * validated" is the most valuable thing this framework says and it has to
+   * stay true of exactly what it is attached to.
+   *
+   * Michigan carries NO fareIntelligence, deliberately. This is a driving
+   * framework for the people it is written for; a fare curve from GRR to GRR
+   * would be theatre. */
+  timingWindows: [
+    {
+      id: 'fall',
+      name: 'Fall (Sep–Oct)',
+      recommended: true,
+      driver: 'weather',
+      months: [9, 10],
+      atmosphere: 'Colour, cool air, harvest',
+      crowdMix: 'Heavily local',
+      pubExperience: 'Patios still open, taprooms full',
+      priceTier: 'Moderate',
+      primaryDraw: 'Fall colour with the golf and the breweries both still running',
+      verdict: 'The window',
+      detail:
+        'The short overlap where everything is true at once: the colour comes through Northern Michigan, the courses are still open, and the summer crowds have gone home. Colour peaks earlier in the Upper Peninsula than in the Lower, so the same weekend is a different trip depending which side of the Mackinac Bridge you are on.',
+      sourcing: {
+        basis:
+          'Great Lakes seasonal pattern, researched Sept 2 2026. NOT a founder statement — the Lads validation on this framework covers the spots, not these windows.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
+    },
+    {
+      id: 'summer',
+      name: 'Summer (Jun–Aug)',
+      recommended: true,
+      driver: 'weather',
+      months: [6, 7, 8],
+      atmosphere: 'Long days, lake water finally warm',
+      crowdMix: '50/50',
+      pubExperience: 'Beer gardens, outdoor everything',
+      priceTier: 'Highest',
+      primaryDraw: 'The lakeshore, and everything seasonal is open',
+      verdict: 'Everything is open, and everyone is here',
+      detail:
+        'Peak Michigan. Every seasonal business up north is running, the water is swimmable, and the days are long enough to drive and still arrive somewhere in daylight. The trade is lodging: Traverse City and Harbor Country price like resort towns in July and August because for two months they are.',
+      sourcing: {
+        basis:
+          'Great Lakes seasonal pattern, researched Sept 2 2026. NOT a founder statement — see the note above this array.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
+    },
+    {
+      id: 'spring',
+      name: 'Spring (Apr–May)',
+      recommended: false,
+      driver: 'pricing',
+      months: [4, 5],
+      atmosphere: 'Thawing, grey, cheap',
+      crowdMix: 'Almost entirely local',
+      pubExperience: 'Taprooms quiet, tables available',
+      priceTier: 'Low',
+      primaryDraw: 'The cheapest beds up north, before the season starts',
+      verdict: 'Good value, with gaps',
+      detail:
+        'Lodging in the northern towns is at its cheapest and the cities are entirely themselves. The catch is that "seasonal" up north genuinely means seasonal — a share of restaurants, courses and lakeshore businesses have not reopened yet, and hours in April are not the hours on the website. Call ahead rather than assume.',
+      sourcing: {
+        basis:
+          'Seasonal-opening pattern in Northern Michigan resort towns, researched Sept 2 2026. Not a founder statement.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
+    },
+    {
+      id: 'winter',
+      name: 'Winter (Nov–Mar)',
+      recommended: false,
+      driver: 'logistics',
+      months: [11, 12, 1, 2, 3],
+      atmosphere: 'Snow, dark early, quiet',
+      crowdMix: 'Local, plus the ski and sled crowd',
+      pubExperience: 'Indoor, fireplaces, no queue',
+      priceTier: 'Low',
+      primaryDraw: 'Snow country, and an empty Grand Rapids beer scene',
+      verdict: 'A different framework entirely',
+      detail:
+        'This is an access window, not a weather one. Golf is closed, a meaningful share of Northern Michigan and Upper Peninsula businesses shut for the season, and lake-effect snow makes the drive the hardest part of the plan rather than the easy part. What remains is genuinely good — the Grand Rapids taprooms do not close, and the snow belt is the reason people move here — but it is not this framework run in cold weather. It is a different trip.',
+      sourcing: {
+        basis:
+          'Seasonal closures and lake-effect driving conditions, researched Sept 2 2026. Not a founder statement.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
+    },
+  ],
+
   categories: [
     {
       name: 'Grand Rapids Breweries',
@@ -349,7 +449,15 @@ const michiganData = {
 
   specialCallouts: [],
 
-  navSections: ['Overview', 'Grand Rapids', 'Detroit', 'Traverse City', 'Harbor Country', 'Golf'],
+  navSections: [
+    'Overview',
+    'When to Go',
+    'Grand Rapids',
+    'Detroit',
+    'Traverse City',
+    'Harbor Country',
+    'Golf',
+  ],
 }
 
 export default michiganData

@@ -1,6 +1,13 @@
 // Dublin + Galway — Data Model v2
 // 35 spots reclassified, research layer filled, personal layer blank for Brady
 
+import {
+  FARE_SCHEMA_VERSION,
+  MIDWEST_ORIGINS,
+  BOOKING_LEAD_TIME,
+  nextReviewDue,
+} from './fareIntelligence.js'
+
 export default {
   id: 'dublin',
   name: 'Dublin + Galway',
@@ -97,6 +104,66 @@ export default {
       },
     },
   ],
+
+  /* FARE INTELLIGENCE — see src/data/fareIntelligence.js for the rules.
+   * Dollar bands are null on purpose: no sourced fare pull exists for
+   * ORD/DTW/GRR → Dublin, and vendor "cheapest month" pages are neither
+   * origin-specific nor in agreement. The seasonal SHAPE below is defensible;
+   * a price would not be. */
+  fareIntelligence: {
+    schemaVersion: FARE_SCHEMA_VERSION,
+    refreshCadence: 'quarterly',
+    checkedOn: '2026-09-02',
+    nextReviewDue: nextReviewDue('2026-09-02'),
+    seasonality: [
+      {
+        months: [1, 2],
+        tier: 'low',
+        note: 'The floor. Deep off-season, and the weather is the reason.',
+      },
+      {
+        months: [3],
+        tier: 'shoulder',
+        note: "Cheap either side of St Patrick's, expensive across it — the festival week prices like peak season on its own.",
+      },
+      {
+        months: [4, 5],
+        tier: 'shoulder',
+        note: 'Lengthening days before the summer curve starts.',
+      },
+      {
+        months: [6, 7, 8],
+        tier: 'peak',
+        note: 'Summer peak, and July carries the Galway festival premium in the west.',
+      },
+      {
+        months: [9, 10],
+        tier: 'shoulder',
+        note: 'The value window. Summer pricing has gone, the weather largely has not.',
+      },
+      { months: [11], tier: 'low', note: 'The quietest month before the Christmas curve begins.' },
+      {
+        months: [12],
+        tier: 'peak',
+        note: 'Christmas and the diaspora coming home both bid the same seats.',
+      },
+    ],
+    origins: MIDWEST_ORIGINS.map((o) => ({
+      ...o,
+      bands: null,
+      bandSource: null,
+      note:
+        o.airport === 'GRR'
+          ? 'Regional airport — expect a connection, and a different curve from the hubs.'
+          : null,
+    })),
+    patienceSaves:
+      'The pattern worth knowing is the shoulder discount: European fares in the April-May and September-October windows have been reported running 20-40% below July and December. That is a season-shifting saving, not a booking-day one — moving the trip a few weeks is worth far more than refreshing a search.',
+    bookingLeadTime: BOOKING_LEAD_TIME,
+    sourcedFrom: ['europe-shoulder-delta', 'going-2026', 'expedia-arc-window'],
+    basis:
+      "Relative seasonality from published European fare reporting plus the framework's own event calendar. No origin-specific fare pull has been done, so no dollar band is claimed.",
+  },
 
   itinerary: [
     { day: 'Friday', anchor: 'Dublin Arrival', stops: 'Lark Inn, Ginger Man, Christ Church area' },
@@ -1145,6 +1212,7 @@ export default {
   navSections: [
     'Overview',
     'When to Go',
+    'Flight Intelligence',
     'Dublin Pubs',
     'Dublin Sights',
     'Galway',

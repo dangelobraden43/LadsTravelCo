@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { SEO_DEFAULTS } from './utils/seo'
 import Footer from './Footer'
+import { FARE_SOURCES } from './data/fareIntelligence.js'
 import './FrameworkPage.css'
 
 /* ===== WHEN TO GO =====
@@ -103,6 +104,189 @@ function TimingWindows({ windows }) {
           </article>
         ))}
       </div>
+    </section>
+  )
+}
+
+/* ===== FARE INTELLIGENCE =====
+ *
+ * The credibility layer, and the one most likely to be quietly wrong, so it is
+ * built to show its own gaps. Three things render here: the seasonal shape, the
+ * booking-lead-time research (including where the research disagrees with
+ * itself), and — when it exists — the dollar band per origin airport.
+ *
+ * 🚩 IT CURRENTLY RENDERS "NO SOURCED BANDS YET" ON EVERY FRAMEWORK, ON PURPOSE.
+ * Nobody has pulled real fares from ORD/DTW/GRR. Vendor "cheapest month" pages
+ * disagree with each other and are not origin-specific, so they cannot support
+ * a band. Printing a confident "$700–$900" from that would be inventing
+ * precision, so instead the section says what is missing and why. A live feed
+ * fills `origins[].bands` and this component changes behaviour with no edit. */
+/* Three letters, not one. A single-letter strip renders J-F-M-A-M-J-J-A-S-O-N-D,
+ * in which three pairs are indistinguishable at a glance — and the whole point
+ * of this strip is that a reader can find a specific month in it. The cells are
+ * wide enough at every breakpoint to carry the abbreviation. */
+const MONTH_LETTERS = [
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
+]
+const MONTH_NAMES = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
+function FareIntelligence({ fare }) {
+  if (!fare) return null
+
+  /* Flatten the seasonality groups into a 12-slot lookup so the strip can be
+   * rendered by month index rather than by group. */
+  const byMonth = {}
+  ;(fare.seasonality || []).forEach((s) => {
+    s.months.forEach((m) => {
+      byMonth[m] = s
+    })
+  })
+
+  const stale = fare.nextReviewDue && fare.nextReviewDue < new Date().toISOString().slice(0, 10)
+  const anyBands = (fare.origins || []).some((o) => o.bands)
+
+  return (
+    <section id="flight-intelligence" className="fw-section">
+      <div className="fw-section-label">FLIGHT INTELLIGENCE</div>
+      <h2 className="fw-section-title">What the Fare Curve Actually Does</h2>
+      <p className="fw-tw-lede">
+        When seats are cheap, when they are not, and how far ahead the evidence says to buy. Ranges
+        and patterns only &mdash; we do not quote you a price, because a price we cannot stand
+        behind is worse than no price at all.
+      </p>
+
+      {/* THE SEASONAL STRIP. Relative tiers, not money. This is the part
+          research genuinely supports: not what a seat costs, but when the
+          curve is high and low against itself. */}
+      <div className="fw-fi-strip" role="list" aria-label="Fare seasonality by month">
+        {MONTH_LETTERS.map((letter, i) => {
+          const s = byMonth[i + 1]
+          const tier = s?.tier || 'unknown'
+          return (
+            <div
+              key={i}
+              role="listitem"
+              className={`fw-fi-month fw-fi-month--${tier}`}
+              title={s ? `${MONTH_NAMES[i]} — ${tier}. ${s.note || ''}` : MONTH_NAMES[i]}
+            >
+              <span className="fw-fi-month-letter">{letter}</span>
+            </div>
+          )
+        })}
+      </div>
+      <div className="fw-fi-key">
+        <span>
+          <i className="fw-fi-dot fw-fi-dot--low" /> Low
+        </span>
+        <span>
+          <i className="fw-fi-dot fw-fi-dot--shoulder" /> Shoulder
+        </span>
+        <span>
+          <i className="fw-fi-dot fw-fi-dot--peak" /> Peak
+        </span>
+      </div>
+
+      <div className="fw-fi-grid">
+        {/* ORIGINS. Named airports, because "flights are cheaper in May" is
+            useless without knowing where you are leaving from. */}
+        <div className="fw-fi-card">
+          <div className="fw-overview-card-label">FROM THE MIDWEST</div>
+          <ul className="fw-fi-origins">
+            {(fare.origins || []).map((o) => (
+              <li key={o.airport}>
+                <span className="fw-fi-iata">{o.airport}</span>
+                <span className="fw-fi-origin-city">{o.city}</span>
+                <span className="fw-fi-origin-band">
+                  {o.bands ? o.bands : <em>no sourced band yet</em>}
+                </span>
+                {o.note && <span className="fw-fi-origin-note">{o.note}</span>}
+              </li>
+            ))}
+          </ul>
+          {!anyBands && (
+            <p className="fw-fi-gap">
+              <strong>Dollar bands are deliberately absent.</strong> No origin-specific fare pull
+              has been done for these airports, and the published &ldquo;cheapest month&rdquo; pages
+              disagree with one another. We would rather show you the shape of the year and admit
+              the gap than print a number nobody checked.
+            </p>
+          )}
+        </div>
+
+        {/* BOOKING LEAD TIME. Reports the disagreement rather than picking the
+            tidier answer — a reader who books on our say-so and pays more
+            deserves to have been told the evidence was split. */}
+        {fare.bookingLeadTime && (
+          <div className="fw-fi-card">
+            <div className="fw-overview-card-label">WHEN TO BUY</div>
+            <p className="fw-fi-headline">{fare.bookingLeadTime.headline}</p>
+            <p className="fw-tw-detail">{fare.bookingLeadTime.detail}</p>
+            {fare.bookingLeadTime.edges && (
+              <p className="fw-tw-detail">{fare.bookingLeadTime.edges}</p>
+            )}
+          </div>
+        )}
+      </div>
+
+      {fare.patienceSaves && (
+        <div className="fw-callout">
+          <div className="fw-callout-label">WHAT PATIENCE IS WORTH</div>
+          <p className="fw-callout-text">{fare.patienceSaves}</p>
+        </div>
+      )}
+
+      <footer className="fw-tw-sourcing fw-fi-sourcing">
+        {fare.basis} <span className="fw-tw-sourcing-date">Checked {fare.checkedOn}.</span>{' '}
+        {fare.refreshCadence && (
+          <span className="fw-tw-sourcing-date">
+            Reviewed {fare.refreshCadence}; next due {fare.nextReviewDue}.
+          </span>
+        )}
+        {stale && <strong className="fw-fi-stale"> This record is past its review date.</strong>}
+        {!!(fare.sourcedFrom || []).length && (
+          <span className="fw-fi-sources">
+            {' '}
+            Sources:{' '}
+            {fare.sourcedFrom.map((id, i) => {
+              const src = FARE_SOURCES[id]
+              if (!src) return null
+              return (
+                <React.Fragment key={id}>
+                  {i > 0 && '; '}
+                  <a href={src.url} target="_blank" rel="noopener noreferrer">
+                    {src.label}
+                  </a>
+                </React.Fragment>
+              )
+            })}
+            .
+          </span>
+        )}
+      </footer>
     </section>
   )
 }
@@ -238,6 +422,9 @@ export default function FrameworkPage({ data, heroImg }) {
 
       {/* ===== WHEN TO GO — between Overview and the spots, per the approved spec ===== */}
       <TimingWindows windows={data.timingWindows} />
+
+      {/* ===== FLIGHT INTELLIGENCE — after the windows, before the spots ===== */}
+      <FareIntelligence fare={data.fareIntelligence} />
 
       {/* ===== SPOTS — V2 (with category filters) ===== */}
       {hasV2Spots && (

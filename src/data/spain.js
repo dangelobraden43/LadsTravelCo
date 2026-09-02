@@ -1,6 +1,13 @@
 // Barcelona + Madrid — Data Model v2
 // 30 spots reclassified, research layer filled, personal layer blank for Brady
 
+import {
+  FARE_SCHEMA_VERSION,
+  MIDWEST_ORIGINS,
+  BOOKING_LEAD_TIME,
+  nextReviewDue,
+} from './fareIntelligence.js'
+
 export default {
   id: 'spain',
   name: 'Barcelona + Madrid',
@@ -96,6 +103,64 @@ export default {
       },
     },
   ],
+
+  /* FARE INTELLIGENCE — rules in src/data/fareIntelligence.js.
+   * Bands are null: no origin-specific fare pull exists for ORD/DTW/GRR into
+   * BCN or MAD. The seasonal shape is defensible; a dollar figure is not. */
+  fareIntelligence: {
+    schemaVersion: FARE_SCHEMA_VERSION,
+    refreshCadence: 'quarterly',
+    checkedOn: '2026-09-02',
+    nextReviewDue: nextReviewDue('2026-09-02'),
+    seasonality: [
+      {
+        months: [1, 2],
+        tier: 'low',
+        note: 'The floor, and the only time the cities belong entirely to the people who live in them.',
+      },
+      {
+        months: [3],
+        tier: 'shoulder',
+        note: 'Climbing. Semana Santa moves between March and April and takes the fare curve with it.',
+      },
+      {
+        months: [4, 5],
+        tier: 'shoulder',
+        note: 'The framework’s recommended window, and pricing has not yet caught up with the weather.',
+      },
+      {
+        months: [6, 7, 8],
+        tier: 'peak',
+        note: 'Peak in every sense. August is the month Madrid and Barcelona empty of locals and fill with everyone else.',
+      },
+      {
+        months: [9, 10],
+        tier: 'shoulder',
+        note: 'The second value window. September still carries summer weather at shoulder pricing.',
+      },
+      { months: [11], tier: 'low', note: 'Quietest month of the year before the holiday curve.' },
+      {
+        months: [12],
+        tier: 'shoulder',
+        note: 'A Christmas bump, though a milder one than the Northern European cities see.',
+      },
+    ],
+    origins: MIDWEST_ORIGINS.map((o) => ({
+      ...o,
+      bands: null,
+      bandSource: null,
+      note:
+        o.airport === 'GRR'
+          ? 'Regional airport — expect a connection, and a different curve from the hubs.'
+          : null,
+    })),
+    patienceSaves:
+      'Shifting the trip beats hunting the fare. European shoulder-season pricing in April–May and September–October has been reported running 20–40% below July and December — and for Spain those are also the months the cities are most pleasant to be in, so the cheaper trip is the better one rather than the compromise.',
+    bookingLeadTime: BOOKING_LEAD_TIME,
+    sourcedFrom: ['europe-shoulder-delta', 'going-2026', 'expedia-arc-window'],
+    basis:
+      'Relative seasonality from published European fare reporting plus the framework’s own calendar. No origin-specific fare pull has been done, so no dollar band is claimed.',
+  },
 
   itinerary: [
     {
@@ -1133,6 +1198,7 @@ export default {
   navSections: [
     'Overview',
     'When to Go',
+    'Flight Intelligence',
     'Barcelona Architecture',
     'Barcelona Bars',
     'Barcelona Food',

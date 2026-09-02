@@ -898,3 +898,163 @@ export const PERU_SAVED_PLACES = [
     }
   ),
 ]
+
+/* ============================================================================
+ * PERU — TRAVEL WINDOWS (the template every framework inherits)
+ * ============================================================================
+ *
+ * ⚠️ THESE DO NOT RENDER YET, AND THAT IS NOT AN OVERSIGHT. peru.js is not a
+ * framework file — it has no default export, no palette and no navSections,
+ * because Peru is not a published route. It is day anchors and saved places.
+ * These windows are authored to the full schema so the Peru framework build
+ * (queue item #1) drops them straight in, and so the four drivers have a
+ * worked example. Nothing here reaches a reader today.
+ *
+ * WHY PERU IS THE TEMPLATE: it is the only destination whose windows are driven
+ * by four genuinely different forces. Most frameworks are three flavours of
+ * "the weather is nicer now". Peru has a dry season (weather), a fixed festival
+ * (events), a shoulder fare curve (pricing), and a trail that physically closes
+ * for a month every year (logistics). If the design holds for Peru it holds
+ * anywhere.
+ *
+ * ⛔ NO LADS VOICE. The 16 silent saved places stay silent and so does this — a
+ * window explains the world, it does not speak for the founders. Brady's own
+ * words live in BRADY_TAKE_SOURCE and nowhere else.
+ */
+export const PERU_TIMING_WINDOWS = [
+  {
+    id: 'dry-season',
+    name: 'Dry Season (May–Sep)',
+    recommended: true,
+    driver: 'weather',
+    months: [5, 6, 7, 8, 9],
+    atmosphere: 'Clear mornings, cold nights',
+    crowdMix: '70% tourist',
+    pubExperience: 'Cusco courtyards, full trekking season',
+    priceTier: 'High',
+    primaryDraw: 'The trekking window — clear passes and stable trail',
+    verdict: 'The window',
+    detail:
+      'The Andean dry season. Clear mornings, hard frosts at altitude overnight, and the stable ground that makes multi-day trekking sensible rather than a gamble. Every operator runs a full schedule. The cost is that everyone else knows this too — it is simultaneously the best and the busiest half of the year.',
+    sourcing: {
+      basis:
+        'The Andean dry/wet season pattern, and the trip the Lads actually walked — the Salkantay days in this file are GPS-dated to early May, at the front edge of this window.',
+      checkedOn: '2026-09-02',
+      sources: [],
+    },
+  },
+  {
+    id: 'inti-raymi',
+    name: 'Inti Raymi (late June)',
+    recommended: false,
+    driver: 'events',
+    months: [6],
+    atmosphere: 'Cusco at maximum',
+    crowdMix: 'Heavily local plus every visitor in the region',
+    pubExperience: 'The whole city is the venue',
+    priceTier: 'Highest',
+    primaryDraw: 'Inti Raymi, the Festival of the Sun, June 24 in Cusco',
+    verdict: 'Extraordinary, and the most expensive week of the year',
+    detail:
+      "Cusco's Festival of the Sun falls on June 24 every year, and the days around it are the hardest window to book in Peru — accommodation in the historic centre goes early and prices with it. It is a genuine civic festival rather than a tourist reconstruction. Treat it as the reason for the trip or avoid the week entirely; there is no cheap middle.",
+    sourcing: {
+      basis:
+        'Inti Raymi is a fixed annual date (June 24) rather than a moving feast, so this window does not expire. Its pricing claim is a pattern, not a quoted figure.',
+      checkedOn: '2026-09-02',
+      sources: [],
+    },
+  },
+  {
+    id: 'shoulder',
+    name: 'Shoulder (April, October)',
+    recommended: true,
+    driver: 'pricing',
+    months: [4, 10],
+    atmosphere: 'Green, quiet, unsettled',
+    crowdMix: '50/50',
+    pubExperience: 'Cusco without the queue',
+    priceTier: 'Moderate',
+    primaryDraw: 'Dry-season conditions at off-season prices',
+    verdict: 'The value play, with a weather gamble attached',
+    detail:
+      'The two months either side of the dry season. April carries the tail of the rains and the greenest landscape of the year; October catches the first of them. Beds and fares sit below the June-to-August curve and the trails are markedly quieter. The honest trade is that you are buying a probability, not a guarantee — a washed-out pass is likelier here than in July.',
+    sourcing: {
+      basis:
+        'Shoulder-month positioning either side of the Andean dry season. No fare figure is attached because no origin-specific pull has been done — see PERU_FARE_INTELLIGENCE.',
+      checkedOn: '2026-09-02',
+      sources: [],
+    },
+  },
+  {
+    id: 'wet-season',
+    name: 'Wet Season (Jan–Mar)',
+    recommended: false,
+    driver: 'logistics',
+    months: [1, 2, 3],
+    atmosphere: 'Green, wet, empty',
+    crowdMix: '60% local',
+    pubExperience: 'Indoor Cusco, and you will have it to yourself',
+    priceTier: 'Low',
+    primaryDraw: 'Lowest prices of the year, and the fewest people',
+    verdict: 'A real trip, but not the trek you are picturing',
+    detail:
+      'The rains. This is a logistics window rather than a weather one, because the deciding fact is not discomfort but access: the classic Inca Trail closes for the whole of February every year for maintenance, and route changes driven by landslides are normal across these months. Machu Picchu itself stays open, and alternative routes including Salkantay continue to run. Come for an empty Cusco at the lowest prices of the year; do not come assuming the Inca Trail.',
+    sourcing: {
+      basis:
+        'The February Inca Trail closure is an annual published closure, not a forecast. The rest is the Andean wet-season pattern.',
+      checkedOn: '2026-09-02',
+      sources: [],
+    },
+  },
+]
+
+/* PERU — FARE INTELLIGENCE. Same rules as every framework; see
+ * src/data/fareIntelligence.js. Bands are null and stay null until a sourced
+ * pull exists. Peru is the sharpest example of why: researching Lima fares on
+ * Sept 2 2026 returned four different "cheapest month" answers from four
+ * vendors — June, May, August and January — none origin-specific, all of them
+ * the front door of a booking funnel. */
+export const PERU_FARE_INTELLIGENCE = {
+  schemaVersion: 1,
+  refreshCadence: 'quarterly',
+  checkedOn: '2026-09-02',
+  nextReviewDue: '2026-12-03',
+  seasonality: [
+    {
+      months: [1, 2, 3],
+      tier: 'low',
+      note: 'Wet season. The cheapest seats of the year, and the reason they are cheap is on the ground.',
+    },
+    { months: [4], tier: 'shoulder', note: 'Rains tailing off ahead of the trekking season.' },
+    {
+      months: [5],
+      tier: 'shoulder',
+      note: 'Dry season opens before the peak curve fully arrives.',
+    },
+    {
+      months: [6, 7, 8],
+      tier: 'peak',
+      note: 'Dry season, Inti Raymi and the northern summer holidays all landing on the same seats.',
+    },
+    { months: [9], tier: 'shoulder', note: 'Dry conditions holding, demand easing.' },
+    { months: [10], tier: 'shoulder', note: 'The second value month before the rains return.' },
+    { months: [11], tier: 'low', note: 'Quiet, and the wet season beginning.' },
+    { months: [12], tier: 'shoulder', note: 'A holiday bump against an otherwise low month.' },
+  ],
+  origins: [
+    { airport: 'ORD', city: 'Chicago', bands: null, bandSource: null, note: null },
+    { airport: 'DTW', city: 'Detroit', bands: null, bandSource: null, note: null },
+    {
+      airport: 'GRR',
+      city: 'Grand Rapids',
+      bands: null,
+      bandSource: null,
+      note: 'Regional airport — expect a connection, and a different curve from the hubs.',
+    },
+  ],
+  patienceSaves:
+    'The season is worth more than the search. Moving a Peru trip out of June-to-August and into April, May or October changes both the fare curve and the crowd, and by more than any booking-day tactic will. What we will not tell you is by how many dollars, because nobody has pulled that number from these airports yet.',
+  sourcedFrom: ['going-2026', 'expedia-arc-window'],
+  basis:
+    "Relative seasonality from the Andean dry/wet pattern and the region's fixed event calendar. No origin-specific fare pull has been done, so no dollar band is claimed.",
+}
