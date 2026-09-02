@@ -14,7 +14,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Lads Travel Co.">
   <meta name="twitter:description" content="220 validated spots across 10 destination frameworks. Built from firsthand experience.">
-  <link rel="canonical" href="https://ladstravel.com">
+  <!-- NO STATIC CANONICAL HERE. A hard-coded canonical in the shell is
+       inherited by every SPA route, so /local, /outdoors, /bucket-list,
+       /shop, /privacy and all 10 framework pages were each shipping TWO
+       canonical tags: this one pointing at the homepage, and their own.
+       Two conflicting canonicals is undefined behaviour and commonly
+       resolves to the first, which told search engines every page on the
+       site was a duplicate of the homepage. Each route now declares its
+       own via <Helmet>, including the homepage in src/App.jsx. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">

@@ -56,6 +56,11 @@ export default function FrameworkPage({ data, heroImg }) {
         <meta property="og:title" content={`${data.name} — ${SEO_DEFAULTS.siteName}`} />
         <meta property="og:description" content={data.overview?.quickRead || data.tagline} />
         <meta property="og:type" content="website" />
+        {/* Framework routes had NO canonical of their own, so they inherited
+            the shell's homepage one and told search engines all 10 were
+            duplicates of the front page. data.id is the route slug. */}
+        {data.id && <link rel="canonical" href={`https://ladstravel.com/${data.id}`} />}
+        {data.id && <meta property="og:url" content={`https://ladstravel.com/${data.id}`} />}
       </Helmet>
       {/* ===== HERO ===== */}
       <section className="fw-hero">

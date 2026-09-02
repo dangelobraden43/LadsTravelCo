@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES } from './images-paths'
 import { gsap, staggerReveal } from './utils/animations'
 import Splitting from 'splitting'
@@ -728,6 +729,13 @@ export default function App() {
 
   return (
     <WorldManager>
+      {/* The homepage declares its own canonical now. It used to rely on the
+          hard-coded one in index.html, but that tag was being inherited by
+          every other route and telling search engines the whole site was a
+          duplicate of this page, so it was removed from the shell. */}
+      <Helmet>
+        <link rel="canonical" href="https://ladstravel.com/" />
+      </Helmet>
       <CursorGlow />
       <Nav scrolled={scrolled} />
 
