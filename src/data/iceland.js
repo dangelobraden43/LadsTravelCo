@@ -809,6 +809,7 @@ export default {
 
   navSections: [
     'Overview',
+    'When to Go',
     'Reykjavik',
     'Golden Circle',
     'South Coast',

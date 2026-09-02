@@ -1132,6 +1132,7 @@ export default {
 
   navSections: [
     'Overview',
+    'When to Go',
     'Barcelona Architecture',
     'Barcelona Bars',
     'Barcelona Food',

@@ -5,6 +5,108 @@ import { SEO_DEFAULTS } from './utils/seo'
 import Footer from './Footer'
 import './FrameworkPage.css'
 
+/* ===== WHEN TO GO =====
+ *
+ * 9 of 10 frameworks have carried `timingWindows` since they were written and
+ * NOTHING rendered them — roughly 24 windows of finished research shipped in
+ * the bundle and reached nobody. This is the switch-on.
+ *
+ * THE DRIVER IS THE POINT. These windows were never one kind of thing: Munich's
+ * are Oktoberfest weekend-vs-midweek, Spain's are seasons, Iceland's winter is
+ * really about roads closing. Nothing in the data recorded which, so every
+ * window read like a vague seasonal vibe. `driver` names the force, and a
+ * window that cannot name one does not ship.
+ *
+ * ⛔ NO LADS VOICE IN HERE. A window explains the world; only a founder speaks
+ * for the Lads. Same rule that keeps the 16 silent Peru places silent. */
+const DRIVER_LABELS = {
+  weather: 'WEATHER',
+  events: 'EVENTS',
+  pricing: 'PRICING',
+  logistics: 'ACCESS',
+}
+
+function TimingWindows({ windows }) {
+  /* datedUntil IS LOAD-BEARING, NOT DECORATION. Iceland's eclipse window sat
+   * telling readers to avoid a month for a reason that expired three weeks
+   * earlier, and it only escaped being an embarrassment because nothing
+   * rendered. A dated window now removes itself the day it dies, with no
+   * human in the loop. Compared as ISO strings, which sort correctly. */
+  const today = new Date().toISOString().slice(0, 10)
+  const live = (windows || []).filter((w) => !w.datedUntil || w.datedUntil >= today)
+  if (!live.length) return null
+
+  return (
+    <section id="when-to-go" className="fw-section">
+      <div className="fw-section-label">WHEN TO GO</div>
+      <h2 className="fw-section-title">
+        {live.length} {live.length === 1 ? 'Window' : 'Windows'}, and What Drives Each One
+      </h2>
+      <p className="fw-tw-lede">
+        Every window says what force decides it &mdash; the weather, an event, the fare curve, or
+        whether the roads are open at all. Where we have not recorded how a window was sourced, it
+        says that too, rather than dressing it up.
+      </p>
+
+      <div className="fw-tw-grid">
+        {live.map((w) => (
+          <article key={w.id} className={`fw-tw-card${w.recommended ? ' fw-tw-card--rec' : ''}`}>
+            <header className="fw-tw-head">
+              <div className="fw-tw-chips">
+                {w.driver && (
+                  <span className={`fw-tw-chip fw-tw-chip--${w.driver}`}>
+                    {DRIVER_LABELS[w.driver] || w.driver.toUpperCase()}
+                  </span>
+                )}
+                {w.recommended && <span className="fw-tw-chip fw-tw-chip--rec">RECOMMENDED</span>}
+              </div>
+              <h3 className="fw-tw-name">{w.name}</h3>
+              {w.verdict && <div className="fw-tw-verdict">{w.verdict}</div>}
+            </header>
+
+            {w.primaryDraw && <p className="fw-tw-draw">{w.primaryDraw}</p>}
+            {w.detail && <p className="fw-tw-detail">{w.detail}</p>}
+
+            <dl className="fw-tw-meta">
+              {w.atmosphere && (
+                <div>
+                  <dt>Feel</dt>
+                  <dd>{w.atmosphere}</dd>
+                </div>
+              )}
+              {w.crowdMix && (
+                <div>
+                  <dt>Crowd</dt>
+                  <dd>{w.crowdMix}</dd>
+                </div>
+              )}
+              {w.priceTier && (
+                <div>
+                  <dt>Price</dt>
+                  <dd>{w.priceTier}</dd>
+                </div>
+              )}
+            </dl>
+
+            {/* THE SOURCING LINE. Every window states the reasoning that
+                produced it. An empty `sources` array is shown as exactly that
+                — not hidden, and never filled with a plausible-looking
+                citation nobody actually checked. */}
+            {w.sourcing && (
+              <footer className="fw-tw-sourcing">
+                <span className="fw-tw-sourcing-basis">{w.sourcing.basis}</span>
+                {w.sourcing.checkedOn && (
+                  <span className="fw-tw-sourcing-date"> Checked {w.sourcing.checkedOn}.</span>
+                )}
+              </footer>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function FrameworkPage({ data, heroImg }) {
   const [activeNav, setActiveNav] = useState(null)
   const [categoryFilter, setCategoryFilter] = useState('All')
@@ -133,6 +235,9 @@ export default function FrameworkPage({ data, heroImg }) {
           </div>
         )}
       </section>
+
+      {/* ===== WHEN TO GO — between Overview and the spots, per the approved spec ===== */}
+      <TimingWindows windows={data.timingWindows} />
 
       {/* ===== SPOTS — V2 (with category filters) ===== */}
       {hasV2Spots && (

@@ -442,5 +442,13 @@ export default {
 
   specialCallouts: [],
 
-  navSections: ['Overview', 'Tent Strategy', 'Day Trips', 'Accommodation', 'Flights', 'Costs'],
+  navSections: [
+    'Overview',
+    'When to Go',
+    'Tent Strategy',
+    'Day Trips',
+    'Accommodation',
+    'Flights',
+    'Costs',
+  ],
 }

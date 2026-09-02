@@ -1144,6 +1144,7 @@ export default {
   specialCallouts: [],
   navSections: [
     'Overview',
+    'When to Go',
     'Dublin Pubs',
     'Dublin Sights',
     'Galway',

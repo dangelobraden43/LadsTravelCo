@@ -46,7 +46,7 @@ export default {
       primaryDraw: 'Best balance of weather and value',
       verdict: 'The window',
       detail:
-        'Temperatures 25-28°C. Locals back from August holidays. Summer tourist crush has thinned. Flights from ORD drop to ~$750 RT. Aperitivo on every piazza.',
+        'Temperatures 25-28°C. Locals back from August holidays. Summer tourist crush has thinned. Fares off their summer peak. Aperitivo on every piazza.',
       driver: 'pricing',
       months: [9],
       sourcing: {
@@ -891,6 +891,7 @@ export default {
 
   navSections: [
     'Overview',
+    'When to Go',
     'Rome Attractions',
     'Rome Food',
     'Rome Bars',

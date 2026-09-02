@@ -711,6 +711,7 @@ export default {
 
   navSections: [
     'Overview',
+    'When to Go',
     'Sydney Breweries',
     'Sydney Speakeasies',
     'Sydney Food',

@@ -608,5 +608,5 @@ export default {
 
   specialCallouts: [],
 
-  navSections: ['Overview', 'Prague', 'Dresden', 'Day Trips', 'Maps', 'Logistics'],
+  navSections: ['Overview', 'When to Go', 'Prague', 'Dresden', 'Day Trips', 'Maps', 'Logistics'],
 }

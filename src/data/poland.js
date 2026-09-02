@@ -528,5 +528,13 @@ export default {
     },
   ],
 
-  navSections: ['Overview', 'Kazimierz', 'Cultural Sites', 'Day Trips', 'Costs', 'Safety'],
+  navSections: [
+    'Overview',
+    'When to Go',
+    'Kazimierz',
+    'Cultural Sites',
+    'Day Trips',
+    'Costs',
+    'Safety',
+  ],
 }

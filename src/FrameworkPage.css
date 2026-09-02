@@ -149,6 +149,14 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s;
+  /* PRE-EXISTING BUG, found Sept 2 2026 when "When to Go" became the 8th pill.
+     A flex child defaults to flex-shrink: 1, so these were being squeezed
+     narrower than their own text while `white-space: nowrap` refused to wrap
+     it — the labels overlapped each other instead of the row scrolling, and
+     the framework nav was unreadable at 390. Rome already had 7 pills, so this
+     was live before today. Refusing to shrink is what makes overflow-x: auto
+     on the parent actually scroll. */
+  flex: 0 0 auto;
 }
 .fw-nav-pill:hover {
   color: var(--cream);
@@ -746,5 +754,148 @@
   }
   .fw-hero {
     min-height: 500px;
+  }
+}
+
+/* ===== WHEN TO GO — timing windows =====
+   One design site-wide; the per-framework palette arrives through
+   var(--fw-accent), which FrameworkPage sets from data.palette. No framework
+   gets its own bespoke treatment here — the section should read as the same
+   instrument everywhere, tuned to each destination's colour. */
+.fw-tw-lede {
+  font-size: 15px;
+  color: var(--cream2);
+  line-height: 1.7;
+  max-width: 680px;
+  margin-bottom: 28px;
+}
+.fw-tw-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.fw-tw-card {
+  background: var(--fw-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 3px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+/* A recommended window earns the accent edge. This is the only visual
+   hierarchy in the section, so it has to mean one thing and nothing else. */
+.fw-tw-card--rec {
+  border-left-color: var(--fw-accent);
+  background: var(--fw-elevated);
+}
+.fw-tw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.fw-tw-chip {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--cream2);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.fw-tw-chip--rec {
+  color: var(--fw-accent);
+  border-color: var(--fw-accent);
+  background: transparent;
+}
+/* The four drivers are deliberately muted and near-monochrome. They are a
+   taxonomy, not a traffic-light rating — colouring "pricing" green would
+   invent a judgement the data does not make. */
+.fw-tw-chip--weather {
+  color: #9db4c0;
+}
+.fw-tw-chip--events {
+  color: #c0a9c8;
+}
+.fw-tw-chip--pricing {
+  color: #c9b57e;
+}
+.fw-tw-chip--logistics {
+  color: #b8a08a;
+}
+.fw-tw-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.fw-tw-verdict {
+  font-family: var(--editorial), Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--fw-accent);
+  margin-bottom: 14px;
+}
+.fw-tw-draw {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.fw-tw-detail {
+  font-size: 14px;
+  color: var(--cream2);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.fw-tw-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: auto;
+}
+.fw-tw-meta dt {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--fw-accent);
+  margin-bottom: 3px;
+}
+.fw-tw-meta dd {
+  font-size: 12px;
+  color: var(--cream2);
+  line-height: 1.4;
+  margin: 0;
+}
+/* Deliberately quiet and deliberately present. The sourcing line is the part
+   that makes the rest trustworthy, so it never gets hidden behind a toggle —
+   but it is not competing with the content either. */
+.fw-tw-sourcing {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--cream3, rgba(232, 220, 200, 0.45));
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 12px;
+}
+.fw-tw-sourcing-date {
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .fw-tw-grid {
+    grid-template-columns: 1fr;
+  }
+  .fw-tw-card {
+    padding: 20px;
   }
 }

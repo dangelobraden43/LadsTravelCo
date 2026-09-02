@@ -405,5 +405,5 @@ export default {
     },
   ],
 
-  navSections: ['Overview', 'Vienna', 'Maps', 'Logistics'],
+  navSections: ['Overview', 'When to Go', 'Vienna', 'Maps', 'Logistics'],
 }
