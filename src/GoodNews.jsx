@@ -5,6 +5,14 @@ import MapPins, { placeToPanel, makePinId, spreadClusters, PIN_TYPE_LABELS } fro
 import { BRUCE_PLACES, BRUCE_SOURCE } from './data/brucePeninsula'
 import { MIDWEST_CANDIDATES, MIDWEST_CANDIDATES_SOURCE } from './data/midwestCandidates'
 import michigan from './data/michigan'
+import {
+  PULSE_VENUES,
+  PULSE_TYPE_LABELS,
+  PULSE_CHECKED_ON,
+  liveEvents,
+  upcoming,
+  eventsByVenue,
+} from './data/livePulse'
 import './GoodNews.css'
 
 /* ===== SHARED GEOMETRY =====
@@ -533,6 +541,40 @@ function Panel({ item, onClose }) {
   )
 }
 
+/* THE PULSE PANEL. A venue is only ever as interesting as what is on at it, so
+ * the panel leads with dates rather than with the building.
+ *
+ * ⛔ Every line here is a fact with a source behind it in livePulse.js. No
+ * prices, ever. No "don't miss this" — we have not been to these games and the
+ * Lads voice does not attach to a fixture list. */
+function venueToPanel(venue, events) {
+  const shown = events.slice(0, 8)
+  const fmt = (iso) => {
+    const d = new Date(`${iso}T12:00:00`)
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+  }
+  return {
+    id: `pulse-${venue.id}`,
+    eyebrow: 'THE PULSE',
+    title: venue.name,
+    place: `${venue.city}, ${venue.state}`,
+    status: events.length
+      ? `${events.length} upcoming ${events.length === 1 ? 'date' : 'dates'}`
+      : 'No dates pulled yet',
+    statusTone: events.length ? 'live' : null,
+    lines: events.length
+      ? shown.map((e) => `${fmt(e.date)} — ${e.title}${e.preseason ? ' (preseason)' : ''}`)
+      : [
+          'This venue is on the map because it is one of the rooms that matters here. Its calendar has not been pulled yet, so we are showing you nothing rather than something invented.',
+        ],
+    tail:
+      events.length > shown.length
+        ? `+ ${events.length - shown.length} more through the end of October.`
+        : null,
+    note: `Schedules read from the league or club's own listing on ${PULSE_CHECKED_ON}. Dates move — confirm with the venue before you drive. We list no prices and sell no tickets.`,
+  }
+}
+
 /* Every tier normalises into the same panel shape. Pins bring their own
    adapter, `placeToPanel` in MapPins.jsx, which follows this convention. */
 function anchorToPanel(a) {
@@ -845,12 +887,140 @@ function CompanionList({ activeId, onToggle }) {
  * hero of /local, which owns the Nav, the SEO and the framing around it. This
  * component renders the canvas, its panel and the companion list, and nothing
  * about the page it sits on. */
+/* ===== GOOD NEWS — the board under the map =====
+ *
+ * The signature of this page. Not "here are some venues" but "here is what is
+ * on, and when". Sorted by date because that is the question a reader actually
+ * arrives with.
+ *
+ * ⛔ NO PRICES AND NO LADS VOICE. We have not been to these fixtures. Every
+ * card is a date, a room and a link to the listing it came from. */
+function PulseBoard({ pulse, weekendOnly, setWeekendOnly, onOpen }) {
+  const venueName = (id) => PULSE_VENUES.find((v) => v.id === id)
+  const fmtDay = (iso) => {
+    const d = new Date(`${iso}T12:00:00`)
+    return {
+      dow: d.toLocaleDateString('en-US', { weekday: 'short' }),
+      day: d.toLocaleDateString('en-US', { day: 'numeric' }),
+      mon: d.toLocaleDateString('en-US', { month: 'short' }),
+    }
+  }
+
+  return (
+    <section className="gn-pulse-board" aria-labelledby="gn-pulse-h">
+      <div className="gn-list-inner">
+        <div className="gn-pulse-head">
+          <div>
+            <h2 id="gn-pulse-h" className="gn-list-h">
+              Good News
+            </h2>
+            <p className="gn-list-lede">
+              What is actually on. {pulse.soon.length} in the next seven days, {pulse.all.length}{' '}
+              ahead of us in all. Read from each league or club&rsquo;s own schedule on{' '}
+              {PULSE_CHECKED_ON} &mdash; we list no prices and sell no tickets.
+            </p>
+          </div>
+          <button
+            type="button"
+            className={`gn-weekend${weekendOnly ? ' is-on' : ''}`}
+            aria-pressed={weekendOnly}
+            onClick={() => setWeekendOnly(!weekendOnly)}
+          >
+            This Weekend <span className="gn-count">{pulse.soon.length}</span>
+          </button>
+        </div>
+
+        {pulse.list.length === 0 ? (
+          <p className="gn-list-note">
+            Nothing in the next seven days from the calendars we have pulled so far.
+          </p>
+        ) : (
+          <ul className="gn-events">
+            {pulse.list.slice(0, weekendOnly ? 40 : 24).map((e) => {
+              const v = venueName(e.venueId)
+              const d = fmtDay(e.date)
+              return (
+                <li key={e.id}>
+                  <button
+                    type="button"
+                    className="gn-event"
+                    onClick={() => onOpen(`pulse-${e.venueId}`)}
+                  >
+                    <span className="gn-event-date">
+                      <span className="gn-event-dow">{d.dow}</span>
+                      <span className="gn-event-day">{d.day}</span>
+                      <span className="gn-event-mon">{d.mon}</span>
+                    </span>
+                    <span className="gn-event-body">
+                      <span className="gn-event-title">
+                        {e.title}
+                        {e.preseason && <span className="gn-event-pre">preseason</span>}
+                      </span>
+                      <span className="gn-event-venue">
+                        {v ? `${v.name} · ${v.city}, ${v.state}` : e.venueId}
+                      </span>
+                    </span>
+                    <span className={`gn-event-type gn-event-type--${e.type}`}>
+                      {PULSE_TYPE_LABELS[e.type] || e.type}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+
+        {!weekendOnly && pulse.list.length > 24 && (
+          <p className="gn-list-note">
+            Showing the next 24 of {pulse.list.length}. Tap a venue on the map for its full run of
+            dates.
+          </p>
+        )}
+      </div>
+    </section>
+  )
+}
+
 export default function LadsLocalMap() {
   const [activeId, setActiveId] = useState(null)
   const close = useCallback(() => setActiveId(null), [])
 
+  /* ===== THE PULSE =====
+   * `today` is read at RENDER, never at module load. A tab left open overnight
+   * would otherwise keep yesterday's game glowing on the map, which is the
+   * whole failure this layer is built to avoid. */
+  const [weekendOnly, setWeekendOnly] = useState(false)
+  const pulse = useMemo(() => {
+    const today = new Date().toISOString().slice(0, 10)
+    const all = liveEvents(today)
+    const soon = upcoming(7, today)
+    const list = weekendOnly ? soon : all
+    const byVenue = eventsByVenue(list)
+    return {
+      all,
+      soon,
+      list,
+      /* DETROIT PUTS THREE VENUES INSIDE HALF A VIEWBOX UNIT — Comerica, Ford
+       * Field and Little Caesars are genuinely a few hundred metres apart, and
+       * Chicago stacks United Center against Soldier Field the same way. Drawn
+       * raw they collapse into one dot and two of the three become untappable.
+       * Same declustering the candidate pins use: the marker stays on the TRUE
+       * coordinate and only the glyph is pushed onto a ring, with a leader line
+       * back, so a pin never lies about where it is. */
+      pins: spreadClusters(
+        PULSE_VENUES.map((v) => ({
+          ...v,
+          ...project(v.lat, v.lng),
+          events: byVenue.get(v.id) || [],
+        })),
+        { minDist: 15, stackDist: 7 }
+      ),
+    }
+  }, [weekendOnly])
+
   const anchorHit = ANCHORS.find((a) => a.id === activeId)
   const airportHit = AIRPORT_LIST.find((a) => `air-${a.iata}` === activeId)
+  const pulseHit = pulse.pins.find((v) => `pulse-${v.id}` === activeId)
 
   /* One lookup per pin layer. Each layer keeps its own id prefix and its own
      source label, so a panel always names where its facts came from. */
@@ -860,21 +1030,26 @@ export default function LadsLocalMap() {
 
   const active = anchorHit
     ? anchorToPanel(anchorHit)
-    : airportHit
-      ? airportToPanel(airportHit)
-      : clusterHit
-        ? clusterToPanel(clusterHit)
-        : pinHit
-          ? {
-              ...placeToPanel(pinHit, pinLayer),
-              /* The panel is pinned top-right, so opening a pin in the right
+    : pulseHit
+      ? {
+          ...venueToPanel(pulseHit, pulseHit.events),
+          side: pulseHit.gx > VB_W * 0.55 ? 'left' : 'right',
+        }
+      : airportHit
+        ? airportToPanel(airportHit)
+        : clusterHit
+          ? clusterToPanel(clusterHit)
+          : pinHit
+            ? {
+                ...placeToPanel(pinHit, pinLayer),
+                /* The panel is pinned top-right, so opening a pin in the right
                third of the canvas would hide the thing you just tapped and its
                whole cluster with it. Flip the panel to the emptier side.
                Desktop only; the mobile sheet already solves this by shrinking
                the map to the space above it. */
-              side: project(pinHit.lat, pinHit.lng).x > VB_W * 0.55 ? 'left' : 'right',
-            }
-          : null
+                side: project(pinHit.lat, pinHit.lng).x > VB_W * 0.55 ? 'left' : 'right',
+              }
+            : null
   const toggle = useCallback((id) => setActiveId((cur) => (cur === id ? null : id)), [])
 
   return (
@@ -1181,10 +1356,60 @@ export default function LadsLocalMap() {
               <title>{`${c.places[0]?.region || 'This area'} — ${c.places.length} saved places, not yet validated`}</title>
             </g>
           ))}
+          {/* ===== THE PULSE LAYER — drawn last so it sits above everything.
+              A venue with nothing on it renders as a quiet hollow ring rather
+              than vanishing: the room still exists, we just have not pulled its
+              calendar. Hiding it would imply the venue is not there. ===== */}
+          <g className="gn-pulse-layer">
+            {pulse.pins.map((v) => {
+              const n = v.events.length
+              const r = n ? 4.4 + Math.min(n, 12) * 0.17 : 3.2
+              const id = `pulse-${v.id}`
+              return (
+                <g
+                  key={v.id}
+                  className={`gn-pulse${n ? '' : ' is-quiet'}${activeId === id ? ' is-active' : ''}`}
+                  onClick={() => toggle(id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      toggle(id)
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${v.name}, ${v.city} — ${n} upcoming ${n === 1 ? 'date' : 'dates'}`}
+                >
+                  {/* Leader line + true-position tick, drawn only when the
+                      glyph had to move. The tick is where the venue actually
+                      is; the disc is only where its label could fit. */}
+                  {v.spread && (
+                    <>
+                      <line className="gn-pulse-leader" x1={v.x} y1={v.y} x2={v.gx} y2={v.gy} />
+                      <circle className="gn-pulse-true" cx={v.x} cy={v.y} r="1.3" />
+                    </>
+                  )}
+                  {/* The glow. Purely decorative, and the first thing dropped
+                      under prefers-reduced-motion. */}
+                  {!!n && <circle className="gn-pulse-ring" cx={v.gx} cy={v.gy} r={r} />}
+                  {/* Transparent tap target, centred on the drawn glyph. */}
+                  <circle className="gn-pulse-hit" cx={v.gx} cy={v.gy} r="9" />
+                  <circle className="gn-pulse-dot" cx={v.gx} cy={v.gy} r={r} />
+                </g>
+              )
+            })}
+          </g>
         </svg>
 
         <Panel item={active} onClose={close} />
       </div>
+
+      <PulseBoard
+        pulse={pulse}
+        weekendOnly={weekendOnly}
+        setWeekendOnly={setWeekendOnly}
+        onOpen={toggle}
+      />
 
       <CompanionList activeId={activeId} onToggle={toggle} />
     </div>
