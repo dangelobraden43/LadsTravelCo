@@ -589,7 +589,48 @@ function clusterToPanel(c) {
  * It also carries the places that CANNOT be pinned. A spot with no coordinate
  * is not a spot we hide; it is named here, under a heading that says exactly
  * why it is not on the map. */
-function ListRow({ item, id, activeId, onToggle, meta }) {
+/* A ROW HAS TO CARRY INFORMATION, NOT JUST A NAME.
+ *
+ * This list previously rendered a name and a type and nothing else, which made
+ * a page of 97 places that told a reader nothing about any of them. Every row
+ * now carries a real second line — but WHICH line depends on where the words
+ * came from, and the two are never mixed:
+ *
+ *   variant="lads"   Our own description, written from a visit. Michigan spots
+ *                    carry these in michigan.js and they are firsthand.
+ *   variant="google" Google's own category, rating, review count and price
+ *                    band, captured by provenance and LABELLED as Google's.
+ *                    We do not score a place we have not been to.
+ *
+ * ⛔ THE RATING FIELDS ARE NOT THE SAME NUMBER AND MUST NEVER SHARE A COMPONENT
+ * PATH. michigan.js `rating` is the LADS rating out of 10; Google's is out of
+ * 5. Rendering both through one "★" would publish a Lads 9.2 as though a third
+ * party said it. The variant is passed explicitly by the caller — which knows
+ * which dataset it is holding — rather than sniffed from the fields, because
+ * guessing here is exactly how the two would eventually blur.
+ *
+ * 🚩 BRUCE DELIBERATELY GETS THE GOOGLE LINE ONLY. Its `note` field mixes
+ * reader-facing geography ("boat access only from Tobermory harbour") with
+ * internal data provenance ("a duplicate saved entry was dropped"), and nothing
+ * in the data separates the two. Publishing them raw would leak our own
+ * bookkeeping onto the page. Real Bruce descriptions are a genuine gap and want
+ * the enrichment pass, not a regex. */
+function ListRow({ item, id, activeId, onToggle, meta, variant }) {
+  const blurb = variant === 'lads' ? item.note || item.description || null : null
+
+  const googleBits = []
+  if (variant === 'google') {
+    if (item.googleCategory) googleBits.push(item.googleCategory)
+    if (Number.isFinite(item.rating)) {
+      googleBits.push(
+        Number.isFinite(item.reviews)
+          ? `${item.rating}★ (${item.reviews.toLocaleString()})`
+          : `${item.rating}★`
+      )
+    }
+    if (item.price) googleBits.push(item.price)
+  }
+
   return (
     <li>
       <button
@@ -604,6 +645,13 @@ function ListRow({ item, id, activeId, onToggle, meta }) {
         <span className="gn-row-body">
           <span className="gn-row-name">{item.name}</span>
           <span className="gn-row-meta">{meta}</span>
+          {blurb && <span className="gn-row-blurb">{blurb}</span>}
+          {!!googleBits.length && (
+            <span className="gn-row-google">
+              <span className="gn-row-google-tag">Google</span>
+              {googleBits.join(' · ')}
+            </span>
+          )}
         </span>
       </button>
     </li>
@@ -611,14 +659,47 @@ function ListRow({ item, id, activeId, onToggle, meta }) {
 }
 
 function CompanionList({ activeId, onToggle }) {
-  const candByRegion = useMemo(() => {
+  /* CATEGORY TOGGLES. Grand Rapids alone is 32 rows, and an undifferentiated
+   * run of 32 bar names is precisely what made this list unusable — you could
+   * not find the breweries in it, or the golf, or the wineries.
+   *
+   * Every type here comes from the data: `type` is stored on the candidates and
+   * the Bruce places, and derived by michiganType() for Michigan spots. Nothing
+   * in this filter invents a category, and the counts are walked from the
+   * arrays rather than typed, so they cannot drift. */
+  const [typeFilter, setTypeFilter] = useState('all')
+
+  const filters = useMemo(() => {
+    const counts = new Map()
+    const bump = (t) => t && counts.set(t, (counts.get(t) || 0) + 1)
+    MICHIGAN_PINS.forEach((p) => bump(p.type))
+    MICHIGAN_UNPINNED.forEach((s) => bump(michiganType(s)))
+    BRUCE_PLACES.forEach((p) => bump(p.type))
+    MIDWEST_CANDIDATES.forEach((p) => bump(p.type))
+    return [...counts.entries()].sort((a, b) => b[1] - a[1])
+  }, [])
+
+  const totalPlaces =
+    MICHIGAN_PINS.length +
+    MICHIGAN_UNPINNED.length +
+    BRUCE_PLACES.length +
+    MIDWEST_CANDIDATES.length
+
+  const keep = (t) => typeFilter === 'all' || t === typeFilter
+
+  const michPins = MICHIGAN_PINS.filter((p) => keep(p.type))
+  const michUnpinned = MICHIGAN_UNPINNED.filter((s) => keep(michiganType(s)))
+  const brucePlaces = BRUCE_PLACES.filter((p) => keep(p.type))
+  const candidates = MIDWEST_CANDIDATES.filter((p) => keep(p.type))
+
+  const candByRegion = (() => {
     const m = new Map()
-    MIDWEST_CANDIDATES.forEach((p) => {
+    candidates.forEach((p) => {
       if (!m.has(p.region)) m.set(p.region, [])
       m.get(p.region).push(p)
     })
     return [...m.entries()]
-  }, [])
+  })()
 
   const typeOf = (p) => PIN_TYPE_LABELS[p.type] || p.type || 'Place'
 
@@ -634,13 +715,35 @@ function CompanionList({ activeId, onToggle }) {
           more &mdash; saved, not visited, and we will not pretend otherwise.
         </p>
 
+        <div className="gn-filters" role="group" aria-label="Filter places by type">
+          <button
+            type="button"
+            className={`gn-filter${typeFilter === 'all' ? ' is-on' : ''}`}
+            aria-pressed={typeFilter === 'all'}
+            onClick={() => setTypeFilter('all')}
+          >
+            Everything <span className="gn-count">{totalPlaces}</span>
+          </button>
+          {filters.map(([type, n]) => (
+            <button
+              key={type}
+              type="button"
+              className={`gn-filter${typeFilter === type ? ' is-on' : ''}`}
+              aria-pressed={typeFilter === type}
+              onClick={() => setTypeFilter(typeFilter === type ? 'all' : type)}
+            >
+              {PIN_TYPE_LABELS[type] || type} <span className="gn-count">{n}</span>
+            </button>
+          ))}
+        </div>
+
         <div className="gn-list-cols">
           <div className="gn-list-col">
             <h3 className="gn-list-sub">
-              Michigan &mdash; validated <span className="gn-count">{MICHIGAN_PINS.length}</span>
+              Michigan &mdash; validated <span className="gn-count">{michPins.length}</span>
             </h3>
             <ul className="gn-rows">
-              {MICHIGAN_PINS.map((p) => (
+              {michPins.map((p) => (
                 <ListRow
                   key={makePinId(PIN_PREFIX, p)}
                   id={makePinId(PIN_PREFIX, p)}
@@ -648,13 +751,14 @@ function CompanionList({ activeId, onToggle }) {
                   activeId={activeId}
                   onToggle={onToggle}
                   meta={typeOf(p)}
+                  variant="lads"
                 />
               ))}
             </ul>
 
             <h3 className="gn-list-sub">
               Michigan &mdash; validated, not yet placeable{' '}
-              <span className="gn-count">{MICHIGAN_UNPINNED.length}</span>
+              <span className="gn-count">{michUnpinned.length}</span>
             </h3>
             <p className="gn-list-note">
               We have been to all of these. They are absent from the map because we do not yet hold
@@ -663,12 +767,18 @@ function CompanionList({ activeId, onToggle }) {
               together when that list arrives.
             </p>
             <ul className="gn-rows gn-rows--static">
-              {MICHIGAN_UNPINNED.map((s) => (
+              {michUnpinned.map((s) => (
                 <li key={s.name} className="gn-row gn-row--static">
                   <span className="gn-row-tier gn-row-tier--gold" />
                   <span className="gn-row-body">
                     <span className="gn-row-name">{s.name}</span>
                     <span className="gn-row-meta">{s.area || 'Michigan'}</span>
+                    {/* These are validated spots, so they carry our own words.
+                        Missing a coordinate is not a reason to withhold what we
+                        know about a place we have actually been to. */}
+                    {(s.description || s.notes) && (
+                      <span className="gn-row-blurb">{s.description || s.notes}</span>
+                    )}
                   </span>
                 </li>
               ))}
@@ -678,10 +788,10 @@ function CompanionList({ activeId, onToggle }) {
           <div className="gn-list-col">
             <h3 className="gn-list-sub">
               Bruce Peninsula &amp; Lake Huron shore{' '}
-              <span className="gn-count">{BRUCE_PLACES.length}</span>
+              <span className="gn-count">{brucePlaces.length}</span>
             </h3>
             <ul className="gn-rows">
-              {BRUCE_PLACES.map((p) => (
+              {brucePlaces.map((p) => (
                 <ListRow
                   key={makePinId(PIN_PREFIX, p)}
                   id={makePinId(PIN_PREFIX, p)}
@@ -689,6 +799,7 @@ function CompanionList({ activeId, onToggle }) {
                   activeId={activeId}
                   onToggle={onToggle}
                   meta={typeOf(p)}
+                  variant="google"
                 />
               ))}
             </ul>
@@ -696,8 +807,7 @@ function CompanionList({ activeId, onToggle }) {
 
           <div className="gn-list-col">
             <h3 className="gn-list-sub">
-              On the list, not yet walked{' '}
-              <span className="gn-count">{MIDWEST_CANDIDATES.length}</span>
+              On the list, not yet walked <span className="gn-count">{candidates.length}</span>
             </h3>
             <p className="gn-list-note">
               Saved by us, researched, and honestly unvisited. Where a rating shows in the panel it
@@ -718,6 +828,7 @@ function CompanionList({ activeId, onToggle }) {
                       activeId={activeId}
                       onToggle={onToggle}
                       meta={typeOf(p)}
+                      variant="google"
                     />
                   ))}
                 </ul>

@@ -529,8 +529,13 @@ export const MIDWEST_CANDIDATES = [
     googleCategory: null,
     rating: null,
     reviews: null,
-    price: '5301 Northland Dr NE, Grand Rapids',
-    address: null,
+    /* FIELD-SHIFT BUG, caught Sept 2 2026 when the list started rendering price
+       bands. The address had been captured into `price`, so this entry would
+       have published "5301 Northland Dr NE, Grand Rapids" to a reader as its
+       price band. Moved to the field it belongs in; no price band was captured
+       for this place, so it stays null rather than being guessed. */
+    price: null,
+    address: '5301 Northland Dr NE, Grand Rapids',
     validated: false,
     validatedBy: null,
     visitedDate: null,

@@ -125,9 +125,8 @@ export default function LocalPage() {
               <span className="local-h1-dot">·</span> Good News
             </h1>
             <p className="local-lede">
-              The Midwest, mapped by two people who drove it. Gold pins are places we walked into.
-              Copper pins are places on our list that we have not &mdash; and we would rather show
-              you the difference than quietly blur it.
+              Breweries, wineries, food and golf across the Midwest. Gold pins are places we have
+              been. Copper pins are on the list and not visited yet.
             </p>
             <ul className="local-key" aria-label="What the pin colours mean">
               <li>
