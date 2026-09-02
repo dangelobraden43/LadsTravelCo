@@ -5,6 +5,7 @@ import MapPins, { placeToPanel, makePinId, spreadClusters, PIN_TYPE_LABELS } fro
 import { BRUCE_PLACES, BRUCE_SOURCE } from './data/brucePeninsula'
 import { MIDWEST_CANDIDATES, MIDWEST_CANDIDATES_SOURCE } from './data/midwestCandidates'
 import michigan from './data/michigan'
+import { GOOD_VIEWS, GOLF_SLATE, GOLF_SOURCE, BEST_OF_CHECKED_ON } from './data/localBestOf'
 import {
   PULSE_VENUES,
   PULSE_TYPE_LABELS,
@@ -410,14 +411,23 @@ const CLUSTER_CLEAR = 27
  *
  * ORDER WITHIN THE ARRAY IS DRAW ORDER: candidates first, validated last, so
  * where two still coincide the validated record is the one on top. */
-const ALL_PINS = [...CANDIDATE_LOOSE, ...BRUCE_PLACES, ...MICHIGAN_PINS]
+/* GOOD VIEWS joins as a fourth pin layer. It is the layer that finally puts
+   something in Minnesota, Wisconsin, Illinois, Indiana and Ohio — until now the
+   map had five states of empty ground and a note about it. Copper throughout:
+   these are landmarks we have researched, not places we have walked. */
+const ALL_PINS = [...CANDIDATE_LOOSE, ...BRUCE_PLACES, ...MICHIGAN_PINS, ...GOOD_VIEWS]
 
 const PIN_SOURCE = (place) =>
   BRUCE_PLACES.includes(place)
     ? { idPrefix: PIN_PREFIX, sourceLabel: BRUCE_SOURCE.label }
     : MICHIGAN_PINS.includes(place)
       ? { idPrefix: PIN_PREFIX, sourceLabel: 'Lads Michigan framework — validated firsthand' }
-      : { idPrefix: PIN_PREFIX, sourceLabel: MIDWEST_CANDIDATES_SOURCE.label }
+      : GOOD_VIEWS.includes(place)
+        ? {
+            idPrefix: PIN_PREFIX,
+            sourceLabel: 'Researched landmarks — coordinates from published records, not visited',
+          }
+        : { idPrefix: PIN_PREFIX, sourceLabel: MIDWEST_CANDIDATES_SOURCE.label }
 
 const drawnPositions = (places, prefix) =>
   spreadClusters(
@@ -718,6 +728,7 @@ function CompanionList({ activeId, onToggle }) {
     MICHIGAN_UNPINNED.forEach((s) => bump(michiganType(s)))
     BRUCE_PLACES.forEach((p) => bump(p.type))
     MIDWEST_CANDIDATES.forEach((p) => bump(p.type))
+    GOOD_VIEWS.forEach((p) => bump(p.type))
     return [...counts.entries()].sort((a, b) => b[1] - a[1])
   }, [])
 
@@ -725,10 +736,12 @@ function CompanionList({ activeId, onToggle }) {
     MICHIGAN_PINS.length +
     MICHIGAN_UNPINNED.length +
     BRUCE_PLACES.length +
-    MIDWEST_CANDIDATES.length
+    MIDWEST_CANDIDATES.length +
+    GOOD_VIEWS.length
 
   const keep = (t) => typeFilter === 'all' || t === typeFilter
 
+  const goodViews = GOOD_VIEWS.filter((p) => keep(p.type))
   const michPins = MICHIGAN_PINS.filter((p) => keep(p.type))
   const michUnpinned = MICHIGAN_UNPINNED.filter((s) => keep(michiganType(s)))
   const brucePlaces = BRUCE_PLACES.filter((p) => keep(p.type))
@@ -825,6 +838,60 @@ function CompanionList({ activeId, onToggle }) {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="gn-list-col">
+            <h3 className="gn-list-sub">
+              Good Views <span className="gn-count">{goodViews.length}</span>
+            </h3>
+            <p className="gn-list-note">
+              The landmarks the region is known for, across all six states. Researched, not walked
+              &mdash; every one is copper and none carries a verdict from us. Coordinates come from
+              published records, checked {BEST_OF_CHECKED_ON}.
+            </p>
+            <ul className="gn-rows">
+              {goodViews.map((p) => (
+                <ListRow
+                  key={makePinId(PIN_PREFIX, p)}
+                  id={makePinId(PIN_PREFIX, p)}
+                  item={{ ...p, note: p.what }}
+                  activeId={activeId}
+                  onToggle={onToggle}
+                  meta={`${p.region} · ${p.state}`}
+                  variant="lads"
+                />
+              ))}
+            </ul>
+
+            <h3 className="gn-list-sub">
+              The golf slate <span className="gn-count">{GOLF_SLATE.length}</span>
+            </h3>
+            <p className="gn-list-note">
+              🚩 <strong>This ranking is Golfweek&rsquo;s, not ours.</strong> Their 2026 list of
+              Michigan&rsquo;s top 20 public courses, reported with attribution &mdash; a smaller
+              claim than a recommendation. We have played two of the twenty and those two are
+              marked. None are on the map yet: golf courses have no published coordinate records,
+              and geocoding twenty course names is exactly the mistake that rule exists to stop.
+            </p>
+            <ol className="gn-golf">
+              {GOLF_SLATE.map((g) => (
+                <li key={g.rank} className="gn-golf-row">
+                  <span className="gn-golf-rank">{g.rank}</span>
+                  <span className="gn-golf-body">
+                    <span className="gn-row-name">{g.name}</span>
+                    <span className="gn-row-meta">{g.town}</span>
+                  </span>
+                  {g.ladsPlayed && <span className="gn-golf-played">We&rsquo;ve played it</span>}
+                </li>
+              ))}
+            </ol>
+            <p className="gn-list-note">
+              Source:{' '}
+              <a href={GOLF_SOURCE.url} target="_blank" rel="noopener noreferrer">
+                {GOLF_SOURCE.label}
+              </a>
+              . Checked {GOLF_SOURCE.checkedOn}.
+            </p>
           </div>
 
           <div className="gn-list-col">
