@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 1, 2026
+## Last Updated: September 2, 2026
 
 ---
 
@@ -18,10 +18,13 @@ Canonical total: **220 spots · 13 validated cities · 10 countries · 3 contine
 ⭐ **READ `THE VISION AND THE TIMELINE` FIRST** — it is the plan everything
   serves. Then `THE NEW FRAMEWORK AGENDA`, which is the September build slate.
 Peru completed. Ford started May 18.
-LIVE: `/good-news` — full MIDWEST map (MN·WI·MI·IL·IN·OH), three pin
-  tiers (roots anchors · city context · airports). Unlinked from nav,
-  `noindex`, reachable by URL. Phases 1–3 done; Phase 4 pins pending
-  Dawson's data. See MIDWEST MAP RUNWAY + TOMORROW'S QUEUE.
+LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
+  (MN·WI·MI·IL·IN·OH + the Ontario shore) as the page hero, under the banner
+  identity **"Good Brews · Good Views · Good News"**. Indexed, in nav, with a
+  companion list beside it. **83 markers: 25 gold validated · 58 copper
+  candidates**, plus 14 validated-but-unplaceable spots named in the list only.
+  ⛔ **`/good-news` is RETIRED** — it permanently redirects to `/local`. Do not
+  re-add its route or its rewrite.
 LIVE: `/privacy` + footer affiliate disclosure.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
@@ -246,6 +249,130 @@ GOAL: team merch samples ordered + a full array of products ready to sell.
 BRING TOMORROW (Brady): Printify login + payout set · price per product ·
 exact proceeds wording · team sample sizes/colors · ship-by math vs
 July 25–26 (POD ~1–2.5 weeks, so order samples ASAP).
+
+---
+
+## WHAT WAS BUILT (September 2, 2026 — /local graduates, the Bruce ruling, the vision)
+
+**4 commits, all pushed.** `5734c6a` Michigan coords + 220 · `e0cff0d` Bruce ruling ·
+`8ebb137` the vision + timeline · `b84652d` the /local graduation.
+
+### BLOCK 3 IS DONE — `/local` IS THE MAP
+
+The map is the hero, "Good Brews · Good Views · Good News" is its banner identity, and
+**`/good-news` now permanently redirects to `/local`** (vercel.json redirect + a
+client-side `<Navigate replace>`; its rewrite is gone and its `noindex` went with it).
+`GoodNews.jsx` keeps its filename but its default export is now `LadsLocalMap` — a
+section, not a page. `LocalPage.jsx` owns Nav, hero, SEO and Footer.
+
+**83 markers in three tiers:** 25 gold (17 Bruce + 8 Michigan) · 58 copper candidates ·
+14 Michigan spots that are validated but **unplaceable** and stay off the canvas.
+
+### 🔑 THE NAMES HAD TO BE RE-READ, AND IT MATTERED
+
+`internal/brady/maps-lists-2026-08-29.txt` had punctuation flattened by the shell
+encoding limit. Building the candidate file from it would have published **"Graydons
+Crossing", "OTooles", "Big Es", "Kusterer Brauhaus"** and four `and Grill` for `& Grill`.
+
+**The method that fixed it, and it is reusable:** convert the captured decimal feature-ID
+pair to hex and open `https://www.google.com/maps/place//data=!4m2!3m1!1s<hex>:<hex>` in
+the signed-in browser, then read the `h1`. That **follows the ID, never resolves a
+string**, so the Tivoli rule still holds. It restored `O'Toole's Public House`,
+`Big E's Sports Grill`, `Küsterer Brauhaus`, `Mo's Cocktail Lounge`.
+⛔ **Never build a data file from the ASCII staging text.** This is the second time that
+rule has paid for itself.
+
+### 🚩 THE MAP RENDERED PERFECTLY AND WAS QUIETLY BROKEN — five dead click targets
+
+Screenshots showed nothing wrong. **Clicking every marker at 1440 and 390 found five
+separate defects**, three of them pre-existing:
+
+1. **Decorative geometry was eating clicks.** `.gn-anchor-halo` (r=16, more than twice
+   the 7px dot), `.mp-halo` (r = pin × 2.1), `.mp-leader`, `.mp-truth` and the cluster
+   leader all accepted pointer events. Short's Pull Barn's halo was covering the centre
+   of The Chief Golf Course; the GVSU halo killed the Grand Rapids cluster outright.
+   All are now `pointer-events: none`.
+2. **The anchors had no hit target of their own** once the halo went inert — an SVG `<g>`
+   has no fill, so there was nothing under the middle of it. They now carry an explicit
+   transparent `.gn-anchor-hit` circle.
+3. **Three pin layers each declustered only against themselves.** Journeyman Distillery
+   (Michigan, gold) and Redamak's (candidate, copper) are real neighbours ~8 km apart,
+   never saw each other, and Journeyman's disc sat on Redamak's so that pin took **no
+   clicks at all**. All pins now share ONE `<MapPins>` layer and decluster together.
+4. **Anchors render BELOW the pins** — a specific validated place should win a tap over a
+   campus marker.
+5. Result, re-verified: **3/3 clusters · 2/2 anchors · 9/9 airports · 32/32 pins**, both
+   widths.
+
+**The lesson, worth more than the fixes: a rendering check is not a verification.** Build
++ screenshots was the standing pattern here and it would have shipped a map whose pins
+did nothing. **Click the things.**
+
+### THE DENSE-CITY COLLAPSE — and why minDist 34 was reverted
+
+32 of the 58 candidates are Grand Rapids bars within a few viewBox units. Raising
+`minDist` 20 → 34 fanned that one city across ~190 units and **put Grand Rapids breweries
+in Lake Michigan**. Leader lines meant it was not strictly lying, but nobody reads a
+leader line before they read a position.
+
+So `minDist` went back to **22**, and any group of **6+ within 18 units collapses to ONE
+copper marker at its real centroid carrying the count**, whose panel names every member.
+Today that is Grand Rapids 32, Northern Michigan 10, Chicago & Harbor Country 9.
+The marker searches outward for clear ground and **prefers land over water** (tested
+against the same traced state polygons via `window.Path2D`), with a leader line and a
+truth dot wherever it is offset.
+
+### THE 44px RULING — it cannot be met on the canvas, and the file says so
+
+At 390px the map scales to ~0.37. Even well-spread neighbours sit **~13 CSS px** apart, so
+a 44px target would swallow them and make them unreachable — a regression dressed as a
+fix. Measured: pin hit target **13px**, companion-list row **53px × 335px**.
+
+➡️ **The companion list IS the 44px surface.** Every pin appears in it as a full-width,
+keyboard-reachable row wired to the same panel, plus the 14 unplaceable Michigan spots
+under a heading saying why they are not on the map. Do not "fix" the pins by enlarging
+them; the real fix is a zoomed Michigan view or pinch-zoom, and neither is faked.
+
+### NEW FILE: `src/data/midwestCandidates.js` — 58 candidates, research tier
+
+From GR Bars (37) + Northern MI (17) + CHI/New Buffalo (15) = 69 ingested, minus:
+- **2 closed** — Graydon's Crossing, Flanagan's Irish Pub. Still Temporarily closed on
+  Google today. **Suppressed entirely, not greyed.**
+- **8 already validated in `michigan.js`** — deduped on feature ID so no venue appears
+  twice claiming two tiers at once.
+- **1 unverifiable** — **Grandview Golf Club**'s feature ID no longer resolves to a place
+  (falls back to a bare map). Its Aug 29 record was already the thinnest in the set: no
+  category, rating, reviews or address. Left out rather than shipped as a name we can no
+  longer stand behind, and recorded in the file header.
+
+Every entry is `validated: false`, carries **no** Lads rating, take or description, and
+its Google category/rating is labelled as **Google's** wherever it renders.
+📐 **No canonical count change — 220 stands.** Candidates carry no `description`, so the
+live-walk counter never sees them and the 300+ gate is untouched.
+
+### ALSO FIXED THIS SESSION
+
+- **`.globe-hint` 320px overflow — CLOSED.** It rendered ~318px wide and pushed the whole
+  homepage sideways on a 305px viewport. Now capped to the viewport and wrapping below
+  360px. Homepage at 320: `scrollWidth` **312**, no horizontal scroll.
+- **`thailand` + `charleston` removed from the sitemap.** Retired Aug 13, they had been
+  pointing search engines at two 404s for three weeks.
+- **Michigan card copy.** "Every region across both peninsulas, validated" is gone —
+  unsupportable at 8-of-22 coordinates. It now states the real numbers.
+- Mobile map fills the viewport width instead of centring in dead space.
+- New pin types `bar` and `winery` in MapPins — 17 candidates are Bars/Pubs/Lounges and
+  giving them the brewery mug would have stated a brewery where Google says bar.
+
+### ⚠️ TOOLING: `io.open(p, 'w')` TRUNCATED CLAUDE.md TO ZERO BYTES
+
+A Python patch script opened CLAUDE.md for writing and *then* hit a `UnicodeEncodeError`
+on a lone-surrogate escape (`🚩` for 🚩). The open had already truncated the
+file; 1,678 lines were gone. Recovered with `git checkout --`, because the previous
+commit existed.
+**Rule going forward: build the whole string, `.encode('utf-8')` it, write to a TEMP
+file, then `os.replace`.** Never open the real file for writing until the bytes exist.
+Also: rolldown **rejects astral-plane characters in source** — `🔑` in a JSX comment
+failed the build with `Invalid Character`. Emoji are fine in .md, not in .jsx.
 
 ---
 
@@ -736,29 +863,33 @@ data is pending), never a month that has already passed.
 
 ---
 
-## 📍 SESSION START STATE — verified Aug 31, 2026
+## 📍 SESSION START STATE — verified September 2, 2026
 
 **Working tree clean. `main` == `origin/main`. Nothing pending `/ship`.**
-Last commits: `a3288e9` + `088b539`, both **Aug 29 22:11–22:12**.
+Last commits: `5734c6a`, `e0cff0d`, `8ebb137`, `b84652d` — all Sept 1–2, all pushed,
+deploy confirmed READY on ladstravel.com.
 
-⚠️ **AUGUST 30 WAS A NO-OP DAY — zero commits.** The Aug 29 session ended immediately
-after announcing the Block 3 build, so **the /local build never started.** Nothing
-against Block 3 or Block 4 exists in the repo. Both remain APPROVED-BUT-UNBUILT below.
-(This is the second time a queue outlived its session — Aug 26 was the same. When a
-session ends mid-intent, say so in the record rather than leaving an announced build
-looking done.)
+**✅ What IS live:** the Jan 1 2027 vision + quality gates in this file · the Bruce
+ruling (all 17 gold) · Michigan coordinates and the 219 → 220 move · **`/local` as the
+map**, with `/good-news` redirecting into it.
 
-**✅ What IS live:** the Vienna split (10 frameworks, 219 verified), the Aug-29 record
-corrections, and the September build queue.
-
-**🚩 `/good-news` currently rewrites to `/` in `vercel.json:21` — it is NOT yet the
-approved `/local` redirect.** That is part of the unbuilt Block 3.
+🚩 **STILL OPEN, needs Brady:** the site says **"LAUNCHING FALL 2026" in seven places**
+and it is now Fall 2026. Listed with file and line under THE VISION AND THE TIMELINE.
+Public launch-date copy is a founder decision, so it was deliberately not rewritten.
 
 ---
 
-## ✅ APPROVED BUILDS (Brady, Aug 29, 2026) — not yet built
+## ✅ APPROVED BUILDS (Brady, Aug 29, 2026)
 
-### BLOCK 3 — /local GRADUATION — **APPROVED AS PROPOSED**
+### BLOCK 3 — /local GRADUATION — ✅ **BUILT AND SHIPPED Sept 2, 2026**
+
+> Everything below was the approved spec; see `WHAT WAS BUILT (September 2, 2026)`
+> for what actually shipped and the four places reality differed from the plan:
+> the unpinnable count is **14, not 13** (Elk Rapids moved michigan 21 → 22); the
+> candidate count is **58, not 69** (closed, deduped and unverifiable records were
+> removed); dense cities **collapse to a count marker** rather than fanning out; and
+> the **44px target is met by the companion list, not by the pins**, because it
+> cannot be met on the canvas at this zoom.
 
 `/local` becomes the map-as-hero experience. Proposal artifact:
 `https://claude.ai/code/artifact/024e7bb9-bcf6-4c15-85bc-16b1d29778a8`
@@ -784,7 +915,7 @@ approved `/local` redirect.** That is part of the unbuilt Block 3.
   JSON-LD, an OG image, and the `.globe-hint` 320px overflow fix.
 - **Hop Passport is THIRD-PARTY.** Attribute as such; invent none of its rules or branding.
 
-### BLOCK 4 — TRAVEL WINDOWS — **APPROVED**
+### BLOCK 4 — TRAVEL WINDOWS — **APPROVED, NOT YET BUILT — THIS IS NEXT**
 
 🔑 **THE FINDING: 9 of 10 frameworks already carry `timingWindows`. ZERO render it.**
 `FrameworkPage.jsx` consumes 14 data keys and that is not one of them. ~24 windows of
@@ -867,11 +998,17 @@ per-spot validation pass; the total is not 219 + 59 by default.
 ⚠️ `Oz Poolside Bar` and `Oz Hotel and Sport Bar` share an identical coordinate — pins
 will stack, declustering required.
 
-### 4 — BRUCE PENINSULA (geocoded, blocked on Brady)
+### 4 — BRUCE PENINSULA (geocoded, ✅ visited-split RESOLVED)
 
-17 places geocoded by provenance in `src/data/brucePeninsula.js`, plus Brady's Aug 8–12
-trip. **❌ STILL AWAITING THE VISITED-SPLIT** — 18 of 19 ship `validated: false` and
-every pin renders copper. That is CORRECT, not a bug. Do not flip wholesale.
+17 places geocoded by provenance in `src/data/brucePeninsula.js`, from Brady's Aug 8–12
+trip. ✅ **RULED Sept 1, 2026: he visited ALL 17.** They carry
+`validated: true / validatedBy: 'Brady' / visitedDate: '2026-08'` and render **gold**
+on `/local`. `BRUCE_SOURCE` records `validationRuledOn` and `validationBasis`.
+⚠️ **That was a RULING, not an inference.** The standing rule is unchanged for every
+other list: a saved list is a SUPERSET of a trip and is never flipped wholesale on its
+own. This one was, because the founder said the two sets are identical here.
+➡️ Still needs its own framework build — pins are not a published framework, and no
+Bruce spot carries a description, so none of them touch the canonical 220.
 
 ### 5 — VANCOUVER (pure research tier — the pipeline showcase)
 
