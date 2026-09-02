@@ -363,6 +363,36 @@ live-walk counter never sees them and the 300+ gate is untouched.
 - New pin types `bar` and `winery` in MapPins — 17 candidates are Bars/Pubs/Lounges and
   giving them the brewery mug would have stated a brewery where Google says bar.
 
+### 🚩 THE WHOLE SITE WAS CANONICALISING TO THE HOMEPAGE — found AFTER deploy, FIXED
+
+Checking the live `/local` (not the local build) showed `canonical` =
+`https://ladstravel.com/`, not `/local`. Cause: **`index.html` carried a hard-coded
+canonical**, which every SPA route inherited, so each page shipped **TWO** canonicals —
+the shell's homepage one plus its own. Two conflicting canonicals is undefined behaviour
+and commonly resolves to the first, so `/local`, `/outdoors`, `/bucket-list`, `/shop` and
+`/privacy` were all telling search engines they were duplicates of the front page.
+
+**Worse: the 10 framework routes had NO canonical of their own at all**, so `/dublin`,
+`/spain`, `/rome`, `/michigan` and the rest inherited the homepage one outright. The
+entire framework catalogue was self-reporting as duplicate content.
+
+Fixed in `f87aa79`: the static tag is gone from `index.html` (with a comment saying why
+it must not return), the homepage declares its own in `App.jsx`, and `FrameworkPage.jsx`
+emits `canonical` + `og:url` per framework from `data.id`. **Verified on 9 routes locally
+and 4 in production: exactly one canonical each, and the right one.**
+
+⛔ **Never put a canonical in `index.html`.** In an SPA it is not a default, it is an
+override on every route.
+
+### ⚠️ `src/utils/seo.js` HAD A BANNED "FREE" CLAIM — dead, but loaded
+
+`SEO_DEFAULTS.description` still read *"Free personal travel consulting through 2026.
+650+ validated spots across 20+ cities."* — a banned "free" claim plus a count that never
+matched canonical (220 / 13). `image` pointed at **ladstravel.CO**, not our domain.
+**Only `siteName` is consumed, so nothing live was wrong.** Replaced anyway: it was one
+wire-up away from putting a banned claim in a meta tag. The May-31 "free" purge cleaned
+visible copy and missed this, the same way it missed the JSON-LD `priceRange` in August.
+
 ### ⚠️ TOOLING: `io.open(p, 'w')` TRUNCATED CLAUDE.md TO ZERO BYTES
 
 A Python patch script opened CLAUDE.md for writing and *then* hit a `UnicodeEncodeError`
