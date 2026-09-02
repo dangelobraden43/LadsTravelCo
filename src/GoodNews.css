@@ -1069,3 +1069,9 @@
 .gn-list-note a:hover {
   color: var(--gold);
 }
+
+.gn-depth-note {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--copper);
+}

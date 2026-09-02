@@ -985,6 +985,14 @@ function PulseBoard({ pulse, weekendOnly, setWeekendOnly, onOpen }) {
               What is actually on. {pulse.soon.length} in the next seven days, {pulse.all.length}{' '}
               ahead of us in all. Read from each league or club&rsquo;s own schedule on{' '}
               {PULSE_CHECKED_ON} &mdash; we list no prices and sell no tickets.
+              {/* HONEST DEPTH, STATED ON THE PAGE. Chicago and Milwaukee have their
+                  event calendars and nothing else yet. Saying so is the whole
+                  difference between a preview and a bluff. */}
+              <br />
+              <span className="gn-depth-note">
+                Chicago and Milwaukee are here for their fixtures only so far &mdash; the full city
+                guides are still being built, and we would rather show you the gap than dress it up.
+              </span>
             </p>
           </div>
           <button
