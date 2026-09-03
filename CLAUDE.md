@@ -25,6 +25,13 @@ LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   candidates**, plus 14 validated-but-unplaceable spots named in the list only.
   ⛔ **`/good-news` is RETIRED** — it permanently redirects to `/local`. Do not
   re-add its route or its rewrite.
+  🔵 **ON `feature/travel-windows`, NOT YET ON PRODUCTION:** `/local` grows to
+  **113 places** (adds 16 Good Views across all six states) plus **THE LIVE
+  PULSE** — 58 sourced events at 9 venues with a This Weekend filter — and
+  Golfweek's cited top-20 golf slate. Every framework also gains a **"When to
+  Go"** section and Dublin/Spain gain **Flight Intelligence**. The numbers in
+  this STATUS block describe PRODUCTION; see the Sept 2 evening section for the
+  branch. Do not merge the two figures until the branch ships.
 LIVE: `/privacy` + footer affiliate disclosure.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
@@ -180,6 +187,126 @@ Concretely, in this order, every session:
    push succeeded.
 5. If a session ends mid-intent, **say so in the record** rather than leaving an
    announced build looking done.
+
+### 🔒 CHECKPOINT COMMITS + AUTO-PUSH — STANDING RULE, effective September 2, 2026
+
+**Every verified phase commits to the feature branch AND pushes immediately.**
+Not at the end of the session. Not once the whole block is done. **The moment a
+phase verifies, it is committed and pushed.**
+
+- Work happens on a **feature branch** (`feature/<thing>`). `/ship` remains the
+  **only** merge to `main` — that gate does not move.
+- **Nothing ever lives only on this machine again.** A phase that builds clean but
+  is not pushed is not finished, it is at risk.
+- A checkpoint commit need not be a shippable increment. It needs to be **true** —
+  a real state of the work with an honest message. Half-built is fine in a
+  checkpoint; *misdescribed* is not.
+
+**WHY THIS RULE EXISTS — four incidents, and the fourth was not discipline:**
+Aug 26 (a queue outlived its session), Aug 28 (data commits landed after the docs
+commit meant to record them), Aug 31 (the Michigan/220 work sat uncommitted
+overnight), and **Sept 2 — the machine lost power at ~13:38 with the entire Block 3
+build unstaged.** The first three were discipline failures. The fourth was a power
+cut, which is the whole point: **discipline is not what protects the work, pushing
+is.** Block 3 survived only because the files happened to still be on disk.
+
+⚠️ **CONCURRENCY IS REAL — Sept 2 proved it.** Two sessions worked this repo the same
+afternoon. One committed, pushed and deployed Block 3 while another was mid-write on
+a CLAUDE.md record describing that same work as uncommitted, and would have merged a
+branch reintroducing "BUILT BUT NOT COMMITTED" as fact. **Before writing any status
+into CLAUDE.md, re-read `git log` and `git status` — never describe the repo from
+memory of how you left it.** A confident stale record is worse than no record.
+
+➡️ **Corollary for parallel work:** a second session builds in a **worktree on its
+own branch** (see Parallel Agent Workflow at the foot of this file), never in the
+shared checkout someone else is serving localhost from.
+
+---
+
+## 🔴 SEPTEMBER 2, 2026 (evening) — /local BECAME A PLATFORM. Branch: `feature/travel-windows`
+
+✅ **BRADY REVIEWED AND SIGNED OFF, evening of Sept 2:** *"I looked it over and I
+am satisfied for the day… this was an amazing days work."* He has **further
+notes coming tomorrow** — they are not written down yet, so do not assume this
+page is finished. Ask him for them at the top of the next session.
+
+**Everything below is COMMITTED AND PUSHED to `origin/feature/travel-windows`.**
+
+🚩 **NOT ON PRODUCTION YET.** `main` is at `9b5a883` and ladstravel.com is still
+serving the pre-pulse `/local`. Vercel auto-deploys on push to **main**, so
+nothing here reaches the public until the branch is merged. Merging is a founder
+action — open the PR at
+`https://github.com/dangelobraden43/LadsTravelCo/pull/new/feature/travel-windows`
+or run `/ship`. **Confirm the Vercel deploy reaches READY, not just that the
+push succeeded** (the standing cadence rule).
+
+`14e0a1a` windows schema · `03ab1b4` windows render · `16a7867` fares ·
+`ba5a06d` list detail · `20e1e5f` THE PULSE · `ded8a2f` Good Views + golf ·
+`df975a6` depth framing + record
+
+### What went live on the branch
+
+- **THE LIVE PULSE** — `src/data/livePulse.js`. 58 real events, 9 venues, every
+  row carrying `sourceUrl` + `checkedOn`. MLB and NHL generated straight off
+  their official open payloads; NFL and NBA read off league/club pages. Dated
+  pins with a breathing glow, a **This Weekend** filter that syncs the map, and
+  a date-sorted board.
+- **GOOD VIEWS** — 16 landmarks across all six states. **This is what finally
+  put pins in MN, WI, IL, IN and OH.** Coordinates from Wikipedia's coordinates
+  API, stored per entry as `coordSource`.
+- **THE GOLF SLATE** — Golfweek's 2026 top-20 Michigan public ranking, cited,
+  unplaced. Was 4 courses; is now 20.
+- Places 97 → **113**. Canonical site total **unchanged at 220** — every one of
+  these is research tier with no `description`, so the live-walk never sees them.
+
+### 🚩 THE FOUR FALSE CLAIMS ON `/michigan` ARE STILL LIVE AND UNFIXED
+
+Found Sept 2 while auditing the golf gap. `/michigan` is indexed, sitemap 0.7:
+
+| Claim on the page | What the data holds |
+|---|---|
+| "123 Shows Tracked" · "123 concerts April–November 2026" | **0.** No event data exists in the repo |
+| "42+ Venues" | 22 spots |
+| "9 Golf Destinations" | 4 golf spots |
+| "8 curated bar crawls" | no `crawls` key exists |
+
+⛔ **NOT fixed without Brady.** Removing a hero stat is public copy, and "123
+Shows Tracked" cannot be replaced by a derived number — the honest figure is
+zero. **This is a Gate 6 failure sitting in production right now.**
+
+### ➡️ TOMORROW'S QUEUE — written Sept 2, in priority order
+
+1. **Fix the four `/michigan` claims.** Blocked only on Brady's call for the
+   shows stat. Everything else derives from the data.
+2. **Milwaukee Bucks / Fiserv Forum.** The one pulse gap.
+   `nba.com/bucks/schedule` renders its calendar with no opponents and no
+   home/away in the DOM — needs the signed-in browser or another official route.
+   **Absent, not guessed.**
+3. **Concert calendars.** Van Andel and Pine Knob are on the map with ZERO
+   events and render as quiet hollow rings. Their calendars were never pulled.
+   Little Caesars / United Center / Fiserv concerts too.
+4. **Golf coordinates by provenance.** All 20 courses are unplaced: golf courses
+   have no Wikipedia coordinate records, and geocoding 20 course names is the
+   exact Tivoli failure. Signed-in browser job.
+5. **Chicago + Milwaukee full sweeps.** They currently carry fixtures only, and
+   the page says so out loud in copper. Do not remove that line until the depth
+   is real.
+6. **Eat & Do per region**, and the remaining Phase-B category depth. The full
+   spec was 5 regions × 4 categories × 6–10 cited entries = 120–200 rows, which
+   is beyond one session's research budget (~200 searches/session; see the
+   enrich skill).
+7. **Bruce framework tie-in** — 17 gold pins, still no framework, and no Bruce
+   spot carries a description.
+8. **Weekend trips** as first-class map objects — Brady's Route 1 (Jul 10–11)
+   and Dawson's UP scout (Jul 4) ship gold; proposals ship dashed copper.
+
+### ⚠️ ONE THING BRADY ASKED FOR THAT WAS DELIBERATELY NOT DONE
+
+The Phase C spec said section intros **"in Lads voice."** The standing rule is
+that the Lads voice is never AI-generated — it comes from a founder verbatim or
+it stays empty, which is the same rule keeping the 16 Peru places silent. The
+section intros shipped are **neutral and factual**. **The voice lines are
+Brady's to write**, and the page is built to take them.
 
 ---
 ## SCENIC SHORE MERCH (June 30, 2026 — separate venture, Shopify)

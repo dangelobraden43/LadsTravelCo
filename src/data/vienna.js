@@ -65,6 +65,13 @@ export default {
       verdict: 'Best window',
       detail:
         '15-22°C. Schonbrunn and Belvedere gardens at their best. Shoulder pricing on flights.',
+      driver: 'weather',
+      months: [4, 5],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'christmas',
@@ -78,6 +85,13 @@ export default {
       verdict: 'Magical if you embrace the cold',
       detail:
         'Vienna Rathausplatz market is one of the biggest in Europe. Below freezing, but the coffee houses are built for exactly this.',
+      driver: 'events',
+      months: [12],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'summer',
@@ -90,6 +104,13 @@ export default {
       primaryDraw: 'Longest days, festivals',
       verdict: 'Crowded and hot',
       detail: '30°C+. Palace queues at their worst and prices peak.',
+      driver: 'weather',
+      months: [6, 7, 8],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
   ],
 
@@ -384,5 +405,5 @@ export default {
     },
   ],
 
-  navSections: ['Overview', 'Vienna', 'Maps', 'Logistics'],
+  navSections: ['Overview', 'When to Go', 'Vienna', 'Maps', 'Logistics'],
 }

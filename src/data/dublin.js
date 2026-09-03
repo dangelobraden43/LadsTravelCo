@@ -1,6 +1,13 @@
 // Dublin + Galway — Data Model v2
 // 35 spots reclassified, research layer filled, personal layer blank for Brady
 
+import {
+  FARE_SCHEMA_VERSION,
+  MIDWEST_ORIGINS,
+  BOOKING_LEAD_TIME,
+  nextReviewDue,
+} from './fareIntelligence.js'
+
 export default {
   id: 'dublin',
   name: 'Dublin + Galway',
@@ -47,6 +54,13 @@ export default {
       verdict: 'Best for this group',
       detail:
         'Late December. Dublin Castle Christmas Market. Galway\u2019s Eyre Square Market (50+ chalets, 32-meter Big Wheel, German Bier Keller). Dec 25 full closure. Dec 26 = St. Stephen\u2019s Day (Wren Day) \u2014 wrenboy parades, pub sessions noon to midnight.',
+      driver: 'events',
+      months: [12],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'stpatricks',
@@ -60,6 +74,13 @@ export default {
       verdict: 'Energy yes, crowds no',
       detail:
         '4-day festival, 500,000 people. After Dark concerts March 14\u201316. Galway substantially better in this window. Book 9\u201312 months out. Flights from ORD $900\u2013$1,300.',
+      driver: 'events',
+      months: [3],
+      sourcing: {
+        basis: 'Framework research; per-window sourcing was not recorded when these were written.',
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
     {
       id: 'summer',
@@ -72,9 +93,77 @@ export default {
       primaryDraw: 'Heineken Big Top',
       verdict: 'Worth it for GIAF',
       detail:
-        'Galway Arts Festival July 13\u201326, 2026. Heineken Big Top at Nimmo\u2019s Pier. Roisin Dubh and Monroe\u2019s run official festival gigs. Accommodation doubles, books 6\u20138 months out.',
+        'Galway International Arts Festival takes over the second half of July \u2014 it recurs annually, so confirm the current year\u2019s dates before booking. Heineken Big Top at Nimmo\u2019s Pier. Roisin Dubh and Monroe\u2019s run official festival gigs. Accommodation doubles, books 6\u20138 months out.',
+      driver: 'events',
+      months: [7],
+      sourcing: {
+        basis:
+          "Rewritten Sept 2 2026: the festival's 2026 dates had passed. Stated as the recurring annual pattern instead of a fixed date.",
+        checkedOn: '2026-09-02',
+        sources: [],
+      },
     },
   ],
+
+  /* FARE INTELLIGENCE — see src/data/fareIntelligence.js for the rules.
+   * Dollar bands are null on purpose: no sourced fare pull exists for
+   * ORD/DTW/GRR → Dublin, and vendor "cheapest month" pages are neither
+   * origin-specific nor in agreement. The seasonal SHAPE below is defensible;
+   * a price would not be. */
+  fareIntelligence: {
+    schemaVersion: FARE_SCHEMA_VERSION,
+    refreshCadence: 'quarterly',
+    checkedOn: '2026-09-02',
+    nextReviewDue: nextReviewDue('2026-09-02'),
+    seasonality: [
+      {
+        months: [1, 2],
+        tier: 'low',
+        note: 'The floor. Deep off-season, and the weather is the reason.',
+      },
+      {
+        months: [3],
+        tier: 'shoulder',
+        note: "Cheap either side of St Patrick's, expensive across it — the festival week prices like peak season on its own.",
+      },
+      {
+        months: [4, 5],
+        tier: 'shoulder',
+        note: 'Lengthening days before the summer curve starts.',
+      },
+      {
+        months: [6, 7, 8],
+        tier: 'peak',
+        note: 'Summer peak, and July carries the Galway festival premium in the west.',
+      },
+      {
+        months: [9, 10],
+        tier: 'shoulder',
+        note: 'The value window. Summer pricing has gone, the weather largely has not.',
+      },
+      { months: [11], tier: 'low', note: 'The quietest month before the Christmas curve begins.' },
+      {
+        months: [12],
+        tier: 'peak',
+        note: 'Christmas and the diaspora coming home both bid the same seats.',
+      },
+    ],
+    origins: MIDWEST_ORIGINS.map((o) => ({
+      ...o,
+      bands: null,
+      bandSource: null,
+      note:
+        o.airport === 'GRR'
+          ? 'Regional airport — expect a connection, and a different curve from the hubs.'
+          : null,
+    })),
+    patienceSaves:
+      'The pattern worth knowing is the shoulder discount: European fares in the April-May and September-October windows have been reported running 20-40% below July and December. That is a season-shifting saving, not a booking-day one — moving the trip a few weeks is worth far more than refreshing a search.',
+    bookingLeadTime: BOOKING_LEAD_TIME,
+    sourcedFrom: ['europe-shoulder-delta', 'going-2026', 'expedia-arc-window'],
+    basis:
+      "Relative seasonality from published European fare reporting plus the framework's own event calendar. No origin-specific fare pull has been done, so no dollar band is claimed.",
+  },
 
   itinerary: [
     { day: 'Friday', anchor: 'Dublin Arrival', stops: 'Lark Inn, Ginger Man, Christ Church area' },
@@ -1122,6 +1211,8 @@ export default {
   specialCallouts: [],
   navSections: [
     'Overview',
+    'When to Go',
+    'Flight Intelligence',
     'Dublin Pubs',
     'Dublin Sights',
     'Galway',

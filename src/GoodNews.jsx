@@ -5,6 +5,15 @@ import MapPins, { placeToPanel, makePinId, spreadClusters, PIN_TYPE_LABELS } fro
 import { BRUCE_PLACES, BRUCE_SOURCE } from './data/brucePeninsula'
 import { MIDWEST_CANDIDATES, MIDWEST_CANDIDATES_SOURCE } from './data/midwestCandidates'
 import michigan from './data/michigan'
+import { GOOD_VIEWS, GOLF_SLATE, GOLF_SOURCE, BEST_OF_CHECKED_ON } from './data/localBestOf'
+import {
+  PULSE_VENUES,
+  PULSE_TYPE_LABELS,
+  PULSE_CHECKED_ON,
+  liveEvents,
+  upcoming,
+  eventsByVenue,
+} from './data/livePulse'
 import './GoodNews.css'
 
 /* ===== SHARED GEOMETRY =====
@@ -402,14 +411,23 @@ const CLUSTER_CLEAR = 27
  *
  * ORDER WITHIN THE ARRAY IS DRAW ORDER: candidates first, validated last, so
  * where two still coincide the validated record is the one on top. */
-const ALL_PINS = [...CANDIDATE_LOOSE, ...BRUCE_PLACES, ...MICHIGAN_PINS]
+/* GOOD VIEWS joins as a fourth pin layer. It is the layer that finally puts
+   something in Minnesota, Wisconsin, Illinois, Indiana and Ohio — until now the
+   map had five states of empty ground and a note about it. Copper throughout:
+   these are landmarks we have researched, not places we have walked. */
+const ALL_PINS = [...CANDIDATE_LOOSE, ...BRUCE_PLACES, ...MICHIGAN_PINS, ...GOOD_VIEWS]
 
 const PIN_SOURCE = (place) =>
   BRUCE_PLACES.includes(place)
     ? { idPrefix: PIN_PREFIX, sourceLabel: BRUCE_SOURCE.label }
     : MICHIGAN_PINS.includes(place)
       ? { idPrefix: PIN_PREFIX, sourceLabel: 'Lads Michigan framework — validated firsthand' }
-      : { idPrefix: PIN_PREFIX, sourceLabel: MIDWEST_CANDIDATES_SOURCE.label }
+      : GOOD_VIEWS.includes(place)
+        ? {
+            idPrefix: PIN_PREFIX,
+            sourceLabel: 'Researched landmarks — coordinates from published records, not visited',
+          }
+        : { idPrefix: PIN_PREFIX, sourceLabel: MIDWEST_CANDIDATES_SOURCE.label }
 
 const drawnPositions = (places, prefix) =>
   spreadClusters(
@@ -533,6 +551,40 @@ function Panel({ item, onClose }) {
   )
 }
 
+/* THE PULSE PANEL. A venue is only ever as interesting as what is on at it, so
+ * the panel leads with dates rather than with the building.
+ *
+ * ⛔ Every line here is a fact with a source behind it in livePulse.js. No
+ * prices, ever. No "don't miss this" — we have not been to these games and the
+ * Lads voice does not attach to a fixture list. */
+function venueToPanel(venue, events) {
+  const shown = events.slice(0, 8)
+  const fmt = (iso) => {
+    const d = new Date(`${iso}T12:00:00`)
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+  }
+  return {
+    id: `pulse-${venue.id}`,
+    eyebrow: 'THE PULSE',
+    title: venue.name,
+    place: `${venue.city}, ${venue.state}`,
+    status: events.length
+      ? `${events.length} upcoming ${events.length === 1 ? 'date' : 'dates'}`
+      : 'No dates pulled yet',
+    statusTone: events.length ? 'live' : null,
+    lines: events.length
+      ? shown.map((e) => `${fmt(e.date)} — ${e.title}${e.preseason ? ' (preseason)' : ''}`)
+      : [
+          'This venue is on the map because it is one of the rooms that matters here. Its calendar has not been pulled yet, so we are showing you nothing rather than something invented.',
+        ],
+    tail:
+      events.length > shown.length
+        ? `+ ${events.length - shown.length} more through the end of October.`
+        : null,
+    note: `Schedules read from the league or club's own listing on ${PULSE_CHECKED_ON}. Dates move — confirm with the venue before you drive. We list no prices and sell no tickets.`,
+  }
+}
+
 /* Every tier normalises into the same panel shape. Pins bring their own
    adapter, `placeToPanel` in MapPins.jsx, which follows this convention. */
 function anchorToPanel(a) {
@@ -589,7 +641,48 @@ function clusterToPanel(c) {
  * It also carries the places that CANNOT be pinned. A spot with no coordinate
  * is not a spot we hide; it is named here, under a heading that says exactly
  * why it is not on the map. */
-function ListRow({ item, id, activeId, onToggle, meta }) {
+/* A ROW HAS TO CARRY INFORMATION, NOT JUST A NAME.
+ *
+ * This list previously rendered a name and a type and nothing else, which made
+ * a page of 97 places that told a reader nothing about any of them. Every row
+ * now carries a real second line — but WHICH line depends on where the words
+ * came from, and the two are never mixed:
+ *
+ *   variant="lads"   Our own description, written from a visit. Michigan spots
+ *                    carry these in michigan.js and they are firsthand.
+ *   variant="google" Google's own category, rating, review count and price
+ *                    band, captured by provenance and LABELLED as Google's.
+ *                    We do not score a place we have not been to.
+ *
+ * ⛔ THE RATING FIELDS ARE NOT THE SAME NUMBER AND MUST NEVER SHARE A COMPONENT
+ * PATH. michigan.js `rating` is the LADS rating out of 10; Google's is out of
+ * 5. Rendering both through one "★" would publish a Lads 9.2 as though a third
+ * party said it. The variant is passed explicitly by the caller — which knows
+ * which dataset it is holding — rather than sniffed from the fields, because
+ * guessing here is exactly how the two would eventually blur.
+ *
+ * 🚩 BRUCE DELIBERATELY GETS THE GOOGLE LINE ONLY. Its `note` field mixes
+ * reader-facing geography ("boat access only from Tobermory harbour") with
+ * internal data provenance ("a duplicate saved entry was dropped"), and nothing
+ * in the data separates the two. Publishing them raw would leak our own
+ * bookkeeping onto the page. Real Bruce descriptions are a genuine gap and want
+ * the enrichment pass, not a regex. */
+function ListRow({ item, id, activeId, onToggle, meta, variant }) {
+  const blurb = variant === 'lads' ? item.note || item.description || null : null
+
+  const googleBits = []
+  if (variant === 'google') {
+    if (item.googleCategory) googleBits.push(item.googleCategory)
+    if (Number.isFinite(item.rating)) {
+      googleBits.push(
+        Number.isFinite(item.reviews)
+          ? `${item.rating}★ (${item.reviews.toLocaleString()})`
+          : `${item.rating}★`
+      )
+    }
+    if (item.price) googleBits.push(item.price)
+  }
+
   return (
     <li>
       <button
@@ -604,6 +697,13 @@ function ListRow({ item, id, activeId, onToggle, meta }) {
         <span className="gn-row-body">
           <span className="gn-row-name">{item.name}</span>
           <span className="gn-row-meta">{meta}</span>
+          {blurb && <span className="gn-row-blurb">{blurb}</span>}
+          {!!googleBits.length && (
+            <span className="gn-row-google">
+              <span className="gn-row-google-tag">Google</span>
+              {googleBits.join(' · ')}
+            </span>
+          )}
         </span>
       </button>
     </li>
@@ -611,14 +711,50 @@ function ListRow({ item, id, activeId, onToggle, meta }) {
 }
 
 function CompanionList({ activeId, onToggle }) {
-  const candByRegion = useMemo(() => {
+  /* CATEGORY TOGGLES. Grand Rapids alone is 32 rows, and an undifferentiated
+   * run of 32 bar names is precisely what made this list unusable — you could
+   * not find the breweries in it, or the golf, or the wineries.
+   *
+   * Every type here comes from the data: `type` is stored on the candidates and
+   * the Bruce places, and derived by michiganType() for Michigan spots. Nothing
+   * in this filter invents a category, and the counts are walked from the
+   * arrays rather than typed, so they cannot drift. */
+  const [typeFilter, setTypeFilter] = useState('all')
+
+  const filters = useMemo(() => {
+    const counts = new Map()
+    const bump = (t) => t && counts.set(t, (counts.get(t) || 0) + 1)
+    MICHIGAN_PINS.forEach((p) => bump(p.type))
+    MICHIGAN_UNPINNED.forEach((s) => bump(michiganType(s)))
+    BRUCE_PLACES.forEach((p) => bump(p.type))
+    MIDWEST_CANDIDATES.forEach((p) => bump(p.type))
+    GOOD_VIEWS.forEach((p) => bump(p.type))
+    return [...counts.entries()].sort((a, b) => b[1] - a[1])
+  }, [])
+
+  const totalPlaces =
+    MICHIGAN_PINS.length +
+    MICHIGAN_UNPINNED.length +
+    BRUCE_PLACES.length +
+    MIDWEST_CANDIDATES.length +
+    GOOD_VIEWS.length
+
+  const keep = (t) => typeFilter === 'all' || t === typeFilter
+
+  const goodViews = GOOD_VIEWS.filter((p) => keep(p.type))
+  const michPins = MICHIGAN_PINS.filter((p) => keep(p.type))
+  const michUnpinned = MICHIGAN_UNPINNED.filter((s) => keep(michiganType(s)))
+  const brucePlaces = BRUCE_PLACES.filter((p) => keep(p.type))
+  const candidates = MIDWEST_CANDIDATES.filter((p) => keep(p.type))
+
+  const candByRegion = (() => {
     const m = new Map()
-    MIDWEST_CANDIDATES.forEach((p) => {
+    candidates.forEach((p) => {
       if (!m.has(p.region)) m.set(p.region, [])
       m.get(p.region).push(p)
     })
     return [...m.entries()]
-  }, [])
+  })()
 
   const typeOf = (p) => PIN_TYPE_LABELS[p.type] || p.type || 'Place'
 
@@ -634,13 +770,35 @@ function CompanionList({ activeId, onToggle }) {
           more &mdash; saved, not visited, and we will not pretend otherwise.
         </p>
 
+        <div className="gn-filters" role="group" aria-label="Filter places by type">
+          <button
+            type="button"
+            className={`gn-filter${typeFilter === 'all' ? ' is-on' : ''}`}
+            aria-pressed={typeFilter === 'all'}
+            onClick={() => setTypeFilter('all')}
+          >
+            Everything <span className="gn-count">{totalPlaces}</span>
+          </button>
+          {filters.map(([type, n]) => (
+            <button
+              key={type}
+              type="button"
+              className={`gn-filter${typeFilter === type ? ' is-on' : ''}`}
+              aria-pressed={typeFilter === type}
+              onClick={() => setTypeFilter(typeFilter === type ? 'all' : type)}
+            >
+              {PIN_TYPE_LABELS[type] || type} <span className="gn-count">{n}</span>
+            </button>
+          ))}
+        </div>
+
         <div className="gn-list-cols">
           <div className="gn-list-col">
             <h3 className="gn-list-sub">
-              Michigan &mdash; validated <span className="gn-count">{MICHIGAN_PINS.length}</span>
+              Michigan &mdash; validated <span className="gn-count">{michPins.length}</span>
             </h3>
             <ul className="gn-rows">
-              {MICHIGAN_PINS.map((p) => (
+              {michPins.map((p) => (
                 <ListRow
                   key={makePinId(PIN_PREFIX, p)}
                   id={makePinId(PIN_PREFIX, p)}
@@ -648,13 +806,14 @@ function CompanionList({ activeId, onToggle }) {
                   activeId={activeId}
                   onToggle={onToggle}
                   meta={typeOf(p)}
+                  variant="lads"
                 />
               ))}
             </ul>
 
             <h3 className="gn-list-sub">
               Michigan &mdash; validated, not yet placeable{' '}
-              <span className="gn-count">{MICHIGAN_UNPINNED.length}</span>
+              <span className="gn-count">{michUnpinned.length}</span>
             </h3>
             <p className="gn-list-note">
               We have been to all of these. They are absent from the map because we do not yet hold
@@ -663,12 +822,18 @@ function CompanionList({ activeId, onToggle }) {
               together when that list arrives.
             </p>
             <ul className="gn-rows gn-rows--static">
-              {MICHIGAN_UNPINNED.map((s) => (
+              {michUnpinned.map((s) => (
                 <li key={s.name} className="gn-row gn-row--static">
                   <span className="gn-row-tier gn-row-tier--gold" />
                   <span className="gn-row-body">
                     <span className="gn-row-name">{s.name}</span>
                     <span className="gn-row-meta">{s.area || 'Michigan'}</span>
+                    {/* These are validated spots, so they carry our own words.
+                        Missing a coordinate is not a reason to withhold what we
+                        know about a place we have actually been to. */}
+                    {(s.description || s.notes) && (
+                      <span className="gn-row-blurb">{s.description || s.notes}</span>
+                    )}
                   </span>
                 </li>
               ))}
@@ -677,11 +842,65 @@ function CompanionList({ activeId, onToggle }) {
 
           <div className="gn-list-col">
             <h3 className="gn-list-sub">
+              Good Views <span className="gn-count">{goodViews.length}</span>
+            </h3>
+            <p className="gn-list-note">
+              The landmarks the region is known for, across all six states. Researched, not walked
+              &mdash; every one is copper and none carries a verdict from us. Coordinates come from
+              published records, checked {BEST_OF_CHECKED_ON}.
+            </p>
+            <ul className="gn-rows">
+              {goodViews.map((p) => (
+                <ListRow
+                  key={makePinId(PIN_PREFIX, p)}
+                  id={makePinId(PIN_PREFIX, p)}
+                  item={{ ...p, note: p.what }}
+                  activeId={activeId}
+                  onToggle={onToggle}
+                  meta={`${p.region} · ${p.state}`}
+                  variant="lads"
+                />
+              ))}
+            </ul>
+
+            <h3 className="gn-list-sub">
+              The golf slate <span className="gn-count">{GOLF_SLATE.length}</span>
+            </h3>
+            <p className="gn-list-note">
+              🚩 <strong>This ranking is Golfweek&rsquo;s, not ours.</strong> Their 2026 list of
+              Michigan&rsquo;s top 20 public courses, reported with attribution &mdash; a smaller
+              claim than a recommendation. We have played two of the twenty and those two are
+              marked. None are on the map yet: golf courses have no published coordinate records,
+              and geocoding twenty course names is exactly the mistake that rule exists to stop.
+            </p>
+            <ol className="gn-golf">
+              {GOLF_SLATE.map((g) => (
+                <li key={g.rank} className="gn-golf-row">
+                  <span className="gn-golf-rank">{g.rank}</span>
+                  <span className="gn-golf-body">
+                    <span className="gn-row-name">{g.name}</span>
+                    <span className="gn-row-meta">{g.town}</span>
+                  </span>
+                  {g.ladsPlayed && <span className="gn-golf-played">We&rsquo;ve played it</span>}
+                </li>
+              ))}
+            </ol>
+            <p className="gn-list-note">
+              Source:{' '}
+              <a href={GOLF_SOURCE.url} target="_blank" rel="noopener noreferrer">
+                {GOLF_SOURCE.label}
+              </a>
+              . Checked {GOLF_SOURCE.checkedOn}.
+            </p>
+          </div>
+
+          <div className="gn-list-col">
+            <h3 className="gn-list-sub">
               Bruce Peninsula &amp; Lake Huron shore{' '}
-              <span className="gn-count">{BRUCE_PLACES.length}</span>
+              <span className="gn-count">{brucePlaces.length}</span>
             </h3>
             <ul className="gn-rows">
-              {BRUCE_PLACES.map((p) => (
+              {brucePlaces.map((p) => (
                 <ListRow
                   key={makePinId(PIN_PREFIX, p)}
                   id={makePinId(PIN_PREFIX, p)}
@@ -689,6 +908,7 @@ function CompanionList({ activeId, onToggle }) {
                   activeId={activeId}
                   onToggle={onToggle}
                   meta={typeOf(p)}
+                  variant="google"
                 />
               ))}
             </ul>
@@ -696,8 +916,7 @@ function CompanionList({ activeId, onToggle }) {
 
           <div className="gn-list-col">
             <h3 className="gn-list-sub">
-              On the list, not yet walked{' '}
-              <span className="gn-count">{MIDWEST_CANDIDATES.length}</span>
+              On the list, not yet walked <span className="gn-count">{candidates.length}</span>
             </h3>
             <p className="gn-list-note">
               Saved by us, researched, and honestly unvisited. Where a rating shows in the panel it
@@ -718,6 +937,7 @@ function CompanionList({ activeId, onToggle }) {
                       activeId={activeId}
                       onToggle={onToggle}
                       meta={typeOf(p)}
+                      variant="google"
                     />
                   ))}
                 </ul>
@@ -734,12 +954,148 @@ function CompanionList({ activeId, onToggle }) {
  * hero of /local, which owns the Nav, the SEO and the framing around it. This
  * component renders the canvas, its panel and the companion list, and nothing
  * about the page it sits on. */
+/* ===== GOOD NEWS — the board under the map =====
+ *
+ * The signature of this page. Not "here are some venues" but "here is what is
+ * on, and when". Sorted by date because that is the question a reader actually
+ * arrives with.
+ *
+ * ⛔ NO PRICES AND NO LADS VOICE. We have not been to these fixtures. Every
+ * card is a date, a room and a link to the listing it came from. */
+function PulseBoard({ pulse, weekendOnly, setWeekendOnly, onOpen }) {
+  const venueName = (id) => PULSE_VENUES.find((v) => v.id === id)
+  const fmtDay = (iso) => {
+    const d = new Date(`${iso}T12:00:00`)
+    return {
+      dow: d.toLocaleDateString('en-US', { weekday: 'short' }),
+      day: d.toLocaleDateString('en-US', { day: 'numeric' }),
+      mon: d.toLocaleDateString('en-US', { month: 'short' }),
+    }
+  }
+
+  return (
+    <section className="gn-pulse-board" aria-labelledby="gn-pulse-h">
+      <div className="gn-list-inner">
+        <div className="gn-pulse-head">
+          <div>
+            <h2 id="gn-pulse-h" className="gn-list-h">
+              Good News
+            </h2>
+            <p className="gn-list-lede">
+              What is actually on. {pulse.soon.length} in the next seven days, {pulse.all.length}{' '}
+              ahead of us in all. Read from each league or club&rsquo;s own schedule on{' '}
+              {PULSE_CHECKED_ON} &mdash; we list no prices and sell no tickets.
+              {/* HONEST DEPTH, STATED ON THE PAGE. Chicago and Milwaukee have their
+                  event calendars and nothing else yet. Saying so is the whole
+                  difference between a preview and a bluff. */}
+              <br />
+              <span className="gn-depth-note">
+                Chicago and Milwaukee are here for their fixtures only so far &mdash; the full city
+                guides are still being built, and we would rather show you the gap than dress it up.
+              </span>
+            </p>
+          </div>
+          <button
+            type="button"
+            className={`gn-weekend${weekendOnly ? ' is-on' : ''}`}
+            aria-pressed={weekendOnly}
+            onClick={() => setWeekendOnly(!weekendOnly)}
+          >
+            This Weekend <span className="gn-count">{pulse.soon.length}</span>
+          </button>
+        </div>
+
+        {pulse.list.length === 0 ? (
+          <p className="gn-list-note">
+            Nothing in the next seven days from the calendars we have pulled so far.
+          </p>
+        ) : (
+          <ul className="gn-events">
+            {pulse.list.slice(0, weekendOnly ? 40 : 24).map((e) => {
+              const v = venueName(e.venueId)
+              const d = fmtDay(e.date)
+              return (
+                <li key={e.id}>
+                  <button
+                    type="button"
+                    className="gn-event"
+                    onClick={() => onOpen(`pulse-${e.venueId}`)}
+                  >
+                    <span className="gn-event-date">
+                      <span className="gn-event-dow">{d.dow}</span>
+                      <span className="gn-event-day">{d.day}</span>
+                      <span className="gn-event-mon">{d.mon}</span>
+                    </span>
+                    <span className="gn-event-body">
+                      <span className="gn-event-title">
+                        {e.title}
+                        {e.preseason && <span className="gn-event-pre">preseason</span>}
+                      </span>
+                      <span className="gn-event-venue">
+                        {v ? `${v.name} · ${v.city}, ${v.state}` : e.venueId}
+                      </span>
+                    </span>
+                    <span className={`gn-event-type gn-event-type--${e.type}`}>
+                      {PULSE_TYPE_LABELS[e.type] || e.type}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+
+        {!weekendOnly && pulse.list.length > 24 && (
+          <p className="gn-list-note">
+            Showing the next 24 of {pulse.list.length}. Tap a venue on the map for its full run of
+            dates.
+          </p>
+        )}
+      </div>
+    </section>
+  )
+}
+
 export default function LadsLocalMap() {
   const [activeId, setActiveId] = useState(null)
   const close = useCallback(() => setActiveId(null), [])
 
+  /* ===== THE PULSE =====
+   * `today` is read at RENDER, never at module load. A tab left open overnight
+   * would otherwise keep yesterday's game glowing on the map, which is the
+   * whole failure this layer is built to avoid. */
+  const [weekendOnly, setWeekendOnly] = useState(false)
+  const pulse = useMemo(() => {
+    const today = new Date().toISOString().slice(0, 10)
+    const all = liveEvents(today)
+    const soon = upcoming(7, today)
+    const list = weekendOnly ? soon : all
+    const byVenue = eventsByVenue(list)
+    return {
+      all,
+      soon,
+      list,
+      /* DETROIT PUTS THREE VENUES INSIDE HALF A VIEWBOX UNIT — Comerica, Ford
+       * Field and Little Caesars are genuinely a few hundred metres apart, and
+       * Chicago stacks United Center against Soldier Field the same way. Drawn
+       * raw they collapse into one dot and two of the three become untappable.
+       * Same declustering the candidate pins use: the marker stays on the TRUE
+       * coordinate and only the glyph is pushed onto a ring, with a leader line
+       * back, so a pin never lies about where it is. */
+      pins: spreadClusters(
+        PULSE_VENUES.map((v) => ({
+          ...v,
+          ...project(v.lat, v.lng),
+          events: byVenue.get(v.id) || [],
+        })),
+        { minDist: 15, stackDist: 7 }
+      ),
+    }
+  }, [weekendOnly])
+
   const anchorHit = ANCHORS.find((a) => a.id === activeId)
   const airportHit = AIRPORT_LIST.find((a) => `air-${a.iata}` === activeId)
+  const pulseHit = pulse.pins.find((v) => `pulse-${v.id}` === activeId)
 
   /* One lookup per pin layer. Each layer keeps its own id prefix and its own
      source label, so a panel always names where its facts came from. */
@@ -749,21 +1105,26 @@ export default function LadsLocalMap() {
 
   const active = anchorHit
     ? anchorToPanel(anchorHit)
-    : airportHit
-      ? airportToPanel(airportHit)
-      : clusterHit
-        ? clusterToPanel(clusterHit)
-        : pinHit
-          ? {
-              ...placeToPanel(pinHit, pinLayer),
-              /* The panel is pinned top-right, so opening a pin in the right
+    : pulseHit
+      ? {
+          ...venueToPanel(pulseHit, pulseHit.events),
+          side: pulseHit.gx > VB_W * 0.55 ? 'left' : 'right',
+        }
+      : airportHit
+        ? airportToPanel(airportHit)
+        : clusterHit
+          ? clusterToPanel(clusterHit)
+          : pinHit
+            ? {
+                ...placeToPanel(pinHit, pinLayer),
+                /* The panel is pinned top-right, so opening a pin in the right
                third of the canvas would hide the thing you just tapped and its
                whole cluster with it. Flip the panel to the emptier side.
                Desktop only; the mobile sheet already solves this by shrinking
                the map to the space above it. */
-              side: project(pinHit.lat, pinHit.lng).x > VB_W * 0.55 ? 'left' : 'right',
-            }
-          : null
+                side: project(pinHit.lat, pinHit.lng).x > VB_W * 0.55 ? 'left' : 'right',
+              }
+            : null
   const toggle = useCallback((id) => setActiveId((cur) => (cur === id ? null : id)), [])
 
   return (
@@ -1070,10 +1431,60 @@ export default function LadsLocalMap() {
               <title>{`${c.places[0]?.region || 'This area'} — ${c.places.length} saved places, not yet validated`}</title>
             </g>
           ))}
+          {/* ===== THE PULSE LAYER — drawn last so it sits above everything.
+              A venue with nothing on it renders as a quiet hollow ring rather
+              than vanishing: the room still exists, we just have not pulled its
+              calendar. Hiding it would imply the venue is not there. ===== */}
+          <g className="gn-pulse-layer">
+            {pulse.pins.map((v) => {
+              const n = v.events.length
+              const r = n ? 4.4 + Math.min(n, 12) * 0.17 : 3.2
+              const id = `pulse-${v.id}`
+              return (
+                <g
+                  key={v.id}
+                  className={`gn-pulse${n ? '' : ' is-quiet'}${activeId === id ? ' is-active' : ''}`}
+                  onClick={() => toggle(id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      toggle(id)
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${v.name}, ${v.city} — ${n} upcoming ${n === 1 ? 'date' : 'dates'}`}
+                >
+                  {/* Leader line + true-position tick, drawn only when the
+                      glyph had to move. The tick is where the venue actually
+                      is; the disc is only where its label could fit. */}
+                  {v.spread && (
+                    <>
+                      <line className="gn-pulse-leader" x1={v.x} y1={v.y} x2={v.gx} y2={v.gy} />
+                      <circle className="gn-pulse-true" cx={v.x} cy={v.y} r="1.3" />
+                    </>
+                  )}
+                  {/* The glow. Purely decorative, and the first thing dropped
+                      under prefers-reduced-motion. */}
+                  {!!n && <circle className="gn-pulse-ring" cx={v.gx} cy={v.gy} r={r} />}
+                  {/* Transparent tap target, centred on the drawn glyph. */}
+                  <circle className="gn-pulse-hit" cx={v.gx} cy={v.gy} r="9" />
+                  <circle className="gn-pulse-dot" cx={v.gx} cy={v.gy} r={r} />
+                </g>
+              )
+            })}
+          </g>
         </svg>
 
         <Panel item={active} onClose={close} />
       </div>
+
+      <PulseBoard
+        pulse={pulse}
+        weekendOnly={weekendOnly}
+        setWeekendOnly={setWeekendOnly}
+        onOpen={toggle}
+      />
 
       <CompanionList activeId={activeId} onToggle={toggle} />
     </div>
