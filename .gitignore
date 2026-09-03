@@ -85,3 +85,16 @@ audit/
 
 # rollup-plugin-visualizer output (local only, never deployed)
 .bundle-report.html
+
+# Playwright verification screenshots. The MCP browser writes these to the
+# repo ROOT, not into .playwright-mcp/, so a bare `git add -A` sweeps 2.7MB of
+# debug PNGs into the repo — caught by /ship on Sept 2 2026, same class of
+# mistake as the bundle-report.html that shipped in August.
+/fi-*.png
+/local-list-*.png
+/pulse-*.png
+/tw-*.png
+/views-map.png
+/map*.png
+/ship*.png
+/final-*.png
