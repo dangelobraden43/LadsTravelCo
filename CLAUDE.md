@@ -25,6 +25,13 @@ LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   candidates**, plus 14 validated-but-unplaceable spots named in the list only.
   ⛔ **`/good-news` is RETIRED** — it permanently redirects to `/local`. Do not
   re-add its route or its rewrite.
+  🔵 **ON `feature/travel-windows`, NOT YET ON PRODUCTION:** `/local` grows to
+  **113 places** (adds 16 Good Views across all six states) plus **THE LIVE
+  PULSE** — 58 sourced events at 9 venues with a This Weekend filter — and
+  Golfweek's cited top-20 golf slate. Every framework also gains a **"When to
+  Go"** section and Dublin/Spain gain **Flight Intelligence**. The numbers in
+  this STATUS block describe PRODUCTION; see the Sept 2 evening section for the
+  branch. Do not merge the two figures until the branch ships.
 LIVE: `/privacy` + footer affiliate disclosure.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
@@ -218,11 +225,24 @@ shared checkout someone else is serving localhost from.
 
 ## 🔴 SEPTEMBER 2, 2026 (evening) — /local BECAME A PLATFORM. Branch: `feature/travel-windows`
 
-**Everything below is COMMITTED AND PUSHED to `origin/feature/travel-windows`.
-`main` is untouched at `9b5a883`. `/ship` is Brady's call and has not happened.**
+✅ **BRADY REVIEWED AND SIGNED OFF, evening of Sept 2:** *"I looked it over and I
+am satisfied for the day… this was an amazing days work."* He has **further
+notes coming tomorrow** — they are not written down yet, so do not assume this
+page is finished. Ask him for them at the top of the next session.
+
+**Everything below is COMMITTED AND PUSHED to `origin/feature/travel-windows`.**
+
+🚩 **NOT ON PRODUCTION YET.** `main` is at `9b5a883` and ladstravel.com is still
+serving the pre-pulse `/local`. Vercel auto-deploys on push to **main**, so
+nothing here reaches the public until the branch is merged. Merging is a founder
+action — open the PR at
+`https://github.com/dangelobraden43/LadsTravelCo/pull/new/feature/travel-windows`
+or run `/ship`. **Confirm the Vercel deploy reaches READY, not just that the
+push succeeded** (the standing cadence rule).
 
 `14e0a1a` windows schema · `03ab1b4` windows render · `16a7867` fares ·
-`ba5a06d` list detail · `20e1e5f` THE PULSE · `ded8a2f` Good Views + golf
+`ba5a06d` list detail · `20e1e5f` THE PULSE · `ded8a2f` Good Views + golf ·
+`df975a6` depth framing + record
 
 ### What went live on the branch
 
