@@ -142,6 +142,74 @@ export function formatVisitedDate(v) {
  *
  * Deterministic: no randomness, so the layout is stable across renders.
  * Pure geometry in viewBox units — no projection, no map knowledge. */
+/* ---------- DENSE-CLUSTER COLLAPSE ----------
+ *
+ * Declustering relaxes overlapping glyphs apart, which is right for a handful
+ * of neighbours and catastrophic for a dense city. Fed 32 Grand Rapids bars in
+ * a couple of viewBox units it fanned them across ~190 units and put breweries
+ * in Lake Michigan. Each kept a leader line back to its true coordinate, so it
+ * was not strictly lying — but nobody reads a leader line before they read a
+ * position.
+ *
+ * Peru makes the case harder still. At country scale the projection is ~52
+ * px/deg, so the 18 saved places in central Cusco land inside roughly ONE pixel
+ * of each other. There is no spread that is both readable and honest.
+ *
+ * So a dense group collapses to ONE marker at the group's real centroid,
+ * carrying the count. It claims exactly what it can support — "this many saved
+ * places, here" — and its panel names every member. Sparse pins are untouched.
+ *
+ * Single-linkage on PROJECTED coordinates: anything within `join` units of any
+ * member joins the group; groups of `collapseAt` or more collapse.
+ *
+ * ⚠️ `src/GoodNews.jsx` still carries its own local copy of this logic for the
+ * Midwest map. This is the shared version — migrate that one to this in a
+ * follow-up rather than editing both. It was left alone here deliberately:
+ * /local is in production and this session was not the time to refactor it.
+ */
+export function collapseDense(places, project, { join = 18, collapseAt = 6 } = {}) {
+  const pts = places
+    .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lng))
+    .map((p) => ({ p, ...project(p.lat, p.lng) }))
+
+  const groups = []
+  const seen = new Set()
+  pts.forEach((pt, i) => {
+    if (seen.has(i)) return
+    const members = [i]
+    seen.add(i)
+    for (let k = 0; k < members.length; k++) {
+      const a = pts[members[k]]
+      pts.forEach((b, j) => {
+        if (seen.has(j)) return
+        if (Math.hypot(a.x - b.x, a.y - b.y) <= join) {
+          seen.add(j)
+          members.push(j)
+        }
+      })
+    }
+    groups.push(members.map((m) => pts[m]))
+  })
+
+  const collapsed = []
+  const loose = []
+  groups.forEach((g, i) => {
+    if (g.length >= collapseAt) {
+      collapsed.push({
+        id: `grp-${i}`,
+        /* A real average of real coordinates, not a nudged label position.
+         * The marker sits where the cluster actually is. */
+        x: g.reduce((s, m) => s + m.x, 0) / g.length,
+        y: g.reduce((s, m) => s + m.y, 0) / g.length,
+        places: g.map((m) => m.p),
+      })
+    } else {
+      g.forEach((m) => loose.push(m.p))
+    }
+  })
+  return { collapsed, loose }
+}
+
 export function spreadClusters(
   points,
   { minDist = 20, stackDist = 6, ringPad = 1.15, passes = 200 } = {}

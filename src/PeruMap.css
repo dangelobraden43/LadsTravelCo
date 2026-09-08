@@ -1,0 +1,339 @@
+/* PERU ROUTE MAP
+ *
+ * Every colour here reads a `--peru-*` custom property with a fallback, so the
+ * page shell owns the palette and this component owns only structure. Lane 3
+ * is choosing Peru's palette; when it lands, nothing in this file changes.
+ *
+ * The never-reuse-a-palette rule is why the fallbacks are neutral rather than
+ * borrowed from another framework. */
+
+.peru-map {
+  position: relative;
+  width: 100%;
+}
+
+.peru-map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius, 16px);
+  overflow: visible;
+}
+
+.peru-land {
+  fill: var(--peru-land, #1d2a24);
+  stroke: var(--peru-coast, rgba(212, 168, 67, 0.35));
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.peru-route {
+  fill: none;
+  stroke: var(--peru-route, #d4a843);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 6px var(--peru-route-glow, rgba(212, 168, 67, 0.4)));
+}
+
+/* ── DAY ANCHORS ───────────────────────────────────────────────────────────
+ * The hit circle is transparent and generous; the visible dot stays small.
+ * That split is the fix from the Sept 2 map audit, where decorative geometry
+ * was swallowing clicks and five targets were silently dead. */
+.peru-mapday {
+  cursor: pointer;
+}
+
+.peru-mapday-hit {
+  fill: transparent;
+}
+
+.peru-mapday-dot {
+  fill: var(--peru-mapday, #e8dcc8);
+  stroke: var(--peru-bg, #0f1a15);
+  stroke-width: 1.5;
+  transition: r 0.18s ease;
+}
+
+.peru-mapday.is-active .peru-mapday-dot {
+  r: 7;
+}
+
+/* Day numbers sit over the route where it bunches near Cusco, so they carry a
+ * dark outline painted UNDER the fill. Without it a numeral lands on a gold pin
+ * and becomes unreadable exactly where the map is busiest. */
+.peru-mapday-label {
+  fill: var(--peru-mapday-label, #e5dcc9);
+  stroke: var(--peru-bg, #0b1c20);
+  stroke-width: 3;
+  paint-order: stroke fill;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* ── COLLAPSED CLUSTER ─────────────────────────────────────────────────────
+ * One marker, a real centroid, an auditable count. */
+.peru-cluster {
+  cursor: pointer;
+}
+
+.peru-cluster-hit {
+  fill: transparent;
+}
+
+.peru-cluster-ring {
+  fill: var(--peru-cluster-fill, rgba(184, 136, 110, 0.18));
+  stroke: var(--peru-cluster, #b8886e);
+  stroke-width: 2;
+  transition: r 0.18s ease;
+}
+
+.peru-cluster.is-active .peru-cluster-ring {
+  r: 16;
+}
+
+.peru-cluster-count {
+  fill: var(--peru-cluster-text, #e8dcc8);
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* ── PANEL ─────────────────────────────────────────────────────────────────
+ * Sits beside the map at width, slides up as a sheet on mobile. */
+.peru-panel {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: min(340px, calc(100% - 24px));
+  max-height: 60%;
+  overflow-y: auto;
+  padding: 20px 22px;
+  background: var(--peru-panel-bg, #16211c);
+  border: 1px solid var(--peru-panel-border, rgba(212, 168, 67, 0.22));
+  border-radius: var(--radius, 16px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.peru-panel-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  background: none;
+  border: 0;
+  color: var(--peru-muted, #8a8070);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.peru-panel-title {
+  margin: 0 34px 4px 0;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: 20px;
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-panel-sub {
+  margin: 0 0 12px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #8a8070);
+}
+
+.peru-panel-body,
+.peru-panel-note {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--peru-body, #b8ad9a);
+}
+
+/* Provenance is styled quieter than the content it justifies, but it is always
+ * present. A coordinate that cannot say where it came from does not ship. */
+.peru-panel-prov {
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--peru-panel-border, rgba(212, 168, 67, 0.15));
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--peru-muted, #8a8070);
+}
+
+.peru-panel-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.peru-panel-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--peru-panel-border, rgba(212, 168, 67, 0.12));
+}
+
+.peru-panel-list li:last-child {
+  border-bottom: 0;
+}
+
+.peru-panel-name {
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14px;
+  color: var(--peru-text, #e5dcc9);
+}
+
+/* Google's category renders as Google's, explicitly, every time. */
+.peru-panel-cat {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--peru-muted, #8a8070);
+}
+
+@media (max-width: 720px) {
+  .peru-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 55vh;
+    border-radius: var(--radius, 16px) var(--radius, 16px) 0 0;
+    z-index: 40;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peru-mapday-dot,
+  .peru-cluster-ring {
+    transition: none;
+  }
+}
+
+/* ── PANEL: eyebrow, tier chip and content lines ───────────────────────────
+ * Added after a click-through found every pin opening a panel that rendered
+ * only a title. All of a place's content lives in placeToPanel's `lines`. */
+.peru-panel-eyebrow {
+  margin: 0 34px 4px 0;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--peru-muted, #8a8070);
+}
+
+.peru-panel-status {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+/* Gold means we were there. Copper means we were not, and says so. */
+.peru-panel-status--gold {
+  color: var(--gold, #d4a843);
+  border: 1px solid rgba(212, 168, 67, 0.45);
+  background: rgba(212, 168, 67, 0.1);
+}
+
+.peru-panel-status--copper {
+  color: var(--copper, #b8886e);
+  border: 1px solid rgba(184, 136, 110, 0.45);
+  background: rgba(184, 136, 110, 0.1);
+}
+
+.peru-panel-lines {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.peru-panel-lines li {
+  margin-bottom: 8px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--peru-body, #b8ad9a);
+}
+
+/* ── CLUSTER DETAIL ────────────────────────────────────────────────────────
+ * A dense group re-projected into its own frame, so places that share a pixel
+ * on the country map get an individual pin each. The frame changes; the
+ * coordinates do not. */
+.peru-detail {
+  margin: 4px 0 14px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(63, 179, 160, 0.06);
+  border: 1px solid rgba(63, 179, 160, 0.2);
+}
+
+.peru-detail-label {
+  margin-bottom: 6px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+.peru-detail-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.peru-detail-halo {
+  fill: rgba(63, 179, 160, 0.16);
+}
+
+.peru-detail-dot {
+  fill: var(--peru-jade, #3fb3a0);
+  stroke: var(--peru-bg, #0b1c20);
+  stroke-width: 1.2;
+}
+
+.peru-detail-pin:hover .peru-detail-halo {
+  fill: rgba(63, 179, 160, 0.34);
+}
+
+/* ── TEXTURE ───────────────────────────────────────────────────────────────
+ * The map was flat colour on flat colour. `.peru-land` is now the glow pass
+ * that lifts the coastline off the water; `.peru-land-fill` is the body of the
+ * country sitting on top of it, with the hatch clipped inside. */
+.peru-land-fill {
+  fill: var(--peru-land, #16302c);
+  stroke: var(--peru-coast, rgba(143, 215, 201, 0.42));
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+
+.peru-land {
+  fill: var(--peru-land, #16302c);
+  stroke: none;
+}
+
+/* Pins read as precise marks rather than stickers: a real shadow so they sit
+ * above the surface, and a tighter stroke. */
+.peru-map-svg .mp-pin {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.peru-route {
+  stroke-dasharray: none;
+}

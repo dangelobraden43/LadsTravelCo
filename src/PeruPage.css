@@ -1,0 +1,2122 @@
+/* ============================================================================
+ * PERU — PALETTE AND MOTION LANGUAGE
+ * ============================================================================
+ *
+ * THE PALETTE, AND WHY IT IS NOT ANYONE ELSE'S.
+ * Every framework owns a palette and no framework may borrow one. Taken:
+ * australia navy + coral, dublin forest green, iceland cold grey + gold,
+ * michigan green + olive, munich and poland and rome and spain the warm
+ * brown-and-gold family, prague violet + lavender, vienna maroon + dusty rose.
+ * Reserved and off limits: the /outdoors dusk set (pine-black #0F1714,
+ * glacier #7FB4C9, campfire ochre #D9973B).
+ *
+ * Peru takes the one family none of them sit in: a deep PETROL TEAL ground
+ * with a HUMANTAY JADE accent. The ground is cyan-dominant rather than
+ * green-dominant, which is what separates it from the reserved pine-black at a
+ * glance, and it is a good deal more saturated than iceland's neutral grey.
+ * The accent is the glacial turquoise of Humantay Lake, which sits in this
+ * file's own data at -13.3793789, -72.5844385 on the May 8 anchor. Nothing
+ * else on the site uses a saturated blue-green accent.
+ *
+ * The one warm note, VALLE ROJO CLAY, is used only where a label is disputed
+ * or a record is not what it is named after. It is a warning colour, not the
+ * page's accent, which is why it does not collide with rome's or australia's
+ * warm accents: it never carries the page's identity, it carries a flag.
+ *
+ * MOTION. Native IntersectionObserver adding `.visible`, exactly the repo's
+ * Reveal pattern, plus one CSS keyframe set for the hero arrival. No scroll
+ * listeners anywhere on this page, because a per-frame scroll handler doing
+ * layout maths is what makes a long page stutter on a mid-range phone.
+ *
+ * REDUCED MOTION IS COMPLETE, NOT PARTIAL. Every animated class on this page
+ * is neutralised in the single block at the foot of this file, and the JS hook
+ * separately marks content visible on mount so nothing depends on an observer
+ * that never runs. There is no state a reduced-motion reader can reach in
+ * which content is invisible.
+ * ========================================================================= */
+
+.peru-page {
+  /* Ground: petrol teal, three steps */
+  --peru-bg: #0b1c20;
+  --peru-surface: #10272c;
+  --peru-elevated: #16343a;
+  --peru-raised: #1d434a;
+
+  /* Accent: Humantay jade */
+  --peru-jade: #3fb3a0;
+  --peru-jade-soft: #8fd7c9;
+  --peru-jade-dim: rgba(63, 179, 160, 0.12);
+  --peru-jade-line: rgba(63, 179, 160, 0.24);
+
+  /* Warning only: Valle Rojo clay */
+  --peru-clay: #d9694a;
+  --peru-clay-dim: rgba(217, 105, 74, 0.12);
+
+  /* Type */
+  --peru-text: #e6efee;
+  --peru-text2: #a8bfbc;
+  --peru-muted: #779391;
+  --peru-faint: #4d6a68;
+  --peru-line: rgba(143, 215, 201, 0.14);
+  --peru-line2: rgba(143, 215, 201, 0.24);
+
+  background: var(--peru-bg);
+  color: var(--peru-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.peru-page *,
+.peru-page *::before,
+.peru-page *::after {
+  box-sizing: border-box;
+}
+
+/* ===== MOTION PRIMITIVES ================================================= */
+
+.peru-r {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.peru-r.visible {
+  opacity: 1;
+  will-change: auto;
+}
+
+.peru-r--rise {
+  transform: translateY(26px);
+  transition:
+    opacity 0.75s var(--transition),
+    transform 0.75s var(--transition);
+}
+.peru-r--rise.visible {
+  transform: translateY(0);
+}
+
+.peru-r--fade {
+  transition: opacity 0.9s var(--transition);
+}
+
+/* The map reveal. It never changes the box, only what is inside it: the box
+ * is reserved by aspect-ratio, so scaling the contents cannot shift the page. */
+.peru-r--map {
+  transform: scale(0.975);
+  transition:
+    opacity 0.9s var(--transition),
+    transform 0.9s var(--transition);
+}
+.peru-r--map.visible {
+  transform: scale(1);
+}
+
+/* Trek days arrive from the rail side. */
+.peru-r--day {
+  transform: translateY(20px);
+  transition:
+    opacity 0.6s var(--transition),
+    transform 0.6s var(--transition);
+}
+.peru-r--day.visible {
+  transform: translateY(0);
+}
+
+/* The founder-voice treatment, and deliberately its own motion: the rule
+ * draws before the words settle, so a quote reads as something being said
+ * rather than another card fading up. */
+.peru-r--quote {
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s var(--transition),
+    transform 0.7s var(--transition);
+}
+.peru-r--quote.visible {
+  transform: translateY(0);
+}
+
+/* ===== 1. HERO =========================================================== */
+
+.peru-hero {
+  position: relative;
+  padding: clamp(96px, 14vw, 168px) clamp(20px, 5vw, 64px) clamp(56px, 8vw, 96px);
+  background: linear-gradient(180deg, #081518 0%, var(--peru-bg) 78%);
+  overflow: hidden;
+}
+
+/* THE IMAGE SLOT. Full-bleed behind the hero content, and the hero's height
+ * is set by its own padding and copy rather than by whatever fills this box.
+ * Wiring a real photograph in therefore changes no geometry at all: the
+ * element already occupies exactly the space the picture will. */
+.peru-hero-media {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 78% 12%, rgba(63, 179, 160, 0.16) 0%, transparent 58%),
+    radial-gradient(90% 80% at 12% 88%, rgba(217, 105, 74, 0.07) 0%, transparent 60%),
+    repeating-linear-gradient(
+      118deg,
+      rgba(143, 215, 201, 0.035) 0px,
+      rgba(143, 215, 201, 0.035) 1px,
+      transparent 1px,
+      transparent 15px
+    );
+  pointer-events: none;
+}
+.peru-hero-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 21, 24, 0.2) 0%, rgba(11, 28, 32, 0.86) 100%);
+}
+.peru-hero-slot-note {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--peru-faint);
+  border: 1px solid var(--peru-line);
+  border-radius: var(--radius-full);
+  padding: 3px 9px;
+}
+
+.peru-hero-inner {
+  position: relative;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+/* THE ARRIVAL. Staged, and the stage is the reading order. */
+.peru-hero-el {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.peru-hero.is-ready .peru-hero-el {
+  animation: peru-arrive 0.85s var(--transition) forwards;
+}
+.peru-hero.is-ready .peru-hero-el:nth-child(1) {
+  animation-delay: 0.02s;
+}
+.peru-hero.is-ready .peru-hero-el:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.peru-hero.is-ready .peru-hero-el:nth-child(3) {
+  animation-delay: 0.22s;
+}
+.peru-hero.is-ready .peru-hero-el:nth-child(4) {
+  animation-delay: 0.36s;
+}
+.peru-hero.is-ready .peru-hero-el:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.peru-hero.is-ready .peru-hero-el:nth-child(6) {
+  animation-delay: 0.62s;
+}
+@keyframes peru-arrive {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.peru-hero-back {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--peru-text2);
+  border-bottom: 1px solid var(--peru-line);
+  padding-bottom: 3px;
+  margin-bottom: 28px;
+  transition: color 0.3s ease;
+}
+.peru-hero-back:hover {
+  color: var(--peru-jade-soft);
+}
+
+.peru-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--peru-jade);
+  margin-bottom: 14px;
+}
+
+.peru-hero-title {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(56px, 13vw, 132px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  margin: 0 0 18px;
+  color: var(--peru-text);
+}
+.peru-hero-stop {
+  color: var(--peru-jade);
+}
+
+.peru-hero-lede {
+  font-family: var(--serif);
+  font-size: clamp(17px, 2.1vw, 22px);
+  line-height: 1.62;
+  color: var(--peru-text2);
+  max-width: 62ch;
+  margin: 0 0 34px;
+}
+
+.peru-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 14px;
+  max-width: 720px;
+  margin: 0 0 30px;
+}
+.peru-stat {
+  border-top: 1px solid var(--peru-line2);
+  padding-top: 12px;
+}
+.peru-stat dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--peru-muted);
+  margin-bottom: 6px;
+}
+.peru-stat dd {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(28px, 4.4vw, 40px);
+  line-height: 1;
+  color: var(--peru-jade-soft);
+}
+
+.peru-hero-foot {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--peru-muted);
+  max-width: 66ch;
+  margin: 0;
+  border-left: 2px solid var(--peru-jade-line);
+  padding-left: 14px;
+}
+
+/* ===== SECTION NAV ======================================================= */
+
+.peru-sectionnav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(11, 28, 32, 0.92);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--peru-line);
+  border-bottom: 1px solid var(--peru-line);
+}
+.peru-sectionnav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  padding: 10px clamp(16px, 5vw, 64px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.peru-sectionnav-inner::-webkit-scrollbar {
+  display: none;
+}
+.peru-pill {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid var(--peru-line);
+  border-radius: var(--radius-full);
+  color: var(--peru-text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  padding: 9px 15px;
+  min-height: 38px;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+.peru-pill:hover,
+.peru-pill.is-active {
+  color: var(--peru-bg);
+  background: var(--peru-jade);
+  border-color: var(--peru-jade);
+}
+
+/* ===== SECTIONS ========================================================== */
+
+.peru-section {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: clamp(60px, 9vw, 108px) clamp(20px, 5vw, 64px);
+  border-bottom: 1px solid var(--peru-line);
+}
+.peru-section--last {
+  border-bottom: none;
+}
+
+.peru-h2 {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(28px, 4.6vw, 46px);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+  max-width: 24ch;
+  color: var(--peru-text);
+}
+
+.peru-lede {
+  font-family: var(--sans);
+  font-size: clamp(15px, 1.7vw, 17px);
+  line-height: 1.75;
+  color: var(--peru-text2);
+  max-width: 68ch;
+  margin: 0 0 6px;
+}
+
+.peru-note {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--peru-muted);
+  max-width: 78ch;
+  margin: 30px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--peru-line2);
+}
+
+/* ===== 2. THE ROUTE ====================================================== */
+
+/* THE RESERVED BOX. The aspect ratio is set here, not by the map, so the
+ * skeleton, the placeholder stub and the finished map all occupy identical
+ * space and nothing on the page ever moves when one replaces another. */
+.peru-map-box {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  margin: 34px 0 0;
+  border: 1px solid var(--peru-line2);
+  border-radius: var(--radius);
+  background: var(--peru-surface);
+  overflow: hidden;
+}
+.peru-map-box > * {
+  position: absolute;
+  inset: 0;
+}
+.peru-map-slot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* SKELETON. It fills the reserved box exactly, so the swap to a real map is
+ * a repaint and not a reflow. */
+.peru-map-skeleton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--peru-surface) 0%, var(--peru-elevated) 100%);
+  overflow: hidden;
+}
+.peru-map-skeleton-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(143, 215, 201, 0.09) 50%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  animation: peru-shimmer 1.7s ease-in-out infinite;
+}
+@keyframes peru-shimmer {
+  from {
+    background-position: 140% 0;
+  }
+  to {
+    background-position: -40% 0;
+  }
+}
+.peru-map-skeleton-label {
+  position: relative;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--peru-faint);
+}
+
+/* ===== 3. WHEN TO GO ===================================================== */
+
+.peru-window-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 34px;
+}
+/* Four windows across three columns leaves an orphan on the second row. Two
+   columns at desktop gives a 2x2 and lets each card breathe. */
+@media (min-width: 900px) {
+  .peru-window-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.peru-window {
+  background: var(--peru-surface);
+  border: 1px solid var(--peru-line);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+.peru-window--rec {
+  border-color: var(--peru-jade-line);
+  box-shadow: inset 3px 0 0 var(--peru-jade);
+}
+
+.peru-window-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.peru-chip {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--peru-line2);
+  color: var(--peru-text2);
+  white-space: nowrap;
+}
+.peru-chip--weather {
+  color: var(--peru-jade-soft);
+  border-color: var(--peru-jade-line);
+  background: var(--peru-jade-dim);
+}
+.peru-chip--events {
+  color: #e3c78d;
+  border-color: rgba(227, 199, 141, 0.28);
+  background: rgba(227, 199, 141, 0.09);
+}
+.peru-chip--pricing {
+  color: #9fc6de;
+  border-color: rgba(159, 198, 222, 0.28);
+  background: rgba(159, 198, 222, 0.09);
+}
+.peru-chip--logistics {
+  color: var(--peru-clay);
+  border-color: rgba(217, 105, 74, 0.3);
+  background: var(--peru-clay-dim);
+}
+.peru-chip--rec {
+  color: var(--peru-bg);
+  background: var(--peru-jade);
+  border-color: var(--peru-jade);
+}
+.peru-chip--flag {
+  color: var(--peru-clay);
+  border-color: rgba(217, 105, 74, 0.34);
+  background: var(--peru-clay-dim);
+}
+.peru-chip--quiet {
+  color: var(--peru-muted);
+}
+
+.peru-window-name {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+  color: var(--peru-text);
+}
+.peru-window-verdict {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--peru-jade-soft);
+  margin: 0 0 12px;
+}
+.peru-window-draw {
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--peru-text);
+  margin: 0 0 10px;
+}
+.peru-window-detail {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--peru-text2);
+  margin: 0 0 16px;
+}
+
+.peru-window-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--peru-line);
+}
+.peru-window-meta dt {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted);
+  margin-bottom: 4px;
+}
+.peru-window-meta dd {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--peru-text);
+}
+
+/* THE SOURCING LINE. Always visible. Never behind a toggle. */
+.peru-sourcing {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--peru-line2);
+  display: block;
+}
+.peru-sourcing--wide {
+  margin-top: 30px;
+}
+.peru-sourcing-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--peru-jade);
+  margin-bottom: 7px;
+}
+.peru-sourcing-basis {
+  display: block;
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--peru-text2);
+  margin-bottom: 6px;
+}
+.peru-sourcing-meta {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--peru-muted);
+  word-break: break-word;
+}
+.peru-sourcing-meta a {
+  color: var(--peru-jade-soft);
+  border-bottom: 1px solid var(--peru-jade-line);
+}
+.peru-stale {
+  color: var(--peru-clay);
+}
+
+/* ===== 4. GETTING THERE ================================================== */
+
+.peru-fare-strip {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+  margin: 34px 0 12px;
+}
+.peru-fare-month {
+  border-radius: var(--radius-sm);
+  padding: 12px 2px;
+  text-align: center;
+  border: 1px solid var(--peru-line);
+  background: var(--peru-surface);
+  min-width: 0;
+}
+.peru-fare-month-abbr {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  color: var(--peru-text);
+}
+.peru-fare-month-tier {
+  display: block;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  color: var(--peru-muted);
+}
+.peru-fare-month--low {
+  background: rgba(63, 179, 160, 0.07);
+  border-color: rgba(63, 179, 160, 0.2);
+}
+.peru-fare-month--shoulder {
+  background: rgba(159, 198, 222, 0.09);
+  border-color: rgba(159, 198, 222, 0.24);
+}
+.peru-fare-month--peak {
+  background: rgba(217, 105, 74, 0.13);
+  border-color: rgba(217, 105, 74, 0.3);
+}
+
+.peru-fare-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted);
+}
+.peru-fare-key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.peru-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.peru-dot--low {
+  background: var(--peru-jade);
+}
+.peru-dot--shoulder {
+  background: #9fc6de;
+}
+.peru-dot--peak {
+  background: var(--peru-clay);
+}
+
+.peru-fare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+.peru-card {
+  background: var(--peru-surface);
+  border: 1px solid var(--peru-line);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.peru-card-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  color: var(--peru-jade);
+  margin-bottom: 12px;
+}
+.peru-card-text {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--peru-text2);
+  margin: 0;
+}
+
+.peru-origins {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.peru-origins li {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 8px 10px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--peru-line);
+}
+.peru-origins li:last-child {
+  border-bottom: none;
+}
+.peru-iata {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  color: var(--peru-jade-soft);
+}
+.peru-origin-city {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--peru-text);
+}
+.peru-origin-band {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--peru-muted);
+  text-align: right;
+}
+.peru-origin-note {
+  grid-column: 1 / -1;
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--peru-muted);
+}
+.peru-gap {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--peru-text2);
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--peru-clay);
+  background: var(--peru-clay-dim);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.peru-gap strong {
+  color: var(--peru-text);
+}
+
+/* ===== 5. THE TREK ======================================================= */
+
+.peru-trek-wrap {
+  position: relative;
+  margin-top: 38px;
+  padding-left: 30px;
+}
+.peru-rail {
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--peru-line2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.peru-rail-fill {
+  display: block;
+  width: 100%;
+  background: linear-gradient(180deg, var(--peru-jade) 0%, var(--peru-jade-soft) 100%);
+  transition: height 0.7s var(--transition);
+}
+
+.peru-days {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.peru-day {
+  position: relative;
+}
+.peru-day-node {
+  position: absolute;
+  left: -30px;
+  top: 22px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--peru-bg);
+  border: 2px solid var(--peru-jade);
+  transform: scale(0.6);
+  opacity: 0.4;
+  transition:
+    transform 0.5s var(--transition),
+    opacity 0.5s var(--transition);
+}
+.peru-day.visible .peru-day-node {
+  transform: scale(1);
+  opacity: 1;
+}
+.peru-day--flagged .peru-day-node {
+  border-color: var(--peru-clay);
+}
+.peru-day--outside .peru-day-node {
+  border-color: var(--peru-faint);
+}
+
+.peru-day-body {
+  background: var(--peru-surface);
+  border: 1px solid var(--peru-line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.peru-day--flagged .peru-day-body {
+  border-color: rgba(217, 105, 74, 0.28);
+}
+.peru-day--outside .peru-day-body {
+  background: transparent;
+  border-style: dashed;
+}
+
+.peru-day-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.peru-day-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--peru-jade);
+}
+.peru-day-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--peru-muted);
+}
+
+.peru-day-name {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(20px, 2.6vw, 27px);
+  line-height: 1.2;
+  margin: 0 0 10px;
+  color: var(--peru-text);
+}
+
+.peru-day-coord {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-bottom: 12px;
+}
+.peru-day-coord-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--peru-jade-soft);
+}
+.peru-day-coord-src {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--peru-muted);
+}
+
+.peru-day-note {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--peru-text2);
+  margin: 0 0 16px;
+}
+
+.peru-day-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--peru-line2);
+}
+.peru-day-manifest {
+  flex: 1 1 260px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--peru-muted);
+}
+.peru-day-manifest-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: var(--peru-faint);
+  margin-bottom: 4px;
+}
+.peru-day-media {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--peru-muted);
+  white-space: nowrap;
+}
+
+/* ===== 6. THE PLACES ===================================================== */
+
+/* THE GROUP STATEMENT. Visually a single object, because it is a single
+ * sentence about a set. It is styled deliberately unlike the per-place quote
+ * so the two can never be mistaken for one another. */
+.peru-collective {
+  margin: 34px 0 46px;
+  padding: 26px clamp(20px, 4vw, 34px);
+  border: 1px solid var(--peru-jade-line);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--peru-jade-dim) 0%, transparent 62%);
+}
+.peru-collective-scope {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--peru-jade);
+  margin-bottom: 14px;
+}
+.peru-collective-text {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(20px, 3.2vw, 31px);
+  line-height: 1.34;
+  margin: 0 0 14px;
+  color: var(--peru-text);
+}
+.peru-collective-frame {
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.8vw, 18px);
+  line-height: 1.6;
+  color: var(--peru-text2);
+  margin-bottom: 14px;
+}
+.peru-collective-by {
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--peru-muted);
+  max-width: 62ch;
+}
+
+.peru-area {
+  margin-top: 40px;
+}
+.peru-area-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--peru-line2);
+  margin-bottom: 20px;
+}
+.peru-area-name {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(17px, 2.2vw, 22px);
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--peru-text);
+}
+.peru-area-count {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted);
+}
+
+.peru-place-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+.peru-place-grid > .peru-r {
+  display: flex;
+}
+.peru-place {
+  flex: 1;
+  background: var(--peru-surface);
+  border: 1px solid var(--peru-line);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+/* SILENT PLACES ARE NOT DIMMED TO THE POINT OF LOOKING BROKEN. They are real
+ * places on a real list. They simply have nothing of ours to say. */
+.peru-place--silent {
+  background: transparent;
+  border-style: dashed;
+}
+.peru-place--office {
+  border-color: rgba(217, 105, 74, 0.28);
+}
+
+.peru-place-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.peru-place-name {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--peru-text);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.peru-tier {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--peru-line2);
+  color: var(--peru-muted);
+  white-space: nowrap;
+}
+.peru-tier--voice {
+  color: var(--peru-bg);
+  background: var(--peru-jade);
+  border-color: var(--peru-jade);
+}
+.peru-tier--echo {
+  color: var(--peru-jade-soft);
+  border-color: var(--peru-jade-line);
+  background: var(--peru-jade-dim);
+}
+
+.peru-place-fullname {
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--peru-muted);
+}
+
+.peru-place-coord {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--peru-jade-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 10px;
+  align-items: baseline;
+  overflow-wrap: anywhere;
+}
+.peru-place-coord-src {
+  font-size: 9px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--peru-faint);
+}
+
+.peru-place-office {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--peru-text2);
+  margin: 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--peru-clay);
+  background: var(--peru-clay-dim);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.peru-place-echo {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--peru-muted);
+  margin: 0;
+}
+
+.peru-place-silent {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--peru-muted);
+  margin: 0;
+  font-style: italic;
+}
+
+/* GOOGLE'S DATA, LABELLED AS GOOGLE'S EVERY TIME IT APPEARS. */
+.peru-google {
+  border-top: 1px dashed var(--peru-line2);
+  padding-top: 12px;
+  margin-top: auto;
+}
+.peru-google-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: var(--peru-faint);
+  margin-bottom: 6px;
+}
+.peru-google-body {
+  display: block;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--peru-text2);
+}
+.peru-google-sep {
+  color: var(--peru-faint);
+  padding: 0 7px;
+}
+.peru-google-caveat {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--peru-faint);
+  margin-top: 6px;
+}
+
+/* THE FOUNDER PULL QUOTE. Its own object, unmistakable against everything
+ * else on the page, because it is the only first-person voice here. */
+.peru-quote {
+  margin: 4px 0;
+  padding: 16px 0 4px 18px;
+  position: relative;
+}
+.peru-quote-rule {
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--peru-jade) 0%, var(--peru-jade-soft) 100%);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.65s var(--transition) 0.08s;
+}
+.peru-quote.visible .peru-quote-rule {
+  transform: scaleY(1);
+}
+.peru-quote-text {
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(16px, 2.1vw, 20px);
+  line-height: 1.45;
+  margin: 0 0 10px;
+  color: var(--peru-text);
+}
+.peru-quote--inline .peru-quote-text {
+  font-size: clamp(19px, 2.8vw, 26px);
+}
+.peru-quote-by {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--peru-muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.peru-quote-sep {
+  color: var(--peru-faint);
+}
+.peru-quote-date,
+.peru-quote-subject {
+  color: var(--peru-faint);
+  text-transform: none;
+  letter-spacing: 0.8px;
+}
+
+/* ===== 7. WHAT WE'D DO DIFFERENTLY ======================================= */
+
+.peru-empty {
+  margin-top: 34px;
+  padding: 34px clamp(20px, 4vw, 34px);
+  border: 1px dashed var(--peru-line2);
+  border-radius: var(--radius);
+  background: var(--peru-surface);
+}
+.peru-empty-rule {
+  width: 46px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--peru-jade);
+  margin-bottom: 16px;
+}
+.peru-empty-text {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--peru-muted);
+  margin: 0;
+  max-width: 60ch;
+}
+
+/* ===== RESPONSIVE ======================================================== */
+
+@media (max-width: 900px) {
+  .peru-map-box {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (max-width: 620px) {
+  .peru-map-box {
+    aspect-ratio: 3 / 4;
+  }
+  .peru-fare-strip {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+  }
+  .peru-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .peru-trek-wrap {
+    padding-left: 24px;
+  }
+  .peru-day-node {
+    left: -24px;
+    width: 13px;
+    height: 13px;
+  }
+  .peru-rail {
+    left: 5px;
+  }
+  .peru-origins li {
+    grid-template-columns: 44px 1fr;
+  }
+  .peru-origin-band {
+    text-align: left;
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 400px) {
+  .peru-place-grid,
+  .peru-window-grid,
+  .peru-fare-grid {
+    grid-template-columns: 1fr;
+  }
+  .peru-day-media {
+    white-space: normal;
+  }
+}
+
+/* ============================================================================
+ * REDUCED MOTION — COMPLETE, NOT PARTIAL.
+ *
+ * Every animated construct on this page is listed here and given a static
+ * end state: the reveal variants, the hero arrival keyframes, the trek rail
+ * and its nodes, the quote rule, and the skeleton shimmer. The JS hook also
+ * skips the observer entirely and marks content visible on mount, so nothing
+ * here depends on a scroll ever happening.
+ * ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .peru-page .peru-r,
+  .peru-page .peru-r--rise,
+  .peru-page .peru-r--fade,
+  .peru-page .peru-r--map,
+  .peru-page .peru-r--day,
+  .peru-page .peru-r--quote {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .peru-hero-el,
+  .peru-hero.is-ready .peru-hero-el {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .peru-day-node,
+  .peru-day.visible .peru-day-node {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .peru-quote-rule,
+  .peru-quote.visible .peru-quote-rule {
+    transform: none !important;
+    transition: none !important;
+  }
+  .peru-rail-fill {
+    transition: none !important;
+  }
+  .peru-map-skeleton-shimmer {
+    animation: none !important;
+    background: rgba(143, 215, 201, 0.05);
+  }
+  .peru-pill,
+  .peru-hero-back {
+    transition: none !important;
+  }
+}
+
+/* ── PHOTOGRAPHY ───────────────────────────────────────────────────────────
+ * Added Sept 8 2026. The hero and section frames were empty gradients with a
+ * "pending" label; they now carry the real May 2026 photographs, served from
+ * Cloudinary through CloudImage so nothing lands in the bundle. */
+.peru-hero-img,
+.peru-hero-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.peru-hero-img img {
+  object-fit: cover;
+}
+
+.peru-figure {
+  margin: 40px 0 8px;
+}
+
+.peru-figure .cloudimg {
+  border-radius: var(--radius, 16px);
+}
+
+.peru-figure-cap {
+  margin-top: 10px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--peru-muted, #7f979b);
+}
+
+/* ═══ BEFORE YOU GO ═══════════════════════════════════════════════════════
+ * Brady's note: the palette is right but it went flat in places. These
+ * sections carry the accent deliberately rather than defaulting to another
+ * bordered panel on the same ground. */
+
+.peru-section--prepare {
+  position: relative;
+}
+
+/* A hairline of jade down the left of the whole block, so the practical
+   section reads as its own territory rather than more of the same page. */
+.peru-section--prepare::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--peru-jade, #3fb3a0) 12%,
+    var(--peru-jade, #3fb3a0) 88%,
+    transparent
+  );
+  opacity: 0.5;
+}
+
+.peru-h3 {
+  margin: 56px 0 6px;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: clamp(22px, 3vw, 30px);
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-lede--tight {
+  margin-bottom: 20px;
+}
+
+.peru-prep-grid,
+.peru-pack-grid,
+.peru-save-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.peru-prep-grid {
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+}
+.peru-pack-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.peru-save-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.peru-ticket,
+.peru-pack,
+.peru-save {
+  position: relative;
+  height: 100%;
+  padding: 22px 22px 18px;
+  border-radius: var(--radius, 16px);
+  background: var(--peru-surface, #10272c);
+  border: 1px solid rgba(63, 179, 160, 0.16);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.peru-ticket:hover,
+.peru-pack:hover,
+.peru-save:hover {
+  transform: translateY(-2px);
+  border-color: rgba(63, 179, 160, 0.42);
+}
+
+.peru-ticket-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.peru-ticket-name {
+  margin: 0;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: 19px;
+  color: var(--peru-text, #e5dcc9);
+}
+
+/* The lead time is the operative fact on the card, so it gets the accent. */
+.peru-ticket-lead {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--peru-jade, #3fb3a0);
+}
+
+.peru-ticket-rule {
+  margin: 0 0 8px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--peru-jade-soft, #8fd7c9);
+}
+
+.peru-ticket-detail,
+.peru-pack-note,
+.peru-save-detail {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--peru-body, #b6c9c9);
+}
+
+/* THE PUSH. The one card that tells a reader to do more than they planned,
+   so it is the one card that looks different. */
+.peru-ticket--push {
+  border-color: rgba(63, 179, 160, 0.5);
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(63, 179, 160, 0.14), transparent 60%),
+    var(--peru-elevated, #16343a);
+}
+
+.peru-ticket-push {
+  margin: 12px 0 10px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--peru-jade, #3fb3a0);
+  border-radius: 0 8px 8px 0;
+  background: rgba(63, 179, 160, 0.08);
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--peru-jade-soft, #8fd7c9);
+}
+
+.peru-pack-name,
+.peru-save-move {
+  margin: 0 0 8px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-pack-list {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.peru-pack-list li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 7px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-pack-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--peru-jade, #3fb3a0);
+}
+
+/* Ways to save are numbered, which turns a list of tips into a sequence. */
+.peru-save-grid {
+  counter-reset: save;
+}
+
+.peru-save {
+  counter-increment: save;
+  padding-top: 26px;
+}
+
+.peru-save::before {
+  content: counter(save, decimal-leading-zero);
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 22px;
+  color: rgba(63, 179, 160, 0.28);
+}
+
+.peru-src {
+  display: inline-block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(127, 151, 155, 0.5);
+}
+
+.peru-src:hover {
+  color: var(--peru-jade, #3fb3a0);
+  border-bottom-color: var(--peru-jade, #3fb3a0);
+}
+
+/* ═══ LIMA BAND ═══════════════════════════════════════════════════════════
+ * Full-bleed change of ground so it lands as a highlight, not another card. */
+.peru-lima {
+  margin: 72px 0;
+  padding: 44px 0;
+  background:
+    radial-gradient(90% 140% at 12% 0%, rgba(63, 179, 160, 0.16), transparent 62%),
+    linear-gradient(180deg, var(--peru-elevated, #16343a), var(--peru-surface, #10272c));
+  border-top: 1px solid rgba(63, 179, 160, 0.28);
+  border-bottom: 1px solid rgba(63, 179, 160, 0.28);
+}
+
+.peru-lima-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.peru-lima-title {
+  margin: 6px 0 14px;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.15;
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-lima-claim {
+  margin: 0 0 12px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: clamp(16px, 2.2vw, 19px);
+  line-height: 1.6;
+  color: var(--peru-jade-soft, #8fd7c9);
+}
+
+.peru-lima-more,
+.peru-lima-sowhat {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-lima-src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.peru-lima-checked {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--peru-muted, #7f979b);
+}
+
+@media (max-width: 620px) {
+  .peru-section--prepare::before {
+    left: -10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peru-ticket,
+  .peru-pack,
+  .peru-save {
+    transition: none;
+  }
+  .peru-ticket:hover,
+  .peru-pack:hover,
+  .peru-save:hover {
+    transform: none;
+  }
+}
+
+/* The "Travelled / May 2026" stat wrapped mid-value in the hero. A stat value
+   should never break across lines; it reads as two figures. */
+.peru-stat dd {
+  white-space: nowrap;
+}
+
+/* ═══ GETTING IN — the route cost comparison ══════════════════════════════
+ * The bars are the point of this section: four routes whose costs differ by
+ * two orders of magnitude, put on one axis so the shape of the decision is
+ * visible before any of the prose is read. */
+
+.peru-routes {
+  display: grid;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.peru-route-card {
+  position: relative;
+  padding: 24px 24px 20px;
+  border-radius: var(--radius, 16px);
+  background: var(--peru-surface, #10272c);
+  border: 1px solid rgba(63, 179, 160, 0.16);
+  overflow: hidden;
+}
+
+/* The route we actually walked gets the accent edge. Everything else is
+   presented flat, because we have not walked them and should not look like
+   we are steering. */
+.peru-route-card--salkantay {
+  border-color: rgba(63, 179, 160, 0.42);
+  background:
+    radial-gradient(90% 120% at 0% 0%, rgba(63, 179, 160, 0.12), transparent 58%),
+    var(--peru-elevated, #16343a);
+}
+
+.peru-route-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.peru-route-kicker {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--peru-jade, #3fb3a0);
+}
+
+.peru-route-name {
+  margin: 4px 0 0;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: clamp(21px, 2.6vw, 27px);
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-route-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 0;
+}
+
+.peru-route-facts dt {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+.peru-route-facts dd {
+  margin: 3px 0 0;
+  max-width: 190px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--peru-body, #b6c9c9);
+}
+
+/* ── THE BAR ── */
+.peru-bar {
+  position: relative;
+  height: 46px;
+  margin: 6px 0 4px;
+}
+
+.peru-bar-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 17px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(127, 151, 155, 0.18);
+}
+
+/* The full reported spread. */
+.peru-bar-range {
+  position: absolute;
+  top: 16px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(63, 179, 160, 0.3);
+}
+
+/* Where sources actually cluster — the honest headline of the card. */
+.peru-bar-typical {
+  position: absolute;
+  top: 12px;
+  height: 13px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--peru-jade, #3fb3a0), var(--peru-jade-soft, #8fd7c9));
+  box-shadow: 0 0 14px rgba(63, 179, 160, 0.4);
+}
+
+.peru-bar-lo,
+.peru-bar-hi {
+  position: absolute;
+  top: 30px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--peru-muted, #7f979b);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.peru-route-typical {
+  margin: 0 0 14px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-route-typical strong {
+  color: var(--peru-jade-soft, #8fd7c9);
+  font-weight: 600;
+}
+
+.peru-route-summary {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-route-effort {
+  margin: 0 0 14px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-route-effort-k {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+  margin-right: 8px;
+}
+
+/* ── TIERS ── */
+.peru-tiers {
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(63, 179, 160, 0.14);
+}
+
+.peru-tiers li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(63, 179, 160, 0.1);
+}
+
+.peru-tier-name {
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-tier-band {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  color: var(--peru-jade, #3fb3a0);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.peru-tier-what {
+  grid-column: 1 / -1;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--peru-muted, #7f979b);
+}
+
+.peru-route-src {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .peru-routes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .peru-route-facts {
+    gap: 12px;
+  }
+  .peru-route-facts dd {
+    max-width: 130px;
+  }
+}
+
+/* ═══ PHOTO BANDS ═════════════════════════════════════════════════════════
+ * Full-bleed frames that carry a section transition. The page was reading as
+ * one long column of panels on a single ground; these give it air and let the
+ * photography do some of the work. Height is capped and the box reserved, so
+ * a band cannot shift layout while it loads. */
+.peru-band {
+  position: relative;
+  margin: 64px 0;
+  height: clamp(240px, 42vh, 460px);
+  overflow: hidden;
+  border-radius: var(--radius, 16px);
+}
+
+.peru-band-img,
+.peru-band-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.peru-band-img img {
+  object-fit: cover;
+}
+
+/* A wash so a caption stays legible over any frame, and so a bright
+   photograph does not blow out the middle of a dark page. */
+.peru-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 28, 32, 0.34) 0%,
+    rgba(11, 28, 32, 0.08) 38%,
+    rgba(11, 28, 32, 0.72) 100%
+  );
+}
+
+.peru-band-cap {
+  position: absolute;
+  left: 22px;
+  bottom: 18px;
+  z-index: 2;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-jade-soft, #8fd7c9);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 620px) {
+  .peru-band {
+    margin: 44px 0;
+    height: clamp(200px, 34vh, 300px);
+  }
+}
+
+/* ═══ THE RESEARCH LAYER ══════════════════════════════════════════════════
+ * Deliberately quieter than the founder line above it. A researched sentence
+ * that looks like a firsthand one is the single failure this site exists to
+ * avoid, so the two layers are visually separated: the founder voice is body
+ * copy in the page's own colour, this is labelled, indented and sourced. */
+.peru-research {
+  margin: 14px 0 4px;
+  padding: 14px 16px;
+  border-left: 2px solid rgba(127, 151, 155, 0.35);
+  border-radius: 0 10px 10px 0;
+  background: rgba(11, 28, 32, 0.4);
+}
+
+.peru-research-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.peru-research-label {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+/* Says outright when we looked and found little, rather than letting a short
+   entry imply the place is unremarkable. */
+.peru-research-thin {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(217, 105, 74, 0.85);
+}
+
+.peru-research-summary {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-research-cols {
+  display: grid;
+  gap: 10px 20px;
+  margin-bottom: 10px;
+}
+
+.peru-research-col ul {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.peru-research-col li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 4px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-research-col li::before {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  font-size: 12px;
+}
+
+.peru-research-col--up li::before {
+  content: '+';
+  color: var(--peru-jade, #3fb3a0);
+}
+
+.peru-research-col--down li::before {
+  content: '–';
+  color: var(--peru-clay, #d9694a);
+}
+
+.peru-research-k {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+/* The trap is the most useful line on most of these cards, so it is the one
+   part of the research layer that is allowed to be loud. */
+.peru-trap {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(217, 105, 74, 0.09);
+  border-left: 2px solid rgba(217, 105, 74, 0.6);
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e8c4b4;
+}
+
+.peru-trap-k {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--peru-clay, #d9694a);
+  margin-bottom: 4px;
+}
+
+.peru-besttime {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-research-src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.peru-research-checked {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--peru-muted, #7f979b);
+}
+
+@media (min-width: 700px) {
+  .peru-research-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
