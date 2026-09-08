@@ -333,9 +333,13 @@ function Hero() {
         </p>
 
         <dl className="peru-hero-stats peru-hero-el">
+          {/* NO DAY COUNT. Advertising "9 days" sold our itinerary as the
+              trip's fixed length, which is false: this route stretches or
+              compresses to whatever time you have. Ruled by Brady, Sept 8 2026.
+              What replaced it is a fact about the framework, not about us. */}
           <div className="peru-stat">
-            <dt>Days</dt>
-            <dd>{ANCHOR_COUNT}</dd>
+            <dt>Ways in</dt>
+            <dd>{PERU_ROUTES.length}</dd>
           </div>
           <div className="peru-stat">
             <dt>Places</dt>
@@ -671,11 +675,12 @@ function RouteSection() {
     <section id="peru-route" className="peru-section peru-section--route">
       <Reveal variant="rise">
         <div className="peru-eyebrow">THE ROUTE</div>
-        <h2 className="peru-h2">Nine days, coast to altitude to the cloud forest.</h2>
+        <h2 className="peru-h2">Coast, then altitude, then cloud forest.</h2>
         <p className="peru-lede">
           Lima first, at sea level and worth more than the night most itineraries give it. Then the
           desert oasis at Huacachina, then Cusco to get your lungs used to 3,400 m, and only then
-          the trail. The order matters more than the mileage.
+          the trail. Stretch it over three weeks or cut it to a long weekend at the Machu Picchu
+          end. The order is what matters, not the length.
         </p>
       </Reveal>
 
@@ -1028,7 +1033,7 @@ function Trek() {
       </figure>
       <Reveal variant="rise">
         <div className="peru-eyebrow">THE TREK</div>
-        <h2 className="peru-h2">What the nine days actually look like.</h2>
+        <h2 className="peru-h2">How we ran it, and where you would flex.</h2>
         <p className="peru-lede">
           Lima and the coast first, then altitude in Cusco before the trail, then four days walking
           the Salkantay corridor and out at Machu Picchu on the last morning. Run it in this order
@@ -1380,7 +1385,7 @@ export default function PeruPage() {
 
   /* Written for a stranger deciding whether to read the page, not for us.
      The old one listed how many places carried no note from the Lads. */
-  const description = `Walk into Machu Picchu over the Salkantay pass instead of riding the train in. Nine days from Lima to the cloud forest: what it costs, when to go, which tickets sell out first, and ${SAVED_COUNT} places across ${AREA_COUNT} regions.`
+  const description = `Walk into Machu Picchu over the Salkantay pass instead of riding the train in. Four ways in compared on cost, when to go, which tickets sell out first, and ${SAVED_COUNT} places across ${AREA_COUNT} regions, from Lima to the cloud forest.`
 
   return (
     <>

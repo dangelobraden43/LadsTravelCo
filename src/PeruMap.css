@@ -311,3 +311,29 @@
 .peru-detail-pin:hover .peru-detail-halo {
   fill: rgba(63, 179, 160, 0.34);
 }
+
+/* ── TEXTURE ───────────────────────────────────────────────────────────────
+ * The map was flat colour on flat colour. `.peru-land` is now the glow pass
+ * that lifts the coastline off the water; `.peru-land-fill` is the body of the
+ * country sitting on top of it, with the hatch clipped inside. */
+.peru-land-fill {
+  fill: var(--peru-land, #16302c);
+  stroke: var(--peru-coast, rgba(143, 215, 201, 0.42));
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+
+.peru-land {
+  fill: var(--peru-land, #16302c);
+  stroke: none;
+}
+
+/* Pins read as precise marks rather than stickers: a real shadow so they sit
+ * above the surface, and a tighter stroke. */
+.peru-map-svg .mp-pin {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.peru-route {
+  stroke-dasharray: none;
+}

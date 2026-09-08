@@ -263,11 +263,62 @@ export default function PeruMap({ onSelect = null }) {
             <stop offset="0%" stopColor="var(--peru-sea-1, #10202a)" />
             <stop offset="100%" stopColor="var(--peru-sea-2, #0a1319)" />
           </radialGradient>
+
+          {/* ── TEXTURE ──────────────────────────────────────────────────
+              Flat colour on flat colour read as elementary. These are the
+              cheapest cartographic cues that fix it: a fine hatch over the
+              land so it has a surface, a graticule so the frame reads as a
+              map rather than a shape, and a soft inner shadow along the
+              coast so the land sits above the water instead of beside it.
+              All decorative, all pointer-events: none, so none of it can
+              eat a click the way the Sept 2 audit found halos doing. */}
+          <pattern id="peru-hatch" width="6" height="6" patternUnits="userSpaceOnUse">
+            <path d="M0,6 L6,0" stroke="rgba(143,215,201,0.07)" strokeWidth="0.7" />
+          </pattern>
+
+          <pattern id="peru-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+            <path
+              d="M24,0 L0,0 L0,24"
+              fill="none"
+              stroke="rgba(143,215,201,0.05)"
+              strokeWidth="0.6"
+            />
+          </pattern>
+
+          <filter id="peru-coast-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feComposite in="b" in2="SourceGraphic" operator="out" result="ring" />
+            <feColorMatrix
+              in="ring"
+              type="matrix"
+              values="0 0 0 0 0.25  0 0 0 0 0.70  0 0 0 0 0.63  0 0 0 0.5 0"
+            />
+          </filter>
+
+          <clipPath id="peru-land-clip">
+            <path d={PERU_PATH} />
+          </clipPath>
         </defs>
 
         <rect x={AOI.x} y={AOI.y} width={AOI.w} height={AOI.h} fill="url(#peru-sea)" />
 
-        <path className="peru-land" d={PERU_PATH} />
+        {/* Graticule across the whole frame, under everything. */}
+        <rect
+          x={AOI.x}
+          y={AOI.y}
+          width={AOI.w}
+          height={AOI.h}
+          fill="url(#peru-grid)"
+          pointerEvents="none"
+        />
+
+        <path className="peru-land" d={PERU_PATH} filter="url(#peru-coast-glow)" />
+        <path className="peru-land-fill" d={PERU_PATH} />
+
+        {/* Hatch, clipped to the land so the sea stays clean. */}
+        <g clipPath="url(#peru-land-clip)" pointerEvents="none">
+          <rect x={AOI.x} y={AOI.y} width={AOI.w} height={AOI.h} fill="url(#peru-hatch)" />
+        </g>
 
         {/* The route the trip actually took, through real coordinates. */}
         <path className="peru-route" d={route} />
@@ -296,7 +347,11 @@ export default function PeruMap({ onSelect = null }) {
             >
               <circle className="peru-mapday-hit" cx={x} cy={y} r="16" />
               <circle className="peru-mapday-dot" cx={x} cy={y} r="5" />
-              <text className="peru-mapday-label" x={x} y={y - 12}>
+              {/* Days bunch hard between Cusco and the trail, where four
+                  anchors sit within a few units of each other. Alternating the
+                  label above and below the dot separates them without moving
+                  the dot itself, which must stay on its true coordinate. */}
+              <text className="peru-mapday-label" x={x} y={a.day % 2 === 0 ? y - 11 : y + 18}>
                 {a.day}
               </text>
             </g>
@@ -314,7 +369,7 @@ export default function PeruMap({ onSelect = null }) {
           >
             <circle className="peru-cluster-hit" cx={g.x} cy={g.y} r="22" />
             <circle className="peru-cluster-ring" cx={g.x} cy={g.y} r="13" />
-            <text className="peru-cluster-count" x={g.x} y={g.y + 4}>
+            <text className="peru-cluster-count" x={g.x} y={g.y + 4.5}>
               {g.places.length}
             </text>
           </g>
@@ -327,8 +382,9 @@ export default function PeruMap({ onSelect = null }) {
           activeId={activeId}
           onToggle={togglePlace}
           icons={PERU_ICONS}
-          r={9}
-          hitR={22}
+          r={6.5}
+          hitR={20}
+          cluster={{ minDist: 11, stackDist: 3.5, ringPad: 1.05 }}
         />
       </svg>
 
