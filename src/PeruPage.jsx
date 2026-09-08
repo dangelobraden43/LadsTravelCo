@@ -25,6 +25,7 @@ import {
   PREPARE_CHECKED_ON,
 } from './data/peruPrepare.js'
 import { PERU_ROUTES, ROUTE_SCALE, ROUTES_NOTE, ROUTES_CHECKED_ON } from './data/peruRoutes.js'
+import { PERU_CONSENSUS, CONSENSUS_LABEL, CONSENSUS_CHECKED_ON } from './data/peruConsensus.js'
 import './PeruPage.css'
 
 /* ============================================================================
@@ -169,7 +170,14 @@ function PullQuote({ text, subject, variant = 'inline' }) {
  * module load. If a number appears on screen and is not in this block, it
  * came out of the data file verbatim as provenance. */
 
-const DAY_ANCHORS = PERU_PLACES.slice().sort((a, b) => a.day - b.day)
+/* MIAMI IS OUT, EVERYWHERE. Day 1 is a departure-day GPS fix in Florida. It is
+ * a real anchor and it stays in peru.js as provenance, but it is not Peru, it
+ * is not part of the trip anyone is planning, and it was padding the day count
+ * by one. Removed from the page on Brady's instruction, Sept 8 2026.
+ * `inPeruArc` is the data's own flag for exactly this. */
+const DAY_ANCHORS = PERU_PLACES.filter((d) => d.inPeruArc !== false)
+  .slice()
+  .sort((a, b) => a.day - b.day)
 const ANCHOR_COUNT = DAY_ANCHORS.length
 const PERU_ARC_DAYS = DAY_ANCHORS.filter((d) => d.inPeruArc).length
 const FLAGGED_ANCHORS = DAY_ANCHORS.filter((d) => d.flagged).length
@@ -319,8 +327,9 @@ function Hero() {
           Peru<span className="peru-hero-stop">.</span>
         </h1>
         <p className="peru-hero-lede peru-hero-el">
-          Lima to the coast, the coast to Cusco, then the Salkantay corridor and out at Machu
-          Picchu. Ten days in May 2026, walked end to end.
+          You can reach Machu Picchu on a train in an afternoon. Or you can walk in over a 4,600 m
+          pass, sleep under the glacier that feeds it, and come down through cloud forest to the
+          back of the mountain. Same ruins. Completely different trip.
         </p>
 
         <dl className="peru-hero-stats peru-hero-el">
@@ -662,12 +671,11 @@ function RouteSection() {
     <section id="peru-route" className="peru-section peru-section--route">
       <Reveal variant="rise">
         <div className="peru-eyebrow">THE ROUTE</div>
-        <h2 className="peru-h2">Every point on it is a place the camera was.</h2>
+        <h2 className="peru-h2">Nine days, coast to altitude to the cloud forest.</h2>
         <p className="peru-lede">
-          {PERU_ARC_DAYS} of the {ANCHOR_COUNT} day anchors sit inside Peru. The first is a US
-          departure day and is left off the line rather than stretched onto it. Coordinates come out
-          of the camera, not out of a search box, which is why each of them carries a flag instead
-          of a caption.
+          Lima first, at sea level and worth more than the night most itineraries give it. Then the
+          desert oasis at Huacachina, then Cusco to get your lungs used to 3,400 m, and only then
+          the trail. The order matters more than the mileage.
         </p>
       </Reveal>
 
@@ -1020,7 +1028,7 @@ function Trek() {
       </figure>
       <Reveal variant="rise">
         <div className="peru-eyebrow">THE TREK</div>
-        <h2 className="peru-h2">What the ten days actually look like.</h2>
+        <h2 className="peru-h2">What the nine days actually look like.</h2>
         <p className="peru-lede">
           Lima and the coast first, then altitude in Cusco before the trail, then four days walking
           the Salkantay corridor and out at Machu Picchu on the last morning. Run it in this order
@@ -1101,6 +1109,7 @@ function PlaceCard({ place }) {
   const echoesElsewhere = Boolean(place.ladsTake) && !owns
   const holder = echoesElsewhere ? QUOTE_OWNER.get(place.ladsTake) : null
   const silent = !place.ladsTake
+  const consensus = PERU_CONSENSUS[place.name]
 
   /* Three states, and the chip has to match what the card actually shows. An
      entry whose quote is printed under another entry must not wear "IN HIS
@@ -1142,6 +1151,76 @@ function PlaceCard({ place }) {
           searched" provenance line came off the card too: that is how we know
           the pin is right, not something a traveller needs to read. */}
       {owns && <p className="peru-place-desc">{place.ladsTake}</p>}
+
+      {/* ── THE RESEARCH LAYER ──────────────────────────────────────────
+          Public consensus, run across all 25 places on 2026-09-08 and stored
+          in peruConsensus.js. This is what fills the cards that carry no
+          founder line, and it is styled deliberately UNLIKE the founder voice
+          above: quieter, labelled, and sourced. A researched sentence dressed
+          as a firsthand one is the one failure this site exists to avoid, so
+          the two layers must never be mistaken for each other. */}
+      {consensus && (
+        <div className="peru-research">
+          <div className="peru-research-head">
+            <span className="peru-research-label">{CONSENSUS_LABEL}</span>
+            {consensus.coverage === 'thin' && (
+              <span className="peru-research-thin">limited coverage</span>
+            )}
+          </div>
+
+          <p className="peru-research-summary">{consensus.summary}</p>
+
+          {(consensus.praised?.length > 0 || consensus.criticized?.length > 0) && (
+            <div className="peru-research-cols">
+              {consensus.praised?.length > 0 && (
+                <div className="peru-research-col peru-research-col--up">
+                  <span className="peru-research-k">Praised</span>
+                  <ul>
+                    {consensus.praised.map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {/* An empty `criticized` renders nothing at all rather than a
+                  "no complaints found" line, which would read as an endorsement
+                  we did not make. */}
+              {consensus.criticized?.length > 0 && (
+                <div className="peru-research-col peru-research-col--down">
+                  <span className="peru-research-k">Criticised</span>
+                  <ul>
+                    {consensus.criticized.map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {consensus.trap && (
+            <p className="peru-trap">
+              <span className="peru-trap-k">The trap</span>
+              {consensus.trap}
+            </p>
+          )}
+
+          {consensus.bestTime && (
+            <p className="peru-besttime">
+              <span className="peru-research-k">When</span> {consensus.bestTime}
+            </p>
+          )}
+
+          <div className="peru-research-src">
+            {consensus.sources.map((src) => (
+              <SourceLink key={src.u} href={src.u}>
+                {src.t}
+              </SourceLink>
+            ))}
+            <span className="peru-research-checked">checked {CONSENSUS_CHECKED_ON}</span>
+          </div>
+        </div>
+      )}
 
       {/* Useful to a traveller, so it stays: booking this name gets you an
           experience run out of a Cusco office, not somewhere to turn up. */}
@@ -1301,7 +1380,7 @@ export default function PeruPage() {
 
   /* Written for a stranger deciding whether to read the page, not for us.
      The old one listed how many places carried no note from the Lads. */
-  const description = `Peru in ten days: Lima to the coast, Cusco, the Salkantay trail and Machu Picchu. ${SAVED_COUNT} places across ${AREA_COUNT} regions, when to go and what it costs, from a trip we walked in May 2026.`
+  const description = `Walk into Machu Picchu over the Salkantay pass instead of riding the train in. Nine days from Lima to the cloud forest: what it costs, when to go, which tickets sell out first, and ${SAVED_COUNT} places across ${AREA_COUNT} regions.`
 
   return (
     <>

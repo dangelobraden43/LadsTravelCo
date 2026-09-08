@@ -137,6 +137,63 @@ function ClusterDetail({ group }) {
   )
 }
 
+/* THE VIEWBOX IS CROPPED TO THE TRIP, NOT THE COUNTRY.
+ *
+ * Peru is a tall country: the traced canvas is 698 x 1000, portrait. The page
+ * reserves a 16:10 landscape box for the map. Fitting one into the other with
+ * `meet` scaled the whole country down to about 468px inside a 1072px frame,
+ * marooned it in empty background, and shrank every pin to a speck. Brady's
+ * words for the result were "a random GIS map with no pins", which was a fair
+ * description of what it had become.
+ *
+ * So the canvas crops to the ground the trip actually covers, padded out to
+ * the box's aspect ratio. The projection does not change and no pin moves —
+ * this is a window onto the same canvas, so the coastline near Lima still
+ * reads as Peru while the pins get the room to be pins.
+ */
+const MAP_ASPECT = 16 / 10
+
+const AOI = (() => {
+  const pts = [
+    ...MAP_PLACES.map((p) => project(p.lat, p.lng)),
+    ...DAY_ANCHORS.map((a) => project(a.lat, a.lng)),
+    ...PERU_ROUTE.map((r) => project(r.lat, r.lng)),
+  ]
+  const xs = pts.map((p) => p.x)
+  const ys = pts.map((p) => p.y)
+
+  /* Breathing room around the outermost pin so nothing sits on the edge. */
+  const margin = 46
+  let minX = Math.min(...xs) - margin
+  let maxX = Math.max(...xs) + margin
+  let minY = Math.min(...ys) - margin
+  let maxY = Math.max(...ys) + margin
+
+  /* Grow the short side to match the box, so the SVG fills the frame instead
+   * of letterboxing itself inside it. */
+  let w = maxX - minX
+  let h = maxY - minY
+  if (w / h < MAP_ASPECT) {
+    const target = h * MAP_ASPECT
+    const grow = (target - w) / 2
+    minX -= grow
+    maxX += grow
+  } else {
+    const target = w / MAP_ASPECT
+    const grow = (target - h) / 2
+    minY -= grow
+    maxY += grow
+  }
+
+  return {
+    box: `${minX.toFixed(1)} ${minY.toFixed(1)} ${(maxX - minX).toFixed(1)} ${(maxY - minY).toFixed(1)}`,
+    x: minX,
+    y: minY,
+    w: maxX - minX,
+    h: maxY - minY,
+  }
+})()
+
 export default function PeruMap({ onSelect = null }) {
   const [activeId, setActiveId] = useState(null)
   const [panel, setPanel] = useState(null)
@@ -196,10 +253,10 @@ export default function PeruMap({ onSelect = null }) {
     <div className="peru-map peru-map-slot">
       <svg
         className="peru-map-svg"
-        viewBox={VIEW_BOX}
+        viewBox={AOI.box}
         role="img"
         aria-label="Map of Peru showing the May 2026 trip route and saved places"
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="xMidYMid slice"
       >
         <defs>
           <radialGradient id="peru-sea" cx="50%" cy="45%" r="75%">
@@ -208,7 +265,7 @@ export default function PeruMap({ onSelect = null }) {
           </radialGradient>
         </defs>
 
-        <rect x="0" y="0" width={VIEW_W} height={VIEW_H} fill="url(#peru-sea)" />
+        <rect x={AOI.x} y={AOI.y} width={AOI.w} height={AOI.h} fill="url(#peru-sea)" />
 
         <path className="peru-land" d={PERU_PATH} />
 
@@ -270,8 +327,8 @@ export default function PeruMap({ onSelect = null }) {
           activeId={activeId}
           onToggle={togglePlace}
           icons={PERU_ICONS}
-          r={7}
-          hitR={18}
+          r={9}
+          hitR={22}
         />
       </svg>
 

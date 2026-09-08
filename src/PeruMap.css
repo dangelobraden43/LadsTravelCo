@@ -60,10 +60,17 @@
   r: 7;
 }
 
+/* Day numbers sit over the route where it bunches near Cusco, so they carry a
+ * dark outline painted UNDER the fill. Without it a numeral lands on a gold pin
+ * and becomes unreadable exactly where the map is busiest. */
 .peru-mapday-label {
-  fill: var(--peru-mapday-label, #b8ad9a);
+  fill: var(--peru-mapday-label, #e5dcc9);
+  stroke: var(--peru-bg, #0b1c20);
+  stroke-width: 3;
+  paint-order: stroke fill;
   font-family: var(--mono, 'JetBrains Mono', monospace);
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   text-anchor: middle;
   pointer-events: none;
 }

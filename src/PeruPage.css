@@ -1975,3 +1975,148 @@
     height: clamp(200px, 34vh, 300px);
   }
 }
+
+/* ═══ THE RESEARCH LAYER ══════════════════════════════════════════════════
+ * Deliberately quieter than the founder line above it. A researched sentence
+ * that looks like a firsthand one is the single failure this site exists to
+ * avoid, so the two layers are visually separated: the founder voice is body
+ * copy in the page's own colour, this is labelled, indented and sourced. */
+.peru-research {
+  margin: 14px 0 4px;
+  padding: 14px 16px;
+  border-left: 2px solid rgba(127, 151, 155, 0.35);
+  border-radius: 0 10px 10px 0;
+  background: rgba(11, 28, 32, 0.4);
+}
+
+.peru-research-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.peru-research-label {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+/* Says outright when we looked and found little, rather than letting a short
+   entry imply the place is unremarkable. */
+.peru-research-thin {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(217, 105, 74, 0.85);
+}
+
+.peru-research-summary {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-research-cols {
+  display: grid;
+  gap: 10px 20px;
+  margin-bottom: 10px;
+}
+
+.peru-research-col ul {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.peru-research-col li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 4px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-research-col li::before {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  font-size: 12px;
+}
+
+.peru-research-col--up li::before {
+  content: '+';
+  color: var(--peru-jade, #3fb3a0);
+}
+
+.peru-research-col--down li::before {
+  content: '–';
+  color: var(--peru-clay, #d9694a);
+}
+
+.peru-research-k {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+/* The trap is the most useful line on most of these cards, so it is the one
+   part of the research layer that is allowed to be loud. */
+.peru-trap {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(217, 105, 74, 0.09);
+  border-left: 2px solid rgba(217, 105, 74, 0.6);
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e8c4b4;
+}
+
+.peru-trap-k {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--peru-clay, #d9694a);
+  margin-bottom: 4px;
+}
+
+.peru-besttime {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-research-src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.peru-research-checked {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--peru-muted, #7f979b);
+}
+
+@media (min-width: 700px) {
+  .peru-research-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
