@@ -23,6 +23,11 @@ const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
 const PrivacyPage = lazy(() => import('./PrivacyPage'))
 const ShopPage = lazy(() => import('./ShopPage'))
+/* Peru is NOT one of the DESTINATIONS slugs below. Those go through
+   LazyFramework, which expects a data file with a default export, and
+   src/data/peru.js deliberately has none - it is day anchors and saved
+   places, not a framework object. Peru gets its own page component. */
+const PeruPage = lazy(() => import('./PeruPage'))
 
 Clarity.init('wbqqkbsekh')
 
@@ -100,6 +105,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/local" element={<LocalPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/shop" element={<ShopPage />} />
+            <Route path="/peru" element={<PeruPage />} />
             {/* Kept reachable (out of nav) */}
             <Route path="/when" element={<WhenPage />} />
             <Route path="/lads" element={<LadsPage />} />
