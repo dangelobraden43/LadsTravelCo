@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 2, 2026
+## Last Updated: September 8, 2026
 
 ---
 
@@ -15,8 +15,15 @@ Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: **10** React destination routes (Vienna split from Prague Aug 29)
 Canonical total: **220 spots · 13 validated cities · 10 countries · 3 continents**
   (219 → 220 on Aug 31 via Short's Elk Rapids in michigan.js)
+  🔑 **THESE NUMBERS ARE DERIVED, NOT TYPED (since Sept 8, 2026).** Spots are
+  walked out of the ten `src/data/*.js` files at build time; cities/countries/
+  continents are counted from `src/data/canonical.js`. The figures above are a
+  human-readable snapshot for reading convenience — **the site never reads them
+  from here.** ⛔ Do not type a data count into any page, string or meta tag.
+  See `SEPTEMBER 8, 2026 — THE TRUTH PASS`.
 ⭐ **READ `THE VISION AND THE TIMELINE` FIRST** — it is the plan everything
-  serves. Then `THE NEW FRAMEWORK AGENDA`, which is the September build slate.
+  serves. Then **`THE SEPTEMBER 8 QUEUE`**, which is the live work order, and
+  `THE NEW FRAMEWORK AGENDA` behind it. **`THE OCTOBER VISION` sets next month.**
 Peru completed. Ford started May 18.
 LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   (MN·WI·MI·IL·IN·OH + the Ontario shore) as the page hero, under the banner
@@ -25,13 +32,13 @@ LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   candidates**, plus 14 validated-but-unplaceable spots named in the list only.
   ⛔ **`/good-news` is RETIRED** — it permanently redirects to `/local`. Do not
   re-add its route or its rewrite.
-  🔵 **ON `feature/travel-windows`, NOT YET ON PRODUCTION:** `/local` grows to
-  **113 places** (adds 16 Good Views across all six states) plus **THE LIVE
-  PULSE** — 58 sourced events at 9 venues with a This Weekend filter — and
-  Golfweek's cited top-20 golf slate. Every framework also gains a **"When to
-  Go"** section and Dublin/Spain gain **Flight Intelligence**. The numbers in
-  this STATUS block describe PRODUCTION; see the Sept 2 evening section for the
-  branch. Do not merge the two figures until the branch ships.
+  ✅ **SHIPPED TO PRODUCTION** (`f9af4b7`, merged from `feature/travel-windows`).
+  `/local` carries **113 places** (16 Good Views across all six states) plus
+  **THE LIVE PULSE** — 58 sourced events at 9 venues with a This Weekend filter
+  — and Golfweek's cited top-20 golf slate. Every framework gained a **"When to
+  Go"** section; Dublin/Spain gained **Flight Intelligence**. The branch/
+  production split that used to be described here is GONE: both figures are now
+  the same figure.
 LIVE: `/privacy` + footer affiliate disclosure.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
@@ -129,30 +136,21 @@ moves, not the BAR.**
       a founder decision. ⛔ **Never invent, suggest-as-settled, or publish a
       price.** Same rule that governs the Scenic Shore line.
 
-### 🚩 GATE 6 HAS A LIVE FAILURE ALREADY — found Sept 1, 2026, NOT fixed
+### ✅ GATE 6's LAUNCH-DATE FAILURE — CLOSED September 8, 2026
 
-**The site tells strangers it is "LAUNCHING FALL 2026" in seven places, and it is
-now Fall 2026.** The real target is January 1, 2027. Every day this stands, the
-homepage badge reads as "any day now" to anyone who lands on it.
+**Was:** the site told strangers it was "LAUNCHING FALL 2026" in seven places,
+and it was Fall 2026. Nobody had written a false sentence — a true one had been
+overtaken by the calendar, in seven files that knew nothing about each other.
 
-    src/App.jsx:756        PREVIEW · LAUNCHING FALL 2026     (homepage hero badge)
-    src/Footer.jsx:34      "A travel intelligence company. Launching Fall 2026."
-    src/Footer.jsx:60      "We launch Fall 2026 — follow the build."
-    src/GiftPage.jsx:705   "Built for a friend. The Lads launch Fall 2026."
-    src/LadsSection.jsx:316 "A preview from The Lads. Launching Fall 2026."
-    src/PlanPage.jsx:85    "The full thing lands Fall 2026."
-    src/PrivacyPage.jsx:279 "...heading toward a Fall 2026 launch..."
+**Brady ruled Sept 8:** state the specific date. All seven now read **January 1,
+2027**, and they read it from **one constant**, `LAUNCH_LABEL` in
+`src/utils/launch.js`. When the date moves it moves once and no surface can be
+left behind.
 
-⛔ **Deliberately NOT rewritten without Brady.** Public launch-date copy is a
-founder decision, and there is a real choice inside it: printing "January 1,
-2027" on the homepage commits us publicly to a date the plan explicitly allows to
-slip to February. The honest options are (a) a specific date and accept the
-commitment, (b) a season — "Launching early 2027", or (c) drop the date and say
-"Launching soon" / nothing. **Brady picks; then all seven change in one pass.**
-
-This is exactly the class of thing Gate 6 exists to catch, and it is the same
-failure as the Iceland eclipse window: a true claim that quietly went stale
-because a date arrived.
+⚠️ **This was option (a) of three, and it carries what option (a) carries:** we
+are now publicly committed to a date the plan explicitly allows to slip to
+February. If a December gate fails, changing that constant is part of the slip,
+not an afterthought.
 
 ### MILESTONES, BACKWARDS FROM JANUARY 1
 
@@ -160,7 +158,7 @@ because a date arrived.
 |---|---|
 | **December 2026** | Launch staging: pages in draft, **capacity review run**, cap set, **Travel Tuesday executed Dec 1**, pricing locked. |
 | **November 2026** | Framework slate complete — **San Juan, Costa Rica, Bruce, Vancouver** (research-tier). Q4 commerce. **Phocuswright decision executed.** |
-| **October 2026** | **Peru LIVE as the standard-setter** — it is the bar. First digital product **sold** (pilot). The ride documented. The film released. |
+| **October 2026** | **GLOBAL EXPANSION MONTH.** Peru LIVE as the standard-setter — it is the bar. Every existing framework raised to it. Dawson's study-abroad countries begin. Periodic-improvement cadence running. 100% affiliate coverage. First digital product **sold** (pilot). The ride documented. The film released. **See `THE OCTOBER VISION`.** |
 | **September 2026** | **`/local` shipped polished.** `/live` first pass. Enrichment engine **proven** through the Notion queue. Both study-abroad emails out. **Sept 18 fundraising banked.** |
 
 **September is the month we are in.** The month's work is the top of this table,
@@ -223,6 +221,238 @@ shared checkout someone else is serving localhost from.
 
 ---
 
+## 🟢 SEPTEMBER 8, 2026 — THE TRUTH PASS. Every displayed number now derives.
+
+**SHIPPED TO PRODUCTION.** `main` is at `869b3e1`, `main == origin/main`, and the
+deployed bundle was verified to carry the new build (the `PAID LAUNCH` marker is
+present in the live App chunk at ladstravel.com). `f9af4b7` — the travel-windows
+platform work — also landed on main this week.
+
+### WHAT THE AUDIT ACTUALLY FOUND — the `/michigan` four were the small half
+
+The session opened intending to fix four false claims on one page. The sweep that
+followed found the **same class of failure on six more frameworks and five shared
+surfaces**:
+
+| Surface | Claimed | Data held |
+|---|---|---|
+| `/michigan` hero + overview | 42+ venues · 123 shows · 9 golf · 8 crawls | 18 · 27 · 4 · **no crawls key has ever existed** |
+| `spain` (hero + overview + 2 quiz rows) | **100+ spots**, ×4 places | **38** |
+| `australia` (hero + overview) | 123 Sydney spots; "57 + 18" | **22** |
+| `rome` (hero + overview) | 25 rated spots | **27** |
+| `prague` hero | 15 database spots | **17** (stale since the Vienna split) |
+| `dublin` overview | "30 in Dublin, 15 in Galway" | **22 / 12** |
+| `SystemSection` lede | **180+ spots across 29 cities and 13 countries** | 220 · 13 · 10 |
+| `/lads` + homepage, ×3 | **650+ spots** | 220 |
+| `ExplorePage` | 9 per-city counts | **7 of 9 stale** |
+| `WhenPage` | 6 per-city counts | all stale |
+
+🔑 **NOT ONE OF THESE WAS A LIE WHEN IT WAS TYPED.** Every one was true on the day
+someone wrote it and went stale silently when the data moved underneath it. That
+is the whole finding. **A proofreading pass does not fix this — it only resets the
+clock.** So the fix was not to retype twenty numbers correctly.
+
+### ⛔ THE STANDING RULE THAT CAME OUT OF IT
+
+**A number that describes our own data is NEVER typed into a string.** It is
+derived — at build time or at render — so it cannot drift. If you are typing a
+count into copy, you are reintroducing the bug.
+
+### HOW IT WORKS NOW — three files
+
+- **`src/utils/derive.js`** — the live-walk plus resolvers. A `heroStat` carrying
+  a `derive` token (`spots`, `category:golf`, `except:golf`, `dayTrips`,
+  `windows`, `countries`) or a **function** is counted from that framework's own
+  data on every render. Michigan's live-event count is a function on purpose:
+  date-dependent numbers must live where they are recomputed, not where they are
+  frozen at import.
+- **`src/data/canonical.js`** — the ONE declared geography table. Cities,
+  countries and continents are **counted** from it (13 · 10 · 3), never typed.
+  ⚠️ This is the human-maintained edge of the system and deliberately the only
+  one: nothing inside `dublin.js` says "Ireland". A new framework is added HERE
+  and nowhere else.
+- **`vite.config.js`** — `ladsCanonicalStats()` imports the real data files at
+  build, walks them, and serves the totals as `virtual:lads-stats`. It also fills
+  the **three `index.html` meta descriptions** (the text search results actually
+  render) from the same walk. The homepage renders 220 **without shipping the
+  ~150 KB of prose those 220 spots live in**.
+
+### WHAT IS DELIBERATELY *NOT* DERIVED — and why the distinction is the product
+
+Founder facts stay authored: dublin's **"35+ pubs visited"**, "6 Weeks Lived
+There", "2 Study Abroads", Oktoberfest's opening date. Those rest on a founder's
+word about a trip, and the data file has no way to know them.
+
+➡️ **Ruled by Brady, Sept 8:** deriving "35+ pubs" would replace a person's claim
+with a database artefact. It is the same rule that keeps the 16 silent Peru places
+silent — **derive what we can count, attribute what only a founder can say.** The
+code carries that comment so nobody "fixes" it into a row count later.
+
+### THE LAUNCH DATE — ruled and centralised
+
+Seven "Fall 2026" strings → **January 1, 2027**, all reading `LAUNCH_LABEL` from
+`src/utils/launch.js`. See the closed Gate 6 entry above for the commitment this
+carries.
+
+### REMOVED ON BRADY'S INSTRUCTION
+
+- The **"20 Days / broke his hand surfing in Costa Rica"** build callout, and the
+  two timeline rows naming the injury and the Costa Rica trip.
+- The **founder credential bios** on `/lads` and the homepage team cards. Names,
+  roles and photos stay. ⚠️ He said **"for now"** — this is a removal, not a
+  ruling against ever having bios.
+- `SystemSection`'s **`ALL_CITIES`** table — dead code that claimed Sydney 123
+  against a real 22. Dead code holding false numbers is a loaded gun.
+
+### 🔧 TWO THINGS THAT COST TIME, BOTH ALREADY IN THIS FILE
+
+1. **The heredoc ate the backslashes — again, twice.** A quoted `<<PYEOF` heredoc
+   turned an escaped NUL literal into a real NUL byte and an escaped newline into
+   a real newline, producing a `vite.config.js` with a NUL inside a string, a
+   broken `.join()` and a mangled regex. Later, a large markdown heredoc failed to
+   parse at all. **The note about this was already in CLAUDE.md and it still
+   happened twice in one session.** ➡️ **Use the Write tool for any content with
+   backslashes or heavy punctuation. Write the payload to a file, then splice it
+   with a short script.** Do not retry the heredoc.
+2. **A composer targeted the wrong key and nearly shipped a raw token.** The
+   first version filled `overview.quickRead` by name while the claim actually
+   lived in `overview.framework`, which would have rendered a literal token like
+   `{{SPOTS}}` on a public page. Rewritten to walk every overview string, plus an
+   assertion that no framework contains an unfilled token after load. **A
+   find-and-replace that targets one named field is a guess about where the text
+   is.**
+
+### ✅ VERIFIED RENDERED, NOT JUST BUILT
+
+`npm run build` clean, then every claim checked in a real browser at **1440 and
+390** on `/`, `/michigan`, `/spain`, `/lads`: hero stats resolve, composed prose
+reads right, meta tags carry derived values, zero unfilled tokens, no horizontal
+overflow at 390 (scrollWidth 375). The only console errors are Vercel analytics
+404s, which exist only on local preview.
+
+---
+
+## 🚩 THE SEPTEMBER 8 QUEUE — work this in order
+
+### 1 — TRUTH PASS ROUND 2 (next session, BEFORE the Peru build starts)
+
+Brady's addendum, Sept 8. **Peru proceeds on a fully honest site, not a mostly
+honest one.**
+
+1. **`WhenPage`: remove Thailand** — retired Aug 13, still listed — and **audit
+   the whole page for other retired content**.
+2. **Wire the prices to `fareIntelligence.js`.** `WhenPage`'s per-city fares
+   (`$480 avg RT` and five more) and `SystemSection`'s "flights from ORD under
+   $500" are authored prices. ➡️ **Derive or delete. No authored prices** — the
+   same rule that governs the Scenic Shore line and the December pricing lock.
+3. **Delete `src/NorthAmericaSection.jsx`.** Dead code (imported by nothing),
+   hardcoded counts, a remount landmine. Git history preserves it.
+
+### 2 — PERU: THE STANDARD-SETTER ⭐ the September build
+
+Unchanged and still the priority — see `THE NEW FRAMEWORK AGENDA`. **Structure
+proposal first, Brady approves before build, checkpoint-push per phase.**
+
+### 3 — /outdoors: THE DUSK FIELD GUIDE — spec'd Sept 8, SEQUENCED AFTER PERU
+
+🚩 **Brady's explicit sequencing: this starts only after the Peru standard-setter's
+structure is approved.** Salkantay inherits Peru's photos and data.
+
+**One route, two worlds:** PARKS (US / Canada / El Yunque) + EXPEDITIONS
+(international treks).
+
+**DESIGN SYSTEM — locked by Brady.** Dark dusk base: pine-black `#0F1714`, panels
+`#16211C`, lake-navy `#1B2A38`, glacier `#7FB4C9`, moss `#6E8B5E`, pine `#2E4A3B`,
+bark `#7A5C44`, stone-cream `#E5DCC9` text, campfire ochre `#D9973B` accents.
+Topo contour-line textures (low-opacity SVG) + fine grain. Body stays Inter;
+propose one condensed poster display face + Fraunces bridging.
+⛔ **This palette is EXCLUSIVE to `/outdoors`** — the never-reuse-a-palette rule
+applies in both directions.
+
+**PARK CARDS — original WPA-genre poster compositions** as layered SVG (sky band,
+2–3 ridge silhouettes, water band where true, sun/moon, poster type, est. line),
+**generated per park from real park geography** — a lake park gets water, a canyon
+park gets strata.
+⛔ **LEGAL RULE:** 1930s WPA originals are public-domain *inspiration*. Modern
+poster recreations (Anderson Design Group and similar) are **copyrighted —
+reference NOTHING from them.**
+
+**SIGNATURE MOTION:** the trail draws itself — SVG elevation profiles tracing on
+scroll, waypoints/camps dropping in with elevation labels. **GSAP/ScrollTrigger
+only, no WebGL**, `prefers-reduced-motion` static, and it must be smooth at 390 on
+a mid-range phone or it is wrong.
+
+**DATA + HONESTY:** `parkData` schema — windows driver-typed · trails with
+miles/difficulty/why · airports with fare-band refs · access · camping · lodging ·
+permits · theTrap · sources · checkedOn · validated flags. **Two visible tiers:**
+VALIDATED (Bruce Peninsula NP gold; Salkantay corridor; **audit Olympic + Costa
+Rica visit status and report**) vs PIPELINE-RESEARCHED (cited consensus, framed
+proudly as researched-not-yet-walked). NPS / Parks Canada official sources first.
+**No invented stats, ever.**
+
+**PHASES:**
+- **A — DESIGN PROPOSAL.** Palette applied, type specimens, **three** poster-card
+  samples (recommend Pictured Rocks · Banff · El Yunque as a range test), the
+  `/outdoors` hub layout, one park field-guide page structure, one expedition page
+  structure with the trail-draw sketch. Screenshots at 1440 + 390. **Brady
+  approves before any build.**
+- **B — PILOT.** Bruce Peninsula NP field-guide page (our validated gold — the
+  honest flagship) + the Salkantay expedition page (full trail-draw, Peru photos,
+  founding story). Brady reviews on localhost.
+- **C — LAUNCH SET**, batched across sessions: propose the 12-park list for
+  sign-off (balance icons / Midwest-reachable / Canada / Caribbean), then build in
+  checkpoint phases. Researched trek cards for the 6 expeditions.
+- **D —** nav integration, redirect handling from current `/outdoors` content,
+  full verify, `/ship` on Brady's go.
+
+➡️ **This closes the Bruce framework gap** (queue item 7 from Sept 2): 17 gold
+pins that have never had a framework.
+
+### 4 — BACKGROUND, as capacity allows
+
+- **Golf coordinates by provenance** for all 20 courses — signed-in browser job.
+  ⛔ Geocoding 20 course names is the exact Tivoli failure. Follow IDs, not strings.
+- **Bucks / Fiserv + Van Andel / Pine Knob calendars** — signed-in browser.
+- **Populate the Spot Review Queue** from the staged Michigan lists (Stage 1).
+
+---
+
+## 🔭 THE OCTOBER VISION — GLOBAL EXPANSION MONTH (set September 8, 2026)
+
+**September proves the standard. October scales it.**
+
+**NEW COUNTRIES — Dawson's study-abroad pipeline.** Dawson is gathering spots from
+his Kalamazoo College study-abroad connections, which is the first framework
+source that is neither a Lads trip nor a research pass: it is **firsthand
+knowledge from people we actually know**. ⚠️ That is a THIRD provenance tier and
+it needs its own honesty treatment before it renders — a friend's firsthand
+account is not a Lads validation and must never be styled as gold. **Decide the
+tier language before the first spot ships.**
+
+**THE THREE EMPHASES:**
+
+1. **EVERY FRAMEWORK TOP-TIER.** Not more frameworks at the current bar — the
+   existing ten brought UP to whatever Peru establishes. A framework that has not
+   been raised to the Peru standard is not done.
+2. **PERIODIC-IMPROVEMENT SYSTEMS.** The site must maintain its own freshness
+   rather than relying on someone noticing:
+   - **Quarterly** — travel windows + fare intelligence refresh.
+   - **Monthly** — the Live Pulse refresh (events expire themselves already;
+     new seasons do not add themselves).
+   - **Rolling** — enrichment batches through the Notion review queue.
+   🔑 **This is the Sept 8 lesson applied to content instead of numbers.** Derived
+   counts cannot go stale; researched *content* still can. `datedUntil` and
+   `checkedOn` exist for exactly this — build the cadence that reads them.
+3. **100% AFFILIATE LINK COVERAGE.** Every spot that can carry a Viator link
+   carries one. ⛔ Under the standing endorsement gradient: a link on a spot with
+   no `ladsRating` gets neutral framing, and service-category programs stay off
+   framework spots entirely.
+
+**Milestone framing:** October also still owns Peru LIVE, the first digital
+product sold (pilot), the ride documented and the film released.
+
+---
+
 ## 🔴 SEPTEMBER 2, 2026 (evening) — /local BECAME A PLATFORM. Branch: `feature/travel-windows`
 
 ✅ **BRADY REVIEWED AND SIGNED OFF, evening of Sept 2:** *"I looked it over and I
@@ -232,13 +462,15 @@ page is finished. Ask him for them at the top of the next session.
 
 **Everything below is COMMITTED AND PUSHED to `origin/feature/travel-windows`.**
 
-🚩 **NOT ON PRODUCTION YET.** `main` is at `9b5a883` and ladstravel.com is still
-serving the pre-pulse `/local`. Vercel auto-deploys on push to **main**, so
-nothing here reaches the public until the branch is merged. Merging is a founder
-action — open the PR at
-`https://github.com/dangelobraden43/LadsTravelCo/pull/new/feature/travel-windows`
-or run `/ship`. **Confirm the Vercel deploy reaches READY, not just that the
-push succeeded** (the standing cadence rule).
+✅ **MERGED AND ON PRODUCTION** as `f9af4b7`. This section described a branch when
+it was written; it is history now, not a pending action. Do not re-read it as
+outstanding work — the Sept 8 record above is the current state.
+
+📌 **Kept as the worked example of the cadence rule.** This block sat in the file
+for six days saying "NOT ON PRODUCTION YET" after the merge had happened, which is
+exactly the stale-record failure the concurrency rule exists to prevent. **Re-read
+`git log` before writing any status. A confident stale record is worse than no
+record.**
 
 `14e0a1a` windows schema · `03ab1b4` windows render · `16a7867` fares ·
 `ba5a06d` list detail · `20e1e5f` THE PULSE · `ded8a2f` Good Views + golf ·
@@ -259,46 +491,38 @@ push succeeded** (the standing cadence rule).
 - Places 97 → **113**. Canonical site total **unchanged at 220** — every one of
   these is research tier with no `description`, so the live-walk never sees them.
 
-### 🚩 THE FOUR FALSE CLAIMS ON `/michigan` ARE STILL LIVE AND UNFIXED
+### ✅ THE FOUR FALSE `/michigan` CLAIMS — FIXED September 8, 2026, STRUCTURALLY
 
-Found Sept 2 while auditing the golf gap. `/michigan` is indexed, sitemap 0.7:
+All four are gone, and none was replaced with a new hand-typed number:
 
-| Claim on the page | What the data holds |
-|---|---|
-| "123 Shows Tracked" · "123 concerts April–November 2026" | **0.** No event data exists in the repo |
-| "42+ Venues" | 22 spots |
-| "9 Golf Destinations" | 4 golf spots |
-| "8 curated bar crawls" | no `crawls` key exists |
+| Was | Now | How |
+|---|---|---|
+| "42+ Venues" | **18** | derived, spots excluding golf |
+| "123 Shows Tracked" | **27** | derived from `liveEvents()`, Michigan venues only |
+| "9 Golf Destinations" | **4** | derived from the golf category |
+| "8 curated bar crawls" | **removed** | you cannot derive a number for a thing that was never built |
 
-⛔ **NOT fixed without Brady.** Removing a hero stat is public copy, and "123
-Shows Tracked" cannot be replaced by a derived number — the honest figure is
-zero. **This is a Gate 6 failure sitting in production right now.**
+**The audit did not stop at `/michigan`, and that is the real story of Sept 8.**
+The same failure was live on six more frameworks and five shared surfaces. See
+`WHAT WAS BUILT (September 8, 2026)` below.
 
-### ➡️ TOMORROW'S QUEUE — written Sept 2, in priority order
+### ⛔ THE SEPT 2 QUEUE — ARCHIVED September 8, 2026. Item 1 is done; the rest moved.
 
-1. **Fix the four `/michigan` claims.** Blocked only on Brady's call for the
-   shows stat. Everything else derives from the data.
-2. **Milwaukee Bucks / Fiserv Forum.** The one pulse gap.
-   `nba.com/bucks/schedule` renders its calendar with no opponents and no
-   home/away in the DOM — needs the signed-in browser or another official route.
-   **Absent, not guessed.**
-3. **Concert calendars.** Van Andel and Pine Knob are on the map with ZERO
-   events and render as quiet hollow rings. Their calendars were never pulled.
-   Little Caesars / United Center / Fiserv concerts too.
-4. **Golf coordinates by provenance.** All 20 courses are unplaced: golf courses
-   have no Wikipedia coordinate records, and geocoding 20 course names is the
-   exact Tivoli failure. Signed-in browser job.
-5. **Chicago + Milwaukee full sweeps.** They currently carry fixtures only, and
-   the page says so out loud in copper. Do not remove that line until the depth
-   is real.
-6. **Eat & Do per region**, and the remaining Phase-B category depth. The full
-   spec was 5 regions × 4 categories × 6–10 cited entries = 120–200 rows, which
-   is beyond one session's research budget (~200 searches/session; see the
-   enrich skill).
-7. **Bruce framework tie-in** — 17 gold pins, still no framework, and no Bruce
-   spot carries a description.
-8. **Weekend trips** as first-class map objects — Brady's Route 1 (Jul 10–11)
-   and Dawson's UP scout (Jul 4) ship gold; proposals ship dashed copper.
+> Kept for its flags only. **Do not work from this list** — the live queue is
+> `THE SEPTEMBER 8 QUEUE` below. Item 1 (the four `/michigan` claims) shipped on
+> Sept 8 and is recorded above. Items 2–8 were NOT abandoned; they moved into
+> the September 8 queue and the October runway with their flags intact.
+
+1. ~~Fix the four `/michigan` claims.~~ ✅ **DONE Sept 8** — and structurally,
+   which was not what this line asked for. See the Sept 8 record.
+2. **Milwaukee Bucks / Fiserv Forum** — still open, still absent-not-guessed.
+3. **Concert calendars** — Van Andel and Pine Knob still hold zero rows.
+4. **Golf coordinates by provenance** — all 20 still unplaced.
+5. **Chicago + Milwaukee full sweeps** — still fixtures only.
+6. **Eat & Do per region** — unstarted.
+7. **Bruce framework tie-in** — unstarted, and now scheduled: it is the Phase B
+   pilot of THE DUSK FIELD GUIDE.
+8. **Weekend trips as map objects** — unstarted.
 
 ### ⚠️ ONE THING BRADY ASKED FOR THAT WAS DELIBERATELY NOT DONE
 
@@ -1020,19 +1244,33 @@ data is pending), never a month that has already passed.
 
 ---
 
-## 📍 SESSION START STATE — verified September 2, 2026
+## 📍 SESSION START STATE — verified September 8, 2026
 
-**Working tree clean. `main` == `origin/main`. Nothing pending `/ship`.**
-Last commits: `5734c6a`, `e0cff0d`, `8ebb137`, `b84652d` — all Sept 1–2, all pushed,
-deploy confirmed READY on ladstravel.com.
+**Verified from `git log` and `git status`, not from memory** (the standing
+concurrency rule). Working tree clean. `main` == `origin/main` at **`869b3e1`**.
+Nothing pending `/ship`.
 
-**✅ What IS live:** the Jan 1 2027 vision + quality gates in this file · the Bruce
-ruling (all 17 gold) · Michigan coordinates and the 219 → 220 move · **`/local` as the
-map**, with `/good-news` redirecting into it.
+**Recent:** `869b3e1` the truth pass (all displayed stats derive) · `f9af4b7` the
+Lads Local platform — live pulse, Good Views, travel windows, flight intelligence.
+**Both are on production**, confirmed by fetching the deployed App chunk and
+finding the new `PAID LAUNCH` marker in it — not by assuming the push deployed.
 
-🚩 **STILL OPEN, needs Brady:** the site says **"LAUNCHING FALL 2026" in seven places**
-and it is now Fall 2026. Listed with file and line under THE VISION AND THE TIMELINE.
-Public launch-date copy is a founder decision, so it was deliberately not rewritten.
+**✅ What IS live:** `/local` as the map with the Live Pulse and 113 places · every
+framework's "When to Go" section · Dublin/Spain flight intelligence · **every
+displayed count derived from the data** · the launch date stated once as January
+1, 2027 · the Bruce ruling (all 17 gold).
+
+**✅ CLOSED since the last session:** the seven "LAUNCHING FALL 2026" strings, and
+the four false `/michigan` claims. Both were Gate 6 failures sitting in
+production; both are fixed structurally rather than by retyping.
+
+🚩 **NEXT SESSION STARTS WITH TRUTH PASS ROUND 2** — three items, all small, all
+blocking the Peru build by Brady's sequencing. See `THE SEPTEMBER 8 QUEUE`.
+
+⚠️ **Still owed by Brady:** the `/local` depth notes he mentioned Sept 2 (he has
+since ruled these fold into the Peru standard — Peru answers "falls short", and
+`/local` inherits its patterns afterward), licensed music for the Peru film, and
+the Detroit Maps list that closes four unpinnable Michigan spots.
 
 ---
 
