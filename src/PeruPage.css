@@ -1394,3 +1394,301 @@
   letter-spacing: 0.5px;
   color: var(--peru-muted, #7f979b);
 }
+
+/* ═══ BEFORE YOU GO ═══════════════════════════════════════════════════════
+ * Brady's note: the palette is right but it went flat in places. These
+ * sections carry the accent deliberately rather than defaulting to another
+ * bordered panel on the same ground. */
+
+.peru-section--prepare {
+  position: relative;
+}
+
+/* A hairline of jade down the left of the whole block, so the practical
+   section reads as its own territory rather than more of the same page. */
+.peru-section--prepare::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--peru-jade, #3fb3a0) 12%,
+    var(--peru-jade, #3fb3a0) 88%,
+    transparent
+  );
+  opacity: 0.5;
+}
+
+.peru-h3 {
+  margin: 56px 0 6px;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: clamp(22px, 3vw, 30px);
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-lede--tight {
+  margin-bottom: 20px;
+}
+
+.peru-prep-grid,
+.peru-pack-grid,
+.peru-save-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.peru-prep-grid {
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+}
+.peru-pack-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.peru-save-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.peru-ticket,
+.peru-pack,
+.peru-save {
+  position: relative;
+  height: 100%;
+  padding: 22px 22px 18px;
+  border-radius: var(--radius, 16px);
+  background: var(--peru-surface, #10272c);
+  border: 1px solid rgba(63, 179, 160, 0.16);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.peru-ticket:hover,
+.peru-pack:hover,
+.peru-save:hover {
+  transform: translateY(-2px);
+  border-color: rgba(63, 179, 160, 0.42);
+}
+
+.peru-ticket-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.peru-ticket-name {
+  margin: 0;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: 19px;
+  color: var(--peru-text, #e5dcc9);
+}
+
+/* The lead time is the operative fact on the card, so it gets the accent. */
+.peru-ticket-lead {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--peru-jade, #3fb3a0);
+}
+
+.peru-ticket-rule {
+  margin: 0 0 8px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--peru-jade-soft, #8fd7c9);
+}
+
+.peru-ticket-detail,
+.peru-pack-note,
+.peru-save-detail {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--peru-body, #b6c9c9);
+}
+
+/* THE PUSH. The one card that tells a reader to do more than they planned,
+   so it is the one card that looks different. */
+.peru-ticket--push {
+  border-color: rgba(63, 179, 160, 0.5);
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(63, 179, 160, 0.14), transparent 60%),
+    var(--peru-elevated, #16343a);
+}
+
+.peru-ticket-push {
+  margin: 12px 0 10px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--peru-jade, #3fb3a0);
+  border-radius: 0 8px 8px 0;
+  background: rgba(63, 179, 160, 0.08);
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--peru-jade-soft, #8fd7c9);
+}
+
+.peru-pack-name,
+.peru-save-move {
+  margin: 0 0 8px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-pack-list {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.peru-pack-list li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 7px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-pack-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--peru-jade, #3fb3a0);
+}
+
+/* Ways to save are numbered, which turns a list of tips into a sequence. */
+.peru-save-grid {
+  counter-reset: save;
+}
+
+.peru-save {
+  counter-increment: save;
+  padding-top: 26px;
+}
+
+.peru-save::before {
+  content: counter(save, decimal-leading-zero);
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 22px;
+  color: rgba(63, 179, 160, 0.28);
+}
+
+.peru-src {
+  display: inline-block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(127, 151, 155, 0.5);
+}
+
+.peru-src:hover {
+  color: var(--peru-jade, #3fb3a0);
+  border-bottom-color: var(--peru-jade, #3fb3a0);
+}
+
+/* ═══ LIMA BAND ═══════════════════════════════════════════════════════════
+ * Full-bleed change of ground so it lands as a highlight, not another card. */
+.peru-lima {
+  margin: 72px 0;
+  padding: 44px 0;
+  background:
+    radial-gradient(90% 140% at 12% 0%, rgba(63, 179, 160, 0.16), transparent 62%),
+    linear-gradient(180deg, var(--peru-elevated, #16343a), var(--peru-surface, #10272c));
+  border-top: 1px solid rgba(63, 179, 160, 0.28);
+  border-bottom: 1px solid rgba(63, 179, 160, 0.28);
+}
+
+.peru-lima-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.peru-lima-title {
+  margin: 6px 0 14px;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.15;
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-lima-claim {
+  margin: 0 0 12px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: clamp(16px, 2.2vw, 19px);
+  line-height: 1.6;
+  color: var(--peru-jade-soft, #8fd7c9);
+}
+
+.peru-lima-more,
+.peru-lima-sowhat {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-lima-src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.peru-lima-checked {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--peru-muted, #7f979b);
+}
+
+@media (max-width: 620px) {
+  .peru-section--prepare::before {
+    left: -10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peru-ticket,
+  .peru-pack,
+  .peru-save {
+    transition: none;
+  }
+  .peru-ticket:hover,
+  .peru-pack:hover,
+  .peru-save:hover {
+    transform: none;
+  }
+}
+
+/* The "Travelled / May 2026" stat wrapped mid-value in the hero. A stat value
+   should never break across lines; it reads as two figures. */
+.peru-stat dd {
+  white-space: nowrap;
+}

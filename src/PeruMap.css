@@ -263,3 +263,44 @@
   line-height: 1.6;
   color: var(--peru-body, #b8ad9a);
 }
+
+/* ── CLUSTER DETAIL ────────────────────────────────────────────────────────
+ * A dense group re-projected into its own frame, so places that share a pixel
+ * on the country map get an individual pin each. The frame changes; the
+ * coordinates do not. */
+.peru-detail {
+  margin: 4px 0 14px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(63, 179, 160, 0.06);
+  border: 1px solid rgba(63, 179, 160, 0.2);
+}
+
+.peru-detail-label {
+  margin-bottom: 6px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+.peru-detail-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.peru-detail-halo {
+  fill: rgba(63, 179, 160, 0.16);
+}
+
+.peru-detail-dot {
+  fill: var(--peru-jade, #3fb3a0);
+  stroke: var(--peru-bg, #0b1c20);
+  stroke-width: 1.2;
+}
+
+.peru-detail-pin:hover .peru-detail-halo {
+  fill: rgba(63, 179, 160, 0.34);
+}

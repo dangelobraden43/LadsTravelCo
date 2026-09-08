@@ -17,6 +17,13 @@ import {
 import { FARE_SOURCES } from './data/fareIntelligence.js'
 import { TOTAL_SPOTS } from './utils/siteStats'
 import CloudImage from './CloudImage'
+import {
+  PERU_TICKETS,
+  PERU_PACKING,
+  PERU_SAVE,
+  LIMA_FOOD,
+  PREPARE_CHECKED_ON,
+} from './data/peruPrepare.js'
 import './PeruPage.css'
 
 /* ============================================================================
@@ -261,6 +268,7 @@ const SECTIONS = [
   { id: 'peru-route', label: 'The Route' },
   { id: 'peru-when', label: 'When To Go' },
   { id: 'peru-getting-there', label: 'Getting There' },
+  { id: 'peru-prepare', label: 'Before You Go' },
   { id: 'peru-trek', label: 'The Trek' },
   { id: 'peru-places', label: 'The Places' },
   { id: 'peru-differently', label: 'Differently' },
@@ -343,6 +351,140 @@ function Hero() {
 }
 
 /* ===== 2. THE ROUTE ====================================================== */
+
+/* ===== BEFORE YOU GO — tickets, permits, packing, ways to save ============
+ *
+ * The half of a framework somebody is paying for. Everything in here is
+ * sourced in src/data/peruPrepare.js and carries a check date on screen,
+ * because a ticket rule that has quietly changed is worse than no rule at all:
+ * a reader acts on it, months ahead, with money.
+ */
+
+function SourceLink({ href, children = 'source' }) {
+  if (!href) return null
+  return (
+    <a className="peru-src" href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  )
+}
+
+function Prepare() {
+  return (
+    <section id="peru-prepare" className="peru-section peru-section--prepare">
+      <Reveal variant="rise">
+        <div className="peru-eyebrow">BEFORE YOU GO</div>
+        <h2 className="peru-h2">The bookings that cannot be fixed later.</h2>
+        <p className="peru-lede">
+          Almost everything on this trip can be arranged a week out. Three things cannot: your Machu
+          Picchu entry, your circuit, and Huayna Picchu. Get those wrong and no amount of planning
+          on the ground repairs it.
+        </p>
+      </Reveal>
+
+      {/* ── TICKETS ── */}
+      <div className="peru-prep-grid">
+        {PERU_TICKETS.items.map((t, i) => (
+          <Reveal key={t.name} variant="rise" delay={Math.min(i, 3) * 70}>
+            <article className={`peru-ticket${t.ladsPush ? ' peru-ticket--push' : ''}`}>
+              <header className="peru-ticket-head">
+                <h3 className="peru-ticket-name">{t.name}</h3>
+                <span className="peru-ticket-lead">{t.lead}</span>
+              </header>
+              <p className="peru-ticket-rule">{t.rule}</p>
+              <p className="peru-ticket-detail">{t.detail}</p>
+
+              {/* The one recommendation on this page to do MORE than planned.
+                  It rests on Brady having climbed it, not on research. */}
+              {t.ladsPush && (
+                <p className="peru-ticket-push">
+                  Make the extra push. Brady climbed it and it is the difference between seeing
+                  Machu Picchu and standing above it. Book the permit at the same moment you book
+                  your entry, because it sells out first and separately.
+                </p>
+              )}
+
+              <SourceLink href={t.sourceUrl} />
+            </article>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* ── PACKING ── */}
+      <Reveal variant="rise">
+        <h3 className="peru-h3">{PERU_PACKING.title}</h3>
+        <p className="peru-lede peru-lede--tight">{PERU_PACKING.lede}</p>
+      </Reveal>
+
+      <div className="peru-pack-grid">
+        {PERU_PACKING.groups.map((g, i) => (
+          <Reveal key={g.group} variant="rise" delay={Math.min(i, 3) * 70}>
+            <article className="peru-pack">
+              <h4 className="peru-pack-name">{g.group}</h4>
+              <p className="peru-pack-note">{g.note}</p>
+              <ul className="peru-pack-list">
+                {g.items.map((it) => (
+                  <li key={it}>{it}</li>
+                ))}
+              </ul>
+              <SourceLink href={g.sourceUrl} />
+            </article>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* ── WAYS TO SAVE ── */}
+      <Reveal variant="rise">
+        <h3 className="peru-h3">{PERU_SAVE.title}</h3>
+        <p className="peru-lede peru-lede--tight">{PERU_SAVE.lede}</p>
+      </Reveal>
+
+      <div className="peru-save-grid">
+        {PERU_SAVE.items.map((it, i) => (
+          <Reveal key={it.move} variant="rise" delay={Math.min(i, 5) * 55}>
+            <article className="peru-save">
+              <h4 className="peru-save-move">{it.move}</h4>
+              <p className="peru-save-detail">{it.detail}</p>
+              <SourceLink href={it.sourceUrl} />
+            </article>
+          </Reveal>
+        ))}
+      </div>
+
+      <Reveal variant="fade">
+        <p className="peru-note">
+          Ticket rules, permit caps and entry windows change. Everything above was checked on{' '}
+          {PREPARE_CHECKED_ON}, and each card links the source it came from so you can confirm it
+          before you book rather than trusting a page.
+        </p>
+      </Reveal>
+    </section>
+  )
+}
+
+/* ===== LIMA — the highlight band ========================================= */
+
+function LimaFood() {
+  return (
+    <Reveal variant="fade" className="peru-lima">
+      <div className="peru-lima-inner">
+        <div className="peru-eyebrow">LIMA</div>
+        <h3 className="peru-lima-title">{LIMA_FOOD.title}</h3>
+        <p className="peru-lima-claim">{LIMA_FOOD.claim}</p>
+        <p className="peru-lima-more">{LIMA_FOOD.more}</p>
+        <p className="peru-lima-sowhat">{LIMA_FOOD.soWhat}</p>
+        <div className="peru-lima-src">
+          {LIMA_FOOD.sources.map((src) => (
+            <SourceLink key={src.url} href={src.url}>
+              {src.title}
+            </SourceLink>
+          ))}
+          <span className="peru-lima-checked">checked {LIMA_FOOD.checkedOn}</span>
+        </div>
+      </div>
+    </Reveal>
+  )
+}
 
 function RouteSection() {
   return (
@@ -1031,6 +1173,8 @@ export default function PeruPage() {
         <RouteSection />
         <WhenToGo />
         <GettingThere />
+        <Prepare />
+        <LimaFood />
         <Trek />
         <Places />
         <Differently />

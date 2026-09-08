@@ -79,6 +79,64 @@ const PERU_ICONS = {
   lake: 'M-1,0.2 C-0.5,-0.4 0.5,0.6 1,-0.2',
 }
 
+/* A dense group, re-projected into its own frame.
+ *
+ * The projection is built from the group's OWN bounds rather than the country
+ * transform, which is the entire point: the same coordinates that sit inside a
+ * pixel at national scale are tens of viewBox units apart here. Nothing is
+ * moved, nudged or spread — the frame changes, not the data.
+ *
+ * A degree of longitude is shorter than a degree of latitude away from the
+ * equator, so the longitude span is scaled by cos(lat) exactly as the country
+ * tracer does. Skip that and a compact city block renders stretched sideways. */
+function ClusterDetail({ group }) {
+  const { pins, viewW, viewH } = useMemo(() => {
+    const pts = group.places.filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lng))
+    const lats = pts.map((p) => p.lat)
+    const lngs = pts.map((p) => p.lng)
+    const midLat = (Math.min(...lats) + Math.max(...lats)) / 2
+    const k = Math.cos((midLat * Math.PI) / 180)
+
+    const spanLat = Math.max(Math.max(...lats) - Math.min(...lats), 0.0008)
+    const spanLng = Math.max((Math.max(...lngs) - Math.min(...lngs)) * k, 0.0008)
+
+    const pad = 26
+    const w = 320
+    const scale = (w - pad * 2) / spanLng
+    const h = Math.round(spanLat * scale + pad * 2)
+
+    return {
+      viewW: w,
+      viewH: Math.max(h, 150),
+      pins: pts.map((p) => ({
+        place: p,
+        x: pad + (p.lng - Math.min(...lngs)) * k * scale,
+        y: pad + (Math.max(...lats) - p.lat) * scale,
+      })),
+    }
+  }, [group])
+
+  return (
+    <div className="peru-detail">
+      <div className="peru-detail-label">{group.places.length} places, shown at street scale</div>
+      <svg
+        className="peru-detail-svg"
+        viewBox={`0 0 ${viewW} ${viewH}`}
+        role="img"
+        aria-label={`Detail map of ${group.places.length} places in this area`}
+      >
+        {pins.map((pin) => (
+          <g key={pin.place.placeId || pin.place.name} className="peru-detail-pin">
+            <title>{pin.place.name}</title>
+            <circle className="peru-detail-halo" cx={pin.x} cy={pin.y} r="9" />
+            <circle className="peru-detail-dot" cx={pin.x} cy={pin.y} r="4" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
 export default function PeruMap({ onSelect = null }) {
   const [activeId, setActiveId] = useState(null)
   const [panel, setPanel] = useState(null)
@@ -122,6 +180,7 @@ export default function PeruMap({ onSelect = null }) {
     if (activeId === group.id) return show(null)
     show({
       id: group.id,
+      cluster: group,
       title: `${group.places.length} saved places`,
       /* The marker claims a count and a location, nothing more. The panel
        * names every member so the count is auditable rather than asserted. */
@@ -247,6 +306,15 @@ export default function PeruMap({ onSelect = null }) {
               ))}
             </ul>
           )}
+
+          {/* THE DETAIL VIEW — how a dense city gets real pins.
+              At country scale these twelve places occupy well under a pixel, so
+              the canvas collapses them to one honest count marker. Opening it
+              re-projects just this group into its own frame, where they are
+              metres apart and every one of them is its own pin sitting on its
+              own true coordinate. That is the answer to wanting more pins that
+              does not involve nudging anything off where it actually is. */}
+          {panel.cluster && <ClusterDetail group={panel.cluster} />}
 
           {panel.members ? (
             <ul className="peru-panel-list">
