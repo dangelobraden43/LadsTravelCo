@@ -16,6 +16,7 @@ import {
 } from './data/peru'
 import { FARE_SOURCES } from './data/fareIntelligence.js'
 import { TOTAL_SPOTS } from './utils/siteStats'
+import CloudImage from './CloudImage'
 import './PeruPage.css'
 
 /* ============================================================================
@@ -139,12 +140,16 @@ function PullQuote({ text, subject, variant = 'inline' }) {
     <figure ref={ref} className={`peru-r peru-r--quote peru-quote peru-quote--${variant}`}>
       <span className="peru-quote-rule" aria-hidden="true" />
       <blockquote className="peru-quote-text">{text}</blockquote>
+      {/* Attribution is the founder and the trip, full stop. This used to print
+          BRADY_TAKE_SOURCE.medium, which reads "Brady, direct to Claude Code in
+          session" — a provenance record that belongs in the data file and never
+          in front of a reader. The record still exists; it is just not copy. */}
       <figcaption className="peru-quote-by">
-        {BRADY_TAKE_SOURCE.medium.split(',')[0]}
+        Brady D&rsquo;Angelo
         <span className="peru-quote-sep" aria-hidden="true">
           /
         </span>
-        <span className="peru-quote-date">recorded {BRADY_TAKE_SOURCE.capturedAt}</span>
+        <span className="peru-quote-date">Peru, May 2026</span>
         {subject ? <span className="peru-quote-subject">on {subject}</span> : null}
       </figcaption>
     </figure>
@@ -166,6 +171,29 @@ const MEDIA_VIDEOS = DAY_ANCHORS.reduce((n, d) => n + (d.videos || 0), 0)
 const SAVED_COUNT = PERU_SAVED_PLACES.length
 const WITH_VOICE = PERU_SAVED_PLACES.filter((p) => p.ladsTake).length
 const SILENT = SAVED_COUNT - WITH_VOICE
+/* DISPLAY NAMES FOR TWO ANCHORS.
+ *
+ * peru.js names day 6 "Day 6 anchor - label disputed" and day 9 "Day 9 anchor -
+ * approach to Machu Picchu". Those are working notes from the ingest, not
+ * places, and printing them puts our unresolved paperwork in front of a reader.
+ *
+ * Day 6 is NOT actually unresolved. CLAUDE.md records it settled from four
+ * independent directions: the coordinate matches Vinicunca to about 0.01
+ * degrees, a photograph that day shows a sign reading Rainbow Mountain, the
+ * pre-trip intent names it, and Brady's own saved list contains Vinicunca at
+ * the same point. What was disputed was the MANIFEST's label, and the manifest
+ * lost. The data keeps the flag as provenance; the page states the finding.
+ *
+ * Day 9's coordinate sits in the Santa Teresa area on the walk-in side of the
+ * mountain, which is what the label already said in longhand.
+ */
+const ANCHOR_DISPLAY_NAME = {
+  6: 'Vinicunca — Rainbow Mountain',
+  9: 'Santa Teresa — the approach',
+}
+const anchorName = (a) => ANCHOR_DISPLAY_NAME[a.day] || a.name
+
+const AREA_COUNT = new Set(PERU_SAVED_PLACES.map((p) => p.area).filter(Boolean)).size
 const OFFICE_RECORDS = PERU_SAVED_PLACES.filter((p) => p.recordIsOffice).length
 const WITH_GOOGLE = PERU_SAVED_PLACES.filter((p) => GOOGLE_LISTING[p.name]).length
 
@@ -258,9 +286,18 @@ function Hero() {
           at a fixed aspect ratio so dropping one in shifts nothing. The
           gradient is not standing in for a picture of Peru; it is an empty
           frame that says so. */}
-      <div className="peru-hero-media" aria-hidden="true">
+      <div className="peru-hero-media">
+        <CloudImage
+          id="peru/machu-picchu-huayna-mist"
+          alt="Machu Picchu on its ridge with Huayna Picchu rising behind it, cloud sitting in the terraces"
+          width={1920}
+          height={2560}
+          priority
+          sizes="100vw"
+          className="peru-hero-img"
+          objectPosition="center 42%"
+        />
         <div className="peru-hero-wash" />
-        <span className="peru-hero-slot-note">HERO IMAGE PENDING</span>
       </div>
 
       <div className="peru-hero-inner">
@@ -272,35 +309,34 @@ function Hero() {
           Peru<span className="peru-hero-stop">.</span>
         </h1>
         <p className="peru-hero-lede peru-hero-el">
-          Lima to the coast, the coast to Cusco, Cusco to the Salkantay corridor and out at Machu
-          Picchu. Ten days in May 2026, walked by two of us. What follows is what the camera can
-          prove, what Brady said out loud, and what Google says, kept apart on purpose.
+          Lima to the coast, the coast to Cusco, then the Salkantay corridor and out at Machu
+          Picchu. Ten days in May 2026, walked end to end.
         </p>
 
         <dl className="peru-hero-stats peru-hero-el">
           <div className="peru-stat">
-            <dt>Day anchors</dt>
+            <dt>Days</dt>
             <dd>{ANCHOR_COUNT}</dd>
           </div>
           <div className="peru-stat">
-            <dt>Saved places</dt>
+            <dt>Places</dt>
             <dd>{SAVED_COUNT}</dd>
           </div>
           <div className="peru-stat">
-            <dt>In his words</dt>
-            <dd>{DISTINCT_VOICE}</dd>
+            <dt>Regions</dt>
+            <dd>{AREA_COUNT}</dd>
           </div>
           <div className="peru-stat">
-            <dt>Frames behind it</dt>
-            <dd>{fmt(MEDIA_PHOTOS + MEDIA_VIDEOS)}</dd>
+            <dt>Travelled</dt>
+            <dd>May 2026</dd>
           </div>
         </dl>
 
-        <p className="peru-hero-foot peru-hero-el">
-          Peru is not one of the {fmt(TOTAL_SPOTS)} spots the site counts today, and this page does
-          not move that number. {SILENT} of the {SAVED_COUNT} places below carry no note from us at
-          all. They are listed with what Google holds and nothing else.
-        </p>
+        {/* The old hero footnote lived here. It told the reader how many places
+            carried no note from us, and that Peru is outside the site's counted
+            total. Both are true and both are OURS, not theirs: pipeline state
+            dressed as product. The count discipline still holds in the data and
+            in the comments, where it belongs. Ruled by Brady, Sept 8 2026. */}
       </div>
     </header>
   )
@@ -317,8 +353,8 @@ function RouteSection() {
         <p className="peru-lede">
           {PERU_ARC_DAYS} of the {ANCHOR_COUNT} day anchors sit inside Peru. The first is a US
           departure day and is left off the line rather than stretched onto it. Coordinates come out
-          of the camera, not out of a search box, which is why {FLAGGED_ANCHORS} of them carry a
-          flag instead of a caption.
+          of the camera, not out of a search box, which is why each of them carries a flag instead
+          of a caption.
         </p>
       </Reveal>
 
@@ -354,6 +390,18 @@ function WhenToGo() {
 
   return (
     <section id="peru-when" className="peru-section">
+      <figure className="peru-figure">
+        <CloudImage
+          id="peru/rainbow-mountain-ridges"
+          alt="The mineral-striped ridges of Vinicunca under hard blue sky, no crowd in frame"
+          width={1920}
+          height={2560}
+          sizes="(max-width: 900px) 100vw, 900px"
+        />
+        <figcaption className="peru-figure-cap">
+          Vinicunca in early May. The colour holds all year; the clear sky does not.
+        </figcaption>
+      </figure>
       <Reveal variant="rise">
         <div className="peru-eyebrow">WHEN TO GO</div>
         <h2 className="peru-h2">
@@ -464,6 +512,18 @@ function GettingThere() {
 
   return (
     <section id="peru-getting-there" className="peru-section">
+      <figure className="peru-figure">
+        <CloudImage
+          id="peru/cusco-street-dusk"
+          alt="A cobbled Cusco street at dusk, colonial walls narrowing toward the hills"
+          width={1920}
+          height={2560}
+          sizes="(max-width: 900px) 100vw, 900px"
+        />
+        <figcaption className="peru-figure-cap">
+          Cusco at altitude. Most routes in put you here before the trail.
+        </figcaption>
+      </figure>
       <Reveal variant="rise">
         <div className="peru-eyebrow">GETTING THERE</div>
         <h2 className="peru-h2">The shape of the year, without a price we cannot stand behind.</h2>
@@ -593,10 +653,12 @@ function TrekDay({ anchor, index, onLit }) {
           <span className="peru-day-num">Day {anchor.day}</span>
           <span className="peru-day-date">{anchor.date}</span>
           {outsideArc && <span className="peru-chip peru-chip--quiet">OUTSIDE PERU</span>}
-          {anchor.flagged && <span className="peru-chip peru-chip--flag">LABEL DISPUTED</span>}
+          {/* The LABEL DISPUTED chip was removed Sept 8 2026. It advertised an
+              open question in our own records, and in day 6's case the question
+              was already closed. See ANCHOR_DISPLAY_NAME above. */}
         </div>
 
-        <h3 className="peru-day-name">{anchor.name}</h3>
+        <h3 className="peru-day-name">{anchorName(anchor)}</h3>
 
         <div className="peru-day-coord">
           <span className="peru-day-coord-val">
@@ -631,15 +693,25 @@ function Trek() {
 
   return (
     <section id="peru-trek" className="peru-section">
+      <figure className="peru-figure">
+        <CloudImage
+          id="peru/salkantay-trail-start"
+          alt="A hiker with trekking poles walking a dirt trail into a green valley below snow peaks"
+          width={1920}
+          height={2560}
+          sizes="(max-width: 900px) 100vw, 900px"
+        />
+        <figcaption className="peru-figure-cap">
+          The Salkantay corridor on the first morning out.
+        </figcaption>
+      </figure>
       <Reveal variant="rise">
         <div className="peru-eyebrow">THE TREK</div>
-        <h2 className="peru-h2">Ten days, read off the camera rather than off an itinerary.</h2>
+        <h2 className="peru-h2">What the ten days actually look like.</h2>
         <p className="peru-lede">
-          Every coordinate below was lifted from the location tag the camera wrote at the moment of
-          capture. That proves where Brady stood and on what day. It proves nothing about any hostel
-          or guide or restaurant, so none appear here. Where the manifest heading and the coordinate
-          disagree, the coordinate wins and the heading is kept beside it as a record. That happened{' '}
-          {FLAGGED_ANCHORS} times.
+          Lima and the coast first, then altitude in Cusco before the trail, then four days walking
+          the Salkantay corridor and out at Machu Picchu on the last morning. Run it in this order
+          and the acclimatisation happens on the cheap days rather than on the mountain.
         </p>
       </Reveal>
 
@@ -660,8 +732,8 @@ function Trek() {
 
       <Reveal variant="fade">
         <p className="peru-note">
-          {fmt(MEDIA_PHOTOS)} photographs and {fmt(MEDIA_VIDEOS)} clips sit behind these ten
-          anchors. {PERU_SOURCE.media}.
+          Every day on this route is fixed by the GPS written into the camera at the time, so the
+          line above is where the trip actually went rather than where an itinerary said it would.
         </p>
       </Reveal>
     </section>
@@ -721,7 +793,11 @@ function PlaceCard({ place }) {
      entry whose quote is printed under another entry must not wear "IN HIS
      WORDS" over a card with no words on it. */
   const tier = owns ? 'voice' : echoesElsewhere ? 'echo' : 'listed'
-  const TIER_LABEL = { voice: 'IN HIS WORDS', echo: 'QUOTED ELSEWHERE', listed: 'ON THE LIST' }
+  /* Only the affirmative state gets a chip. "QUOTED ELSEWHERE" and "ON THE
+     LIST" were both descriptions of our own workflow, and a reader has no use
+     for either. The echo case still avoids printing the quote twice; it just
+     no longer wears a badge explaining why. */
+  const TIER_LABEL = { voice: 'IN HIS WORDS', echo: null, listed: null }
 
   return (
     <article
@@ -729,9 +805,13 @@ function PlaceCard({ place }) {
         silent ? ' peru-place--silent' : ''
       }`}
     >
+      {/* No tier chip. "IN HIS WORDS" turned a framework into a quote board:
+          it badged our editorial process on the face of a recommendation. The
+          site's voice IS the Lads' voice, so a founder's line simply reads as
+          the description. Ruled by Brady, Sept 8 2026. */}
       <header className="peru-place-head">
         <h4 className="peru-place-name">{place.name}</h4>
-        <span className={`peru-tier peru-tier--${tier}`}>{TIER_LABEL[tier]}</span>
+        {place.googleCategory && <span className="peru-place-kind">{place.googleCategory}</span>}
       </header>
 
       {place.fullName && place.fullName !== place.name && (
@@ -742,32 +822,28 @@ function PlaceCard({ place }) {
           central Cusco, roughly 100 km from the thing the entry is named
           after. Their coordinate is therefore not printed and they are not
           drawn as features. Saying so is more useful than hiding them. */}
-      {place.recordIsOffice ? (
+      {/* The founder's line IS the description. It used to render as a
+          captioned pull-quote with the capture medium underneath, which read as
+          an archive of things Brady said rather than as a recommendation.
+          The raw coordinate and its "followed from the saved list, never
+          searched" provenance line came off the card too: that is how we know
+          the pin is right, not something a traveller needs to read. */}
+      {owns && <p className="peru-place-desc">{place.ladsTake}</p>}
+
+      {/* Useful to a traveller, so it stays: booking this name gets you an
+          experience run out of a Cusco office, not somewhere to turn up. */}
+      {place.recordIsOffice && (
         <p className="peru-place-office">
-          Google&rsquo;s record for this name is a tour operator&rsquo;s desk in central Cusco,
-          around 100 km from the place it is named after. We do not print its coordinate and it is
-          never drawn on the map as a feature. The endorsement is of the experience, not of the
-          office.
-        </p>
-      ) : (
-        <div className="peru-place-coord">
-          {place.lat}, {place.lng}
-          <span className="peru-place-coord-src">followed from the saved list, never searched</span>
-        </div>
-      )}
-
-      {owns && <PullQuote text={place.ladsTake} variant="card" />}
-
-      {echoesElsewhere && holder && (
-        <p className="peru-place-echo">
-          Brady&rsquo;s words about this cover the experience itself, and they are printed once,
-          under {holder.name}.
+          Booked as an experience rather than visited as an address. The listing under this name is
+          a tour desk in central Cusco, not the site itself.
         </p>
       )}
 
       <GoogleLine listing={listing} />
 
-      {silent && <p className="peru-place-silent">No note from the Lads on this one.</p>}
+      {/* No "we have not written this one yet" line. A card either carries a
+          founder's words or it presents the place on its research and Google's
+          own listing. Absence is not announced. */}
     </article>
   )
 }
@@ -775,17 +851,29 @@ function PlaceCard({ place }) {
 function Places() {
   return (
     <section id="peru-places" className="peru-section">
+      <figure className="peru-figure">
+        <CloudImage
+          id="peru/huacachina-dune-sunset"
+          alt="A dune buggy silhouetted on a ridge of sand as the sun drops behind the dunes"
+          width={1920}
+          height={2560}
+          sizes="(max-width: 900px) 100vw, 900px"
+        />
+        <figcaption className="peru-figure-cap">
+          Huacachina at the end of the afternoon run.
+        </figcaption>
+      </figure>
       <Reveal variant="rise">
         <div className="peru-eyebrow">THE PLACES</div>
-        <h2 className="peru-h2">
-          {SAVED_COUNT} saved places, {DISTINCT_VOICE} of them spoken for.
-        </h2>
+        <h2 className="peru-h2">The places, {AREA_COUNT} regions deep.</h2>
+        {/* This paragraph used to publish four internal figures: how many places
+            we had not written up, how many carried a Google listing, how many
+            were operator records. That is the state of our own pipeline, and a
+            reader has no use for it. What survives is the only part that is
+            about THEM: every place here was kept on the list deliberately. */}
         <p className="peru-lede">
-          Brady pruned this list himself and said everything left on it is something the Lads would
-          recommend. That is a curation statement, so every entry is validated. It is not a licence
-          to write {SILENT} descriptions he never gave, so those {SILENT} entries carry
-          Google&rsquo;s listing and nothing else. {WITH_GOOGLE} of the {SAVED_COUNT} have a Google
-          listing at all, and {OFFICE_RECORDS} are operator records rather than places.
+          Brady walked this list and pruned it himself. What is left is what the Lads would send a
+          friend to, grouped the way the trip actually ran.
         </p>
       </Reveal>
 
@@ -800,10 +888,11 @@ function Places() {
         </div>
         <blockquote className="peru-collective-text">{LADS_COLLECTIVE_TAKE.text}</blockquote>
         <div className="peru-collective-frame">{LADS_COLLECTIVE_TAKE.framing}</div>
-        <div className="peru-collective-by">
-          {LADS_COLLECTIVE_TAKE.by}, recorded {LADS_COLLECTIVE_TAKE.capturedAt}. This covers the set
-          and is never attached to any single place on it.
-        </div>
+        {/* The caption used to explain our own rule for the sentence: that it
+            covers the set and is never attached to a single place. That rule is
+            real and still enforced in the code, but it is our filing system,
+            not a note for a reader. */}
+        <div className="peru-collective-by">{LADS_COLLECTIVE_TAKE.by} &middot; Peru, May 2026</div>
       </Reveal>
 
       {AREAS.map((group, gi) => (
@@ -897,7 +986,9 @@ export default function PeruPage() {
     el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' })
   }
 
-  const description = `Peru, walked in May 2026. ${ANCHOR_COUNT} GPS day anchors, ${SAVED_COUNT} saved places of which ${SILENT} carry no note from us, ${LIVE_WINDOWS.length} travel windows with their sourcing printed, and a fare curve with no invented prices.`
+  /* Written for a stranger deciding whether to read the page, not for us.
+     The old one listed how many places carried no note from the Lads. */
+  const description = `Peru in ten days: Lima to the coast, Cusco, the Salkantay trail and Machu Picchu. ${SAVED_COUNT} places across ${AREA_COUNT} regions, when to go and what it costs, from a trip we walked in May 2026.`
 
   return (
     <>

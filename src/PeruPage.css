@@ -1362,3 +1362,35 @@
     transition: none !important;
   }
 }
+
+/* ── PHOTOGRAPHY ───────────────────────────────────────────────────────────
+ * Added Sept 8 2026. The hero and section frames were empty gradients with a
+ * "pending" label; they now carry the real May 2026 photographs, served from
+ * Cloudinary through CloudImage so nothing lands in the bundle. */
+.peru-hero-img,
+.peru-hero-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.peru-hero-img img {
+  object-fit: cover;
+}
+
+.peru-figure {
+  margin: 40px 0 8px;
+}
+
+.peru-figure .cloudimg {
+  border-radius: var(--radius, 16px);
+}
+
+.peru-figure-cap {
+  margin-top: 10px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--peru-muted, #7f979b);
+}
