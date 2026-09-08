@@ -1,3 +1,4 @@
+import { countByCity } from '../utils/derive.js'
 // Prague + Dresden — Data Model v2
 // Personal layer blank for Brady.
 //
@@ -11,17 +12,19 @@
 // (Prague 11 + Vienna 8 + Dresden 4 + 2 day trips). It is now 17, and
 // vienna.js is 8. 17 + 8 = 25. The canonical site total was 219 at the time of this split; it moved to 220 on Aug 31 2026 when Short's Pull Barn (Elk Rapids) was added to michigan.js. The split itself changed nothing.
 
-export default {
+const pragueData = {
   id: 'prague',
   name: 'Prague + Dresden',
   region: 'Central Europe',
   route: '/prague',
   tagline: 'The best value in European travel, plus a day trip across the border.',
   confidence: 'Brady — Personally Validated',
+  /* DERIVED. Authored `value` entries below are founder facts the data
+   * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { value: '15', label: 'Database Spots' },
+    { derive: 'spots', label: 'Database Spots' },
     { value: '3', label: 'Google Maps Lists' },
-    { value: '2', label: 'Countries' },
+    { derive: 'countries', label: 'Countries' },
   ],
 
   palette: {
@@ -33,7 +36,7 @@ export default {
 
   overview: {
     quickRead:
-      'Brady visited both. 11 rated spots in Prague plus Dresden across the German border. Best value destination in Europe — Prague beer is $1.50-$3 a pint. Vienna is now its own framework.',
+      'Brady visited both. {{PRAGUE}} rated spots in Prague plus Dresden across the German border. Best value destination in Europe — Prague beer is $1.50-$3 a pint. Vienna is now its own framework.',
     budget: '$1,800-$3,200 per person depending on duration and accommodation style',
     framework:
       'Prague 3-4 days + Dresden day trip. Most often paired with Vienna — RegioJet or OBB connects the two in 4 hours for $15-25, and open-jaw saves backtracking.',
@@ -610,3 +613,16 @@ export default {
 
   navSections: ['Overview', 'When to Go', 'Prague', 'Dresden', 'Day Trips', 'Maps', 'Logistics'],
 }
+
+/* Prague's own spot count, derived. Dresden stays named but uncounted here -
+ * it is a day trip across the border that Brady ruled stays with this
+ * framework, not a second city total. */
+for (const [key, text] of Object.entries(pragueData.overview)) {
+  if (typeof text === 'string') {
+    pragueData.overview[key] = text
+      .split('{{PRAGUE}}')
+      .join(String(countByCity(pragueData, 'Prague')))
+  }
+}
+
+export default pragueData

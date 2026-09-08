@@ -1,3 +1,4 @@
+import { TOTAL_SPOTS, FRAMEWORKS } from './siteStats.js'
 /* Only `siteName` is consumed today (FrameworkPage's title and og:title).
  *
  * The old `description` here read "Free personal travel consulting through
@@ -11,8 +12,12 @@
  * The old `image` pointed at ladstravel.CO, which is not our domain. */
 export const SEO_DEFAULTS = {
   siteName: 'The Lads Travel Co.',
+  /* Derived. This string is one wire-up away from being a rendered meta tag,
+   * and its previous version carried BOTH a banned "free" claim and a count
+   * that never matched canonical. Numbers here come from the build. */
   description:
-    'AI researches. We validate on foot. 220 validated spots across 10 destination frameworks, built from firsthand experience.',
+    `AI researches. We validate on foot. ${TOTAL_SPOTS} validated spots across ${FRAMEWORKS} ` +
+    'destination frameworks, built from firsthand experience.',
   image: 'https://ladstravel.com/og-image.jpg',
   twitterHandle: '@ladstravelco',
 }

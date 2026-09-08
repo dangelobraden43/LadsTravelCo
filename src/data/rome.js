@@ -1,7 +1,8 @@
+import { countSpots } from '../utils/derive.js'
 // Rome + Italy — Data Model v2
 // 25 spots reclassified, research layer filled, personal layer blank for Brady
 
-export default {
+const romeData = {
   id: 'rome',
   name: 'Rome + Italy',
   region: 'Italy',
@@ -9,8 +10,10 @@ export default {
   tagline: 'Five days that reveal themselves slowly. Pompeii redefines what ruins can be.',
   confidence: 'Both Lads — Personally Validated',
 
+  /* DERIVED. Authored `value` entries below are founder facts the data
+   * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { value: '25', label: 'Rated Spots' },
+    { derive: 'spots', label: 'Validated Spots' },
     { value: '5', label: 'Days in Rome' },
     { value: '2', label: 'Trip Options' },
   ],
@@ -31,7 +34,7 @@ export default {
     philosophy:
       'Rome rewards the slow approach. The aperitivo ritual from 6:30-9pm functions as dinner — €10-15 drink plus a buffet spread. This changes how you budget the entire trip.',
     ladsBothKnow:
-      'Both Lads were in Rome during the Jubilee Year 2025. They walked through the Holy Doors, witnessed Pope Francis lying in state, and validated 25 spots across bars, food, and attractions.',
+      'Both Lads were in Rome during the Jubilee Year 2025. They walked through the Holy Doors, witnessed Pope Francis lying in state, and validated {{SPOTS}} spots across bars, food, and attractions.',
   },
 
   timingWindows: [
@@ -900,3 +903,23 @@ export default {
     'Logistics',
   ],
 }
+
+/* "validated 25 spots" was typed when the file held 25. It holds 27. */
+/* Placeholders are filled across EVERY overview string, not one named key.
+ * The first version of this composer targeted `quickRead` by name while the
+ * claim actually lived in another field, so the token silently survived into
+ * the render - a literal "{{SPOTS}}" on a public page. Walking the object
+ * cannot miss, and an unfilled token now cannot exist. */
+function fillCounts(data, values) {
+  for (const [key, text] of Object.entries(data.overview)) {
+    if (typeof text !== 'string') continue
+    data.overview[key] = Object.entries(values).reduce(
+      (acc, [token, value]) => acc.split(token).join(String(value)),
+      text
+    )
+  }
+}
+
+fillCounts(romeData, { '{{SPOTS}}': countSpots(romeData) })
+
+export default romeData

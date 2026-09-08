@@ -1,17 +1,20 @@
+import { countSpots } from '../utils/derive.js'
 // Australia + NZ — Data Model v2
 // 19 spots reclassified, research layer filled, personal layer blank for Brady
 
-export default {
+const australiaData = {
   id: 'australia',
   name: 'Australia + NZ',
   region: 'Southern Hemisphere',
   route: '/australia',
   tagline: 'Sydney. Tasmania. Queenstown. Built on six weeks of living there.',
   confidence: 'Brady — Personally Validated (Sydney + Tasmania). NZ Research-Based.',
+  /* DERIVED. Authored `value` entries below are founder facts the data
+   * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { value: '123', label: 'Sydney Spots' },
+    { derive: 'spots', label: 'Validated Spots' },
     { value: '6', label: 'Weeks Lived There' },
-    { value: '3', label: 'Regions' },
+    { derive: 'dayTrips', label: 'Day Trips' },
   ],
 
   palette: {
@@ -23,7 +26,7 @@ export default {
 
   overview: {
     quickRead:
-      'Brady lived in Sydney for six weeks. 57 rated spots in Sydney, 18 in Tasmania. Two versions — V1 Australia only, V2 adds trans-Tasman hop to NZ.',
+      'Brady lived in Sydney for six weeks. {{SPOTS}} rated spots across Sydney and Tasmania. Two versions — V1 Australia only, V2 adds trans-Tasman hop to NZ.',
     budget: '$3,500–$5,500 per person depending on version and duration',
     framework:
       'V1: Sydney + Tasmania (10-14 days). V2: adds Queenstown/NZ trans-Tasman hop (16-21 days). Sydney alone needs a week minimum.',
@@ -720,3 +723,16 @@ export default {
     'Logistics',
   ],
 }
+
+/* "57 rated spots in Sydney, 18 in Tasmania" was typed against a file that has
+ * held 22 spots for as long as the live-walk has existed. Derived to the total
+ * rather than split by region: the Tasmanian entries record Hobart as their
+ * city, so a per-region count would honestly report zero for Tasmania and read
+ * as a bug. One true number beats two precise-looking ones. */
+for (const [key, text] of Object.entries(australiaData.overview)) {
+  if (typeof text === 'string') {
+    australiaData.overview[key] = text.split('{{SPOTS}}').join(String(countSpots(australiaData)))
+  }
+}
+
+export default australiaData

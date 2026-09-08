@@ -5,6 +5,7 @@ import { SEO_DEFAULTS } from './utils/seo'
 import Footer from './Footer'
 import { FARE_SOURCES } from './data/fareIntelligence.js'
 import './FrameworkPage.css'
+import { resolveHeroStats } from './utils/derive.js'
 
 /* ===== WHEN TO GO =====
  *
@@ -363,8 +364,11 @@ export default function FrameworkPage({ data, heroImg }) {
           <div className="fw-hero-badge">PERSONALLY VALIDATED</div>
           <h1 className="fw-hero-name">{data.name}</h1>
           <p className="fw-hero-tagline">{data.tagline}</p>
+          {/* Resolved, not read. A heroStat carrying a `derive` token or
+              function is counted out of this framework's own data on every
+              render; only founder facts survive as authored values. */}
           <div className="fw-hero-stats">
-            {data.heroStats.map((s, i) => (
+            {resolveHeroStats(data).map((s, i) => (
               <div key={i} className="fw-hero-stat">
                 <span className="fw-hero-stat-val">{s.value}</span>
                 <span className="fw-hero-stat-label">{s.label}</span>

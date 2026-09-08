@@ -5,6 +5,7 @@ import { BATCH3_IMAGES } from './images-paths'
 import { HERO_IMAGES } from './images-paths'
 import TravelWindows from './TravelWindows'
 import './SystemSection.css'
+import { TOTAL_SPOTS, SPOTS_BY_FRAMEWORK, VALIDATED_CITIES, COUNTRIES } from './utils/siteStats.js'
 
 function useReveal(threshold = 0.15) {
   const ref = useRef(null)
@@ -202,23 +203,11 @@ const FLIGHT_MYTHS = [
   },
 ]
 
-const ALL_CITIES = [
-  { city: 'Sydney', n: 123 },
-  { city: 'Barcelona', n: 115 },
-  { city: 'Rome', n: 43 },
-  { city: 'Dublin', n: 39 },
-  { city: 'Prague', n: 38 },
-  { city: 'Vienna', n: 37 },
-  { city: 'Costa Rica', n: 28 },
-  { city: 'Tasmania', n: 27 },
-  { city: 'Vancouver', n: 22 },
-  { city: 'Chicago', n: 15 },
-  { city: 'Galway', n: 15 },
-  { city: 'San Juan', n: 14 },
-  { city: 'Seattle', n: 14 },
-  { city: 'Smoky Mtns', n: 8 },
-  { city: 'Phoenix', n: 7 },
-]
+/* ALL_CITIES was removed Sept 8 2026. It was declared here and referenced
+ * nowhere, and every figure in it was wrong by a wide margin - Sydney 123
+ * against a real 22, Barcelona 115 against 38. Dead code with false numbers is
+ * a loaded gun: the moment someone renders it, the site starts lying. If a
+ * per-city table is wanted again, derive it from SPOTS_BY_FRAMEWORK. */
 
 const DELIVERABLES = [
   {
@@ -370,7 +359,7 @@ const QUIZ_RECS = {
     pick: 'Munich Oktoberfest',
     why: 'Event-driven nightlife at its peak. Augustiner tent strategy, Glockenbachviertel base, cost model for groups of 4-10.',
     alt: 'Barcelona + Madrid',
-    altWhy: '100+ validated spots and Madrid nightlife.',
+    altWhy: `${SPOTS_BY_FRAMEWORK.spain} validated spots and Madrid nightlife.`,
     link: '/munich',
   },
   nightlife_high: {
@@ -396,7 +385,7 @@ const QUIZ_RECS = {
   },
   culture_mid: {
     pick: 'Rome + Italy',
-    why: 'Deepest culture framework. Vatican Jubilee, Pompeii 11/10, Trastevere routing, 43 spots.',
+    why: `Deepest culture framework. Vatican Jubilee, Pompeii 11/10, Trastevere routing, ${SPOTS_BY_FRAMEWORK.rome} spots.`,
     alt: 'Barcelona + Madrid',
     altWhy: 'Sagrada Familia, Montserrat, the Prado.',
     link: '/rome',
@@ -452,7 +441,7 @@ const QUIZ_RECS = {
   },
   food_mid: {
     pick: 'Barcelona + Madrid',
-    why: '100+ spots, tapas culture, two study abroads of knowledge. Boqueria, pintxos, churros.',
+    why: `${SPOTS_BY_FRAMEWORK.spain} spots, tapas culture, two study abroads of knowledge. Boqueria, pintxos, churros.`,
     alt: 'Rome + Italy',
     altWhy: 'Trastevere trattorias, cacio e pepe, one-euro espresso.',
     link: '/spain',
@@ -480,7 +469,7 @@ const QUIZ_RECS = {
   },
   mix_mid: {
     pick: 'Barcelona + Madrid',
-    why: 'Most validated mix. Two study abroads, 100+ spots, nightlife, Sagrada, Montserrat, tapas, beaches.',
+    why: `Most validated mix. Two study abroads, ${SPOTS_BY_FRAMEWORK.spain} spots, nightlife, Sagrada, Montserrat, tapas, beaches.`,
     alt: 'Rome + Italy',
     altWhy: 'Swap beaches for history, keep nightlife and food.',
     link: '/spain',
@@ -489,14 +478,14 @@ const QUIZ_RECS = {
     pick: 'Multi-City Europe',
     why: 'Open-jaw routing. Combine Barcelona + Rome, Dublin + Iceland, Prague + Munich. Two trips in one.',
     alt: 'Australia + NZ',
-    altWhy: '2+ weeks? Sydney has 123 spots. Add Tasmania and NZ.',
+    altWhy: `2+ weeks? Australia is ${SPOTS_BY_FRAMEWORK.australia} validated spots. Add Tasmania and NZ.`,
     link: '#',
   },
   mix_flex: {
     pick: 'Multi-City Europe',
     why: 'Open-jaw routing. Combine Barcelona + Rome, Dublin + Iceland, Prague + Munich. Two trips in one.',
     alt: 'Australia + NZ',
-    altWhy: '2+ weeks? Sydney has 123 spots. Add Tasmania and NZ.',
+    altWhy: `2+ weeks? Australia is ${SPOTS_BY_FRAMEWORK.australia} validated spots. Add Tasmania and NZ.`,
     link: '#',
   },
 }
@@ -548,8 +537,8 @@ export default function SystemSection({ onQuizComplete }) {
             <div className="sys-label">THE SYSTEM</div>
             <h2 className="sys-title-light">How It Actually Works</h2>
             <p className="sys-desc-light">
-              180+ spots across 29 cities and 13 countries. Cost models built by a data scientist.
-              Nothing we haven't done ourselves.
+              {TOTAL_SPOTS} spots across {VALIDATED_CITIES} cities and {COUNTRIES} countries. Cost
+              models built by a data scientist. Nothing we haven&rsquo;t done ourselves.
             </p>
           </Reveal>
 

@@ -4,6 +4,7 @@ import { Nav } from './App'
 import LadsSection from './LadsSection'
 import './LadsSection.css'
 import Footer from './Footer'
+import { TOTAL_SPOTS } from './utils/siteStats.js'
 
 function useReveal(threshold = 0.15) {
   const ref = useRef(null)
@@ -82,8 +83,8 @@ export default function LadsPage() {
                 maxWidth: 560,
               }}
             >
-              Two guys, 650+ spots, and zero interest in giving you the same itinerary as everyone
-              else.
+              Two guys, {TOTAL_SPOTS} validated spots, and zero interest in giving you the same
+              itinerary as everyone else.
             </p>
           </Reveal>
         </section>

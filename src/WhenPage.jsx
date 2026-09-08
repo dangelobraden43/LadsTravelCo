@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Nav } from './App'
 import Footer from './Footer'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES, HERO_IMAGES, HEIC_HERO_IMAGES } from './images-paths'
+import { SPOTS_BY_FRAMEWORK } from './utils/siteStats.js'
 
 function useReveal(threshold = 0.15) {
   const ref = useRef(null)
@@ -49,9 +50,9 @@ const SEASONS = [
     photo: NEW_IMAGES.schonbrunn,
     tagline: 'Europe before the crowds arrive and the prices climb.',
     destinations: [
-      { name: 'Rome', price: '$480 avg RT', spots: '25 spots' },
-      { name: 'Prague', price: '$520 avg RT', spots: '23 spots' },
-      { name: 'Barcelona', price: '$550 avg RT', spots: '30 spots' },
+      { name: 'Rome', price: '$480 avg RT', slug: 'rome' },
+      { name: 'Prague', price: '$520 avg RT', slug: 'prague' },
+      { name: 'Barcelona', price: '$550 avg RT', slug: 'spain' },
     ],
     nextLabel: 'SUMMER',
   },
@@ -62,9 +63,9 @@ const SEASONS = [
     photo: BATCH3_IMAGES.rockPoolSwim,
     tagline: "Peak season. Worth it if you book it right. Don't wait.",
     destinations: [
-      { name: 'Iceland', price: '$650 avg RT', spots: '23 spots' },
-      { name: 'Ireland', price: '$580 avg RT', spots: '35 spots' },
-      { name: 'Australia', price: '$950 avg RT', spots: '19 spots' },
+      { name: 'Iceland', price: '$650 avg RT', slug: 'iceland' },
+      { name: 'Ireland', price: '$580 avg RT', slug: 'dublin' },
+      { name: 'Australia', price: '$950 avg RT', slug: 'australia' },
     ],
     nextLabel: 'FALL',
   },
@@ -75,8 +76,8 @@ const SEASONS = [
     photo: BATCH3_IMAGES.munichMarienplatz,
     tagline: 'The best month most people miss. Oktoberfest. Shoulder pricing. Still warm.',
     destinations: [
-      { name: 'Munich', price: '$620 avg RT', spots: '9 spots' },
-      { name: 'Thailand', price: '$780 avg RT', spots: '' },
+      { name: 'Munich', price: '$620 avg RT', slug: 'munich' },
+      { name: 'Thailand', price: '$780 avg RT' },
     ],
     nextLabel: 'WINTER',
   },
@@ -87,9 +88,9 @@ const SEASONS = [
     photo: HERO_IMAGES.glendaloughCelticCrossesIreland,
     tagline: 'Budget season. The cities don\u2019t disappear \u2014 the tourists do.',
     destinations: [
-      { name: 'Southeast Asia', price: '$800 avg RT', spots: '' },
-      { name: 'Southern Europe', price: '$350 avg RT', spots: '' },
-      { name: 'Domestic Road Trips', price: 'drive', spots: '' },
+      { name: 'Southeast Asia', price: '$800 avg RT' },
+      { name: 'Southern Europe', price: '$350 avg RT' },
+      { name: 'Domestic Road Trips', price: 'drive' },
     ],
     nextLabel: null,
   },
@@ -219,7 +220,7 @@ function SeasonSection({ season, index }) {
                     >
                       {d.name}
                     </span>
-                    {d.spots && (
+                    {SPOTS_BY_FRAMEWORK[d.slug] && (
                       <span
                         style={{
                           fontFamily: "'JetBrains Mono', monospace",
@@ -230,7 +231,7 @@ function SeasonSection({ season, index }) {
                           border: '1px solid rgba(212,168,67,0.3)',
                         }}
                       >
-                        {d.spots}
+                        {SPOTS_BY_FRAMEWORK[d.slug]} spots
                       </span>
                     )}
                   </div>
