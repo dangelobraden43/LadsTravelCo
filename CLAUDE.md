@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 8, 2026
+## Last Updated: September 8, 2026 (evening)
 
 ---
 
@@ -39,6 +39,10 @@ LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   Go"** section; Dublin/Spain gained **Flight Intelligence**. The branch/
   production split that used to be described here is GONE: both figures are now
   the same figure.
+🟣 **PERU IS BUILT AND WAITING ON A MERGE.** `feature/peru-standard-setter`,
+  10 commits, 5,638 insertions, pushed and clean. `/peru` is routed but
+  `noindex` and out of the sitemap. **`main` does not contain any of it.**
+  See `THE PERU STANDARD-SETTER` for the full record and the three gates.
 LIVE: `/privacy` + footer affiliate disclosure.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
@@ -221,6 +225,193 @@ shared checkout someone else is serving localhost from.
 
 ---
 
+## 🟣 THE PERU STANDARD-SETTER — built September 8, 2026. Branch: `feature/peru-standard-setter`
+
+🚩 **NOT ON PRODUCTION.** `main` is at `869b3e1` and does not contain any of this.
+The branch is at **`b47dd47`**, fully pushed, working tree clean, **10 commits**,
+**15 files, 5,638 insertions**. Merging is a founder action: open the PR at
+`https://github.com/dangelobraden43/LadsTravelCo/pull/new/feature/peru-standard-setter`
+or run `/ship`. **Confirm the Vercel deploy reaches READY**, not just that the
+push succeeded.
+
+`/peru` is routed in `main.jsx` and rewritten in `vercel.json`, and is
+deliberately **`noindex` and absent from the sitemap** — see THE THREE GATES
+below for what lifts that.
+
+### THE COMMITS
+
+    18ad784  Lane 2 — the interactive country map on real data
+    dfad8af  correct an unverified count in a code comment
+    06bba9a  Lane 3 — the /peru page shell and its motion language
+    4f96227  merge Lane 3 into the standard-setter
+    5827e17  every map target actually works, and the panel actually says something
+    bce1440  real photography, and stop showing the reader our own paperwork
+    9cf9861  the practical layer — tickets, permits, packing, ways to save
+    741b0fb  GETTING IN — the four routes to Machu Picchu, costed and compared
+    d483aef  the map was unreadable, the hook was flat, and 16 cards were empty
+    b47dd47  drop the locked trip length, and make the map read like a map
+
+### NEW FILES, AND WHAT EACH IS FOR
+
+| File | What it is |
+|---|---|
+| `src/PeruPage.jsx` / `.css` | The page. Nine sections, motion language, reduced-motion complete |
+| `src/PeruMap.jsx` / `.css` | The interactive country map. Props-driven; the other nine frameworks inherit it |
+| `src/data/peruGeo.js` | GENERATED. Peru traced from Natural Earth 1:50m, 589 → 200 points |
+| `tools/trace-peru.mjs` | The tracer that regenerates it. Same method as `trace-midwest.mjs` |
+| `src/data/peruConsensus.js` | **The research layer.** Public consensus for all 25 places, sourced |
+| `src/data/peruPrepare.js` | Tickets, permits, packing, ways to save |
+| `src/data/peruRoutes.js` | The four ways into Machu Picchu, with cost bands |
+| `src/CloudImage.jsx` / `.css` | **Site-wide image delivery.** Not Peru-specific — see below |
+
+Modified: `MapPins.jsx` (+`collapseDense`), `peru.js` (one stale note fixed),
+`main.jsx`, `vercel.json`.
+
+### 🔑 WHAT CAME OUT OF THIS THAT THE WHOLE SITE INHERITS
+
+1. **`CloudImage.jsx` — the image delivery layer, ruled by Brady.** Cloudinary,
+   `f_auto/q_auto`, six-width srcset, lazy below the fold, blur-up, **alt text
+   required** (it throws without one), width/height so CLS stays at zero.
+   ⛔ Do not hardcode a `res.cloudinary.com` URL anywhere else.
+   ➡️ This is the answer to `dist` sitting at 40 MB against an 8 MB target with
+   images as the entire overage. Every framework that gains imagery from here
+   makes that better instead of worse.
+2. **`collapseDense()` promoted into `MapPins.jsx`.** ⚠️ `GoodNews.jsx` still
+   holds its own local copy for the Midwest map. Migrate it in a follow-up
+   rather than editing both. It was left alone on purpose: `/local` is in
+   production and mid-session was not the time.
+3. **The AOI crop pattern.** A tall country in a wide box is a general problem,
+   and the fix generalises: crop the viewBox to the ground the trip covers,
+   padded to the box's aspect. See the map defect below.
+
+### 🚩 FIVE DEFECTS FOUND BY REVIEW, NOT BY BUILDING
+
+Every one of these rendered fine and was wrong. Worth reading before the next
+framework repeats them.
+
+1. **The map was portrait in a landscape box.** Traced canvas 698×1000, the box
+   is 16:10. `meet`-fitting shrank all of Peru to ~468px inside a 1072px frame
+   and reduced every pin to a speck. Brady: *"a random GIS AI map that has no
+   pins or interactive ability."* Fixed by cropping the viewBox to the trip
+   (386×241, a **1.81× zoom**). The projection is unchanged and **no pin moved**.
+2. **Every pin opened an empty panel.** `MapPins` calls `onToggle(pin.id)` with
+   ONE argument; the handler took `(place, id)` and ran `placeToPanel` over an
+   id string. The panel still appeared, so a screenshot looked fine.
+   ➡️ **Clicking all 21 targets is what found it.** A rendering check is not a
+   verification — the same lesson as the Sept 2 `/local` audit, learned again.
+3. **A class collision between two lanes.** Lane 3's trek rail used
+   `li.peru-day`; the map used `g.peru-day`. `PeruMap.css` was bleeding onto the
+   page's list items. The map's classes are now `peru-mapday*`.
+4. **`PERU_SAVED_SOURCE.note` was a false claim** — still reading "split not yet
+   supplied, all entries research tier" while all 25 are `validated: true`.
+   Lane 3 caught it and refused to render it. Same shape as the Iceland eclipse
+   window: true when written, false since Aug 28, survived only because nothing
+   rendered it.
+5. **A count typed from memory into a code comment** (18 Cusco places; the
+   measurement is 12 inside a 0.63 × 0.39 pixel box). Corrected. The habit this
+   week was spent removing from pages applies to comments too.
+
+### ⛔ THE PRESENTATION RULES BRADY SET, AND THEY GOVERN EVERY FRAMEWORK
+
+He reviewed hard and the same error appeared three times in three places: **our
+pipeline state, and our itinerary, presented as the product.**
+
+- ⛔ **Never publish our own completeness accounting.** Gone: the hero stat
+  "In his words: 8", "N of the 25 carry no note from us", "25 saved places, 8 of
+  them spoken for", and "No note from the Lads on this one" on every silent card.
+  **Absence is never announced.** The anecdotes are being filled in through the
+  Notion queue and get integrated later; a reader has no use for the progress bar.
+- ⛔ **No "IN HIS WORDS" chips.** Brady: *"this is a professional site not a
+  quote board."* The site's voice IS the Lads' voice, so a founder line simply
+  reads as the description. No captioned pull-quotes, and **never** print
+  `BRADY_TAKE_SOURCE.medium`, which renders as "Brady, direct to Claude Code in
+  session".
+- ⛔ **Never advertise a trip length as a metric.** Brady: *"you can make this
+  trip as long or as short as you want."* The hero reads **Ways in / Places /
+  Regions / Travelled** with no duration anywhere. Our itinerary is one way to
+  run it, not the runtime.
+- ⛔ **No internal flags on the page.** The "LABEL DISPUTED" chip is gone, and
+  day 6 renders as **Vinicunca — Rainbow Mountain**, because that question was
+  CLOSED from four independent directions. The data keeps the flag; the page
+  states the finding.
+- ⛔ **Miami is removed entirely.** A departure-day GPS fix in Florida. It stays
+  in `peru.js` as provenance and is filtered out by the data's own `inPeruArc`.
+- ⛔ **No raw coordinates on a place card.** That is how we know the pin is
+  right, not something a traveller reads.
+
+### WHAT THE PAGE NOW CONTAINS
+
+- **Hero** — the Machu Picchu photograph, and a hook that leads with the actual
+  choice: reach it on a train in an afternoon, or walk in over a 4,600 m pass.
+- **The Route** — the interactive map. 23 of 25 places on canvas, 9 day anchors,
+  the two office records **provably excluded** (0 leaked, asserted in code).
+  Cusco's 12 collapse to one honest count marker; **clicking it re-projects them
+  into a street-scale frame where each gets its own pin on its own true
+  coordinate** — 268 × 169 units of spread instead of 0.63 px.
+- **When To Go** — the four driver-typed windows, sourcing visible.
+- **Getting There** — fare intelligence with sources and `checkedOn`.
+- **GETTING IN** ⭐ — the four routes compared on one **logarithmic** cost axis.
+  Salkantay clusters $500–750, Inca Trail $800–900, train $70–250,
+  Hidroeléctrica $15–40. Log scale on purpose: linear across 15–3,500 renders
+  the budget routes as slivers and flatters the luxury end.
+- **Before You Go** — tickets from the **government portal** (`tuboleto.cultura.pe`,
+  `machupicchu.gob.pe`, or the Cusco offices), circuits fixed at purchase,
+  **Huayna Picchu as its own permit with the push to take it**, packing, and six
+  sourced ways to save.
+- **Lima** — Maido holds The World's Best Restaurant 2025, Central held it in
+  2023, and the 50 Best ranking is staged in Lima in November 2026.
+- **The Trek** — how we ran it and where you would flex.
+- **The Places** — all 25 with the research layer. **25/25 carry research, 20
+  carry a trap, zero are empty.**
+
+### ⛔ THE TWO-LAYER RULE, WHICH IS THE PRODUCT
+
+`ladsTake` is Brady verbatim or empty. `peruConsensus.js` is what the public
+says, labelled, indented, quieter, and sourced on every entry. **They render
+differently on purpose and must never be mistaken for each other.** Nothing in
+the research layer was written to fill a silence. An empty `criticized` renders
+NOTHING rather than "no complaints found", which would be an endorsement we did
+not make, and genuinely thin entries say **"limited coverage"** out loud.
+
+### 💰 THE MONEY RULE, EXTENDED
+
+Third-party costs may ship as **RANGES WITH SOURCES AND A CHECK DATE**, never as
+point prices — the discipline already in `fareIntelligence.js`: *"$780 is a
+promise. $650–$900 is a pattern."* These are researched market ranges published
+by others, and the page says so. **Our own pricing still appears nowhere.**
+⛔ **No operator is named, ranked or endorsed.** The tiers describe what changes
+as you pay more, which is a market fact. Who to hand money to is a
+recommendation we have not earned, and we take affiliate revenue in this
+category. Brady asked for "different operators" and got tiers instead — **if he
+wants named operators that is a line to cross deliberately, not by default.**
+
+### PHOTOGRAPHY
+
+12 frames from May 2026, converted from HEIC and uploaded to Cloudinary under
+`peru/`. Nine are placed: the hero, four section figures, three full-bleed bands
+carrying section transitions, and the approach shot opening Before You Go.
+⚠️ Three of the twelve show people other than the founders and are **deliberately
+unused** — Brady's ruling on including them never landed.
+
+### 🚧 THE THREE GATES BEFORE `/peru` CAN BE INDEXED
+
+1. **Lift `noindex` and add `/peru` to the sitemap** in `vite.config.js`.
+2. **"What We'd Do Differently" is empty by design** and needs Brady's words.
+3. **No Lads voice in any section intro.** They are neutral and factual per the
+   standing rule. The markup takes his lines; they are his to write.
+
+### ➡️ STILL OPEN ON PERU
+
+- **Trip-versions framing.** Spain carries 3 versions by group size and budget;
+  Peru does not. This is the last structural gap against Spain-level depth.
+- **The photo-people ruling**, above.
+- **Canonical totals do not move.** Peru is still not a counted framework: its
+  places carry `note`, not `description`, so the live-walk never sees them and
+  **220 stands**. Publishing Peru as framework #11 is a separate decision with a
+  count propagation attached.
+
+---
+
 ## 🟢 SEPTEMBER 8, 2026 — THE TRUTH PASS. Every displayed number now derives.
 
 **SHIPPED TO PRODUCTION.** `main` is at `869b3e1`, `main == origin/main`, and the
@@ -348,15 +539,38 @@ honest one.**
 3. **Delete `src/NorthAmericaSection.jsx`.** Dead code (imported by nothing),
    hardcoded counts, a remount landmine. Git history preserves it.
 
-### 2 — PERU: THE STANDARD-SETTER ⭐ the September build
+### 2 — PERU: ✅ BUILT Sept 8, AWAITING MERGE
 
-Unchanged and still the priority — see `THE NEW FRAMEWORK AGENDA`. **Structure
-proposal first, Brady approves before build, checkpoint-push per phase.**
+The page exists on `feature/peru-standard-setter` and is described in full under
+`THE PERU STANDARD-SETTER` above. What remains is not building:
+1. **Merge it.** `/ship` or the PR. Confirm the Vercel deploy reaches READY.
+2. **Brady's words** for "What We'd Do Differently" and the section intros.
+3. **The photo-people ruling** — three frames are held back without it.
+4. Then lift `noindex` and add `/peru` to the sitemap.
 
-### 3 — /outdoors: THE DUSK FIELD GUIDE — spec'd Sept 8, SEQUENCED AFTER PERU
+### 3 — /outdoors: THE DUSK FIELD GUIDE ⭐ **THIS IS TOMORROW'S BUILD**
 
-🚩 **Brady's explicit sequencing: this starts only after the Peru standard-setter's
-structure is approved.** Salkantay inherits Peru's photos and data.
+✅ **THE GATE IS CLEARED.** Brady's sequencing was that this starts once the Peru
+standard-setter's structure is approved. Peru is built and reviewed, so this is
+next, and Salkantay now has real Peru photography and data to inherit.
+
+📍 **START STATE, verified Sept 8:** no Dusk Field Guide code exists yet. The
+dusk palette appears nowhere in `src/` except as a reserved-and-off-limits note
+in `PeruPage.css`. `src/OutdoorsPage.jsx` is the CURRENT 213-line page — the
+Ladder concept, the validated Salkantay block, and the coming-soon trio. That
+page is what Phase D has to redirect or absorb, so read it before Phase A.
+
+🎁 **WHAT PERU HANDS IT.** Do not rebuild these:
+- `CloudImage.jsx` — image delivery, already site-wide.
+- `collapseDense()` in `MapPins.jsx`, and the **AOI-crop pattern** for fitting a
+  tall region into a wide box.
+- `tools/trace-peru.mjs` — the tracer to copy for park geometry.
+- The **two-layer rule** (founder voice vs sourced research) and the
+  **ranges-never-point-prices** money rule, both now proven on a real page.
+- Twelve Peru photographs on Cloudinary under `peru/`, three of them unused.
+- ⛔ **And the presentation rules Brady set on Peru apply here from line one:**
+  no completeness accounting, no voice chips, no advertised trip length, no
+  internal flags on the page. Do not relearn those in Phase B.
 
 **One route, two worlds:** PARKS (US / Canada / El Yunque) + EXPEDITIONS
 (international treks).
@@ -1244,33 +1458,35 @@ data is pending), never a month that has already passed.
 
 ---
 
-## 📍 SESSION START STATE — verified September 8, 2026
+## 📍 SESSION START STATE — verified September 8, 2026 (evening)
 
-**Verified from `git log` and `git status`, not from memory** (the standing
-concurrency rule). Working tree clean. `main` == `origin/main` at **`869b3e1`**.
-Nothing pending `/ship`.
+**Verified from `git log`, `git status` and the working tree, not from memory.**
 
-**Recent:** `869b3e1` the truth pass (all displayed stats derive) · `f9af4b7` the
-Lads Local platform — live pulse, Good Views, travel windows, flight intelligence.
-**Both are on production**, confirmed by fetching the deployed App chunk and
-finding the new `PAID LAUNCH` marker in it — not by assuming the push deployed.
+| | |
+|---|---|
+| `main` | **`869b3e1`**, == `origin/main`. The truth pass and the Lads Local platform are live |
+| `feature/peru-standard-setter` | **`b47dd47`**, pushed, clean, **10 commits ahead of main** |
+| Working tree | clean |
+| Pending `/ship` | **Peru.** Nothing else |
 
-**✅ What IS live:** `/local` as the map with the Live Pulse and 113 places · every
-framework's "When to Go" section · Dublin/Spain flight intelligence · **every
-displayed count derived from the data** · the launch date stated once as January
-1, 2027 · the Bruce ruling (all 17 gold).
+**✅ On production:** every displayed count derived from the data · the launch
+date stated once as January 1 2027 · `/local` with the Live Pulse and 113 places
+· every framework's "When to Go" · Dublin/Spain flight intelligence.
 
-**✅ CLOSED since the last session:** the seven "LAUNCHING FALL 2026" strings, and
-the four false `/michigan` claims. Both were Gate 6 failures sitting in
-production; both are fixed structurally rather than by retyping.
+**🟣 Built, not merged:** the whole Peru standard-setter. `/peru` is routed and
+`noindex`.
 
-🚩 **NEXT SESSION STARTS WITH TRUTH PASS ROUND 2** — three items, all small, all
-blocking the Peru build by Brady's sequencing. See `THE SEPTEMBER 8 QUEUE`.
+🚩 **NEXT SESSION, in order:**
+1. **TRUTH PASS ROUND 2** — three small items, still blocking by Brady's own
+   sequencing (WhenPage/Thailand, prices to fareIntelligence, delete
+   NorthAmericaSection).
+2. **Merge Peru** and confirm the deploy.
+3. **THE DUSK FIELD GUIDE, Phase A** — the design proposal. Start state and what
+   Peru hands it are recorded in `THE SEPTEMBER 8 QUEUE`.
 
-⚠️ **Still owed by Brady:** the `/local` depth notes he mentioned Sept 2 (he has
-since ruled these fold into the Peru standard — Peru answers "falls short", and
-`/local` inherits its patterns afterward), licensed music for the Peru film, and
-the Detroit Maps list that closes four unpinnable Michigan spots.
+⚠️ **Owed by Brady:** the "What We'd Do Differently" words and section intros for
+Peru · the photo-people ruling · licensed music for the Peru film · the Detroit
+Maps list that closes four unpinnable Michigan spots.
 
 ---
 
