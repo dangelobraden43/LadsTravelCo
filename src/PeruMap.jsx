@@ -114,7 +114,10 @@ export default function PeruMap({ onSelect = null }) {
   }
 
   return (
-    <div className="peru-map">
+    /* `peru-map-slot` is Lane 3's layout contract: PeruPage.css reserves a
+       fixed-aspect box and absolutely positions this to fill it, so swapping
+       the stub for this real map costs zero layout shift. Keep the class. */
+    <div className="peru-map peru-map-slot">
       <svg
         className="peru-map-svg"
         viewBox={VIEW_BOX}

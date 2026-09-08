@@ -19,6 +19,7 @@
     { "source": "/local", "destination": "/" },
     { "source": "/privacy", "destination": "/" },
     { "source": "/shop", "destination": "/" },
+    { "source": "/peru", "destination": "/" },
     { "source": "/when", "destination": "/" },
     { "source": "/lads", "destination": "/" },
     { "source": "/gift/:slug*", "destination": "/" },

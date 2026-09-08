@@ -530,7 +530,7 @@ export const PERU_SAVED_SOURCE = {
   capturedAt: '2026-08-28 (22 places); re-read same day after Brady added 3 more',
   tripDates: 'May 2–11, 2026',
   count: 25,
-  note: 'Saved list; visited/not-visited split not yet supplied. All entries research tier.',
+  note: 'Saved list. THE VISITED SPLIT IS RESOLVED: Brady ruled on 2026-08-28 that the list is curated, not raw, in his own words -- everything on it he would recommend, and he removed the bad spots. All 25 therefore carry validated: true on HIS WORD, not on EXIF. See BRADY_TAKE_SOURCE and the validationBasis on each entry. This note previously read that the split was not yet supplied and that all entries were research tier; both were true when written on Aug 27 and false from Aug 28 onward. It was never rendered, which is the only reason it did not publish a false claim.',
 }
 
 /* BRADY'S OWN WORDS — Aug 28 2026, verbatim, lightly punctuated only.
