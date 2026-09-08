@@ -1,3 +1,4 @@
+import { countByCity } from '../utils/derive.js'
 // Dublin + Galway — Data Model v2
 // 35 spots reclassified, research layer filled, personal layer blank for Brady
 
@@ -8,17 +9,22 @@ import {
   nextReviewDue,
 } from './fareIntelligence.js'
 
-export default {
+const dublinData = {
   id: 'dublin',
   name: 'Dublin + Galway',
   region: 'Ireland',
   route: '/dublin',
   tagline: '35+ pubs. One week. Both Lads were there.',
   confidence: 'Personally Validated — All Three Lads',
+  /* "35+ Pubs Visited" is a FOUNDER FACT and stays authored - both Lads did
+   * that trip and hit that many pubs. The file holds 34 spot records, which is
+   * a different thing from how many pubs they walked into, and deriving it
+   * would quietly replace Brady's claim with a database artefact. Ruled by
+   * Brady, Sept 8 2026. */
   heroStats: [
     { value: '35+', label: 'Pubs Visited' },
     { value: '6-7', label: 'Days' },
-    { value: '3', label: 'Windows' },
+    { derive: 'windows', label: 'Windows' },
   ],
 
   palette: {
@@ -30,7 +36,7 @@ export default {
 
   overview: {
     quickRead:
-      'Both Lads have done this trip. 35+ pubs in Ireland in one week. 30 rated spots in Dublin, 15 in Galway (100% validated). Three timing windows — Christmas is the one we know best. Galway is the quieter half and worth every minute. The Cliffs of Moher day trip from Galway is non-negotiable.',
+      'Both Lads have done this trip. 35+ pubs in Ireland in one week. {{DUBLIN}} rated spots in Dublin, {{GALWAY}} in Galway (100% validated). Three timing windows — Christmas is the one we know best. Galway is the quieter half and worth every minute. The Cliffs of Moher day trip from Galway is non-negotiable.',
     budget:
       '$2,200–$3,400 per person (group of 4), depending on timing window and accommodation style. Flights from ORD.',
     framework:
@@ -1221,3 +1227,31 @@ export default {
     'Logistics',
   ],
 }
+
+/* The two per-city counts in the overview are DERIVED. They read "30 rated
+ * spots in Dublin, 15 in Galway" for months against a real 22 and 12 - the
+ * numbers were right when the file was written and nobody re-counted after the
+ * reclassification pass. "35+ pubs" above them is untouched: that is Brady and
+ * Dawson's own account of their trip, not a row count, and deriving it would
+ * replace a founder's claim with a database artefact. */
+/* Placeholders are filled across EVERY overview string, not one named key.
+ * The first version of this composer targeted `quickRead` by name while the
+ * claim actually lived in another field, so the token silently survived into
+ * the render - a literal "{{SPOTS}}" on a public page. Walking the object
+ * cannot miss, and an unfilled token now cannot exist. */
+function fillCounts(data, values) {
+  for (const [key, text] of Object.entries(data.overview)) {
+    if (typeof text !== 'string') continue
+    data.overview[key] = Object.entries(values).reduce(
+      (acc, [token, value]) => acc.split(token).join(String(value)),
+      text
+    )
+  }
+}
+
+fillCounts(dublinData, {
+  '{{DUBLIN}}': countByCity(dublinData, 'Dublin'),
+  '{{GALWAY}}': countByCity(dublinData, 'Galway'),
+})
+
+export default dublinData

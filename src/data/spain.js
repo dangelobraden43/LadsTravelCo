@@ -1,3 +1,4 @@
+import { countSpots } from '../utils/derive.js'
 // Barcelona + Madrid — Data Model v2
 // 30 spots reclassified, research layer filled, personal layer blank for Brady
 
@@ -8,7 +9,7 @@ import {
   nextReviewDue,
 } from './fareIntelligence.js'
 
-export default {
+const spainData = {
   id: 'spain',
   name: 'Barcelona + Madrid',
   region: 'Spain',
@@ -16,8 +17,10 @@ export default {
   tagline: 'Two Cities. Two Lads. One Definitive Guide.',
   confidence: 'Both Lads — Personally Validated',
 
+  /* DERIVED. Authored `value` entries below are founder facts the data
+   * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { value: '100+', label: 'Validated Spots' },
+    { derive: 'spots', label: 'Validated Spots' },
     { value: '3', label: 'Trip Versions' },
     { value: '2', label: 'Study Abroads' },
   ],
@@ -31,7 +34,7 @@ export default {
 
   overview: {
     quickRead:
-      'The most validated two-city framework in the portfolio. Brady studied abroad in Barcelona; Dawson studied abroad in Madrid. Three versions for groups of 2, 4, or 8 — each with its own accommodation strategy, cost model, and nightlife routing. 100+ spots across both cities, every one personally visited.',
+      'The most validated two-city framework in the portfolio. Brady studied abroad in Barcelona; Dawson studied abroad in Madrid. Three versions for groups of 2, 4, or 8 — each with its own accommodation strategy, cost model, and nightlife routing. {{SPOTS}} spots across both cities, every one personally visited.',
     budget: '$2,000–$3,200 per person (group of 4, flights from ORD)',
     framework:
       'Three versions: Barcelona-only (7 days), Barcelona + Madrid combo (12 days), or Madrid-only (7 days). Open-jaw routing — fly into Barcelona, train to Madrid, fly home from Madrid. Same price as round-trip.',
@@ -1208,3 +1211,24 @@ export default {
     'Logistics',
   ],
 }
+
+/* "100+ spots across both cities" was the single largest overstatement on the
+ * site - the file holds 38. Derived now, so it cannot overstate again. */
+/* Placeholders are filled across EVERY overview string, not one named key.
+ * The first version of this composer targeted `quickRead` by name while the
+ * claim actually lived in another field, so the token silently survived into
+ * the render - a literal "{{SPOTS}}" on a public page. Walking the object
+ * cannot miss, and an unfilled token now cannot exist. */
+function fillCounts(data, values) {
+  for (const [key, text] of Object.entries(data.overview)) {
+    if (typeof text !== 'string') continue
+    data.overview[key] = Object.entries(values).reduce(
+      (acc, [token, value]) => acc.split(token).join(String(value)),
+      text
+    )
+  }
+}
+
+fillCounts(spainData, { '{{SPOTS}}': countSpots(spainData) })
+
+export default spainData

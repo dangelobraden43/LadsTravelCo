@@ -8,6 +8,8 @@ import 'splitting/dist/splitting.css'
 import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
 import Footer from './Footer'
+import { TOTAL_SPOTS, VALIDATED_CITIES, COUNTRIES, CONTINENTS } from './utils/siteStats.js'
+import { LAUNCH_LABEL_UPPER } from './utils/launch.js'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
 const Globe = lazy(() => import('./Globe'))
 
@@ -256,10 +258,13 @@ function DataSpectacle() {
   const stat3 = useRef(null)
   const subRef = useRef(null)
 
-  useCountUp(bigRef, 220)
-  useCountUp(stat1, 10)
-  useCountUp(stat2, 13)
-  useCountUp(stat3, 3)
+  /* Counted at build time from the ten framework data files, not typed.
+   * These four used to be literals and drifted twice - 226/21 survived here
+   * for weeks after the canonical method changed. */
+  useCountUp(bigRef, TOTAL_SPOTS)
+  useCountUp(stat1, COUNTRIES)
+  useCountUp(stat2, VALIDATED_CITIES)
+  useCountUp(stat3, CONTINENTS)
 
   // Reveal subtitle via IntersectionObserver
   useEffect(() => {
@@ -761,7 +766,7 @@ export default function App() {
                   textTransform: 'uppercase',
                 }}
               >
-                PREVIEW &middot; LAUNCHING FALL 2026
+                PREVIEW &middot; PAID LAUNCH {LAUNCH_LABEL_UPPER}
               </div>
               <h1 style={{ margin: 0, lineHeight: 1.1, marginBottom: 20 }}>
                 <span
@@ -867,7 +872,8 @@ export default function App() {
                 letterSpacing: 3,
               }}
             >
-              13 VALIDATED CITIES &middot; 3 CONTINENTS &middot; 220 SPOTS
+              {VALIDATED_CITIES} VALIDATED CITIES &middot; {CONTINENTS} CONTINENTS &middot;{' '}
+              {TOTAL_SPOTS} SPOTS
             </div>
           </Reveal>
         </div>
@@ -1211,7 +1217,7 @@ export default function App() {
                   margin: '0 auto',
                 }}
               >
-                220 spots. 10 countries. Built on data, not guesses.
+                {TOTAL_SPOTS} spots. {COUNTRIES} countries. Built on data, not guesses.
               </p>
             </div>
           </Reveal>
@@ -1277,8 +1283,16 @@ export default function App() {
             }}
           >
             {[
-              { value: '220', label: 'VALIDATED SPOTS', sub: 'Walked into. Not scraped.' },
-              { value: '10', label: 'COUNTRIES', sub: '3 continents. 13 cities.' },
+              {
+                value: String(TOTAL_SPOTS),
+                label: 'VALIDATED SPOTS',
+                sub: 'Walked into. Not scraped.',
+              },
+              {
+                value: String(COUNTRIES),
+                label: 'COUNTRIES',
+                sub: `${CONTINENTS} continents. ${VALIDATED_CITIES} cities.`,
+              },
               {
                 value: '6',
                 label: 'AI RESEARCH AGENTS',
@@ -1432,17 +1446,14 @@ export default function App() {
               {
                 name: 'Brady',
                 role: 'Builder / Data Science',
-                line: 'M.S. Applied Statistics. The builder. 20+ cities, 4 continents.',
               },
               {
                 name: 'Dawson',
                 role: 'Analytics / Firsthand Knowledge',
-                line: 'Data Analytics. Madrid, Iceland Ring Road, Rome, Paris.',
               },
               {
                 name: 'Stew',
                 role: 'Sales / Outreach',
-                line: 'Sales. Chicago. Client outreach and networking.',
               },
             ].map((member, i) => (
               <Reveal key={member.name} delay={i * 120}>
@@ -1502,16 +1513,8 @@ export default function App() {
                   >
                     {member.role}
                   </div>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: 14,
-                      color: '#b8ad9a',
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {member.line}
-                  </p>
+                  {/* Bio line removed Sept 8 2026 on Brady's instruction. The
+                      empty <p> went with it rather than rendering a blank gap. */}
                 </div>
               </Reveal>
             ))}

@@ -6,6 +6,8 @@ import { BATCH4_IMAGES } from './images-paths'
 import { HERO_IMAGES } from './images-paths'
 import { HEIC_HERO_IMAGES } from './images-paths'
 import './LadsSection.css'
+import { TOTAL_SPOTS } from './utils/siteStats.js'
+import { LAUNCH_LABEL } from './utils/launch.js'
 
 /* ===== HOOKS ===== */
 function useReveal(threshold = 0.15) {
@@ -53,44 +55,19 @@ const FOUNDERS = [
     name: 'Brady',
     role: 'Builder / Data Science',
     img: IMAGES.surf,
-    credentials: [
-      { label: 'M.S. Applied Statistics', detail: 'Grand Valley State University (May 2027)' },
-      {
-        label: 'Farmers Insurance',
-        detail: 'Gradient boosting models — 24.7% error reduction on 2M+ records',
-      },
-      { label: 'Ford Motor Company', detail: 'Starting May 2026' },
-      {
-        label: 'GVSU Padnos International Center',
-        detail: 'Former peer advisor — sent students abroad',
-      },
-      {
-        label: '20+ cities, 4 continents',
-        detail: 'Every spot in the database validated firsthand',
-      },
-    ],
   },
   {
     name: 'Dawson',
     role: 'Analytics / Firsthand Knowledge',
     img: IMAGES.stoutie,
-    credentials: [
-      { label: 'Data Analytics', detail: 'Kalamazoo College' },
-      { label: 'Study abroad: Madrid', detail: 'Full semester immersion' },
-      { label: 'Full Iceland Ring Road', detail: 'Drove every kilometer' },
-      { label: 'Firsthand knowledge', detail: 'Spain, Ireland, Iceland, Rome, Paris' },
-      { label: 'Co-validates', detail: 'Every framework recommendation' },
-    ],
   },
 ]
 
 const TIMELINE = [
-  { year: '2023', event: 'Costa Rica trip — first framework seed', milestone: false },
   { year: '2024', event: 'Sydney study abroad (6 weeks)', milestone: true },
   { year: '2024', event: 'Europe summer — Rome, Barcelona, Prague, Vienna', milestone: false },
   { year: '2024', event: 'Iceland Ring Road (Dawson)', milestone: false },
   { year: '2025', event: 'Barcelona study abroad (Brady)', milestone: true },
-  { year: '2025', event: 'Broke hand surfing → 20-day build sprint', milestone: true },
   { year: '2026', event: 'Site launches. Peru trip (May). Ford starts.', milestone: true },
   { year: '2026', event: 'Poland trip (August)', milestone: false },
   { year: '2027', event: 'M.S. graduation. Paid consulting launches.', milestone: true },
@@ -169,8 +146,8 @@ export default function LadsSection({ quizData }) {
               Who <em>We Are</em>
             </h2>
             <p className="lads-desc">
-              Two guys, 650+ spots, and zero interest in giving you the same itinerary as everyone
-              else.
+              Two guys, {TOTAL_SPOTS} validated spots, and zero interest in giving you the same
+              itinerary as everyone else.
             </p>
           </Reveal>
         </div>
@@ -191,14 +168,9 @@ export default function LadsSection({ quizData }) {
                       <div className="lads-founder-role">{f.role}</div>
                     </div>
                   </div>
-                  <div className="lads-founder-creds">
-                    {f.credentials.map((c, ci) => (
-                      <div key={ci} className="lads-cred-row">
-                        <div className="lads-cred-label">{c.label}</div>
-                        <div className="lads-cred-detail">{c.detail}</div>
-                      </div>
-                    ))}
-                  </div>
+                  {/* Founder credential lists removed Sept 8 2026 on Brady's
+                      instruction ("the bios dont need to be on there for now").
+                      The names, roles and photos stay; the claims came off. */}
                 </div>
               </Reveal>
             ))}
@@ -224,20 +196,10 @@ export default function LadsSection({ quizData }) {
         </div>
       </section>
 
-      {/* Build Story Callout */}
-      <section className="lads-build">
-        <div className="lads-inner">
-          <Reveal type="fade">
-            <div className="lads-build-card">
-              <div className="lads-build-stat">20 Days</div>
-              <p className="lads-build-text">
-                Broke his hand surfing in Costa Rica. Built the entire site, research pipeline, and
-                650+ spot database with one good hand. 4.0 GPA didn't drop.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* The "20 Days / broke his hand surfing in Costa Rica" build callout was
+          REMOVED Sept 8 2026 on Brady's instruction. Do not restore it without
+          him asking - it is his story to tell or withhold, not ours to keep on
+          the page because it reads well. */}
 
       {/* Photo Gallery — Horizontal Scroll */}
       <div className="lads-gallery">
@@ -313,7 +275,7 @@ export default function LadsSection({ quizData }) {
                       ? 'Almost there. Just a few details.'
                       : "Tell Us Where You're Going"}
                   </h3>
-                  {!hasQuizData && <p>A preview from The Lads. Launching Fall 2026.</p>}
+                  {!hasQuizData && <p>A preview from The Lads. Launching {LAUNCH_LABEL}.</p>}
                   {hasQuizData && quizData.destination && (
                     <div className="lads-form-prefill-tag">Planning: {quizData.destination}</div>
                   )}

@@ -5,6 +5,7 @@ import SystemSection from './SystemSection'
 import './SystemSection.css'
 import LadsSection from './LadsSection'
 import './LadsSection.css'
+import { LAUNCH_LABEL } from './utils/launch.js'
 
 function useReveal(threshold = 0.15) {
   const ref = useRef(null)
@@ -82,7 +83,8 @@ export default function PlanPage() {
                 marginBottom: 8,
               }}
             >
-              A preview. <em style={{ color: 'var(--gold)' }}>The full thing lands Fall 2026.</em>
+              A preview.{' '}
+              <em style={{ color: 'var(--gold)' }}>The full thing lands {LAUNCH_LABEL}.</em>
             </h1>
           </Reveal>
         </section>

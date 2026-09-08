@@ -6,70 +6,72 @@ import { IMAGES, NEW_IMAGES, BATCH3_IMAGES, HERO_IMAGES, HEIC_HERO_IMAGES } from
 import { gsap } from './utils/animations'
 import Splitting from 'splitting'
 import 'splitting/dist/splitting.css'
+import {
+  TOTAL_SPOTS,
+  SPOTS_BY_FRAMEWORK,
+  VALIDATED_CITIES,
+  COUNTRIES,
+  CONTINENTS,
+} from './utils/siteStats.js'
 
+/* No `spots` field here on purpose. Each of these nine carried a hardcoded
+ * count and seven of the nine had gone stale - Rome read 25 against 27, Spain
+ * 30 against 38, Poland 12 against 15. The count is now read from
+ * SPOTS_BY_FRAMEWORK, which the build walks out of the data files. */
 const DESTINATIONS = [
   {
     name: 'Dublin',
     slug: 'dublin',
-    line: '35 spots. Every pub worth going to and the ones worth skipping.',
+    line: 'Every pub worth going to and the ones worth skipping.',
     photo: IMAGES.cliffs,
-    spots: 35,
   },
   {
     name: 'Rome',
     slug: 'rome',
     line: 'The aperitivo strategy that saves you $40 a night.',
     photo: IMAGES.colosseum,
-    spots: 25,
   },
   {
     name: 'Spain',
     slug: 'spain',
     line: 'Two cities, one framework. Barcelona meets Madrid.',
     photo: NEW_IMAGES.sagradaSunset,
-    spots: 30,
   },
   {
     name: 'Australia',
     slug: 'australia',
     line: 'Sydney, Tasmania, the coast. Where we studied abroad.',
     photo: IMAGES.opera,
-    spots: 19,
   },
   {
     name: 'Iceland',
     slug: 'iceland',
     line: 'Ring Road logistics nobody else will tell you.',
     photo: IMAGES.iceland,
-    spots: 23,
   },
   {
     name: 'Prague',
     slug: 'prague',
     line: 'The cheapest great city in Europe.',
     photo: IMAGES.stvitus,
-    spots: 15,
   },
   {
     name: 'Vienna',
     slug: 'vienna',
     line: 'Coffee houses, palaces, and Klimt. The grand one.',
     photo: HERO_IMAGES.schonbrunnPalaceGardensVienna,
-    spots: 8,
   },
   {
     name: 'Munich',
     slug: 'munich',
     line: 'Oktoberfest done right.',
     photo: BATCH3_IMAGES.munichMarienplatz,
-    spots: 9,
   },
   {
     name: 'Poland',
     slug: 'poland',
     line: "Krakow is the most underrated city we've been to.",
     photo: NEW_IMAGES.pragueSkyline,
-    spots: 12,
   },
 ]
 
@@ -239,7 +241,7 @@ function DestinationTheater() {
               </div>
               <div className="explore-row-line">{d.line}</div>
               <div className="explore-row-meta">
-                <span className="explore-row-spots">{d.spots} spots</span>
+                <span className="explore-row-spots">{SPOTS_BY_FRAMEWORK[d.slug]} spots</span>
                 <span className="explore-row-arrow">&rarr;</span>
               </div>
             </div>
@@ -254,7 +256,9 @@ function DestinationTheater() {
         </div>
         <div className="explore-photo-overlay" />
         <div className="explore-photo-label">
-          <span className="explore-photo-count">{DESTINATIONS[active].spots}</span>
+          <span className="explore-photo-count">
+            {SPOTS_BY_FRAMEWORK[DESTINATIONS[active].slug]}
+          </span>
           <span className="explore-photo-word">validated spots</span>
         </div>
       </div>
@@ -324,7 +328,8 @@ export default function ExplorePage() {
                 Where do you want to go?
               </h1>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, color: '#8a8070' }}>
-                220 validated spots &middot; 13 cities &middot; 10 countries &middot; 3 continents
+                {TOTAL_SPOTS} validated spots &middot; {VALIDATED_CITIES} cities &middot;{' '}
+                {COUNTRIES} countries &middot; {CONTINENTS} continents
               </p>
             </Reveal>
           </div>

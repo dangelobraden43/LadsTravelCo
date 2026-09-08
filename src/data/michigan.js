@@ -31,6 +31,28 @@
  * why the canonical site total is 220, not 219.
  */
 
+import { liveEvents, PULSE_VENUES } from './livePulse.js'
+import { countCategory, countSpotsExcept } from '../utils/derive.js'
+
+/* LIVE EVENT COUNT - derived, never typed.
+ *
+ * This page used to claim "123 Shows Tracked" in its hero and "123 concerts
+ * April-November 2026" in its overview. There were never 123 event rows in
+ * this repo; there were zero, until THE LIVE PULSE landed on Sept 2 2026.
+ * The number was true of an intention, not of any data, and it sat in
+ * production on an indexed page for months.
+ *
+ * It is now counted off the real pulse rows, filtered to Michigan venues, and
+ * `liveEvents()` drops anything already played - so the number falls on its
+ * own as the season runs out instead of waiting for someone to notice. Two of
+ * the five Michigan venues (Van Andel, Pine Knob) currently hold zero rows
+ * because their concert calendars have not been pulled; they contribute zero
+ * rather than an estimate.
+ */
+const MICHIGAN_VENUE_IDS = PULSE_VENUES.filter((v) => v.state === 'MI').map((v) => v.id)
+const michiganLiveEvents = () =>
+  liveEvents().filter((e) => MICHIGAN_VENUE_IDS.includes(e.venueId)).length
+
 const michiganData = {
   id: 'michigan',
   name: 'Michigan Local Intelligence',
@@ -38,10 +60,12 @@ const michiganData = {
   route: '/michigan',
   tagline: 'Every brewery, bar, concert, and golf course across Michigan.',
   confidence: 'Brady — Personally Validated',
+  /* DERIVED, all three. See src/utils/derive.js for the rule and for why
+   * founder facts are the one thing that stays authored. */
   heroStats: [
-    { value: '42+', label: 'Venues' },
-    { value: '123', label: 'Shows Tracked' },
-    { value: '9', label: 'Golf Destinations' },
+    { derive: 'except:golf', label: 'Venues' },
+    { derive: michiganLiveEvents, label: 'Live Events' },
+    { derive: 'category:golf', label: 'Golf Destinations' },
   ],
 
   palette: {
@@ -52,8 +76,12 @@ const michiganData = {
   },
 
   overview: {
-    quickRead:
-      'Home turf. Breweries across 8 regions, 123 concerts April-November 2026, 9 golf destinations, 8 curated bar crawls. No fluff, no ads, just intel.',
+    /* Composed from the data at the foot of this file. It previously claimed
+     * 8 regions, 123 concerts, 9 golf destinations and 8 curated bar crawls -
+     * against 4 regions, 0 event rows, 4 courses, and a `crawls` key that has
+     * never existed in this file. The crawls claim is GONE rather than
+     * recounted: you cannot derive a number for a thing that was never built. */
+    quickRead: '',
     budget: 'See individual runs for cost estimates',
   },
 
@@ -459,6 +487,22 @@ const michiganData = {
     'Golf',
   ],
 }
+
+/* THE QUICK READ IS COMPOSED, NOT TYPED.
+ *
+ * Only structural counts go in here - venues, regions, courses - because this
+ * string is built once when the module loads. The live event count is
+ * deliberately NOT in it: that number changes as games are played, and a
+ * sentence built at import time would slowly drift out of date inside a long
+ * session. It belongs in the hero stat, which calls its deriver on every
+ * render. Put date-dependent numbers where they are recomputed, not where
+ * they are frozen.
+ */
+const regionCount = michiganData.categories.filter((c) => c.id !== 'golf').length
+michiganData.overview.quickRead =
+  `Home turf. ${countSpotsExcept(michiganData, ['golf'])} validated venues across ` +
+  `${regionCount} regions and ${countCategory(michiganData, 'golf')} golf destinations, ` +
+  `plus every dated event we can source on the Lads Local map. No fluff, no ads, just intel.`
 
 export default michiganData
 

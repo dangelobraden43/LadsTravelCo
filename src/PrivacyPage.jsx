@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { Nav } from './App'
 import Footer from './Footer'
 import './PrivacyPage.css'
+import { LAUNCH_LABEL } from './utils/launch.js'
 
 const EFFECTIVE = 'August 25, 2026'
 
@@ -276,8 +277,8 @@ export default function PrivacyPage() {
               </h2>
               <p className="privacy-p">
                 If we add a service or change what we collect, we update this page and move the
-                effective date. We are a preview site heading toward a Fall 2026 launch, so this
-                will change as things get built.
+                effective date. We are a preview site heading toward a {LAUNCH_LABEL} launch, so
+                this will change as things get built.
               </p>
             </section>
           </Reveal>

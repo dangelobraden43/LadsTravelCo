@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './Footer.css'
+import { LAUNCH_LABEL } from './utils/launch.js'
 
 const COLLECTIONS = [
   { label: 'Global', path: '/global' },
@@ -31,7 +32,9 @@ export default function Footer() {
             </svg>
             <span className="lads-footer-name">The Lads Travel Co.</span>
           </div>
-          <p className="lads-footer-tag">A travel intelligence company. Launching Fall 2026.</p>
+          <p className="lads-footer-tag">
+            A travel intelligence company. Frameworks go on sale {LAUNCH_LABEL}.
+          </p>
         </div>
 
         <div className="lads-footer-cols">
@@ -57,7 +60,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <p className="lads-footer-note">We launch Fall 2026 — follow the build.</p>
+            <p className="lads-footer-note">We launch {LAUNCH_LABEL} — follow the build.</p>
           </div>
 
           <div className="lads-footer-col">

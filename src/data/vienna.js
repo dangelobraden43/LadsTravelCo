@@ -25,10 +25,12 @@ export default {
   route: '/vienna',
   tagline: 'Imperial capital. Coffee houses, palaces, and Klimt.',
   confidence: 'Brady — Personally Validated',
+  /* DERIVED. Authored `value` entries below are founder facts the data
+   * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { value: '8', label: 'Database Spots' },
+    { derive: 'spots', label: 'Database Spots' },
     { value: '1', label: 'Google Maps List' },
-    { value: '1', label: 'Country' },
+    { derive: 'countries', label: 'Country' },
   ],
 
   // Habsburg burgundy — deliberately distinct from Prague's violet (#9a8bc2).

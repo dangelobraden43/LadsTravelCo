@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import michiganData from './data/michigan'
+import { countSpotsExcept } from './utils/derive.js'
+import { LAUNCH_LABEL } from './utils/launch.js'
 
 /* ─── palette ─── */
 const C = {
@@ -221,7 +223,9 @@ function Cover() {
             marginTop: 32,
           }}
         >
-          42+ venues &middot; 5 regions &middot; Personally validated
+          {countSpotsExcept(michiganData, ['golf'])} venues &middot;{' '}
+          {michiganData.categories.filter((c) => c.id !== 'golf').length} regions &middot;{' '}
+          Personally validated
         </div>
 
         {/* divider */}
@@ -702,7 +706,7 @@ function GiftFooter() {
           fontStyle: 'italic',
         }}
       >
-        Built for a friend. The Lads launch Fall 2026.
+        Built for a friend. The Lads launch {LAUNCH_LABEL}.
       </p>
     </footer>
   )
