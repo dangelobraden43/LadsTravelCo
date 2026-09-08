@@ -24,6 +24,7 @@ import {
   LIMA_FOOD,
   PREPARE_CHECKED_ON,
 } from './data/peruPrepare.js'
+import { PERU_ROUTES, ROUTE_SCALE, ROUTES_NOTE, ROUTES_CHECKED_ON } from './data/peruRoutes.js'
 import './PeruPage.css'
 
 /* ============================================================================
@@ -268,6 +269,7 @@ const SECTIONS = [
   { id: 'peru-route', label: 'The Route' },
   { id: 'peru-when', label: 'When To Go' },
   { id: 'peru-getting-there', label: 'Getting There' },
+  { id: 'peru-getting-in', label: 'Getting In' },
   { id: 'peru-prepare', label: 'Before You Go' },
   { id: 'peru-trek', label: 'The Trek' },
   { id: 'peru-places', label: 'The Places' },
@@ -360,12 +362,168 @@ function Hero() {
  * a reader acts on it, months ahead, with money.
  */
 
+/* A full-bleed photographic band. The page was reading as a long column of
+ * panels on one ground; these break it and let a frame carry a transition on
+ * its own. Height is capped in CSS and the box is reserved, so none of them
+ * can shift layout while loading. */
+function PhotoBand({ id, alt, caption, position }) {
+  return (
+    <Reveal variant="fade" className="peru-band">
+      <CloudImage
+        id={id}
+        alt={alt}
+        width={1920}
+        height={2560}
+        sizes="100vw"
+        className="peru-band-img"
+        objectPosition={position}
+      />
+      {caption && <div className="peru-band-cap">{caption}</div>}
+    </Reveal>
+  )
+}
+
 function SourceLink({ href, children = 'source' }) {
   if (!href) return null
   return (
     <a className="peru-src" href={href} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
+  )
+}
+
+/* ===== GETTING IN — the four routes to Machu Picchu, compared =============
+ *
+ * The widest cost spread on the trip lives here: the same mountain is
+ * reachable for a bus fare or for several thousand dollars. Bars are
+ * LOGARITHMIC on purpose. A linear axis across 15 to 3,500 renders the budget
+ * routes as invisible slivers and flatters the luxury end, which would be a
+ * chart that argues rather than informs.
+ */
+
+const logPos = (v) => {
+  const { min, max } = ROUTE_SCALE
+  const clamped = Math.min(Math.max(v, min), max)
+  return ((Math.log(clamped) - Math.log(min)) / (Math.log(max) - Math.log(min))) * 100
+}
+
+const usd = (n) => '$' + n.toLocaleString('en-US')
+
+function RouteBar({ band }) {
+  const left = logPos(band.low)
+  const right = logPos(band.high)
+  const tLeft = logPos(band.typical[0])
+  const tRight = logPos(band.typical[1])
+  return (
+    <div
+      className="peru-bar"
+      role="img"
+      aria-label={`Reported range ${usd(band.low)} to ${usd(band.high)} per person, typically ${usd(band.typical[0])} to ${usd(band.typical[1])}`}
+    >
+      <div className="peru-bar-track" />
+      {/* The full reported spread, edge to edge. */}
+      <div
+        className="peru-bar-range"
+        style={{ left: `${left}%`, width: `${Math.max(right - left, 1.5)}%` }}
+      />
+      {/* Where the sources actually cluster. This is the honest headline. */}
+      <div
+        className="peru-bar-typical"
+        style={{ left: `${tLeft}%`, width: `${Math.max(tRight - tLeft, 2)}%` }}
+      />
+      <span className="peru-bar-lo" style={{ left: `${left}%` }}>
+        {usd(band.low)}
+      </span>
+      <span className="peru-bar-hi" style={{ left: `${Math.min(right, 92)}%` }}>
+        {usd(band.high)}
+      </span>
+    </div>
+  )
+}
+
+function GettingIn() {
+  return (
+    <section id="peru-getting-in" className="peru-section">
+      <Reveal variant="rise">
+        <div className="peru-eyebrow">GETTING IN</div>
+        <h2 className="peru-h2">Four ways to reach it, and they are not close on price.</h2>
+        <p className="peru-lede">
+          This is the decision that moves your budget more than anything else on the trip. The same
+          mountain is reachable for the cost of a bus ticket or for several thousand dollars, and
+          the difference is mostly about how you spend the days getting there rather than what you
+          see at the end.
+        </p>
+      </Reveal>
+
+      <div className="peru-routes">
+        {PERU_ROUTES.map((r, i) => (
+          <Reveal key={r.id} variant="rise" delay={Math.min(i, 3) * 80}>
+            <article className={`peru-route-card peru-route-card--${r.id}`}>
+              <header className="peru-route-head">
+                <div>
+                  <span className="peru-route-kicker">{r.kicker}</span>
+                  <h3 className="peru-route-name">{r.name}</h3>
+                </div>
+                <dl className="peru-route-facts">
+                  <div>
+                    <dt>Days</dt>
+                    <dd>{r.days}</dd>
+                  </div>
+                  <div>
+                    <dt>Permit</dt>
+                    <dd>{r.permit}</dd>
+                  </div>
+                  <div>
+                    <dt>Book</dt>
+                    <dd>{r.lead}</dd>
+                  </div>
+                </dl>
+              </header>
+
+              <RouteBar band={r.band} />
+              <p className="peru-route-typical">
+                Sources cluster at{' '}
+                <strong>
+                  {usd(r.band.typical[0])}&ndash;{usd(r.band.typical[1])}
+                </strong>{' '}
+                per person
+              </p>
+
+              <p className="peru-route-summary">{r.summary}</p>
+              <p className="peru-route-effort">
+                <span className="peru-route-effort-k">Effort</span> {r.effort}
+              </p>
+
+              <ul className="peru-tiers">
+                {r.tiers.map((t) => (
+                  <li key={t.tier}>
+                    <span className="peru-tier-name">{t.tier}</span>
+                    <span className="peru-tier-band">{t.band}</span>
+                    <span className="peru-tier-what">{t.what}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="peru-route-src">
+                {r.sources.map((src) => (
+                  <SourceLink key={src.url} href={src.url}>
+                    {src.title}
+                  </SourceLink>
+                ))}
+              </div>
+            </article>
+          </Reveal>
+        ))}
+      </div>
+
+      <Reveal variant="fade">
+        <p className="peru-note">
+          {ROUTES_NOTE} Checked {ROUTES_CHECKED_ON}. We sell none of these and take no cut of any of
+          them, and no operator is named or ranked here: the tiers describe what changes as you pay
+          more, not who to pay.
+        </p>
+      </Reveal>
+    </section>
   )
 }
 
@@ -383,6 +541,19 @@ function Prepare() {
       </Reveal>
 
       {/* ── TICKETS ── */}
+      <figure className="peru-figure">
+        <CloudImage
+          id="peru/machu-picchu-approach"
+          alt="Machu Picchu's peaks seen through pine branches on the walk in, cloud low over the ridges"
+          width={2560}
+          height={1920}
+          sizes="(max-width: 900px) 100vw, 900px"
+        />
+        <figcaption className="peru-figure-cap">
+          The approach. What the permits and the lead times are all for.
+        </figcaption>
+      </figure>
+
       <div className="peru-prep-grid">
         {PERU_TICKETS.items.map((t, i) => (
           <Reveal key={t.name} variant="rise" delay={Math.min(i, 3) * 70}>
@@ -1173,9 +1344,28 @@ export default function PeruPage() {
         <RouteSection />
         <WhenToGo />
         <GettingThere />
+        <PhotoBand
+          id="peru/salkantay-ladder-bridge"
+          alt="A narrow ladder bridge of wooden slats strung across a green gorge on the Salkantay route"
+          caption="The Salkantay corridor, day four."
+          position="center 55%"
+        />
+        <GettingIn />
         <Prepare />
         <LimaFood />
+        <PhotoBand
+          id="peru/rainbow-mountain-cairn"
+          alt="A stacked stone cairn standing against deep blue sky high on the Vinicunca ridge"
+          caption="Above 5,000 m at Vinicunca."
+          position="center 45%"
+        />
         <Trek />
+        <PhotoBand
+          id="peru/inca-masonry-wall"
+          alt="Close-cut Inca stonework, blocks fitted without mortar, under low cloud"
+          caption="Masonry at Machu Picchu, cut without mortar."
+          position="center 50%"
+        />
         <Places />
         <Differently />
       </main>

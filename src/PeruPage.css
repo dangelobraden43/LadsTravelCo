@@ -1692,3 +1692,286 @@
 .peru-stat dd {
   white-space: nowrap;
 }
+
+/* ═══ GETTING IN — the route cost comparison ══════════════════════════════
+ * The bars are the point of this section: four routes whose costs differ by
+ * two orders of magnitude, put on one axis so the shape of the decision is
+ * visible before any of the prose is read. */
+
+.peru-routes {
+  display: grid;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.peru-route-card {
+  position: relative;
+  padding: 24px 24px 20px;
+  border-radius: var(--radius, 16px);
+  background: var(--peru-surface, #10272c);
+  border: 1px solid rgba(63, 179, 160, 0.16);
+  overflow: hidden;
+}
+
+/* The route we actually walked gets the accent edge. Everything else is
+   presented flat, because we have not walked them and should not look like
+   we are steering. */
+.peru-route-card--salkantay {
+  border-color: rgba(63, 179, 160, 0.42);
+  background:
+    radial-gradient(90% 120% at 0% 0%, rgba(63, 179, 160, 0.12), transparent 58%),
+    var(--peru-elevated, #16343a);
+}
+
+.peru-route-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.peru-route-kicker {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--peru-jade, #3fb3a0);
+}
+
+.peru-route-name {
+  margin: 4px 0 0;
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: clamp(21px, 2.6vw, 27px);
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-route-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 0;
+}
+
+.peru-route-facts dt {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+}
+
+.peru-route-facts dd {
+  margin: 3px 0 0;
+  max-width: 190px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--peru-body, #b6c9c9);
+}
+
+/* ── THE BAR ── */
+.peru-bar {
+  position: relative;
+  height: 46px;
+  margin: 6px 0 4px;
+}
+
+.peru-bar-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 17px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(127, 151, 155, 0.18);
+}
+
+/* The full reported spread. */
+.peru-bar-range {
+  position: absolute;
+  top: 16px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(63, 179, 160, 0.3);
+}
+
+/* Where sources actually cluster — the honest headline of the card. */
+.peru-bar-typical {
+  position: absolute;
+  top: 12px;
+  height: 13px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--peru-jade, #3fb3a0), var(--peru-jade-soft, #8fd7c9));
+  box-shadow: 0 0 14px rgba(63, 179, 160, 0.4);
+}
+
+.peru-bar-lo,
+.peru-bar-hi {
+  position: absolute;
+  top: 30px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--peru-muted, #7f979b);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.peru-route-typical {
+  margin: 0 0 14px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-route-typical strong {
+  color: var(--peru-jade-soft, #8fd7c9);
+  font-weight: 600;
+}
+
+.peru-route-summary {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-route-effort {
+  margin: 0 0 14px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  color: var(--peru-body, #b6c9c9);
+}
+
+.peru-route-effort-k {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-muted, #7f979b);
+  margin-right: 8px;
+}
+
+/* ── TIERS ── */
+.peru-tiers {
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(63, 179, 160, 0.14);
+}
+
+.peru-tiers li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(63, 179, 160, 0.1);
+}
+
+.peru-tier-name {
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--peru-text, #e5dcc9);
+}
+
+.peru-tier-band {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  color: var(--peru-jade, #3fb3a0);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.peru-tier-what {
+  grid-column: 1 / -1;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--peru-muted, #7f979b);
+}
+
+.peru-route-src {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .peru-routes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .peru-route-facts {
+    gap: 12px;
+  }
+  .peru-route-facts dd {
+    max-width: 130px;
+  }
+}
+
+/* ═══ PHOTO BANDS ═════════════════════════════════════════════════════════
+ * Full-bleed frames that carry a section transition. The page was reading as
+ * one long column of panels on a single ground; these give it air and let the
+ * photography do some of the work. Height is capped and the box reserved, so
+ * a band cannot shift layout while it loads. */
+.peru-band {
+  position: relative;
+  margin: 64px 0;
+  height: clamp(240px, 42vh, 460px);
+  overflow: hidden;
+  border-radius: var(--radius, 16px);
+}
+
+.peru-band-img,
+.peru-band-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.peru-band-img img {
+  object-fit: cover;
+}
+
+/* A wash so a caption stays legible over any frame, and so a bright
+   photograph does not blow out the middle of a dark page. */
+.peru-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 28, 32, 0.34) 0%,
+    rgba(11, 28, 32, 0.08) 38%,
+    rgba(11, 28, 32, 0.72) 100%
+  );
+}
+
+.peru-band-cap {
+  position: absolute;
+  left: 22px;
+  bottom: 18px;
+  z-index: 2;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--peru-jade-soft, #8fd7c9);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 620px) {
+  .peru-band {
+    margin: 44px 0;
+    height: clamp(200px, 34vh, 300px);
+  }
+}
