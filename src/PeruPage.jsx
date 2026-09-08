@@ -281,7 +281,6 @@ const SECTIONS = [
   { id: 'peru-prepare', label: 'Before You Go' },
   { id: 'peru-trek', label: 'The Trek' },
   { id: 'peru-places', label: 'The Places' },
-  { id: 'peru-differently', label: 'Differently' },
 ]
 
 const fmt = (n) => n.toLocaleString('en-US')
@@ -1326,25 +1325,32 @@ function Places() {
 
 /* ===== 7. WHAT WE'D DO DIFFERENTLY ======================================= */
 
+/* WHAT WE'D DO DIFFERENTLY — HIDDEN, not stubbed.
+ *
+ * Ruled by Brady on Sept 8 2026 as part of taking Peru public: this section
+ * renders NOTHING until his words exist. Not an empty shell, not a placeholder,
+ * not a "coming soon" — an unwritten section that announces itself is the same
+ * mistake as the completeness counters that came off this page earlier today.
+ * A reader has no use for the state of our drafts.
+ *
+ * The component is kept rather than deleted because the section is genuinely
+ * coming: it is the part that separates a trip report from a framework, and it
+ * is the hardest thing on the page to fake and the easiest to fake badly. When
+ * founder copy lands, fill DIFFERENTLY_COPY, re-add <Differently /> to the page
+ * and put its pill back in SECTIONS. Nothing else needs to change.
+ *
+ * ⛔ Do NOT write this section. It comes from Brady or Dawson verbatim or it
+ * stays hidden, which is the same rule that governs every ladsTake on the site.
+ */
+const DIFFERENTLY_COPY = null
+
 function Differently() {
+  if (!DIFFERENTLY_COPY) return null
   return (
     <section id="peru-differently" className="peru-section peru-section--last">
       <Reveal variant="rise">
         <div className="peru-eyebrow">WHAT WE&rsquo;D DO DIFFERENTLY</div>
-        <h2 className="peru-h2">Empty, and staying empty until they write it.</h2>
-        <p className="peru-lede">
-          This is the section that separates a trip report from a framework: the parts the Lads got
-          wrong, and what they would change on a second run. It is the hardest thing on the page to
-          fake and the easiest thing to fake badly, so nothing goes in it that did not come from
-          Brady or Dawson directly.
-        </p>
-      </Reveal>
-
-      <Reveal variant="fade" className="peru-empty">
-        <div className="peru-empty-rule" aria-hidden="true" />
-        <p className="peru-empty-text">
-          Nothing recorded yet. The frame is built and takes founder copy as soon as there is any.
-        </p>
+        <p className="peru-lede">{DIFFERENTLY_COPY}</p>
       </Reveal>
     </section>
   )
@@ -1397,7 +1403,8 @@ export default function PeruPage() {
             differently" section is empty by design. It is not in the sitemap
             either. Both come off in the same pass, when the page is finished
             and a founder says it ships. */}
-        <meta name="robots" content="noindex" />
+        {/* noindex lifted Sept 8 2026: Brady ruled the page public. The
+            honesty lives in the data and the sourcing, not in hiding it. */}
         <link rel="canonical" href="https://ladstravel.com/peru" />
         <meta property="og:title" content="Peru · The Lads Travel Co." />
         <meta property="og:description" content={description} />
@@ -1451,7 +1458,6 @@ export default function PeruPage() {
           position="center 50%"
         />
         <Places />
-        <Differently />
       </main>
 
       <Footer />
