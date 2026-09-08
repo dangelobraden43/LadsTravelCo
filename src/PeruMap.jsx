@@ -96,9 +96,26 @@ export default function PeruMap({ onSelect = null }) {
     if (onSelect) onSelect(next)
   }
 
-  const togglePlace = (place, id) => {
+  /* ⚠️ MapPins calls `onToggle(pin.id)` — ONE argument, the id string, not the
+   * place. The first version of this handler took (place, id) and therefore
+   * ran placeToPanel over an id string, which produced a panel with an empty
+   * title and no content. It LOOKED fine in a screenshot because the panel
+   * still opened. Clicking every pin is what found it.
+   *
+   * Panels are built once, keyed by the same id MapPins generates, so the
+   * lookup cannot drift from the pin it belongs to. */
+  const panelsById = useMemo(() => {
+    const m = new Map()
+    for (const p of loose) {
+      const panel = placeToPanel(p, { idPrefix: 'peru' })
+      m.set(panel.id, panel)
+    }
+    return m
+  }, [loose])
+
+  const togglePlace = (id) => {
     if (activeId === id) return show(null)
-    show({ ...placeToPanel(place, { idPrefix: 'peru' }), id })
+    show(panelsById.get(id) || null)
   }
 
   const toggleCluster = (group) => {
@@ -147,7 +164,7 @@ export default function PeruMap({ onSelect = null }) {
           return (
             <g
               key={id}
-              className={`peru-day${activeId === id ? ' is-active' : ''}`}
+              className={`peru-mapday${activeId === id ? ' is-active' : ''}`}
               onClick={() =>
                 activeId === id
                   ? show(null)
@@ -161,9 +178,9 @@ export default function PeruMap({ onSelect = null }) {
                     })
               }
             >
-              <circle className="peru-day-hit" cx={x} cy={y} r="16" />
-              <circle className="peru-day-dot" cx={x} cy={y} r="5" />
-              <text className="peru-day-label" x={x} y={y - 12}>
+              <circle className="peru-mapday-hit" cx={x} cy={y} r="16" />
+              <circle className="peru-mapday-dot" cx={x} cy={y} r="5" />
+              <text className="peru-mapday-label" x={x} y={y - 12}>
                 {a.day}
               </text>
             </g>
@@ -204,8 +221,32 @@ export default function PeruMap({ onSelect = null }) {
           <button className="peru-panel-close" onClick={() => show(null)} aria-label="Close">
             &times;
           </button>
+          {panel.eyebrow && <p className="peru-panel-eyebrow">{panel.eyebrow}</p>}
           <h3 className="peru-panel-title">{panel.title}</h3>
-          {panel.subtitle && <p className="peru-panel-sub">{panel.subtitle}</p>}
+          {(panel.subtitle || panel.place) && (
+            <p className="peru-panel-sub">{panel.subtitle || panel.place}</p>
+          )}
+
+          {/* The tier chip. `statusTone` is gold for validated and copper for
+              research, the same vocabulary the Globe and the Midwest map use.
+              A copper pin never renders a visit claim. */}
+          {panel.status && (
+            <p className={`peru-panel-status peru-panel-status--${panel.statusTone || 'copper'}`}>
+              {panel.status}
+            </p>
+          )}
+
+          {/* placeToPanel puts ALL of a place's content in `lines` — the note,
+              the validation sentence, Google's rating labelled as Google's, the
+              spend band. The first version of this panel never rendered them,
+              so every pin opened an almost-empty card. */}
+          {panel.lines && panel.lines.length > 0 && (
+            <ul className="peru-panel-lines">
+              {panel.lines.map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
+            </ul>
+          )}
 
           {panel.members ? (
             <ul className="peru-panel-list">

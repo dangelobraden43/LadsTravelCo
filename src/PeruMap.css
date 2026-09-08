@@ -41,27 +41,27 @@
  * The hit circle is transparent and generous; the visible dot stays small.
  * That split is the fix from the Sept 2 map audit, where decorative geometry
  * was swallowing clicks and five targets were silently dead. */
-.peru-day {
+.peru-mapday {
   cursor: pointer;
 }
 
-.peru-day-hit {
+.peru-mapday-hit {
   fill: transparent;
 }
 
-.peru-day-dot {
-  fill: var(--peru-day, #e8dcc8);
+.peru-mapday-dot {
+  fill: var(--peru-mapday, #e8dcc8);
   stroke: var(--peru-bg, #0f1a15);
   stroke-width: 1.5;
   transition: r 0.18s ease;
 }
 
-.peru-day.is-active .peru-day-dot {
+.peru-mapday.is-active .peru-mapday-dot {
   r: 7;
 }
 
-.peru-day-label {
-  fill: var(--peru-day-label, #b8ad9a);
+.peru-mapday-label {
+  fill: var(--peru-mapday-label, #b8ad9a);
   font-family: var(--mono, 'JetBrains Mono', monospace);
   font-size: 13px;
   text-anchor: middle;
@@ -210,8 +210,56 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .peru-day-dot,
+  .peru-mapday-dot,
   .peru-cluster-ring {
     transition: none;
   }
+}
+
+/* ── PANEL: eyebrow, tier chip and content lines ───────────────────────────
+ * Added after a click-through found every pin opening a panel that rendered
+ * only a title. All of a place's content lives in placeToPanel's `lines`. */
+.peru-panel-eyebrow {
+  margin: 0 34px 4px 0;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--peru-muted, #8a8070);
+}
+
+.peru-panel-status {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+/* Gold means we were there. Copper means we were not, and says so. */
+.peru-panel-status--gold {
+  color: var(--gold, #d4a843);
+  border: 1px solid rgba(212, 168, 67, 0.45);
+  background: rgba(212, 168, 67, 0.1);
+}
+
+.peru-panel-status--copper {
+  color: var(--copper, #b8886e);
+  border: 1px solid rgba(184, 136, 110, 0.45);
+  background: rgba(184, 136, 110, 0.1);
+}
+
+.peru-panel-lines {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.peru-panel-lines li {
+  margin-bottom: 8px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--peru-body, #b8ad9a);
 }
