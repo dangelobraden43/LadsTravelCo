@@ -6,6 +6,15 @@ import Footer from './Footer'
 import { FARE_SOURCES } from './data/fareIntelligence.js'
 import './FrameworkPage.css'
 import { resolveHeroStats } from './utils/derive.js'
+import {
+  FounderLayer,
+  ResearchLayer,
+  TheTrap,
+  BestTime,
+  Nearby,
+  CollectiveTake,
+} from './PlaceLayers'
+import { quoteOwnership, auditFounderProvenance } from './data/spotSchema'
 
 /* ===== WHEN TO GO =====
  *
@@ -333,6 +342,18 @@ export default function FrameworkPage({ data, heroImg }) {
     return data.spots.filter((s) => s.category === categoryFilter)
   }, [data.spots, categoryFilter, hasV2Spots])
 
+  /* WHO OWNS EACH FOUNDER SENTENCE. Computed over the WHOLE spot list, never
+     the filtered one: ownership must not change when a reader picks a
+     category, or the same quote would migrate between cards as they click. */
+  const quotes = useMemo(() => quoteOwnership(data.spots || []), [data.spots])
+
+  /* Dev-time only. Reports founder fields that arrived with no named author —
+     the shape generated copy takes when it slips in, because nobody writes a
+     fake attribution, they just omit one. */
+  useEffect(() => {
+    auditFounderProvenance(data.spots || [], { label: data.id || 'framework' })
+  }, [data.spots, data.id])
+
   return (
     <div className="fw-page" style={style}>
       <Helmet>
@@ -454,6 +475,12 @@ export default function FrameworkPage({ data, heroImg }) {
             ))}
           </div>
 
+          {/* A founder statement about a SET of places, rendered once, above
+              the set. ⛔ Never sliced into per-place blurbs — that turns one
+              true sentence about a group into a firsthand claim about a
+              specific place that nobody made. Renders nothing when absent. */}
+          <CollectiveTake take={data.collectiveTake} />
+
           <div className="fw-spots-grid">
             {filteredSpots.map((spot, i) => {
               const isLads = spot.validator && spot.validator !== 'Research'
@@ -476,6 +503,21 @@ export default function FrameworkPage({ data, heroImg }) {
                     {spot.city ? `, ${spot.city}` : ''}
                   </div>
                   <p className="fw-spot-desc">{spot.description}</p>
+
+                  {/* THE TWO LAYERS. Founder voice first and forward, then the
+                      researched layer behind it, labelled as the public's.
+                      Every one of these returns null when its field is empty —
+                      a place with no founder note renders exactly what it
+                      rendered before this existed, which is the point. */}
+                  <FounderLayer
+                    place={spot}
+                    owns={quotes.owns(spot)}
+                    holder={quotes.holderFor(spot)}
+                  />
+                  <ResearchLayer place={spot} />
+                  <TheTrap place={spot} />
+                  <BestTime place={spot} />
+                  <Nearby place={spot} />
 
                   {hasHH && (
                     <div className="fw-spot-hh">
