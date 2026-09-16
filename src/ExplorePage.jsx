@@ -259,7 +259,7 @@ function DestinationTheater() {
           <span className="explore-photo-count">
             {SPOTS_BY_FRAMEWORK[DESTINATIONS[active].slug]}
           </span>
-          <span className="explore-photo-word">validated spots</span>
+          <span className="explore-photo-word">validated places</span>
         </div>
       </div>
     </div>
@@ -328,7 +328,7 @@ export default function ExplorePage() {
                 Where do you want to go?
               </h1>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, color: '#8a8070' }}>
-                {TOTAL_SPOTS} validated spots &middot; {VALIDATED_CITIES} cities &middot;{' '}
+                {TOTAL_SPOTS} validated places &middot; {VALIDATED_CITIES} cities &middot;{' '}
                 {COUNTRIES} countries &middot; {CONTINENTS} continents
               </p>
             </Reveal>

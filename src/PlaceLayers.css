@@ -1,0 +1,329 @@
+/* THE TWO LAYERS, IN THE SITE PALETTE.
+ *
+ * The visual grammar is promoted from /peru but re-expressed in the site's own
+ * variables (gold / copper / cream), because the never-reuse-a-palette rule
+ * runs in both directions: /peru's jade-and-clay belongs to /peru.
+ *
+ * The one thing that must survive the translation is the HIERARCHY. Founder
+ * voice reads forward: warm, editorial, gold-railed, signed by a person.
+ * Research reads back: cooler, smaller, copper-railed, labelled as somebody
+ * else's opinion. A reader skimming at speed must still land on the right
+ * side of that line, because the difference between the two IS the product.
+ */
+
+/* ===== SHARED KEY ===== */
+.pl-k {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(232, 220, 200, 0.42);
+  margin-bottom: 4px;
+}
+
+/* ===== FOUNDER LAYER — gold, forward, signed ===== */
+.pl-founder {
+  display: flex;
+  gap: 12px;
+  margin: 14px 0 6px;
+}
+
+.pl-founder-rail {
+  flex: 0 0 2px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, var(--gold, #d4a843), rgba(212, 168, 67, 0.15));
+}
+
+.pl-founder-body {
+  min-width: 0;
+  flex: 1;
+}
+
+/* Fraunces italic is the site's editorial voice. A founder line is the one
+   piece of copy on a place card that is a person talking, so it gets it. */
+.pl-founder-take {
+  margin: 0;
+  font-family: var(--editorial, 'Fraunces', Georgia, serif);
+  font-style: italic;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--cream, #e8dcc8);
+}
+
+.pl-founder-story {
+  margin: 8px 0 0;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(232, 220, 200, 0.82);
+}
+
+.pl-founder-forwho {
+  margin: 10px 0 0;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(232, 220, 200, 0.82);
+}
+
+.pl-founder-by {
+  margin-top: 8px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold, #d4a843);
+}
+
+.pl-founder-echo {
+  margin: 0;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(232, 220, 200, 0.5);
+}
+
+/* ===== RESEARCH LAYER — copper, indented, subordinate ===== */
+.pl-research {
+  margin: 14px 0 4px;
+  padding: 13px 15px;
+  border-left: 2px solid rgba(184, 136, 110, 0.38);
+  border-radius: 0 10px 10px 0;
+  background: rgba(184, 136, 110, 0.05);
+}
+
+.pl-research-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+/* Inline, not a block, so it sits on the header row beside the thin flag. */
+.pl-research-label {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--copper, #b8886e);
+}
+
+/* Says outright when we looked and found little, rather than letting a short
+   entry imply the place is unremarkable. */
+.pl-research-thin {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(184, 136, 110, 0.9);
+}
+
+.pl-research-summary {
+  margin: 0 0 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(232, 220, 200, 0.72);
+}
+
+.pl-research-cols {
+  display: grid;
+  gap: 10px 20px;
+  margin-bottom: 10px;
+}
+
+.pl-research-col ul,
+.pl-research-practical {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pl-research-col li,
+.pl-research-practical li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 4px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(232, 220, 200, 0.72);
+}
+
+.pl-research-col li::before {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  font-size: 12px;
+}
+
+.pl-research-col--up li::before {
+  content: '+';
+  color: #7fa87f;
+}
+
+.pl-research-col--down li::before {
+  content: '\2013';
+  color: var(--copper, #b8886e);
+}
+
+.pl-research-practical li::before {
+  content: '\203A';
+  position: absolute;
+  left: 2px;
+  top: -1px;
+  color: rgba(232, 220, 200, 0.4);
+}
+
+.pl-research-src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.pl-research-src .pl-k {
+  margin-bottom: 0;
+}
+
+.pl-research-srclink {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.6px;
+  color: rgba(184, 136, 110, 0.95);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pl-research-srclink:hover {
+  color: var(--gold, #d4a843);
+}
+
+.pl-research-checked {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: rgba(232, 220, 200, 0.38);
+}
+
+/* ===== THE TRAP — the one loud part of the research layer ===== */
+.pl-trap {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(184, 136, 110, 0.1);
+  border-left: 2px solid rgba(184, 136, 110, 0.65);
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.8px;
+  line-height: 1.6;
+  color: #e5cab8;
+}
+
+.pl-trap-k {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--copper, #b8886e);
+  margin-bottom: 4px;
+}
+
+/* ===== BEST TIME / NEARBY ===== */
+.pl-besttime,
+.pl-nearby {
+  margin: 10px 0 0;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.8px;
+  line-height: 1.6;
+  color: rgba(232, 220, 200, 0.75);
+}
+
+.pl-besttime-why {
+  color: rgba(232, 220, 200, 0.55);
+}
+
+/* ===== COLLECTIVE TAKE ===== */
+.pl-collective {
+  margin: 20px 0;
+  padding: 18px 20px;
+  border: 1px solid var(--gold-border, rgba(212, 168, 67, 0.22));
+  border-radius: var(--radius, 16px);
+  background: rgba(212, 168, 67, 0.04);
+}
+
+.pl-collective-k {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: rgba(232, 220, 200, 0.45);
+  margin-bottom: 10px;
+}
+
+.pl-collective-text {
+  margin: 0;
+  font-family: var(--editorial, 'Fraunces', Georgia, serif);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--cream, #e8dcc8);
+}
+
+.pl-collective-frame {
+  margin-top: 10px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(232, 220, 200, 0.7);
+}
+
+.pl-collective-by {
+  margin-top: 10px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--gold, #d4a843);
+}
+
+@media (min-width: 700px) {
+  .pl-research-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pl-research-srclink {
+    transition: color 0.2s ease;
+  }
+}
+
+/* ===== CLOSURE =====
+ * Louder than the trap. A reader who is about to walk across a city to a
+ * building that is shut needs to see this before anything else on the card,
+ * so it sits directly under the description and uses the only genuinely
+ * alerting treatment in the system. */
+.pl-closure {
+  margin: 12px 0;
+  padding: 11px 13px;
+  border-radius: 8px;
+  background: rgba(196, 92, 68, 0.12);
+  border-left: 3px solid rgba(196, 92, 68, 0.85);
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.8px;
+  line-height: 1.6;
+  color: #f0cfc2;
+}
+
+.pl-closure-k {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #e08a6d;
+  margin-bottom: 4px;
+}

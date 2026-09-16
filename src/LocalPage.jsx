@@ -90,7 +90,7 @@ export default function LocalPage() {
         <meta property="og:title" content="Lads Local — Good Brews · Good Views · Good News" />
         <meta
           property="og:description"
-          content={`${VALIDATED_TOTAL} validated Midwest spots on an interactive map. Gold means we were there. Copper means we were not, and we say so.`}
+          content={`${VALIDATED_TOTAL} validated Midwest places on an interactive map. Gold means we were there. Copper means we were not, and we say so.`}
         />
         <meta property="og:url" content="https://ladstravel.com/local" />
         <meta property="og:type" content="website" />
@@ -174,7 +174,7 @@ export default function LocalPage() {
                       validated." With coordinates on 8 of 22 that was a claim the
                       data could not carry. This says what is actually true. */}
                   <p className="local-card-line">
-                    {MICH_TOTAL} spots we have been to &mdash; breweries, golf, road trips.{' '}
+                    {MICH_TOTAL} places we have been to &mdash; breweries, golf, road trips.{' '}
                     {MICH_PINNED} of them sit on the map above; the rest are named there too, and
                     stay off it until we hold a real coordinate for them.
                   </p>
@@ -220,7 +220,7 @@ export default function LocalPage() {
             <div>
               <h3>Missing is better than invented</h3>
               <p>
-                {MICH_TOTAL - MICH_PINNED} Michigan spots we have genuinely visited are absent from
+                {MICH_TOTAL - MICH_PINNED} Michigan places we have genuinely visited are absent from
                 the canvas because we do not hold a real coordinate for them yet. They are listed by
                 name instead. Closed venues are removed outright rather than greyed out.
               </p>

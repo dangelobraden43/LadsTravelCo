@@ -22,7 +22,7 @@ const pragueData = {
   /* DERIVED. Authored `value` entries below are founder facts the data
    * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { derive: 'spots', label: 'Database Spots' },
+    { derive: 'spots', label: 'Database Places' },
     { value: '3', label: 'Google Maps Lists' },
     { derive: 'countries', label: 'Countries' },
   ],
@@ -36,7 +36,7 @@ const pragueData = {
 
   overview: {
     quickRead:
-      'Brady visited both. {{PRAGUE}} rated spots in Prague plus Dresden across the German border. Best value destination in Europe — Prague beer is $1.50-$3 a pint. Vienna is now its own framework.',
+      'Brady visited both. {{PRAGUE}} rated places in Prague plus Dresden across the German border. Best value destination in Europe — Prague beer is $1.50-$3 a pint. Vienna is now its own framework.',
     budget: '$1,800-$3,200 per person depending on duration and accommodation style',
     framework:
       'Prague 3-4 days + Dresden day trip. Most often paired with Vienna — RegioJet or OBB connects the two in 4 hours for $15-25, and open-jaw saves backtracking.',

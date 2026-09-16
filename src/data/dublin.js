@@ -36,7 +36,7 @@ const dublinData = {
 
   overview: {
     quickRead:
-      'Both Lads have done this trip. 35+ pubs in Ireland in one week. {{DUBLIN}} rated spots in Dublin, {{GALWAY}} in Galway (100% validated). Three timing windows — Christmas is the one we know best. Galway is the quieter half and worth every minute. The Cliffs of Moher day trip from Galway is non-negotiable.',
+      'Both Lads have done this trip. 35+ pubs in Ireland in one week. {{DUBLIN}} rated places in Dublin, {{GALWAY}} in Galway (100% validated). Three timing windows — Christmas is the one we know best. Galway is the quieter half and worth every minute. The Cliffs of Moher day trip from Galway is non-negotiable.',
     budget:
       '$2,200–$3,400 per person (group of 4), depending on timing window and accommodation style. Flights from ORD.',
     framework:
@@ -59,7 +59,7 @@ const dublinData = {
       primaryDraw: 'Wren Day, markets',
       verdict: 'Best for this group',
       detail:
-        'Late December. Dublin Castle Christmas Market. Galway\u2019s Eyre Square Market (50+ chalets, 32-meter Big Wheel, German Bier Keller). Dec 25 full closure. Dec 26 = St. Stephen\u2019s Day (Wren Day) \u2014 wrenboy parades, pub sessions noon to midnight.',
+        'Late December. Galway\u2019s Eyre Square Market (50+ chalets, 32-meter Big Wheel, German Bier Keller). Dec 25 full closure. Dec 26 = St. Stephen\u2019s Day (Wren Day) \u2014 wrenboy parades, pub sessions noon to midnight.',
       driver: 'events',
       months: [12],
       sourcing: {
@@ -176,7 +176,8 @@ const dublinData = {
     {
       day: 'Saturday',
       anchor: 'Dublin Sights',
-      stops: 'Trinity, St Patrick\u2019s, Dublin Castle, The Long Hall',
+      stops:
+        'Trinity, St Patrick\u2019s, Dublin Castle grounds (interior closed until Dec 31 2026), The Long Hall',
     },
     { day: 'Sunday', anchor: 'Day Trip', stops: 'Wicklow/Glendalough or Kilkenny Castle' },
     {
@@ -783,9 +784,29 @@ const dublinData = {
       description:
         'Built in the 13th century on a Viking settlement site. 700 years as seat of British rule. State Apartments, medieval undercroft, Chapel Royal.',
       priceRange: '$$',
-      hours: 'Daily 9:45am-5:45pm (closed Dec 25-27, Jan 1)',
+      /* ⚠️ THE CLOSURE WAS ALREADY RECORDED HERE AND STILL RENDERED WRONG.
+       * It sat inside `wayToSave` — a money-saving tip — while `hours` went on
+       * announcing "Daily 9:45am-5:45pm" as the headline. A reader scanning the
+       * card saw the opening times, not the note buried under a lightbulb icon.
+       * The fact was in the file; the card still told people it was open.
+       *
+       * So the closure is now a FIRST-CLASS FIELD that the render must reckon
+       * with, and `hours` no longer asserts an opening it cannot support.
+       * `until` makes it self-expiring, the same mechanism as `datedUntil` on
+       * timing windows: on Jan 1 2027 this stops rendering on its own and the
+       * normal hours return. Nobody has to remember. That is the entire lesson
+       * of the Iceland eclipse window, applied to a place instead of a window. */
+      closure: {
+        reason: 'EU Presidency',
+        from: '2026-05-05',
+        until: '2026-12-31',
+        detail:
+          'Closed to visitors while Ireland holds the EU Council Presidency. The State Apartments, medieval undercroft and Chapel Royal cannot be toured.',
+        normalHours: 'Daily 9:45am-5:45pm (closed Dec 25-27, Jan 1)',
+      },
+      hours: 'Closed to visitors until Dec 31, 2026',
       happyHour: 'N/A',
-      wayToSave: 'Grounds and courtyard free. NOTE: Closed May 5 - Dec 31, 2026 for EU Presidency.',
+      wayToSave: 'Grounds and courtyard are free to walk.',
       bestTime: 'morning',
       address: 'Dame St, Dublin 2',
       coordinates: { lat: 53.3429, lng: -6.2674 },

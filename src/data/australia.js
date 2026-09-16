@@ -12,7 +12,7 @@ const australiaData = {
   /* DERIVED. Authored `value` entries below are founder facts the data
    * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { derive: 'spots', label: 'Validated Spots' },
+    { derive: 'spots', label: 'Validated Places' },
     { value: '6', label: 'Weeks Lived There' },
     { derive: 'dayTrips', label: 'Day Trips' },
   ],
@@ -26,7 +26,7 @@ const australiaData = {
 
   overview: {
     quickRead:
-      'Brady lived in Sydney for six weeks. {{SPOTS}} rated spots across Sydney and Tasmania. Two versions — V1 Australia only, V2 adds trans-Tasman hop to NZ.',
+      'Brady lived in Sydney for six weeks. {{SPOTS}} rated places across Sydney and Tasmania. Two versions — V1 Australia only, V2 adds trans-Tasman hop to NZ.',
     budget: '$3,500–$5,500 per person depending on version and duration',
     framework:
       'V1: Sydney + Tasmania (10-14 days). V2: adds Queenstown/NZ trans-Tasman hop (16-21 days). Sydney alone needs a week minimum.',

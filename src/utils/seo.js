@@ -16,7 +16,7 @@ export const SEO_DEFAULTS = {
    * and its previous version carried BOTH a banned "free" claim and a count
    * that never matched canonical. Numbers here come from the build. */
   description:
-    `AI researches. We validate on foot. ${TOTAL_SPOTS} validated spots across ${FRAMEWORKS} ` +
+    `AI researches. We validate on foot. ${TOTAL_SPOTS} validated places across ${FRAMEWORKS} ` +
     'destination frameworks, built from firsthand experience.',
   image: 'https://ladstravel.com/og-image.jpg',
   twitterHandle: '@ladstravelco',

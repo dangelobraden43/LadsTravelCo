@@ -6,6 +6,16 @@ import Footer from './Footer'
 import { FARE_SOURCES } from './data/fareIntelligence.js'
 import './FrameworkPage.css'
 import { resolveHeroStats } from './utils/derive.js'
+import {
+  ClosureNotice,
+  FounderLayer,
+  ResearchLayer,
+  TheTrap,
+  BestTime,
+  Nearby,
+  CollectiveTake,
+} from './PlaceLayers'
+import { quoteOwnership, auditFounderProvenance } from './data/spotSchema'
 
 /* ===== WHEN TO GO =====
  *
@@ -333,6 +343,18 @@ export default function FrameworkPage({ data, heroImg }) {
     return data.spots.filter((s) => s.category === categoryFilter)
   }, [data.spots, categoryFilter, hasV2Spots])
 
+  /* WHO OWNS EACH FOUNDER SENTENCE. Computed over the WHOLE spot list, never
+     the filtered one: ownership must not change when a reader picks a
+     category, or the same quote would migrate between cards as they click. */
+  const quotes = useMemo(() => quoteOwnership(data.spots || []), [data.spots])
+
+  /* Dev-time only. Reports founder fields that arrived with no named author —
+     the shape generated copy takes when it slips in, because nobody writes a
+     fake attribution, they just omit one. */
+  useEffect(() => {
+    auditFounderProvenance(data.spots || [], { label: data.id || 'framework' })
+  }, [data.spots, data.id])
+
   return (
     <div className="fw-page" style={style}>
       <Helmet>
@@ -400,7 +422,7 @@ export default function FrameworkPage({ data, heroImg }) {
       <section id="overview" className="fw-section">
         <div className="fw-section-label">OVERVIEW</div>
         <h2 className="fw-section-title">
-          {totalSpots} Spots Across {data.categories.length} Categories
+          {totalSpots} Places Across {data.categories.length} Categories
         </h2>
         <div className="fw-overview-grid">
           <div className="fw-overview-card">
@@ -433,9 +455,9 @@ export default function FrameworkPage({ data, heroImg }) {
       {/* ===== SPOTS — V2 (with category filters) ===== */}
       {hasV2Spots && (
         <section id="spots" className="fw-section">
-          <div className="fw-section-label">ALL SPOTS</div>
+          <div className="fw-section-label">ALL PLACES</div>
           <h2 className="fw-section-title">
-            {totalSpots} Spots —{' '}
+            {totalSpots} Places —{' '}
             {data.spots.filter((s) => s.validated && s.validator !== 'Research').length} Personally
             Validated
           </h2>
@@ -453,6 +475,12 @@ export default function FrameworkPage({ data, heroImg }) {
               </button>
             ))}
           </div>
+
+          {/* A founder statement about a SET of places, rendered once, above
+              the set. ⛔ Never sliced into per-place blurbs — that turns one
+              true sentence about a group into a firsthand claim about a
+              specific place that nobody made. Renders nothing when absent. */}
+          <CollectiveTake take={data.collectiveTake} />
 
           <div className="fw-spots-grid">
             {filteredSpots.map((spot, i) => {
@@ -476,6 +504,27 @@ export default function FrameworkPage({ data, heroImg }) {
                     {spot.city ? `, ${spot.city}` : ''}
                   </div>
                   <p className="fw-spot-desc">{spot.description}</p>
+
+                  {/* Closure comes FIRST, above founder voice and research
+                      alike. Someone about to cross a city to a shut building
+                      needs this before they need anyone's opinion of it. It
+                      expires itself on the date in the data. */}
+                  <ClosureNotice place={spot} />
+
+                  {/* THE TWO LAYERS. Founder voice first and forward, then the
+                      researched layer behind it, labelled as the public's.
+                      Every one of these returns null when its field is empty —
+                      a place with no founder note renders exactly what it
+                      rendered before this existed, which is the point. */}
+                  <FounderLayer
+                    place={spot}
+                    owns={quotes.owns(spot)}
+                    holder={quotes.holderFor(spot)}
+                  />
+                  <ResearchLayer place={spot} />
+                  <TheTrap place={spot} />
+                  <BestTime place={spot} />
+                  <Nearby place={spot} />
 
                   {hasHH && (
                     <div className="fw-spot-hh">
@@ -515,7 +564,7 @@ export default function FrameworkPage({ data, heroImg }) {
               <section key={cat.id} id={cat.id} className="fw-section" style={{ paddingTop: 40 }}>
                 <div className="fw-category-header">
                   <h3 className="fw-category-name">{cat.name}</h3>
-                  <span className="fw-category-count">{cat.spots.length} spots</span>
+                  <span className="fw-category-count">{cat.spots.length} places</span>
                 </div>
                 <div className="fw-spots-grid">
                   {cat.spots.map((spot, i) => {

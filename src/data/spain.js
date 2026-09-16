@@ -20,7 +20,7 @@ const spainData = {
   /* DERIVED. Authored `value` entries below are founder facts the data
    * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { derive: 'spots', label: 'Validated Spots' },
+    { derive: 'spots', label: 'Validated Places' },
     { value: '3', label: 'Trip Versions' },
     { value: '2', label: 'Study Abroads' },
   ],
@@ -34,7 +34,7 @@ const spainData = {
 
   overview: {
     quickRead:
-      'The most validated two-city framework in the portfolio. Brady studied abroad in Barcelona; Dawson studied abroad in Madrid. Three versions for groups of 2, 4, or 8 — each with its own accommodation strategy, cost model, and nightlife routing. {{SPOTS}} spots across both cities, every one personally visited.',
+      'The most validated two-city framework in the portfolio. Brady studied abroad in Barcelona; Dawson studied abroad in Madrid. Three versions for groups of 2, 4, or 8 — each with its own accommodation strategy, cost model, and nightlife routing. {{SPOTS}} places across both cities, every one personally visited.',
     budget: '$2,000–$3,200 per person (group of 4, flights from ORD)',
     framework:
       'Three versions: Barcelona-only (7 days), Barcelona + Madrid combo (12 days), or Madrid-only (7 days). Open-jaw routing — fly into Barcelona, train to Madrid, fly home from Madrid. Same price as round-trip.',

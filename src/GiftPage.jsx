@@ -571,7 +571,7 @@ function CategorySection({ category }) {
             padding: '4px 12px',
           }}
         >
-          {category.spots.length} spots
+          {category.spots.length} places
         </span>
       </div>
 

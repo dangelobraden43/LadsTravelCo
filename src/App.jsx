@@ -310,7 +310,7 @@ function DataSpectacle() {
             marginBottom: 48,
           }}
         >
-          PERSONALLY VALIDATED SPOTS
+          PERSONALLY VALIDATED PLACES
         </div>
 
         <div
@@ -635,7 +635,7 @@ function FeaturedWork() {
                     marginBottom: 14,
                   }}
                 >
-                  VALIDATED &middot; {counts[card.slug]} SPOTS
+                  VALIDATED &middot; {counts[card.slug]} PLACES
                 </div>
                 <h3
                   style={{
@@ -873,7 +873,7 @@ export default function App() {
               }}
             >
               {VALIDATED_CITIES} VALIDATED CITIES &middot; {CONTINENTS} CONTINENTS &middot;{' '}
-              {TOTAL_SPOTS} SPOTS
+              {TOTAL_SPOTS} PLACES
             </div>
           </Reveal>
         </div>
@@ -1217,7 +1217,7 @@ export default function App() {
                   margin: '0 auto',
                 }}
               >
-                {TOTAL_SPOTS} spots. {COUNTRIES} countries. Built on data, not guesses.
+                {TOTAL_SPOTS} places. {COUNTRIES} countries. Built on data, not guesses.
               </p>
             </div>
           </Reveal>
@@ -1285,7 +1285,7 @@ export default function App() {
             {[
               {
                 value: String(TOTAL_SPOTS),
-                label: 'VALIDATED SPOTS',
+                label: 'VALIDATED PLACES',
                 sub: 'Walked into. Not scraped.',
               },
               {
