@@ -1058,3 +1058,27 @@ export const PERU_FARE_INTELLIGENCE = {
   basis:
     "Relative seasonality from the Andean dry/wet pattern and the region's fixed event calendar. No origin-specific fare pull has been done, so no dollar band is claimed.",
 }
+
+/* ===== THE FRAMEWORK OBJECT — what the canonical walk sees =====
+ *
+ * Added Sept 16 2026, when Peru entered `canonical.js` as a published
+ * framework. Until now peru.js had no default export, and the build's walker
+ * (`mod.default || Object.values(mod)[0]` in vite.config.js) would have
+ * silently grabbed whichever named export sorted first and walked THAT. It
+ * would have returned 0 and looked correct. A number that is right by accident
+ * is the thing this whole system exists to prevent, so the walk is made
+ * explicit here instead.
+ *
+ * ⛔ DAY ANCHORS ARE NOT EXPOSED. `PERU_PLACES` is ten GPS fixes off Brady's
+ * camera, and a GPS fix is not a spot. Leaving it out of this object means the
+ * walker cannot count one even by mistake.
+ *
+ * The 25 saved places carry `note`, not `description`, so the walk returns 0
+ * TODAY — honestly, not by suppression. When the founder notes land and those
+ * places gain descriptions, this count moves on its own. Nobody has to
+ * remember to update anything, which is the point.
+ */
+export default {
+  id: 'peru',
+  spots: PERU_SAVED_PLACES,
+}

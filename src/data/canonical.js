@@ -22,12 +22,29 @@
  * and renders exactly what it rendered before.
  */
 
-/* One entry per PUBLISHED framework — the 10 files that make up the canonical
+/* One entry per PUBLISHED framework — the files that make up the canonical
  * spot count. `countries` is an array because prague carries two: Dresden is a
  * two-hour day trip that Brady ruled on Aug 29 2026 stays with Prague rather
  * than moving to the new vienna framework. Germany is therefore reached by
- * both prague and munich, which is why 10 frameworks describe 10 countries
- * and not 11. */
+ * both prague and munich, which is why the European entries describe fewer
+ * countries than they have rows.
+ *
+ * 🟣 PERU JOINED Sept 16 2026, and the reason is worth recording. /peru went
+ * public on Sept 8 — indexed, in the sitemap, linked — but it was never added
+ * here, so for eight days every derived surface on the site said "3
+ * continents" while a South American framework was live. Nobody typed a false
+ * sentence; the table simply did not know about a page that had shipped. That
+ * is the same failure this file was created to end, arriving through the one
+ * door left open: the human-maintained edge.
+ *
+ * ⛔ THE RULE THAT CLOSES IT: a framework enters this table in the SAME commit
+ * that lifts its noindex. Publishing a route and registering it here are one
+ * action, not two.
+ *
+ * Peru's 25 saved places carry `note`, not `description`, so the live-walk
+ * does not see them and the spot total does not move today. That is correct
+ * and it is temporary — the descriptions land in their own session, and the
+ * count will move itself when they do, because nothing about it is typed. */
 export const FRAMEWORKS = [
   { slug: 'dublin', countries: ['Ireland'], continent: 'Europe' },
   { slug: 'spain', countries: ['Spain'], continent: 'Europe' },
@@ -39,7 +56,15 @@ export const FRAMEWORKS = [
   { slug: 'munich', countries: ['Germany'], continent: 'Europe' },
   { slug: 'poland', countries: ['Poland'], continent: 'Europe' },
   { slug: 'michigan', countries: ['United States'], continent: 'North America' },
+  { slug: 'peru', countries: ['Peru'], continent: 'South America' },
 ]
+
+/* ⚠️ TERRITORIES — the question San Juan will ask, recorded before it arrives.
+ * Puerto Rico is a US territory, so a San Juan framework adds a FRAMEWORK and
+ * a CITY but NOT a country: the United States is already counted through
+ * michigan. Counting it would inflate our coverage claim, and not counting it
+ * makes the word "countries" do work it cannot quite do. The label treatment
+ * is Brady's pick and is not decided here. */
 
 /* GOLD PINS — a validated city is one a framework actually covers. Sub-cities
  * with their own pin (Galway, Madrid, Tasmania, Vienna) take their own bucket;
@@ -75,7 +100,19 @@ export const RESEARCH_CITY_PINS = [
   { city: 'Phoenix', lat: 33.45, lng: -112.07 },
 ]
 
-export const COMING_SOON_CITY_PINS = [{ city: 'Cusco', lat: -13.52, lng: -71.97, comingSoon: true }]
+/* PUBLISHED BUT UNCOUNTED — a framework whose page is live while its places
+ * are still being described. Cusco read "Coming soon" for the eight days after
+ * /peru shipped, which was false the moment the route went public.
+ *
+ * It is deliberately NOT a gold pin: gold carries a validated spot count, and
+ * Peru's is legitimately 0 until the descriptions land. So it stays copper,
+ * gains a `slug` so it actually reaches the live page, and the tooltip states
+ * the fact rather than announcing what we have not finished yet — the same
+ * rule that keeps the 16 silent Peru places silent. It graduates to gold, with
+ * a real derived count, in the session that gives those places descriptions. */
+export const PUBLISHED_UNCOUNTED_CITY_PINS = [
+  { city: 'Cusco', lat: -13.52, lng: -71.97, slug: 'peru', published: true },
+]
 
 /* The counts themselves. Never type these numbers anywhere else. */
 export const VALIDATED_CITY_COUNT = VALIDATED_CITY_PINS.length

@@ -16,6 +16,11 @@ import viennaData from './data/vienna'
 import munichData from './data/munich'
 import polandData from './data/poland'
 import michiganData from './data/michigan'
+import {
+  VALIDATED_CITY_PINS,
+  RESEARCH_CITY_PINS,
+  PUBLISHED_UNCOUNTED_CITY_PINS,
+} from './data/canonical'
 
 const FRAMEWORK_DATA = {
   dublin: dublinData,
@@ -89,44 +94,32 @@ function derivePinCount(slug, pinCity) {
   return bucketKey ? buckets[bucketKey] || 0 : 0
 }
 
-/* ===== CITIES ===== */
-// Validated cities: count derived from data, validated: true, gold pin.
-// Research-only: no framework yet, validated: false, copper pin, no count shown.
-// Cusco: comingSoon, separate copper treatment.
-const VALIDATED_PINS = [
-  { city: 'Dublin', lat: 53.35, lng: -6.26, slug: 'dublin', primary: true, showLabel: true },
-  { city: 'Galway', lat: 53.27, lng: -9.06, slug: 'dublin' },
-  { city: 'Barcelona', lat: 41.39, lng: 2.17, slug: 'spain', primary: true, showLabel: true },
-  { city: 'Madrid', lat: 40.42, lng: -3.7, slug: 'spain' },
-  { city: 'Rome', lat: 41.9, lng: 12.5, slug: 'rome', primary: true, showLabel: true },
-  { city: 'Sydney', lat: -33.87, lng: 151.21, slug: 'australia', primary: true, showLabel: true },
-  { city: 'Tasmania', lat: -42.88, lng: 147.33, slug: 'australia' },
-  { city: 'Reykjavik', lat: 64.15, lng: -21.94, slug: 'iceland', primary: true, showLabel: true },
-  { city: 'Prague', lat: 50.08, lng: 14.44, slug: 'prague', primary: true, showLabel: true },
-  { city: 'Vienna', lat: 48.21, lng: 16.37, slug: 'vienna', primary: true },
-  { city: 'Munich', lat: 48.14, lng: 11.58, slug: 'munich', primary: true },
-  { city: 'Krakow', lat: 50.06, lng: 19.94, slug: 'poland', primary: true },
-  // Michigan: new pin, anchored at Grand Rapids
-  { city: 'Michigan', lat: 42.96, lng: -85.67, slug: 'michigan', primary: true, showLabel: true },
-].map((c) => ({
+/* ===== CITIES =====
+ *
+ * 🔑 THE PIN TABLES ARE NOT DECLARED HERE ANY MORE. They live in
+ * `src/data/canonical.js` and are imported. Until Sept 16 2026 this file kept
+ * its own literal copies of all three arrays while canonical.js carried a
+ * comment saying Globe "imports them back" — it did not, so there were two
+ * tables and only one of them was the one anybody edited. Adding Peru meant
+ * editing two places and remembering both, which is precisely how the Cusco
+ * pin sat reading "Coming soon" for eight days after /peru went live.
+ *
+ * Validated cities: count derived from data, gold pin.
+ * Research-only: no framework yet, copper pin, no count shown.
+ * Published-uncounted: page is live, places not yet described — copper, but
+ * clickable, because the framework genuinely exists.
+ */
+const VALIDATED_PINS = VALIDATED_CITY_PINS.map((c) => ({
   ...c,
   n: derivePinCount(c.slug, c.city),
   validated: true,
 }))
 
-const RESEARCH_PINS = [
-  { city: 'Costa Rica', lat: 9.62, lng: -84.63 },
-  { city: 'Vancouver', lat: 49.28, lng: -123.12 },
-  { city: 'Chicago', lat: 41.88, lng: -87.63 },
-  { city: 'San Juan', lat: 18.47, lng: -66.11 },
-  { city: 'Seattle', lat: 47.61, lng: -122.33 },
-  { city: 'Smoky Mtns', lat: 35.61, lng: -83.43 },
-  { city: 'Phoenix', lat: 33.45, lng: -112.07 },
-].map((c) => ({ ...c, validated: false }))
+const RESEARCH_PINS = RESEARCH_CITY_PINS.map((c) => ({ ...c, validated: false }))
 
-const COMING_SOON_PINS = [{ city: 'Cusco', lat: -13.52, lng: -71.97, comingSoon: true }]
+const PUBLISHED_PINS = PUBLISHED_UNCOUNTED_CITY_PINS.map((c) => ({ ...c, validated: false }))
 
-const CITIES = [...VALIDATED_PINS, ...RESEARCH_PINS, ...COMING_SOON_PINS]
+const CITIES = [...VALIDATED_PINS, ...RESEARCH_PINS, ...PUBLISHED_PINS]
 
 // Sizing reference: largest validated pin (currently Barcelona at 30).
 const MAX_SPOTS = Math.max(...VALIDATED_PINS.map((c) => c.n))
@@ -246,7 +239,7 @@ const VALIDATED_PIN_RANGE = 0.016
 const RESEARCH_PIN_SIZE = 0.014
 
 function pinSizeFor(city) {
-  if (city.validated === false || city.comingSoon) return RESEARCH_PIN_SIZE
+  if (city.validated === false) return RESEARCH_PIN_SIZE
   return VALIDATED_PIN_MIN + (city.n / MAX_SPOTS) * VALIDATED_PIN_RANGE
 }
 
@@ -256,7 +249,7 @@ function Pin({ city, index, entered, hovered, setHovered, onPinClick }) {
   const pinSize = pinSizeFor(city)
   const isHovered = hovered === city.city
   const [appeared, setAppeared] = useState(false)
-  const isValidated = city.validated !== false && !city.comingSoon
+  const isValidated = city.validated !== false
 
   const pos = useMemo(() => {
     const p = ll2v(city.lat, city.lng, R + 0.01)
@@ -280,7 +273,7 @@ function Pin({ city, index, entered, hovered, setHovered, onPinClick }) {
     }
   })
 
-  // Validated: gold. Research-only + comingSoon: copper (subordinate).
+  // Validated: gold. Research-only + published-uncounted: copper (subordinate).
   const pinColor = isValidated ? '#d4a843' : '#b8886e'
 
   return (
@@ -452,8 +445,11 @@ function TooltipOverlay({ hovered }) {
 
   if (!city) return null
 
+  /* The label states what is true of the pin, and nothing about what we have
+   * not finished. Cusco read "Coming soon" for eight days after /peru shipped
+   * — true when it was written, false the moment the route went public. */
   let label
-  if (city.comingSoon) label = 'Coming soon'
+  if (city.published) label = 'Framework live'
   else if (city.validated === false) label = 'Explored · framework coming'
   else label = `${city.n} validated spots`
 
