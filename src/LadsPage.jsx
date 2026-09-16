@@ -83,7 +83,7 @@ export default function LadsPage() {
                 maxWidth: 560,
               }}
             >
-              Two guys, {TOTAL_SPOTS} validated spots, and zero interest in giving you the same
+              Two guys, {TOTAL_SPOTS} validated places, and zero interest in giving you the same
               itinerary as everyone else.
             </p>
           </Reveal>

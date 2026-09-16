@@ -1,3 +1,4 @@
+import { countSpots } from '../utils/derive.js'
 // Vienna — Data Model v2
 // SPLIT OUT OF prague.js on August 29, 2026.
 //
@@ -18,7 +19,7 @@
 // The personal layer (ladsTake / story / forWho) is blank here exactly as it
 // was in prague.js. Brady fills those; they cannot be AI-generated.
 
-export default {
+const viennaData = {
   id: 'vienna',
   name: 'Vienna',
   region: 'Central Europe',
@@ -44,7 +45,7 @@ export default {
 
   overview: {
     quickRead:
-      'Brady visited Vienna as the second half of a Central European trip. 8 rated spots. Grander and more expensive than Prague — the palaces and coffee houses are the product.',
+      'Brady visited Vienna as the second half of a Central European trip. {{SPOTS}} rated places. Grander and more expensive than Prague — the palaces and coffee houses are the product.',
     budget: '$1,800-$3,200 per person for the combined Central Europe trip',
     framework:
       'Vienna 2-3 days. Most often paired with Prague — RegioJet or OBB connects the two in 4 hours for $15-25. Open-jaw: fly into one, out the other.',
@@ -409,3 +410,27 @@ export default {
 
   navSections: ['Overview', 'When to Go', 'Vienna', 'Maps', 'Logistics'],
 }
+
+/* "8 rated spots" was TYPED here. Vienna was split out of prague.js on Aug 29
+ * 2026 and missed the Sept 8 truth pass that tokenised every other framework's
+ * overview, so it carried a hand-written count for eighteen days. It happened
+ * to be correct, which is exactly why it survived - the Sept 8 finding was that
+ * these are all true on the day they are typed and go stale silently later.
+ *
+ * Placeholders are filled across EVERY overview string, not one named key: the
+ * first version of this composer elsewhere targeted `quickRead` by name while
+ * the claim lived in another field, and the token survived into the render as a
+ * literal "{{SPOTS}}" on a public page. */
+function fillCounts(data, values) {
+  for (const [key, text] of Object.entries(data.overview)) {
+    if (typeof text !== 'string') continue
+    data.overview[key] = Object.entries(values).reduce(
+      (acc, [token, value]) => acc.split(token).join(String(value)),
+      text
+    )
+  }
+}
+
+fillCounts(viennaData, { '{{SPOTS}}': countSpots(viennaData) })
+
+export default viennaData

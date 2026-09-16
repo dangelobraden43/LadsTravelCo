@@ -359,7 +359,7 @@ const QUIZ_RECS = {
     pick: 'Munich Oktoberfest',
     why: 'Event-driven nightlife at its peak. Augustiner tent strategy, Glockenbachviertel base, cost model for groups of 4-10.',
     alt: 'Barcelona + Madrid',
-    altWhy: `${SPOTS_BY_FRAMEWORK.spain} validated spots and Madrid nightlife.`,
+    altWhy: `${SPOTS_BY_FRAMEWORK.spain} validated places and Madrid nightlife.`,
     link: '/munich',
   },
   nightlife_high: {
@@ -478,14 +478,14 @@ const QUIZ_RECS = {
     pick: 'Multi-City Europe',
     why: 'Open-jaw routing. Combine Barcelona + Rome, Dublin + Iceland, Prague + Munich. Two trips in one.',
     alt: 'Australia + NZ',
-    altWhy: `2+ weeks? Australia is ${SPOTS_BY_FRAMEWORK.australia} validated spots. Add Tasmania and NZ.`,
+    altWhy: `2+ weeks? Australia is ${SPOTS_BY_FRAMEWORK.australia} validated places. Add Tasmania and NZ.`,
     link: '#',
   },
   mix_flex: {
     pick: 'Multi-City Europe',
     why: 'Open-jaw routing. Combine Barcelona + Rome, Dublin + Iceland, Prague + Munich. Two trips in one.',
     alt: 'Australia + NZ',
-    altWhy: `2+ weeks? Australia is ${SPOTS_BY_FRAMEWORK.australia} validated spots. Add Tasmania and NZ.`,
+    altWhy: `2+ weeks? Australia is ${SPOTS_BY_FRAMEWORK.australia} validated places. Add Tasmania and NZ.`,
     link: '#',
   },
 }

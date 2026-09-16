@@ -146,7 +146,7 @@ export default function LadsSection({ quizData }) {
               Who <em>We Are</em>
             </h2>
             <p className="lads-desc">
-              Two guys, {TOTAL_SPOTS} validated spots, and zero interest in giving you the same
+              Two guys, {TOTAL_SPOTS} validated places, and zero interest in giving you the same
               itinerary as everyone else.
             </p>
           </Reveal>
