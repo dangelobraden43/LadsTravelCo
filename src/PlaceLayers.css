@@ -300,3 +300,30 @@
     transition: color 0.2s ease;
   }
 }
+
+/* ===== CLOSURE =====
+ * Louder than the trap. A reader who is about to walk across a city to a
+ * building that is shut needs to see this before anything else on the card,
+ * so it sits directly under the description and uses the only genuinely
+ * alerting treatment in the system. */
+.pl-closure {
+  margin: 12px 0;
+  padding: 11px 13px;
+  border-radius: 8px;
+  background: rgba(196, 92, 68, 0.12);
+  border-left: 3px solid rgba(196, 92, 68, 0.85);
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.8px;
+  line-height: 1.6;
+  color: #f0cfc2;
+}
+
+.pl-closure-k {
+  display: block;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #e08a6d;
+  margin-bottom: 4px;
+}

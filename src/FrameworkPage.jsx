@@ -7,6 +7,7 @@ import { FARE_SOURCES } from './data/fareIntelligence.js'
 import './FrameworkPage.css'
 import { resolveHeroStats } from './utils/derive.js'
 import {
+  ClosureNotice,
   FounderLayer,
   ResearchLayer,
   TheTrap,
@@ -503,6 +504,12 @@ export default function FrameworkPage({ data, heroImg }) {
                     {spot.city ? `, ${spot.city}` : ''}
                   </div>
                   <p className="fw-spot-desc">{spot.description}</p>
+
+                  {/* Closure comes FIRST, above founder voice and research
+                      alike. Someone about to cross a city to a shut building
+                      needs this before they need anyone's opinion of it. It
+                      expires itself on the date in the data. */}
+                  <ClosureNotice place={spot} />
 
                   {/* THE TWO LAYERS. Founder voice first and forward, then the
                       researched layer behind it, labelled as the public's.

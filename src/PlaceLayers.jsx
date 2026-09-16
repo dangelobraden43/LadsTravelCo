@@ -160,6 +160,60 @@ export function ResearchLayer({ place }) {
   )
 }
 
+/* ===== CLOSURE =====
+ *
+ * A place that cannot be visited right now, stated where a reader will
+ * actually see it rather than buried in a tips field.
+ *
+ * ⛔ SELF-EXPIRING BY CONSTRUCTION. `until` is compared against today on every
+ * render, exactly like `datedUntil` on timing windows. A closure that has
+ * passed stops rendering on its own — nobody has to remember to remove it, and
+ * the site cannot end up warning visitors away from somewhere that reopened
+ * months ago. That failure has the same shape as Iceland's dead eclipse
+ * window, which read "already booked, avoid" for weeks after the eclipse.
+ *
+ * The inverse matters just as much: while a closure is live, the card must not
+ * print normal opening hours underneath it. Dublin Castle recorded its own
+ * closure in `wayToSave` and went on advertising "Daily 9:45am-5:45pm".
+ */
+export function isClosedNow(place, today = new Date().toISOString().slice(0, 10)) {
+  const c = place && place.closure
+  if (!c) return false
+  if (c.from && today < c.from) return false
+  if (c.until && today > c.until) return false
+  return true
+}
+
+/* ISO is how the data stores a date and how it must be COMPARED, but it is not
+ * how a reader reads one. "Closed until 2026-12-31" is a database row; "Closed
+ * until Dec 31, 2026" is a sentence. Parsed as UTC so the rendered day cannot
+ * slip backwards for a viewer west of Greenwich. */
+const READABLE_DATE = (iso) => {
+  if (!iso) return ''
+  const d = new Date(iso + 'T00:00:00Z')
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+}
+
+export function ClosureNotice({ place, today }) {
+  if (!isClosedNow(place, today)) return null
+  const c = place.closure
+  return (
+    <div className="pl-closure" role="note">
+      <span className="pl-closure-k">
+        Closed{c.until ? ` until ${READABLE_DATE(c.until)}` : ''}
+        {c.reason ? ` · ${c.reason}` : ''}
+      </span>
+      {c.detail}
+    </div>
+  )
+}
+
 /* ===== THE TRAP =====
  *
  * The most useful line on most cards, so it is the one part of the research
