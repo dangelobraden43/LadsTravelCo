@@ -36,7 +36,7 @@ const dublinData = {
 
   overview: {
     quickRead:
-      'Both Lads have done this trip. 35+ pubs in Ireland in one week. {{DUBLIN}} rated spots in Dublin, {{GALWAY}} in Galway (100% validated). Three timing windows — Christmas is the one we know best. Galway is the quieter half and worth every minute. The Cliffs of Moher day trip from Galway is non-negotiable.',
+      'Both Lads have done this trip. 35+ pubs in Ireland in one week. {{DUBLIN}} rated places in Dublin, {{GALWAY}} in Galway (100% validated). Three timing windows — Christmas is the one we know best. Galway is the quieter half and worth every minute. The Cliffs of Moher day trip from Galway is non-negotiable.',
     budget:
       '$2,200–$3,400 per person (group of 4), depending on timing window and accommodation style. Flights from ORD.',
     framework:

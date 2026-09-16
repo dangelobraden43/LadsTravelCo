@@ -421,7 +421,7 @@ export default function FrameworkPage({ data, heroImg }) {
       <section id="overview" className="fw-section">
         <div className="fw-section-label">OVERVIEW</div>
         <h2 className="fw-section-title">
-          {totalSpots} Spots Across {data.categories.length} Categories
+          {totalSpots} Places Across {data.categories.length} Categories
         </h2>
         <div className="fw-overview-grid">
           <div className="fw-overview-card">
@@ -454,9 +454,9 @@ export default function FrameworkPage({ data, heroImg }) {
       {/* ===== SPOTS — V2 (with category filters) ===== */}
       {hasV2Spots && (
         <section id="spots" className="fw-section">
-          <div className="fw-section-label">ALL SPOTS</div>
+          <div className="fw-section-label">ALL PLACES</div>
           <h2 className="fw-section-title">
-            {totalSpots} Spots —{' '}
+            {totalSpots} Places —{' '}
             {data.spots.filter((s) => s.validated && s.validator !== 'Research').length} Personally
             Validated
           </h2>
@@ -557,7 +557,7 @@ export default function FrameworkPage({ data, heroImg }) {
               <section key={cat.id} id={cat.id} className="fw-section" style={{ paddingTop: 40 }}>
                 <div className="fw-category-header">
                   <h3 className="fw-category-name">{cat.name}</h3>
-                  <span className="fw-category-count">{cat.spots.length} spots</span>
+                  <span className="fw-category-count">{cat.spots.length} places</span>
                 </div>
                 <div className="fw-spots-grid">
                   {cat.spots.map((spot, i) => {

@@ -13,7 +13,7 @@ const romeData = {
   /* DERIVED. Authored `value` entries below are founder facts the data
    * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { derive: 'spots', label: 'Validated Spots' },
+    { derive: 'spots', label: 'Validated Places' },
     { value: '5', label: 'Days in Rome' },
     { value: '2', label: 'Trip Options' },
   ],
@@ -34,7 +34,7 @@ const romeData = {
     philosophy:
       'Rome rewards the slow approach. The aperitivo ritual from 6:30-9pm functions as dinner — €10-15 drink plus a buffet spread. This changes how you budget the entire trip.',
     ladsBothKnow:
-      'Both Lads were in Rome during the Jubilee Year 2025. They walked through the Holy Doors, witnessed Pope Francis lying in state, and validated {{SPOTS}} spots across bars, food, and attractions.',
+      'Both Lads were in Rome during the Jubilee Year 2025. They walked through the Holy Doors, witnessed Pope Francis lying in state, and validated {{SPOTS}} places across bars, food, and attractions.',
   },
 
   timingWindows: [

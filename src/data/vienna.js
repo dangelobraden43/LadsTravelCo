@@ -28,7 +28,7 @@ export default {
   /* DERIVED. Authored `value` entries below are founder facts the data
    * cannot know - see src/utils/derive.js. */
   heroStats: [
-    { derive: 'spots', label: 'Database Spots' },
+    { derive: 'spots', label: 'Database Places' },
     { value: '1', label: 'Google Maps List' },
     { derive: 'countries', label: 'Country' },
   ],

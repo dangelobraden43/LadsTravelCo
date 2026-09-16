@@ -451,7 +451,7 @@ function TooltipOverlay({ hovered }) {
   let label
   if (city.published) label = 'Framework live'
   else if (city.validated === false) label = 'Explored · framework coming'
-  else label = `${city.n} validated spots`
+  else label = `${city.n} validated places`
 
   return (
     <div className="globe-tooltip-fixed" style={{ left: mouse.x + 14, top: mouse.y - 10 }}>

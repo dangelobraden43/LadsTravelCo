@@ -120,7 +120,7 @@ const PROCESS_STEPS = [
     desc: 'A designed trip document with everything you need.',
     example: 'framework',
     exampleText:
-      'Interactive HTML doc: day-by-day itinerary, 30+ mapped spots, cost breakdowns by category, timing windows, Google Maps lists.',
+      'Interactive HTML doc: day-by-day itinerary, 30+ mapped places, cost breakdowns by category, timing windows, Google Maps lists.',
   },
   {
     num: '05',
@@ -212,7 +212,7 @@ const FLIGHT_MYTHS = [
 const DELIVERABLES = [
   {
     title: 'Custom Trip Framework',
-    desc: 'Your full itinerary in a designed, interactive doc. Cost breakdowns, validated spots, day-by-day templates. Works on your phone.',
+    desc: 'Your full itinerary in a designed, interactive doc. Cost breakdowns, validated places, day-by-day templates. Works on your phone.',
     preview: 'framework',
   },
   {
@@ -222,7 +222,7 @@ const DELIVERABLES = [
   },
   {
     title: '18 Google Maps Lists',
-    desc: 'Drop them into your phone and navigate like you live there. Every restaurant, bar, attraction, and hidden spot we found.',
+    desc: 'Drop them into your phone and navigate like you live there. Every restaurant, bar, attraction, and hidden place we found.',
     preview: 'maps',
   },
   {
@@ -537,7 +537,7 @@ export default function SystemSection({ onQuizComplete }) {
             <div className="sys-label">THE SYSTEM</div>
             <h2 className="sys-title-light">How It Actually Works</h2>
             <p className="sys-desc-light">
-              {TOTAL_SPOTS} spots across {VALIDATED_CITIES} cities and {COUNTRIES} countries. Cost
+              {TOTAL_SPOTS} places across {VALIDATED_CITIES} cities and {COUNTRIES} countries. Cost
               models built by a data scientist. Nothing we haven&rsquo;t done ourselves.
             </p>
           </Reveal>
