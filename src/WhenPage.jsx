@@ -4,6 +4,7 @@ import { Nav } from './App'
 import Footer from './Footer'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES, HERO_IMAGES, HEIC_HERO_IMAGES } from './images-paths'
 import { SPOTS_BY_FRAMEWORK } from './utils/siteStats.js'
+import { BOOKING_LEAD_TIME, FARE_BANDS_BLOCKED, isFareStale } from './data/fareIntelligence.js'
 
 function useReveal(threshold = 0.15) {
   const ref = useRef(null)
@@ -42,6 +43,26 @@ function Reveal({ children, style = {}, delay = 0, type = 'up' }) {
   )
 }
 
+/* \u26d4 NO `price` FIELD LIVES HERE, AND IT IS NOT AN OVERSIGHT.
+ *
+ * Until Sept 17 2026 every destination below carried a hand-typed point fare
+ * ('$480 avg RT' and nine more). Nobody sourced them and nothing refreshed
+ * them. They were the same class of failure as the counts the Sept 8 truth
+ * pass removed, with one difference that makes them worse: a stale count
+ * understates our own work, while a stale fare sends a reader to an airline
+ * with the wrong number in their head.
+ *
+ * `src/data/fareIntelligence.js` already states our position on this in code:
+ * every `bands` field in it is deliberately null, and FARE_BANDS_BLOCKED
+ * records why \u2014 vendor "cheapest month" pages disagree with each other and are
+ * not origin-specific, so they cannot support a dollar figure. So this page
+ * was publishing ten numbers our own data layer formally refuses to state.
+ *
+ * The rule from the Sept 8 queue is "derive or delete." There is nothing to
+ * derive from, so they are deleted, and the page now ends on the fare
+ * intelligence we CAN source. Do not reintroduce a fare here. When a sourced
+ * per-origin band exists it goes in fareIntelligence.js and renders from there.
+ */
 const SEASONS = [
   {
     id: 'spring',
@@ -50,9 +71,9 @@ const SEASONS = [
     photo: NEW_IMAGES.schonbrunn,
     tagline: 'Europe before the crowds arrive and the prices climb.',
     destinations: [
-      { name: 'Rome', price: '$480 avg RT', slug: 'rome' },
-      { name: 'Prague', price: '$520 avg RT', slug: 'prague' },
-      { name: 'Barcelona', price: '$550 avg RT', slug: 'spain' },
+      { name: 'Rome', slug: 'rome' },
+      { name: 'Prague', slug: 'prague' },
+      { name: 'Barcelona', slug: 'spain' },
     ],
     nextLabel: 'SUMMER',
   },
@@ -63,9 +84,9 @@ const SEASONS = [
     photo: BATCH3_IMAGES.rockPoolSwim,
     tagline: "Peak season. Worth it if you book it right. Don't wait.",
     destinations: [
-      { name: 'Iceland', price: '$650 avg RT', slug: 'iceland' },
-      { name: 'Ireland', price: '$580 avg RT', slug: 'dublin' },
-      { name: 'Australia', price: '$950 avg RT', slug: 'australia' },
+      { name: 'Iceland', slug: 'iceland' },
+      { name: 'Ireland', slug: 'dublin' },
+      { name: 'Australia', slug: 'australia' },
     ],
     nextLabel: 'FALL',
   },
@@ -75,10 +96,13 @@ const SEASONS = [
     name: 'Fall.',
     photo: BATCH3_IMAGES.munichMarienplatz,
     tagline: 'The best month most people miss. Oktoberfest. Shoulder pricing. Still warm.',
-    destinations: [
-      { name: 'Munich', price: '$620 avg RT', slug: 'munich' },
-      { name: 'Thailand', price: '$780 avg RT' },
-    ],
+    /* Thailand sat here until Sept 17 2026. It was retired Aug 13 2026 \u2014 its
+     * data file moved to retired/, its route and rewrite were deleted, and it
+     * came out of the sitemap on Sept 2. It stayed on this page for five weeks
+     * pointing readers at a destination we no longer cover, with an invented
+     * fare attached. Fall carries one destination now. One true row beats two
+     * rows where the second is a dead link with a made-up price on it. */
+    destinations: [{ name: 'Munich', slug: 'munich' }],
     nextLabel: 'WINTER',
   },
   {
@@ -87,11 +111,10 @@ const SEASONS = [
     name: 'Winter.',
     photo: HERO_IMAGES.glendaloughCelticCrossesIreland,
     tagline: 'Budget season. The cities don\u2019t disappear \u2014 the tourists do.',
-    destinations: [
-      { name: 'Southeast Asia', price: '$800 avg RT' },
-      { name: 'Southern Europe', price: '$350 avg RT' },
-      { name: 'Domestic Road Trips', price: 'drive' },
-    ],
+    /* These three are regions, not frameworks \u2014 deliberately slug-less, so the
+     * place-count chip never renders and no coverage is implied. They read as
+     * seasonal advice, which is all they are. */
+    destinations: [{ name: 'Southern Europe' }, { name: 'Domestic Road Trips' }],
     nextLabel: null,
   },
 ]
@@ -231,19 +254,29 @@ function SeasonSection({ season, index }) {
                           border: '1px solid rgba(212,168,67,0.3)',
                         }}
                       >
-                        {SPOTS_BY_FRAMEWORK[d.slug]} spots
+                        {SPOTS_BY_FRAMEWORK[d.slug]} places
                       </span>
                     )}
                   </div>
-                  <span
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 11,
-                      color: '#8a8070',
-                    }}
-                  >
-                    {d.price}
-                  </span>
+                  {/* The right-hand slot held a hand-typed fare until Sept 17
+                   * 2026. See the note on SEASONS above. A destination that
+                   * is a framework carries its derived place count on the
+                   * left, which is a number we can stand behind; a region
+                   * carries nothing, which is honest. */}
+                  {d.slug && (
+                    <Link
+                      to={`/${d.slug}`}
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: 11,
+                        color: '#b8886e',
+                        textDecoration: 'none',
+                        letterSpacing: 1,
+                      }}
+                    >
+                      OPEN &rarr;
+                    </Link>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -337,6 +370,120 @@ export default function WhenPage() {
         {SEASONS.map((s, i) => (
           <SeasonSection key={s.id} season={s} index={i} />
         ))}
+
+        {/* WHEN TO BOOK — the replacement for the ten deleted fares.
+         * Everything here is sourced and dated in fareIntelligence.js, and it
+         * reports the DISAGREEMENT between sources rather than picking the
+         * tidier answer. That is the honest version of what the point prices
+         * were pretending to tell a reader. */}
+        {/* isFareStale() is not decoration. fareIntelligence.js says a stale
+         * fare record "is worse than none — it is a confident wrong number",
+         * and gives every surface the right to decline to render. This is a
+         * surface taking it. If nobody re-checks the sources within a quarter
+         * this block removes itself rather than ageing quietly on the page,
+         * which is the whole lesson of the Iceland eclipse window. */}
+        {!isFareStale(BOOKING_LEAD_TIME) && (
+          <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 32px 40px' }}>
+            <Reveal>
+              <div
+                style={{
+                  background: '#1c1915',
+                  border: '1px solid rgba(212,168,67,0.22)',
+                  borderRadius: 16,
+                  padding: 'clamp(24px, 4vw, 40px)',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: 3,
+                    color: '#b8886e',
+                    marginBottom: 12,
+                  }}
+                >
+                  WHEN TO BOOK
+                </div>
+                <h2
+                  style={{
+                    fontFamily: "'Fraunces', serif",
+                    fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                    fontStyle: 'italic',
+                    fontWeight: 400,
+                    color: '#e8dcc8',
+                    lineHeight: 1.2,
+                    margin: '0 0 16px',
+                  }}
+                >
+                  {BOOKING_LEAD_TIME.headline}
+                </h2>
+                <p
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 15,
+                    lineHeight: 1.7,
+                    color: '#b8ad9a',
+                    maxWidth: 720,
+                    margin: '0 0 16px',
+                  }}
+                >
+                  {BOOKING_LEAD_TIME.detail}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 15,
+                    lineHeight: 1.7,
+                    color: '#b8ad9a',
+                    maxWidth: 720,
+                    margin: '0 0 24px',
+                  }}
+                >
+                  {BOOKING_LEAD_TIME.edges}
+                </p>
+
+                {/* The gap, stated to the reader rather than hidden from them. */}
+                <div
+                  style={{
+                    borderTop: '1px solid rgba(212,168,67,0.15)',
+                    paddingTop: 16,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 16,
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 13,
+                      lineHeight: 1.6,
+                      color: '#8a8070',
+                      maxWidth: 560,
+                      margin: 0,
+                    }}
+                  >
+                    We do not publish a dollar figure per route. {FARE_BANDS_BLOCKED.reason} When we
+                    can source one per departure airport, it will appear here with its date on it.
+                  </p>
+                  <span
+                    style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: 10,
+                      letterSpacing: 1,
+                      color: '#5a5550',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    CHECKED {BOOKING_LEAD_TIME.checkedOn}
+                  </span>
+                </div>
+              </div>
+            </Reveal>
+          </section>
+        )}
 
         {/* Back link */}
         <div

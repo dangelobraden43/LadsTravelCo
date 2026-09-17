@@ -350,7 +350,14 @@ const QUIZ_QUESTIONS = [
 const QUIZ_RECS = {
   nightlife_low: {
     pick: 'Dublin + Galway',
-    why: 'Cheapest validated nightlife city. 35+ pubs, three timing versions, flights from ORD under $500 shoulder season.',
+    /* "flights from ORD under $500 shoulder season" was removed Sept 17 2026.
+     * It was an unsourced, undated fare claim, and fareIntelligence.js
+     * (FARE_BANDS_BLOCKED) records that we cannot currently support a dollar
+     * figure per route. "35+ pubs" STAYS — that is a founder's word about a
+     * trip he took, which is authored on purpose and must never be replaced by
+     * a row count. Derive what we can count, attribute what only a founder can
+     * say. */
+    why: 'Cheapest validated nightlife city. 35+ pubs, three timing versions, and the shoulder-season window to land it in.',
     alt: 'Poland August',
     altWhy: "Krakow's nightlife district is world-class and even cheaper.",
     link: '/dublin',
@@ -380,7 +387,7 @@ const QUIZ_RECS = {
     pick: 'Prague + Vienna + Dresden',
     why: 'Best value culture cities in Europe. St. Vitus, Schonbrunn, Pilsner Urquell — all on a budget.',
     alt: 'Dublin + Galway',
-    altWhy: 'Literary pubs, medieval castles, Cliffs of Moher under $2K.',
+    altWhy: 'Literary pubs, medieval castles, and the Cliffs of Moher.',
     link: '/prague',
   },
   culture_mid: {
@@ -464,7 +471,7 @@ const QUIZ_RECS = {
     pick: 'Poland August',
     why: 'Best value. Krakow nightlife, Auschwitz, Gdansk beaches, Warsaw old town. LOT direct from ORD.',
     alt: 'Dublin + Galway',
-    altWhy: 'Pubs, castles, cliffs — balanced under $2K.',
+    altWhy: 'Pubs, castles and cliffs, balanced across one trip.',
     link: '/poland',
   },
   mix_mid: {
