@@ -125,6 +125,7 @@ export default defineConfig({
         '/dublin', '/rome', '/spain', '/australia', '/iceland', '/prague', '/vienna',
         '/munich', '/poland', '/michigan',
         '/peru',
+        '/join',
         // thailand + charleston were RETIRED Aug 13 2026 and have no route.
         // They sat in this sitemap for three weeks pointing search engines at
         // two 404s. Removed Sept 2 2026 - do not re-add them unless the
@@ -139,6 +140,7 @@ export default defineConfig({
         '/munich': 0.7, '/poland': 0.7,
         '/michigan': 0.7,
         '/peru': 0.9,
+        '/join': 0.9,
       },
     }),
   ],

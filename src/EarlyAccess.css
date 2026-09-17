@@ -1,0 +1,318 @@
+/* EARLY ACCESS — see the header comment in EarlyAccess.jsx for the copy rules.
+   Palette and type come from src/index.css :root; nothing new is introduced. */
+
+.ea {
+  background: var(--surface, #1c1915);
+  border: 1px solid var(--gold-border, rgba(212, 168, 67, 0.22));
+  border-radius: var(--radius, 16px);
+  padding: clamp(28px, 5vw, 56px);
+}
+
+.ea-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.ea-eyebrow {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--copper, #b8886e);
+  margin-bottom: 14px;
+}
+.ea-eyebrow.ea-good {
+  color: var(--gold, #d4a843);
+}
+
+.ea-title {
+  font-family: var(--editorial, 'Fraunces', serif);
+  font-size: clamp(1.9rem, 4.4vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--cream, #e8dcc8);
+  margin: 0 0 16px;
+  text-wrap: balance;
+}
+.ea-title em {
+  font-style: italic;
+  color: var(--gold, #d4a843);
+}
+
+.ea-lede {
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #b8ad9a;
+  margin: 0 0 26px;
+  max-width: 58ch;
+}
+
+/* ---------- email row ---------- */
+.ea-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ea-input {
+  flex: 1 1 240px;
+  min-width: 0;
+  background: #141210;
+  border: 1px solid rgba(232, 220, 200, 0.16);
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15px;
+  color: var(--cream, #e8dcc8);
+}
+.ea-input::placeholder {
+  color: #6b655c;
+}
+.ea-input:focus {
+  outline: none;
+  border-color: var(--gold, #d4a843);
+}
+.ea-input-full {
+  flex: 1 1 100%;
+  width: 100%;
+  border-radius: var(--radius-sm, 10px);
+}
+
+.ea-btn {
+  flex: 0 0 auto;
+  cursor: pointer;
+  background: var(--gold, #d4a843);
+  color: #141210;
+  border: 1px solid var(--gold, #d4a843);
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+.ea-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.ea-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ea-fine {
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #6b655c;
+  margin: 14px 0 0;
+  max-width: 54ch;
+}
+.ea-mail {
+  color: var(--copper, #b8886e);
+}
+
+.ea-error {
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13px;
+  color: #c2554e;
+  margin: 12px 0 0;
+}
+
+/* ---------- optional questions ---------- */
+.ea-form-block {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ea-set {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.ea-legend {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #6b655c;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.ea-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ea-chip {
+  cursor: pointer;
+  background: #141210;
+  border: 1px solid rgba(232, 220, 200, 0.14);
+  border-radius: 999px;
+  padding: 8px 15px;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  color: #b8ad9a;
+}
+.ea-chip:hover {
+  color: var(--cream, #e8dcc8);
+  border-color: var(--gold-border, rgba(212, 168, 67, 0.22));
+}
+.ea-chip[aria-pressed='true'] {
+  background: rgba(212, 168, 67, 0.14);
+  border-color: var(--gold, #d4a843);
+  color: var(--cream, #e8dcc8);
+}
+
+/* ---------- the trip track ---------- */
+.ea-trip {
+  border-top: 1px solid rgba(232, 220, 200, 0.1);
+  padding-top: 22px;
+}
+
+.ea-trip-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+}
+
+.ea-tick {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-border, rgba(212, 168, 67, 0.22));
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  color: #141210;
+  background: #141210;
+}
+.ea-trip-toggle[aria-expanded='true'] .ea-tick {
+  background: var(--gold, #d4a843);
+  border-color: var(--gold, #d4a843);
+}
+
+.ea-trip-toggle strong {
+  display: block;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cream, #e8dcc8);
+  line-height: 1.45;
+}
+
+.ea-trip-sub {
+  display: block;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #8a8070;
+  margin-top: 5px;
+  max-width: 52ch;
+}
+
+.ea-trip-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 20px;
+  padding-left: 34px;
+  border-left: 1px solid rgba(212, 168, 67, 0.18);
+}
+
+.ea-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.ea-label {
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #6b655c;
+  margin-bottom: 8px;
+}
+
+.ea-textarea {
+  width: 100%;
+  background: #141210;
+  border: 1px solid rgba(232, 220, 200, 0.16);
+  border-radius: var(--radius-sm, 10px);
+  padding: 13px 16px;
+  resize: vertical;
+  font-family: var(--sans, 'Inter', sans-serif);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--cream, #e8dcc8);
+}
+.ea-textarea::placeholder {
+  color: #5a5550;
+}
+.ea-textarea:focus {
+  outline: none;
+  border-color: var(--gold, #d4a843);
+}
+
+.ea-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.ea-skip {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 6px 2px;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #6b655c;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.ea-skip:hover {
+  color: var(--copper, #b8886e);
+}
+
+/* ---------- compact, for embedding in a page that already has a hero ---------- */
+.ea-compact {
+  padding: clamp(24px, 4vw, 40px);
+}
+.ea-compact .ea-title {
+  font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+}
+.ea-compact .ea-lede {
+  font-size: 14.5px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 560px) {
+  .ea-btn {
+    flex: 1 1 100%;
+  }
+  .ea-trip-form {
+    padding-left: 16px;
+  }
+}
