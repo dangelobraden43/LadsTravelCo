@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Nav } from './App'
 import Footer from './Footer'
+import EarlyAccess from './EarlyAccess'
 import { BRUCE_PLACES } from './data/brucePeninsula'
 import { MIDWEST_CANDIDATES } from './data/midwestCandidates'
 import michigan from './data/michigan'
@@ -230,6 +231,13 @@ export default function LocalPage() {
             The Hop Passport is a third-party Michigan brewery programme, not ours. Where it comes
             up we describe it as theirs and invent none of its rules.
           </p>
+        </section>
+
+        {/* EARLY ACCESS. /local is the free proof-of-quality surface — the page
+            a stranger reads before they believe anything else we say — so it is
+            the second place the capture belongs after the homepage. */}
+        <section className="local-section">
+          <EarlyAccess variant="compact" source="/local" />
         </section>
       </main>
 

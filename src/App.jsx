@@ -8,6 +8,7 @@ import 'splitting/dist/splitting.css'
 import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
 import Footer from './Footer'
+import EarlyAccess from './EarlyAccess'
 import { TOTAL_SPOTS, VALIDATED_CITIES, COUNTRIES, CONTINENTS } from './utils/siteStats.js'
 import { LAUNCH_LABEL_UPPER } from './utils/launch.js'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
@@ -217,6 +218,32 @@ function Nav({ scrolled }) {
             </button>
           ))}
         </div>
+
+        {/* THE CALL TO ACTION, added Sept 17 2026.
+            Deliberately NOT a sixth nav pill: the other five are places to
+            browse and this is the one thing we want a stranger to do. Before
+            today the only route to us was a form inside /lads, which is not
+            in the nav, so a visitor who liked the site had nowhere to go. */}
+        <button
+          className="nav-cta"
+          onClick={() => navigate('/join')}
+          style={{
+            background: 'var(--gold, #d4a843)',
+            color: '#141210',
+            border: 'none',
+            fontFamily: 'var(--mono)',
+            fontSize: 11.5,
+            fontWeight: 700,
+            letterSpacing: 1,
+            padding: '9px 18px',
+            borderRadius: 20,
+            cursor: 'pointer',
+            whiteSpace: 'nowrap',
+            marginLeft: 10,
+          }}
+        >
+          Early access
+        </button>
       </div>
     </nav>
   )
@@ -1561,6 +1588,19 @@ export default function App() {
           </Reveal>
         </section>
       </WorldSection>
+
+      {/* EARLY ACCESS — the homepage capture. Sits at the foot of the page,
+          after a visitor has seen the work and before the footer, which is the
+          only point on this page where asking for an email is earned. */}
+      <section
+        style={{
+          maxWidth: 1100,
+          margin: '0 auto',
+          padding: 'clamp(40px, 6vw, 72px) clamp(16px, 4vw, 32px)',
+        }}
+      >
+        <EarlyAccess variant="compact" source="homepage" />
+      </section>
 
       {/* Float animation */}
       <style>{`

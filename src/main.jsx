@@ -18,6 +18,7 @@ const WhenPage = lazy(() => import('./WhenPage'))
 const PlanPage = lazy(() => import('./PlanPage'))
 const LadsPage = lazy(() => import('./LadsPage'))
 const GiftPage = lazy(() => import('./GiftPage'))
+const JoinPage = lazy(() => import('./JoinPage'))
 const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
 const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
@@ -106,6 +107,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/shop" element={<ShopPage />} />
             <Route path="/peru" element={<PeruPage />} />
+            {/* /join — the site's call to action, added Sept 17 2026. Until
+                then the only way to contact us was a form inside /lads, which
+                is not in the nav. */}
+            <Route path="/join" element={<JoinPage />} />
             {/* Kept reachable (out of nav) */}
             <Route path="/when" element={<WhenPage />} />
             <Route path="/lads" element={<LadsPage />} />

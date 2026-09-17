@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 8, 2026 (evening)
+## Last Updated: September 17, 2026 (evening)
 
 ---
 
@@ -12,11 +12,17 @@ Stack: React + Vite, React Router, Three.js (react-three-fiber)
 Email: brady@ladstravel.com (Google Workspace active)
 Posture: PREVIEW — **launch target JANUARY 1, 2027, quality-gated.**
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
-Frameworks: **10** React destination routes (Vienna split from Prague Aug 29)
-Canonical total: **220 spots · 13 validated cities · 10 countries · 3 continents**
-  (219 → 220 on Aug 31 via Short's Elk Rapids in michigan.js)
-  🔑 **THESE NUMBERS ARE DERIVED, NOT TYPED (since Sept 8, 2026).** Spots are
-  walked out of the ten `src/data/*.js` files at build time; cities/countries/
+Frameworks: **11** React destination routes (Peru went public Sept 8 and entered
+  `canonical.js` Sept 16; Vienna split from Prague Aug 29)
+Canonical total: **220 places · 13 validated cities · 11 countries · 4 continents**
+  (219 → 220 on Aug 31 via Short's Elk Rapids in michigan.js. Countries 10 → 11
+  and continents 3 → 4 on Sept 16 when Peru joined the table.)
+  ⚠️ **PERU CONTRIBUTES 0 TO THE 220** and that is not a bug in the count — its
+  25 places carry a `note` key while the live-walk matches `description|notes`.
+  Renaming that one key would move the total to **229 with no new research**, so
+  it is a deliberate decision with a count propagation attached, not a tidy-up.
+  🔑 **THESE NUMBERS ARE DERIVED, NOT TYPED (since Sept 8, 2026).** Places are
+  walked out of the `src/data/*.js` files at build time; cities/countries/
   continents are counted from `src/data/canonical.js`. The figures above are a
   human-readable snapshot for reading convenience — **the site never reads them
   from here.** ⛔ Do not type a data count into any page, string or meta tag.
@@ -39,10 +45,18 @@ LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   Go"** section; Dublin/Spain gained **Flight Intelligence**. The branch/
   production split that used to be described here is GONE: both figures are now
   the same figure.
-🟣 **PERU IS BUILT AND WAITING ON A MERGE.** `feature/peru-standard-setter`,
-  10 commits, 5,638 insertions, pushed and clean. `/peru` is routed but
-  `noindex` and out of the sitemap. **`main` does not contain any of it.**
-  See `THE PERU STANDARD-SETTER` for the full record and the three gates.
+🟣 **PERU IS MERGED, LIVE AND INDEXED.** ✅ Shipped Sept 8 (`2446f94`), `noindex`
+  lifted, in the sitemap at 0.9, and registered in `canonical.js` on Sept 16.
+  ⛔ **The old "built but not merged" record in `THE PERU STANDARD-SETTER` below
+  is HISTORY — do not read it as a pending action.** It sat here stale for eight
+  days while /peru was public, which is how every derived surface said "3
+  continents" with a South American framework live. That is the fourth instance
+  of the same failure. **Re-read `git log` before writing any status here.**
+  Still open on Peru: Brady's "What We'd Do Differently" words (the section is
+  hidden on the live page until they land) and the photo-people ruling.
+🟢 **LIVE CALL TO ACTION — `/join`, shipped Sept 17.** `EarlyAccess.jsx` on the
+  homepage, `/local` and its own page, plus a gold nav CTA. Two tracks: the
+  founding-member list, and a 2026 trip enquiry. See the Sept 17 record.
 LIVE: `/privacy` + footer affiliate disclosure.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
@@ -222,6 +236,136 @@ memory of how you left it.** A confident stale record is worse than no record.
 ➡️ **Corollary for parallel work:** a second session builds in a **worktree on its
 own branch** (see Parallel Agent Workflow at the foot of this file), never in the
 shared checkout someone else is serving localhost from.
+
+---
+
+## 🟢 SEPTEMBER 17, 2026 — THE AUDIT, THE CALL TO ACTION, AND THE VERDICT ROOM
+
+Branch `feature/truth-pass-round-2`, 2 commits, pushed. **Not yet on `main`.**
+`259f0c6` the truth pass · `45c58f6` `/join` + early access.
+
+### 1 — TRUTH PASS ROUND 2 IS DONE. All three items closed.
+
+- **`/when` carried TEN hand-typed point fares** (`$480 avg RT` and nine more)
+  and still listed **Thailand**, retired Aug 13, five weeks after its route,
+  rewrite and sitemap entry were all deleted. A retired destination with an
+  invented price on it, on a live page.
+- **The fix was deletion, not retyping.** `fareIntelligence.js` already states
+  our position in code: every `bands` field is deliberately `null` and
+  `FARE_BANDS_BLOCKED` records why. **The page was publishing ten numbers our own
+  data layer formally refuses to state.** In their place `/when` now ends on
+  `BOOKING_LEAD_TIME`, which is sourced, dated, and reports the disagreement
+  between sources rather than picking the tidier answer.
+- 🔑 **It renders behind `isFareStale()`** — the first real call site that
+  predicate has ever had. If nobody re-checks the sources within a quarter the
+  block removes itself. That is the Iceland eclipse lesson wired in rather than
+  written down.
+- `SystemSection`: removed "flights from ORD under $500" plus two "under $2K"
+  claims. **"35+ pubs" STAYS** — a founder's word about a trip, authored on
+  purpose. `NorthAmericaSection.jsx` was already gone.
+- **Found doing it:** `/when` was the surface the Sept 16 "places" rename missed.
+
+### 2 — `/join` — THE SITE HAS A CALL TO ACTION FOR THE FIRST TIME
+
+Until today the only route to us from our own website was a Formspree form
+inside `/lads`, **which is not in the nav.** New: `EarlyAccess.jsx` + `.css`,
+`JoinPage.jsx` at `/join` (routed, rewritten, sitemap 0.9, own canonical),
+embedded compact on the homepage and `/local`, and a gold nav CTA.
+
+**Email first, everything after it optional, and the email posts on its own
+submission the moment it is given** — abandoning the optional questions still
+leaves us the only field that matters. Two tracks self-select: a trip before the
+end of the year opens a fuller intake, everyone else joins the founding list.
+
+⛔ **THE "FREE" RULING — see also the RULES section.** Brady asked for "free trip
+advising for the rest of 2026". That string is banned and has been purged three
+times. Offered the choice, **he kept the rule**: the advising ships with no cost
+claim on the page, and the price is said in the reply. **Do not delete the
+advising copy as a violation, and do not add the word.**
+
+🚩 **A REAL BUG, FOUND BY USING IT RATHER THAN LOOKING AT IT.** The destination
+multi-select read its array from the render closure, so two quick taps dropped
+one — Ireland and Peru went in, only Peru came out. Fixed with functional
+updates. **A screenshot would never have caught this.** Same lesson as the
+`/local` pins and the Peru map panels, now three times over.
+
+### 3 — THE COMPANY AUDIT, and the five drifts it found
+
+Full document: **https://claude.ai/code/artifact/b8eb3222-89b9-4278-bb52-ace6d6965b22**
+
+| The record said | The code said |
+|---|---|
+| `/peru` noindex, unmerged | Public, indexed, merged, in `canonical.js` |
+| 10 frameworks · 10 countries · 3 continents | **11 · 11 · 4** |
+| "Use `viatorLink()`" | **`affiliate.js` has ZERO importers** |
+| Personal layer "mostly empty" | **Entirely empty — 0 of 220** |
+| 2 dead data keys | **7** (+ `itinerary`, `confidence`, `region`, `route`, `templeBarWarning`) |
+
+🚩 **THE THREE THAT COST MONEY OR TRUST:**
+1. **`src/utils/affiliate.js` is imported by nothing.** Both live Viator links
+   are pre-tagged string literals pasted into data files. The guard protects
+   nothing and an untagged paste looks identical in review.
+2. **Affiliate coverage on places is structurally 0%.** `bookingUrl` renders at
+   exactly one place in the codebase, inside `dayTrips`. October's "100%
+   coverage" goal needs a **component change**, not a data pass.
+3. **`PlanPage` → `SystemSection` → `TravelWindows` is built, bundled, deployed
+   and UNREACHABLE** (`/plan` 301s to `/`, `PlanPage` has no `<Route>`). ~65 KB
+   of dead JS+CSS holding a hand-typed table of **20 unsourced fares**. Same
+   shape as the `ALL_CITIES` loaded gun. **Recommendation: delete the tree.**
+
+**The headline finding is about the cap.** The December capacity review has no
+data source, and it is the only gap here that cannot be closed in a week because
+the data has to accumulate.
+
+### 4 — THE VERDICT ROOM — the founder tool, and the capacity instrument
+
+**https://claude.ai/artifact/WR4RysanRRLGVCd7mssQMk** · share to Dawson as
+"Can interact". All 220 places, **six rating systems, five levels each**, in each
+genre's own language — a pub asks what the room is for and whether you can talk
+in it; an attraction asks whether it is worth the ticket and the queue. Brady's
+call, and it is the right one: *"you cant rate an attraction and pub on the same
+scale."* No number is ever shown; the five levels map to the endorsement
+gradient behind the scenes, so `ladsRating` keeps working.
+
+- **"Neither of us has been" is a first-class button.** A place nobody visited
+  can never carry a verdict.
+- **48 places arrive with no usable category** and are asked what they are before
+  any scale appears. Triage is a step, not a guess.
+- ⛔ **The anecdote, the trap and who-it-is-for are founder-only**, as always.
+
+🔑 **BRADY'S CORRECTION, and it changed the design.** The cap does not depend on
+research throughput. It depends on **how long it takes to orchestrate a framework
+once a client's preferences and trip details are in hand** — which varies by
+trip and customer and cannot be read out of git. So the tool times the work as
+it happens: every card times itself, and a **Client runs** tab times a real run
+end to end. **December's cap comes out of those rows.** It refuses to average
+fewer than three.
+
+### 5 — RESEARCH BANKED — two unpublished lists, Stage 1 complete
+
+Agents ran the `enrich` pipeline. **Zero founder-voice lines written**, every
+claim sourced, thin rows shipped empty and say whether we looked or could not.
+
+- `internal/brady/vancouver-enrichment.md` — 20 spots (House of Funk
+  **suppressed, permanently closed**), 31 of 65 web calls.
+- `internal/brady/costa-rica-jaco-enrichment.md` — 24 spots, 38 of 70 calls.
+
+🚩 **TWO TRAPS CAUGHT BEFORE THEY REACHED A PAGE:**
+1. **Grouse Mountain and Mount Seymour coordinates are SUMMIT points**, not the
+   places you go. Mount Seymour's is repeating decimals in both axes. Pinned at
+   face value they send a reader up a mountainside. **This is the Peru
+   `recordIsOffice` trap in Canadian form** — recommend `coordinateIsSummit`.
+2. **The Honda Celebration of Light is CANCELLED** — funding collapsed, replaced
+   by one night on July 31 2026. Every older guide still names it as Vancouver's
+   August anchor. An events window written from guide consensus would have
+   published a festival that no longer exists. **An Iceland-eclipse-shaped trap,
+   caught pre-publication.**
+3. **Oz Poolside Bar and Oz Hotel are ONE property**, not two venues — the
+   routing table's declustering note was wrong. Two pins would state a falsehood;
+   filter the second record out the way the Cusco office records are filtered.
+
+⚠️ **Accents:** the Jacó file carries a correction table and an explicit
+unresolved list. **No data file may be built from the ASCII staging text.**
 
 ---
 
@@ -525,7 +669,12 @@ overflow at 390 (scrollWidth 375). The only console errors are Vercel analytics
 
 ## 🚩 THE SEPTEMBER 8 QUEUE — work this in order
 
-### 1 — TRUTH PASS ROUND 2 (next session, BEFORE the Peru build starts)
+### 1 — TRUTH PASS ROUND 2 — ✅ **DONE September 17, 2026.** All three closed.
+
+> See the Sept 17 record above for what actually shipped. The fares were
+> **deleted, not rewired**, because `fareIntelligence.js` cannot source a dollar
+> band — which is the honest reading of "derive or delete". Kept here for the
+> original wording only. **Do not work from this list.**
 
 Brady's addendum, Sept 8. **Peru proceeds on a fully honest site, not a mostly
 honest one.**
@@ -1458,31 +1607,39 @@ data is pending), never a month that has already passed.
 
 ---
 
-## 📍 SESSION START STATE — verified September 8, 2026 (evening)
+## 📍 SESSION START STATE — verified September 17, 2026 (evening)
 
 **Verified from `git log`, `git status` and the working tree, not from memory.**
 
 | | |
 |---|---|
-| `main` | **`869b3e1`**, == `origin/main`. The truth pass and the Lads Local platform are live |
-| `feature/peru-standard-setter` | **`b47dd47`**, pushed, clean, **10 commits ahead of main** |
+| `main` | **`8044141`**, == `origin/main` at session start. Peru, the foundation block and the places rename are all live |
+| `feature/truth-pass-round-2` | **`45c58f6`**, pushed, clean, **2 commits ahead of main** |
 | Working tree | clean |
-| Pending `/ship` | **Peru.** Nothing else |
+| Pending `/ship` | **The truth pass + `/join`.** Nothing else |
 
-**✅ On production:** every displayed count derived from the data · the launch
-date stated once as January 1 2027 · `/local` with the Live Pulse and 113 places
-· every framework's "When to Go" · Dublin/Spain flight intelligence.
+**✅ On production:** every displayed count derived · the launch date stated once
+· `/local` with the Live Pulse · every framework's "When to Go" · **`/peru`,
+indexed** · the founder schema v2 and the two-layer place card.
 
-**🟣 Built, not merged:** the whole Peru standard-setter. `/peru` is routed and
-`noindex`.
+**🟡 Built on the branch, awaiting `/ship`:** Truth Pass Round 2 (13 authored
+fares deleted, Thailand retired from `/when`) and the whole `/join` call to
+action.
 
 🚩 **NEXT SESSION, in order:**
-1. **TRUTH PASS ROUND 2** — three small items, still blocking by Brady's own
-   sequencing (WhenPage/Thailand, prices to fareIntelligence, delete
-   NorthAmericaSection).
-2. **Merge Peru** and confirm the deploy.
-3. **THE DUSK FIELD GUIDE, Phase A** — the design proposal. Start state and what
-   Peru hands it are recorded in `THE SEPTEMBER 8 QUEUE`.
+1. **`/ship` the branch** and confirm the Vercel deploy reaches READY. `/join`
+   is the first real call to action this site has ever had; it earns nothing
+   sitting on a branch.
+2. **Work the Verdict Room.** `ladsTake` is filled on **0 of 220** places and
+   that is the product. The tool is built and waiting — see the Sept 17 record.
+3. **Fold the first verdicts back into `src/data/*.js`** once a batch exists.
+4. **Vancouver + Costa Rica frameworks** — Stage 1 research is banked in
+   `internal/brady/`. Needs Brady's per-spot visited-split for Costa Rica.
+5. **THE DUSK FIELD GUIDE, Phase A** — still unstarted.
+
+⚠️ **Owed by Brady:** Peru's "What We'd Do Differently" words · the photo-people
+ruling · licensed music for the Peru film · the Detroit Maps list · the Costa
+Rica visited-split · a ruling on the Peru `note`→`notes` rename (220 → 229).
 
 ⚠️ **Owed by Brady:** the "What We'd Do Differently" words and section intros for
 Peru · the photo-people ruling · licensed music for the Peru film · the Detroit
@@ -2567,6 +2724,15 @@ The tech makes them faster. It doesn't make them less human.
 - Never add insurance content to any framework.
 - **Charity and fundraising live on social media only — never on the site, in copy, in components, or in data.**
 - Never add "free" / "free through 2026" / "no cost" pricing copy. The site is a PREVIEW until the January 1, 2027 launch.
+  ✅ **RE-AFFIRMED Sept 17, 2026, and worth reading because it was nearly reversed.**
+  Brady asked for "free trip advising for the rest of 2026" on the new `/join`
+  page. That exact string has been purged three times (May 31 rebrand, the Aug 25
+  JSON-LD `priceRange`, `seo.js` on Sept 2). Given the choice between reversing
+  the rule and keeping it, **he kept it**: the advising is offered on the site
+  **without any cost claim** — "we are advising a handful of trips this autumn
+  while we build" — and what it costs is said in the reply, not on the page.
+  ➡️ So the offer is REAL and deliberate. Do not delete the advising copy as a
+  rule violation, and do not add the word "free" to it. Both would be wrong.
 - **Never invent or publish a PRICE.** Pricing is a founder decision, made after
   the five conversations and locked in December. This covers the site, the
   frameworks, the Club, and merch.
