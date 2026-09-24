@@ -66,3 +66,103 @@ export function gygLink(productUrl) {
 export function externalLink(url, source, campaign) {
   return `${url}?utm_source=ladstravel&utm_medium=${source}&utm_campaign=${campaign}`
 }
+
+/* ===================================================================
+ * THE GATE — added September 24, 2026
+ * ===================================================================
+ *
+ * WHY THIS EXISTS. Until today this file was imported by NOTHING. The two
+ * live Viator links were pre-tagged string literals pasted straight into
+ * dublin.js and spain.js, which means `viatorLink()` guarded nothing and an
+ * UNTAGGED paste looked identical to a tagged one in review — the failure
+ * mode the file's own header describes, reintroduced through the door of
+ * simply never calling it.
+ *
+ * So the render path no longer reads `bookingUrl` directly. It calls
+ * `resolveBooking()`, and that function is the only way a booking link
+ * reaches a page. Consequences, all deliberate:
+ *
+ *   1. A Viator URL is tagged HERE, at render, every time. Whether the data
+ *      file pasted the params or not is now irrelevant — idempotent by
+ *      construction, so a stale or missing param set cannot ship.
+ *   2. The PLATFORM NAME is derived from the host, never read from the data.
+ *      `bookingPlatform: 'Viator'` sitting on a gyg.me URL was a drift bug
+ *      waiting to happen; the host cannot lie about what it is.
+ *   3. An UNKNOWN host returns null and renders NOTHING. We are not in the
+ *      business of sending readers to a platform we have not decided on,
+ *      and a silent no-render is a far better failure than an untracked
+ *      outbound link that looks official.
+ *
+ * ⛔ Do not read `place.bookingUrl` anywhere in a component. Call this.
+ */
+
+const BOOKING_HOSTS = [
+  {
+    test: /(^|\.)viator\.com$/i,
+    platform: 'Viator',
+    earns: true,
+    tag: viatorLink,
+  },
+  {
+    /* gyg.me is GetYourGuide's own short-link domain. Both forms appear in
+       the data (dublin + rome use gyg.me). Neither earns anything today —
+       see gygLink above — and the two survivors are kept deliberately
+       until Viator equivalents exist. */
+    test: /(^|\.)(gyg\.me|getyourguide\.com)$/i,
+    platform: 'GetYourGuide',
+    earns: false,
+    tag: gygLink,
+  },
+]
+
+/**
+ * Resolve a raw `bookingUrl` from a data file into something renderable.
+ *
+ * Returns `null` when there is no link, when the URL does not parse, or
+ * when the host is not one we have approved. Returning null means the CTA
+ * does not render at all — absence, never a broken or untracked link.
+ *
+ * @returns {{href: string, platform: string, earns: boolean} | null}
+ */
+export function resolveBooking(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== 'string') return null
+
+  let url
+  try {
+    url = new URL(rawUrl)
+  } catch {
+    return null
+  }
+
+  /* http is not good enough for a link we are paid for, and a reader
+     should never be downgraded on our say-so. */
+  if (url.protocol !== 'https:') return null
+
+  const match = BOOKING_HOSTS.find((h) => h.test.test(url.hostname))
+  if (!match) return null
+
+  return { href: match.tag(rawUrl), platform: match.platform, earns: match.earns }
+}
+
+/**
+ * THE ENDORSEMENT GRADIENT, in one place.
+ *
+ * Two separate questions, deliberately kept apart since Aug 27 2026:
+ *   1. Did we do the PLACE?            → `ladsRating` is the recorded evidence.
+ *   2. Is the BOOKABLE PRODUCT the exact version we did? → `bookingEndorsed`.
+ *
+ * `bookingEndorsed: false` forces the neutral CTA while KEEPING the rating
+ * chip, so a true fact never has to be deleted to avoid an untrue claim.
+ * `bookingEndorsed: true` is deliberately NOT sufficient on its own: with no
+ * rating there is no evidence, and we refuse to manufacture the claim.
+ *
+ * ⚠️ `ladsRating` is the ONLY accepted evidence, for day trips and for
+ * places alike. `validated: true` is NOT enough — it can mean a founder
+ * curated a saved list without standing behind a specific bookable product.
+ * Today no framework spot carries a rating, so every spot-level link renders
+ * NEUTRAL. That is the correct starting state, not a gap to paper over.
+ */
+export function isBookingEndorsed(item) {
+  if (!item || item.bookingEndorsed === false) return false
+  return Boolean(item.ladsRating)
+}

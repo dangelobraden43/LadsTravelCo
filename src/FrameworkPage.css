@@ -567,6 +567,61 @@
   box-shadow: none;
 }
 
+/* ===== PLACE-CARD BOOKING CTA =====
+   Same gradient, smaller frame. A place card is denser than a day-trip card,
+   so the CTA sits at the foot of the card with a hairline above it rather
+   than floating as a second pill in the middle of the content.
+
+   ⚠️ The endorsed (solid gold) branch is styled but currently UNREACHABLE on
+   places: it needs `ladsRating`, and no framework spot carries one today. It
+   is defined now so that the first rated spot does not ship unstyled. */
+.fw-spot-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 7px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid rgba(212, 168, 67, 0.45);
+  border-radius: 20px;
+  text-decoration: none;
+  align-self: flex-start;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.fw-spot-book:hover {
+  background: rgba(212, 168, 67, 0.1);
+  transform: translateY(-1px);
+}
+
+.fw-spot-book--endorsed {
+  color: var(--bg);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.fw-spot-book--endorsed:hover {
+  background: var(--gold);
+  box-shadow: 0 4px 16px rgba(212, 168, 67, 0.3);
+}
+
+.fw-spot-book-flag {
+  font-size: 9px;
+  letter-spacing: 1px;
+  background: rgba(20, 18, 16, 0.22);
+  color: var(--bg);
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-right: 2px;
+}
+
 /* ===== MAPS ===== */
 .fw-maps-grid {
   display: grid;
