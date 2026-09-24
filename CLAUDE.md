@@ -1789,18 +1789,25 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | **`9a0a47b`**, == `origin/main`. Vercel **READY** (`dpl_7PQ6fXXM…`), SHA confirmed against the deployment |
-| `feature/affiliate-structure` | pushed, clean, **4 commits ahead of main** (3 build + the docs record). Tip moves when the record does — read `git log`, not this cell |
+| `main` | **`884ce47`** — `feature/affiliate-structure` merged `--no-ff` and pushed. Vercel **READY** (`dpl_Gp4WTTp3…`), SHA confirmed against the deployment |
 | Working tree | clean |
-| Pending `/ship` | **The affiliate structure block.** Nothing else |
+| Pending `/ship` | **Nothing.** The day shipped. |
 
-**✅ On production:** every displayed count derived · the launch date stated once
-· `/local` with the Live Pulse · every framework's "When to Go" · **`/peru`,
-indexed** · the founder schema v2 and the two-layer place card · **the truth
-pass and `/join`** (merged Sept 17 as `9a0a47b`).
+**✅ SHIPPED TODAY, LIVE AND VERIFIED ON THE DEPLOYED SITE:** the affiliate gate
+and the place-card booking CTA · the PlanPage tree deleted · **the canonical
+total at 227**, confirmed rendering on the live homepage counter, the globe
+caption (`13 VALIDATED CITIES · 4 CONTINENTS · 227 PLACES`) and the meta
+description, with **zero stale 220s anywhere on the page.**
 
-**🟡 Built on the branch, awaiting `/ship`:** the affiliate structure fix, the
-PlanPage tree deletion, and the 227 count ruling. See the Sept 24 record.
+⚠️ **Verified on `lads-travel-co.vercel.app`, not on the apex.** This machine's
+sandbox could not resolve `ladstravel.com` (DNS to outside resolvers is blocked
+here, so it proves nothing about the domain). Same deployment either way — but
+**someone should open `ladstravel.com` on a phone and confirm 227.**
+
+**✅ Also on production from before today:** every displayed count derived · the
+launch date stated once · `/local` with the Live Pulse · every framework's "When
+to Go" · `/peru`, indexed · the founder schema v2 and the two-layer place card ·
+the truth pass and `/join` (merged Sept 17 as `9a0a47b`).
 
 🚩 **THE STALENESS THIS BLOCK CLOSED — instance five.** This section previously
 read "Pending `/ship`: the truth pass + `/join`" for **seven days** after they
@@ -1809,30 +1816,63 @@ as Aug 26, Aug 28, Aug 31, Sept 2 and Sept 8. **The rule that ends it is now in
 CADENCE below — the docs commit ships in the SAME push as the work it
 describes, never in a later session.**
 
-🚩 **NEXT SESSION, in order:**
-1. **`/ship` the branch** and confirm the Vercel deploy reaches READY.
-2. **CLOUDIMAGE BUNDLE BLOCK** — `dist` is **41 MB against an 8 MB target** and
-   `dist/assets` is only 3.0 MB, so ~38 MB is images. `CloudImage.jsx` already
-   exists and is the answer. **Brady scheduled this as its own session, this
-   week.** Do not start it mid-block.
-3. **Work the Verdict Room.** `ladsTake` is filled on **7 of 227** places — all
-   seven Peru, all Brady's. That is the product, and it is now also the thing
-   the counter rewards.
-4. **Fill booking links on places.** The slot exists on every place card as of
-   Sept 24; 4 of 227 are filled. See the coverage table in the Sept 24 record.
-5. **Vancouver + Costa Rica frameworks** — Stage 1 research banked in
-   `internal/brady/`. Needs Brady's per-spot visited-split for Costa Rica.
-6. **THE DUSK FIELD GUIDE, Phase A** — still unstarted.
+🚩 **TOMORROW'S QUEUE — set at session close, Sept 24. Work in order.**
 
-⚠️ **Owed by Brady:** Peru's "What We'd Do Differently" words · the photo-people
-ruling · licensed music for the Peru film · the Detroit Maps list · the Costa
-Rica visited-split.
+**1 — THE CLOUDIMAGE BUNDLE BLOCK. ⭐ NEXT BUILD, ITS OWN SESSION.**
+`dist` is **41 MB against an 8 MB target.** `dist/assets` is only **3.0 MB**, so
+**~38 MB is images shipped as build output** — the JS has never been the
+problem. `CloudImage.jsx` already exists, is already site-wide, and is already
+the answer: Cloudinary, `f_auto/q_auto`, six-width srcset, lazy below the fold.
+⛔ **Do not start this mid-block.** It touches every framework's imagery.
+Brady scheduled it as a standalone session **this week**.
+
+**2 — THE VERDICT ROOM. The founders rate; the machine has finished preparing.**
+✅ **The worksheet is GENERATED and waiting**, in two places:
+- `internal/brady/verdict-room-worksheet.md` — 1,078 lines, gitignored, the
+  file of record. Regenerate any time; it reads the data files, never the page.
+- **The doc, for phones:** https://claude.ai/code/artifact/61dd272d-ec23-4940-abbe-cb4c96fd5cf1
+  — all 212, grouped by framework, as tick-boxes Brady and Dawson can both edit
+  and comment on. Share it to Dawson.
+
+**212 of 227 places carry no `ladsRating`.** The 15 that do are all day trips —
+**no individual place on any framework has a rating today.** That is why every
+place-level booking CTA shipped Sept 24 renders neutral: the gold "WE DID THIS"
+branch is built, styled and currently unreachable on places by design.
+⛔ Three answers only: a rating · "neither of us has been" · skip. **Never rate
+a place nobody visited** — the rating is the evidence behind a claim we make to
+a stranger about something they are about to pay for.
+➡️ **Then fold the verdicts back into `src/data/*.js`.** Each one lights up its
+place's gold CTA and moves `ladsTake` coverage off 7.
+
+**3 — ENRICHMENT INGESTION: `internal/brady/rome-prague-enrichment.md`.**
+Queued **behind** the Verdict Room, deliberately — a founder verdict outranks a
+researched consensus layer, and the two-layer card renders founder voice first.
+⚠️ The file was briefly committed at the repo root and untracked in `8044141`;
+it lives in `internal/brady/` and stays gitignored. Also banked and unstarted:
+`dublin-sanjuan-enrichment.md`, `vancouver-enrichment.md`,
+`costa-rica-jaco-enrichment.md`.
+
+**4 — Still unstarted, unchanged:** Vancouver + Costa Rica frameworks · THE DUSK
+FIELD GUIDE Phase A · filling booking links on places now that the slot exists.
+
+### ⚠️ BLOCKERS — ALL FIVE OWED BY BRADY, UNCHANGED AT SEPT 24 CLOSE
+
+1. **Peru's "What We'd Do Differently" words** (+ the section intros). The
+   section is hidden on the live page until they land. AI cannot write these.
+2. **The photo-people ruling.** Three of the twelve Peru frames show people who
+   are not the founders and stay unused until he rules.
+3. **The Costa Rica visited-split**, per spot. Blocks that framework; a saved
+   list is a superset of a trip and is never flipped wholesale.
+4. **The Detroit Maps list.** Closes four unpinnable Michigan spots in one step.
+5. **Licensed music for the Peru film.** Blocks publication of the cut, not its
+   assembly. None sourced, and none will be invented.
+
 ✅ **Closed Sept 24:** the Peru `note`→`notes` ruling. Granted, and implemented
 against the data rather than the forecast — **227, not 229.** See the record.
 
-⚠️ **Owed by Brady:** the "What We'd Do Differently" words and section intros for
-Peru · the photo-people ruling · licensed music for the Peru film · the Detroit
-Maps list that closes four unpinnable Michigan spots.
+📌 **This list replaced TWO near-duplicate "Owed by Brady" blocks** that had sat
+one after the other, disagreeing slightly about what was owed. Same class as the
+staleness rule above: one statement of a fact, or none.
 
 ---
 
