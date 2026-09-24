@@ -20,6 +20,7 @@
  */
 import React from 'react'
 import { hasFounderVoice, hasResearchLayer } from './data/spotSchema'
+import { resolveBooking, isBookingEndorsed } from './utils/affiliate'
 import './PlaceLayers.css'
 
 /* ===== THE FOUNDER LAYER =====
@@ -290,5 +291,53 @@ export function CollectiveTake({ take }) {
       {take.framing && <div className="pl-collective-frame">{take.framing}</div>}
       <div className="pl-collective-by">{take.by}</div>
     </div>
+  )
+}
+
+/* ===== THE BOOKING CTA =====
+ *
+ * Added September 24, 2026, and the reason is structural rather than
+ * cosmetic. Before today `bookingUrl` rendered at EXACTLY ONE place in the
+ * whole codebase — inside the `dayTrips` block of FrameworkPage — which
+ * meant affiliate coverage on the 220 framework PLACES was not "low", it was
+ * architecturally impossible. No amount of adding links to data files could
+ * have changed it. October's 100% coverage goal needed a component, and this
+ * is the component.
+ *
+ * ⛔ THE GRADIENT IS NOT DECORATION. Gold + "WE DID THIS" is a claim that a
+ * founder personally did the thing being sold. It renders ONLY where
+ * `ladsRating` supplies the evidence. Everything else renders as a neutral
+ * outline that says "Book this tour" and claims nothing. Since no framework
+ * spot carries a rating today, every place-level link below is neutral by
+ * construction — and that is the honest starting state.
+ *
+ * ⛔ The href is never taken from the data unchanged. `resolveBooking()` tags
+ * it, names the platform from the host, and refuses anything that is not an
+ * approved partner — so an untagged paste cannot reach a reader.
+ */
+export function BookingCTA({ place, className = 'pl-book' }) {
+  if (!place) return null
+
+  const booking = resolveBooking(place.bookingUrl)
+  if (!booking) return null
+
+  const endorsed = isBookingEndorsed(place)
+
+  return (
+    <a
+      href={booking.href}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      className={`${className}${endorsed ? ` ${className}--endorsed` : ''}`}
+    >
+      {endorsed ? (
+        <>
+          <span className={`${className}-flag`}>WE DID THIS</span>
+          Book on {booking.platform} &rarr;
+        </>
+      ) : (
+        <>Book this tour &rarr;</>
+      )}
+    </a>
   )
 }

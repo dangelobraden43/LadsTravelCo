@@ -98,7 +98,9 @@
  *    label is NOT rewritten, but it should not be drawn as "Salkantay day 1"
  *    without Brady confirming what that day actually was. One unconfirmed
  *    hypothesis worth putting to him: the site's own pre-trip copy
- *    (`src/SystemSection.jsx`) listed "Salkantay Trek, Rainbow Mountain" as the
+ *    (then `src/SystemSection.jsx`, deleted Sept 24 2026 as unreachable code —
+ *    read it at 869b3e1 if this ever needs re-checking) listed
+ *    "Salkantay Trek, Rainbow Mountain" as the
  *    May 2026 intent, and Rainbow Mountain / Vinicunca is a day trip southeast
  *    of Cusco rather than a point on the Salkantay trail — which would make an
  *    out-and-back spur from Cusco the correct arc. That is a hypothesis only.
@@ -509,9 +511,16 @@ export const PERU_BOUNDS = PERU_ROUTE.reduce(
  * VINICUNCA CLOSES THE DAY-6 QUESTION. This list contains Vinicunca at
  * -13.8701658, -71.3029901. The manifest's day-6 EXIF anchor is -13.86,
  * -71.30 — the same place. With the "Rainbow Mountain" sign photographed in
- * IMG_2212.HEIC and the trip intent in SystemSection.jsx:436, the May 7 =
- * Rainbow Mountain reading is settled from four independent directions, and
- * the manifest's trek day labels are confirmed off by one.
+ * IMG_2212.HEIC and the trip intent recorded in SystemSection.jsx:436, the
+ * May 7 = Rainbow Mountain reading is settled from four independent
+ * directions, and the manifest's trek day labels are confirmed off by one.
+ *
+ * ⚠️ That fourth witness now lives only in git. SystemSection.jsx was deleted
+ * on Sept 24 2026 because it was unreachable dead code; the pre-trip intent it
+ * recorded is still readable at commit 869b3e1. The FINDING does not weaken —
+ * it was settled from four directions and three of them are still in the tree
+ * — but the citation needed to say where the file went rather than point at
+ * nothing.
  *
  * SCOPE NOTE: on Aug 27 Brady said this list does not cover Lima. It does —
  * three Miraflores places (Ambra Rooftop Bar, Canos del Santero, Sol Coffee)

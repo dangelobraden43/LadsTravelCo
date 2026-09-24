@@ -15,7 +15,11 @@ const FrameworkPage = lazy(() => import('./FrameworkPage'))
 const ExplorePage = lazy(() => import('./ExplorePage'))
 const AdventurePage = lazy(() => import('./AdventurePage'))
 const WhenPage = lazy(() => import('./WhenPage'))
-const PlanPage = lazy(() => import('./PlanPage'))
+/* PlanPage was lazily imported HERE while having no <Route> of its own —
+   /plan has redirected to / since the May 31 rebrand. The import kept the
+   whole PlanPage -> SystemSection -> TravelWindows tree alive in the bundle,
+   reachable by nobody, holding 47 hand-typed fares and a retired
+   destination. Deleted Sept 24 2026; git history preserves it. */
 const LadsPage = lazy(() => import('./LadsPage'))
 const GiftPage = lazy(() => import('./GiftPage'))
 const JoinPage = lazy(() => import('./JoinPage'))

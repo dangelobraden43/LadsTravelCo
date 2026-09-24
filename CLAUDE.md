@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 17, 2026 (evening)
+## Last Updated: September 24, 2026
 
 ---
 
@@ -14,13 +14,21 @@ Posture: PREVIEW — **launch target JANUARY 1, 2027, quality-gated.**
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: **11** React destination routes (Peru went public Sept 8 and entered
   `canonical.js` Sept 16; Vienna split from Prague Aug 29)
-Canonical total: **220 places · 13 validated cities · 11 countries · 4 continents**
+Canonical total: **227 places · 13 validated cities · 11 countries · 4 continents**
   (219 → 220 on Aug 31 via Short's Elk Rapids in michigan.js. Countries 10 → 11
-  and continents 3 → 4 on Sept 16 when Peru joined the table.)
-  ⚠️ **PERU CONTRIBUTES 0 TO THE 220** and that is not a bug in the count — its
-  25 places carry a `note` key while the live-walk matches `description|notes`.
-  Renaming that one key would move the total to **229 with no new research**, so
-  it is a deliberate decision with a count propagation attached, not a tidy-up.
+  and continents 3 → 4 on Sept 16 when Peru joined the table. **220 → 227 on
+  Sept 24** when the live-walk began accepting a founder's verbatim take.)
+  ✅ **PERU NOW CONTRIBUTES 7** — ruled and shipped Sept 24. The live-walk
+  counts `description || notes || ladsTake`, because a place carrying a
+  founder's own words is a described place. Seven of Peru's nine founder-voice
+  places count; the two **tour-operator office records** do not, because a
+  downtown Cusco sales desk is a booking record, not somewhere a reader can go.
+  ⛔ **THE FORECAST IN THIS FILE SAID 229 AND IT WAS WRONG.** Two things were
+  wrong with it: it assumed `note` held Brady's words (it holds **engineering
+  provenance** — EXIF anchors, Tivoli-rule reasoning, renderer instructions),
+  and it counted both office records as places. Promoting `note` would have
+  published our own paperwork onto place cards. **The number came out of the
+  data, not out of the forecast. That is the system working.**
   🔑 **THESE NUMBERS ARE DERIVED, NOT TYPED (since Sept 8, 2026).** Places are
   walked out of the `src/data/*.js` files at build time; cities/countries/
   continents are counted from `src/data/canonical.js`. The figures above are a
@@ -138,7 +146,7 @@ moves, not the BAR.**
       window is the worked example of exactly what must never ship. `datedUntil`
       exists so one-time events expire themselves.)
 - [ ] **3. Count: 300+ published-and-described**, every spot honest per the
-      endorsement gradient. Today the canonical live-walk total is **220**.
+      endorsement gradient. Today the canonical live-walk total is **227**.
       ⛔ The gate is **published and described** — spots carrying a real
       `description`/`notes`. It is NOT a raw ingest count. The 162 ingested
       places are not 162 spots, and padding the number with silent entries fails
@@ -204,6 +212,33 @@ Concretely, in this order, every session:
 5. If a session ends mid-intent, **say so in the record** rather than leaving an
    announced build looking done.
 
+### ⛔ CLAUDE.md SHIPS WITH THE MERGE — STANDING RULE, effective September 24, 2026
+
+**The CLAUDE.md update describing a merge goes in the SAME push as the merge.
+Never in a later session. Never "next time".**
+
+🚩 **THIS IS FAILURE INSTANCE FIVE, and the first four were all the same shape.**
+Aug 26 · Aug 28 · Aug 31 · Sept 2 · and Sept 17→24, when `SESSION START STATE`
+sat for **seven days** saying the truth pass and `/join` were "pending `/ship`"
+after they had merged as `9a0a47b`, while the same block called `ladsTake`
+"0 of 220" after the count had moved. Nobody wrote a false sentence. **A true
+record was overtaken by a push it did not ride along with.**
+
+Rule 3 above already says *write the docs commit LAST*. That was necessary and
+insufficient: last-in-the-session still leaves a window, and the window is
+exactly where every one of these five failures lived. So:
+
+- **A merge to `main` that changes status is not complete until the CLAUDE.md
+  edit describing it is in the same push.** If the docs edit is not ready, the
+  merge is not ready.
+- **`/ship` writes the record as part of shipping**, not after it.
+- ⛔ **Never describe the repo from memory of how you left it.** Re-read
+  `git log`, `git status`, and — for anything claiming production — the actual
+  Vercel deployment SHA. A confident stale record is worse than no record.
+- 🔑 **The tell:** if a status line in this file names a branch, a commit or a
+  "pending", it must have been re-verified in THIS session. If it was not,
+  delete it rather than carry it forward.
+
 ### 🔒 CHECKPOINT COMMITS + AUTO-PUSH — STANDING RULE, effective September 2, 2026
 
 **Every verified phase commits to the feature branch AND pushes immediately.**
@@ -236,6 +271,145 @@ memory of how you left it.** A confident stale record is worse than no record.
 ➡️ **Corollary for parallel work:** a second session builds in a **worktree on its
 own branch** (see Parallel Agent Workflow at the foot of this file), never in the
 shared checkout someone else is serving localhost from.
+
+---
+
+## 🟢 SEPTEMBER 24, 2026 — THE AFFILIATE STRUCTURE, THE DEAD TREE, AND 227
+
+Branch `feature/affiliate-structure`, **4 commits** (3 build + this record),
+pushed. **Not yet on `main`.**
+`c654484` the gate · `dd5e8ae` the deletion · `7f3d0e6` the count · **the docs
+commit is the tip — read `git log` for its SHA.**
+
+ℹ️ **TWO DRAFTS OF THIS LINE WERE STALE BEFORE THEY LANDED, and the second one
+is the more useful lesson.** Draft one said "3 commits" and named the count
+commit as the tip; the docs commit then landed on top of it. Draft two counted
+itself but *named its own SHA* — which changed the instant the commit was
+amended. **A record cannot cite its own hash: the hash does not exist until
+after the text is written.** So it does not try. It names the three commits it
+can know and points at `git log` for the one it cannot. That is the shape any
+self-describing status has to take to survive the
+`CLAUDE.md SHIPS WITH THE MERGE` rule.
+
+Session opened with a **seven-day gap** since `9a0a47b` — the 3+/week cadence
+was missed. Vercel was verified READY on `9a0a47b` by SHA before any work began.
+
+### 1 — AFFILIATE COVERAGE WAS NOT LOW, IT WAS IMPOSSIBLE
+
+`bookingUrl` rendered at **exactly one place in the entire codebase** — inside
+the `dayTrips` block of `FrameworkPage`. So October's *100% affiliate coverage*
+goal could not have been reached by any amount of data entry. It needed a
+component, and no data pass would ever have revealed that.
+
+| | Reachable surface | Filled |
+|---|---|---|
+| Before | **22** (day trips only) | 4 |
+| After | **227** (every counted place) | 4 |
+
+⚠️ **The 22 day trips were always INSIDE the 227**, not additive — they carry
+`name` + `description`, so the live-walk has always counted them. The honest
+statement is **reachable 22 → 227, a 10.3× increase; filled 4/227 = 1.8%.**
+
+- New **`BookingCTA`** in `PlaceLayers.jsx`, rendered on BOTH place-card paths —
+  the v2 two-layer card AND the legacy category-array card. Leaving the legacy
+  path out would have capped reachable coverage at the four v2 frameworks.
+- **`src/utils/affiliate.js` had ZERO importers.** Both live Viator links were
+  pre-tagged string literals pasted into data files, so `viatorLink()` guarded
+  nothing and an untagged paste looked identical in review. New
+  **`resolveBooking()` is now the only path a booking link takes to a page:**
+  it tags Viator at render (idempotent — a stale or missing `pid` cannot ship),
+  **derives the platform NAME from the host** so the data cannot lie about it,
+  and **returns null for any unapproved host**, which renders nothing.
+- **`isBookingEndorsed()` centralises the gradient.** `ladsRating` remains the
+  only accepted evidence, for places as well as day trips. ⛔ `validated: true`
+  is deliberately NOT enough — it can mean a founder curated a saved list
+  without standing behind a bookable product. **No framework spot carries a
+  rating today, so every place-level link renders NEUTRAL.** That is the correct
+  starting state, not a gap to paper over.
+- Outbound booking links now carry `rel="sponsored"`.
+
+✅ **VERIFIED BY CLICKING, NOT BY SCREENSHOT.** At 1440 and 390: Kilkenny
+(`bookingEndorsed: false`) renders neutral outline; Cliffs of Moher renders
+solid gold + WE DID THIS, tagged; Rome's Pompeii renders gold reading **"Book on
+GetYourGuide"** with the platform derived from the host. Tap target 52×270 at
+390. No horizontal overflow (375/390). Only console errors are the known Vercel
+analytics 404s.
+
+### 2 — THE DEAD TREE HELD 47 FARES AND A RETIRED DESTINATION
+
+`PlanPage → SystemSection → TravelWindows` was built, bundled, deployed and
+reachable by NOBODY: `/plan` has 301'd to `/` since the May 31 rebrand and
+`PlanPage` has no `<Route>`. Only an orphan `lazy()` import in `main.jsx` kept
+the whole tree in the bundle.
+
+🚩 **What was inside it, found while deleting it — the audit said 20 fares:**
+- **47 hand-typed dollar figures**, none sourced: `$580 round-trip`, `$880 in
+  July`, `$680 versus $950`, plus `34% drop`, `40% shorter lines`, `25 minutes
+  versus 90+`.
+- **THAILAND, named twice.** Retired **Aug 13** — six weeks. The Sept 17 truth
+  pass deleted Thailand and ten authored fares from `/when`; **the identical two
+  faults sat in this tree the entire time** and were missed because nothing
+  renders it.
+
+➡️ **That is the `ALL_CITIES` shape exactly: dead code holding false numbers is
+a loaded gun, and it cannot be caught by reading the site — because it is not on
+the site, until someone wires it up.** `dist/assets` 3.1 MB → 3.0 MB.
+
+⚠️ **Two provenance comments in `peru.js` cited `SystemSection.jsx:436`** as the
+fourth witness for the May 7 = Rainbow Mountain ruling. Updated to say the file
+lives at **`869b3e1`** rather than point at nothing. **The finding does not
+weaken** — it was settled from four directions and three are still in the tree.
+
+### 3 — THE COUNT RULING: 227, NOT 229
+
+Brady granted the `note`→`notes` promotion. **Implemented against the data
+rather than the forecast, and it lands on 227.** Both differences are deliberate
+and both matter.
+
+⛔ **`note` IN `peru.js` DOES NOT HOLD BRADY'S WORDS.** It holds **engineering
+provenance** — EXIF anchor coordinates, Tivoli-rule reasoning, and renderer
+instructions like *"Do NOT render this as the trek's location"*. Renaming that
+key would have published **our own paperwork onto place cards**, which is the
+exact thing Brady ruled against on `/peru`, and would have passed the 300+ gate
+on entries that describe nothing to a reader. **The gate is "published AND
+described"; padding it with silent entries fails it rather than passing it.**
+
+✅ **`ladsTake` is the key that actually holds a description.** The live-walk now
+accepts `description || notes || ladsTake`, because **a place carrying a
+founder's verbatim words is a described place** — described by a person rather
+than a research pass, which is the stronger of the two and the entire product.
+
+⛔ **OFFICE RECORDS ARE NOT PLACES.** Two of the nine founder-voice places are
+tour-operator records (`Salkantay Trek`, `Red Valley Cusco`) sitting on a
+downtown Cusco sales block ~100 km from what they name, already flagged
+`recordIsOffice` and already refused by `PeruMap`. **Excluded. The 229 forecast
+counted both as places.** `PeruPage`'s existing duplicate-quote guard already
+gives the one shared ATV sentence to Vinicunca over the office record, so no
+founder sentence is counted twice.
+
+🚩 **A BUG THE VERIFICATION CAUGHT AND THE BUILD DID NOT.** Accepting `ladsTake`
+added **+1 to all ELEVEN frameworks** — every framework ROOT carries a `name`
+and a framework-level `ladsTake`, the quote `FrameworkPage` renders about the
+destination as a whole. A container is not one of its own places. Guarded via
+`isContainer()`. **All ten pre-existing frameworks then re-derived to their exact
+prior counts** (38/37/27/23/22/22/17/15/11/8 = 220); Peru adds 7.
+
+**227 · 13 cities · 11 countries · 4 continents.** Nothing was hand-typed:
+`index.html`'s meta description rebuilt itself to *"227 validated places"* and
+the homepage reads 227 in three places with zero stale 220s.
+
+### 4 — THE STALENESS RULE IS NOW STRUCTURAL
+
+Instance five, closed. See **`CLAUDE.md SHIPS WITH THE MERGE`** under CADENCE.
+Rule 3 ("write the docs commit LAST") was necessary and insufficient — last in
+the session still leaves a window, and that window is where all five failures
+lived. The docs edit now ships in the **same push** as the merge it describes.
+
+### ⏭️ QUEUED, DELIBERATELY NOT STARTED
+
+**THE CLOUDIMAGE BUNDLE BLOCK.** `dist` is **41 MB against an 8 MB target**;
+`dist/assets` is only 3.0 MB, so **~38 MB is images**. `CloudImage.jsx` already
+exists and is the answer. Brady scheduled it as **its own session, this week.**
 
 ---
 
@@ -549,10 +723,11 @@ unused** — Brady's ruling on including them never landed.
 - **Trip-versions framing.** Spain carries 3 versions by group size and budget;
   Peru does not. This is the last structural gap against Spain-level depth.
 - **The photo-people ruling**, above.
-- **Canonical totals do not move.** Peru is still not a counted framework: its
-  places carry `note`, not `description`, so the live-walk never sees them and
-  **220 stands**. Publishing Peru as framework #11 is a separate decision with a
-  count propagation attached.
+- ✅ **RESOLVED Sept 24, 2026 — canonical totals DID move, to 227.** This entry
+  used to read "Peru is still not a counted framework… **220 stands**". The
+  live-walk now accepts a founder's verbatim `ladsTake` as a description, so
+  **seven** Peru places count. The two tour-operator office records do not. See
+  the Sept 24 record for why the answer is 227 and not the forecast 229.
 
 ---
 
@@ -1607,39 +1782,53 @@ data is pending), never a month that has already passed.
 
 ---
 
-## 📍 SESSION START STATE — verified September 17, 2026 (evening)
+## 📍 SESSION START STATE — verified September 24, 2026
 
-**Verified from `git log`, `git status` and the working tree, not from memory.**
+**Verified from `git log`, `git status`, the Vercel API and a real browser —
+not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | **`8044141`**, == `origin/main` at session start. Peru, the foundation block and the places rename are all live |
-| `feature/truth-pass-round-2` | **`45c58f6`**, pushed, clean, **2 commits ahead of main** |
+| `main` | **`9a0a47b`**, == `origin/main`. Vercel **READY** (`dpl_7PQ6fXXM…`), SHA confirmed against the deployment |
+| `feature/affiliate-structure` | pushed, clean, **4 commits ahead of main** (3 build + the docs record). Tip moves when the record does — read `git log`, not this cell |
 | Working tree | clean |
-| Pending `/ship` | **The truth pass + `/join`.** Nothing else |
+| Pending `/ship` | **The affiliate structure block.** Nothing else |
 
 **✅ On production:** every displayed count derived · the launch date stated once
 · `/local` with the Live Pulse · every framework's "When to Go" · **`/peru`,
-indexed** · the founder schema v2 and the two-layer place card.
+indexed** · the founder schema v2 and the two-layer place card · **the truth
+pass and `/join`** (merged Sept 17 as `9a0a47b`).
 
-**🟡 Built on the branch, awaiting `/ship`:** Truth Pass Round 2 (13 authored
-fares deleted, Thailand retired from `/when`) and the whole `/join` call to
-action.
+**🟡 Built on the branch, awaiting `/ship`:** the affiliate structure fix, the
+PlanPage tree deletion, and the 227 count ruling. See the Sept 24 record.
+
+🚩 **THE STALENESS THIS BLOCK CLOSED — instance five.** This section previously
+read "Pending `/ship`: the truth pass + `/join`" for **seven days** after they
+merged, and "`ladsTake` filled on 0 of 220" after the count moved. Same failure
+as Aug 26, Aug 28, Aug 31, Sept 2 and Sept 8. **The rule that ends it is now in
+CADENCE below — the docs commit ships in the SAME push as the work it
+describes, never in a later session.**
 
 🚩 **NEXT SESSION, in order:**
-1. **`/ship` the branch** and confirm the Vercel deploy reaches READY. `/join`
-   is the first real call to action this site has ever had; it earns nothing
-   sitting on a branch.
-2. **Work the Verdict Room.** `ladsTake` is filled on **0 of 220** places and
-   that is the product. The tool is built and waiting — see the Sept 17 record.
-3. **Fold the first verdicts back into `src/data/*.js`** once a batch exists.
-4. **Vancouver + Costa Rica frameworks** — Stage 1 research is banked in
+1. **`/ship` the branch** and confirm the Vercel deploy reaches READY.
+2. **CLOUDIMAGE BUNDLE BLOCK** — `dist` is **41 MB against an 8 MB target** and
+   `dist/assets` is only 3.0 MB, so ~38 MB is images. `CloudImage.jsx` already
+   exists and is the answer. **Brady scheduled this as its own session, this
+   week.** Do not start it mid-block.
+3. **Work the Verdict Room.** `ladsTake` is filled on **7 of 227** places — all
+   seven Peru, all Brady's. That is the product, and it is now also the thing
+   the counter rewards.
+4. **Fill booking links on places.** The slot exists on every place card as of
+   Sept 24; 4 of 227 are filled. See the coverage table in the Sept 24 record.
+5. **Vancouver + Costa Rica frameworks** — Stage 1 research banked in
    `internal/brady/`. Needs Brady's per-spot visited-split for Costa Rica.
-5. **THE DUSK FIELD GUIDE, Phase A** — still unstarted.
+6. **THE DUSK FIELD GUIDE, Phase A** — still unstarted.
 
 ⚠️ **Owed by Brady:** Peru's "What We'd Do Differently" words · the photo-people
 ruling · licensed music for the Peru film · the Detroit Maps list · the Costa
-Rica visited-split · a ruling on the Peru `note`→`notes` rename (220 → 229).
+Rica visited-split.
+✅ **Closed Sept 24:** the Peru `note`→`notes` ruling. Granted, and implemented
+against the data rather than the forecast — **227, not 229.** See the record.
 
 ⚠️ **Owed by Brady:** the "What We'd Do Differently" words and section intros for
 Peru · the photo-people ruling · licensed music for the Peru film · the Detroit
@@ -2033,19 +2222,28 @@ Sync command: `npm run sync` (pulls Airtable → src/data/)
 Export command: `npm run export` (src/data/ → CSV)
 Build: `npm run sync:build` (sync + build together)
 
-**Canonical site-wide totals (re-counted September 1, 2026)** — used by Globe
-pins, Featured Work cards, DataSpectacle counters, Globe caption, and System
-section. Single source of truth: the 10 `src/data/*.js` framework files.
-Method: live-walk (any object with `name` AND `description|notes` is a spot).
+**Canonical site-wide totals (re-derived September 24, 2026)** — used by Globe
+pins, Featured Work cards, DataSpectacle counters, Globe caption, and the
+index.html meta descriptions. Single source of truth: the **11**
+`src/data/*.js` framework files listed in `canonical.js`.
+Method: live-walk (any object with `name` AND `description|notes|ladsTake`,
+excluding containers and `recordIsOffice` records).
 
-  220 spots  ·  13 validated cities  ·  10 countries  ·  3 continents
+  227 places  ·  13 validated cities  ·  11 countries  ·  4 continents
+
+🚩 **THIS BLOCK WAS CARRYING THREE STALE NUMBERS, and two of them predate
+today.** It read `220 · 13 · 10 · 3` and "the 10 framework files". Countries
+went to 11 and continents to 4 on **Sept 16** when Peru entered `canonical.js`;
+this table was never updated and sat wrong for eight days beside a correct
+header. **It is a snapshot for reading convenience. The site has never read it,
+which is the only reason it did no damage** — and is exactly why the header
+block at the top of this file says do not type a data count into a page.
 
 (Thailand + Charleston retired Aug 13 — data preserved in `retired/`.
 Asia dropped: Thailand was the only Asian framework.)
 
-Per-framework breakdown — **verified Sept 1, 2026 by importing every file and
-tallying, not by reading the page.** Same walker as App.jsx `countSpots` /
-Globe.jsx `countSpotsByCity`:
+Per-framework breakdown — **re-derived Sept 24, 2026 by importing every file
+through the real `walkSpots`, not by reading the page:**
 
 | Framework | Live count (full walk) | Note |
 |---|---|---|
@@ -2059,18 +2257,29 @@ Globe.jsx `countSpotsByCity`:
 | poland | 15 | |
 | munich | 11 | |
 | vienna | 8 | new file, Aug 29 |
-| **TOTAL** | **220** | |
+| peru | **7** | **new Sept 24** — the founder-voice places. 2 office records excluded |
+| **TOTAL** | **227** | |
 
 ⚠️ The "fully-structured spots" column that used to sit here is GONE. It came
 from the retired 226/21 method and had not been re-counted since Aug 13, so it
 sat quietly stale beside a live column. If that figure is wanted again,
 re-derive it — do not copy the old numbers forward.
 
-🚩 **NOT counted here, deliberately:** `peru.js` (10 day anchors + 25 saved
-places) and `brucePeninsula.js` (17 places). Neither is a published framework,
-and day anchors are not spots. The **300+ launch gate counts published AND
-described spots**, so ingested-but-silent places do not advance it — the 16
-silent Peru places are the worked example.
+🚩 **NOT counted, deliberately — and the list changed Sept 24:**
+- `peru.js`'s **10 day anchors** — a GPS fix is not a place.
+- Peru's **2 tour-operator office records** (`recordIsOffice`) — a downtown
+  Cusco sales desk is a booking record, not somewhere a reader can go.
+- Peru's **16 silent saved places** — no founder words, no description. They
+  stay silent and they stay uncounted.
+- `brucePeninsula.js` (17 places) — not a published framework, no descriptions.
+- **Framework ROOT objects.** Each carries a `name` and a framework-level
+  `ladsTake`; a container is not one of its own places. Caught on Sept 24 when
+  accepting `ladsTake` briefly added +1 to all eleven.
+
+The **300+ launch gate counts published AND described spots**, so
+ingested-but-silent places do not advance it — the 16 silent Peru places are
+the worked example, and the 7 that DO count are the worked example of the
+opposite: a founder's own sentence is what turns a saved pin into a place.
 
 Old figures (`226 / 21`) are retired — they came from a stricter
 "fully-structured" count (spots with `neighborhood + category +

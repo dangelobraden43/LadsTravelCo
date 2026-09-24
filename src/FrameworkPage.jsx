@@ -14,6 +14,7 @@ import {
   BestTime,
   Nearby,
   CollectiveTake,
+  BookingCTA,
 } from './PlaceLayers'
 import { quoteOwnership, auditFounderProvenance } from './data/spotSchema'
 
@@ -549,6 +550,12 @@ export default function FrameworkPage({ data, heroImg }) {
                       <span className="fw-spot-time">{spot.bestTime}</span>
                     )}
                   </div>
+
+                  {/* Renders nothing until a spot carries a `bookingUrl` on an
+                      approved partner host. The slot existing is the point —
+                      before today there was nowhere on a place card for a
+                      booking link to go. */}
+                  <BookingCTA place={spot} className="fw-spot-book" />
                 </div>
               )
             })}
@@ -583,6 +590,11 @@ export default function FrameworkPage({ data, heroImg }) {
                           )}
                           {spot.price && <span className="fw-spot-price">{spot.price}</span>}
                         </div>
+                        {/* The legacy category-array card gets the same slot.
+                            Seven of the eleven frameworks still render through
+                            this path, so leaving it out would have capped
+                            reachable coverage at the four v2 frameworks. */}
+                        <BookingCTA place={spot} className="fw-spot-book" />
                       </div>
                     )
                   })}
@@ -596,49 +608,25 @@ export default function FrameworkPage({ data, heroImg }) {
         <div className="fw-section-label">DAY TRIPS</div>
         <h2 className="fw-section-title">{data.dayTrips.length} Day Trips We Recommend</h2>
         <div className="fw-trips-grid">
-          {data.dayTrips.map((trip, i) => {
-            /* ENDORSEMENT GRADIENT — two separate questions, two separate fields.
-               1. Did we do the PLACE?   → `ladsRating`. Drives the visible chip.
-               2. Is the BOOKABLE PRODUCT the exact version we did?
-                                        → `bookingEndorsed` (optional).
-               A rating is our recorded evidence for (1). It used to drive the CTA
-               too, which meant the only way to get a neutral CTA was to delete the
-               rating — deleting a true fact to avoid an untrue claim.
-               `bookingEndorsed: false` now forces the neutral CTA while the rating
-               chip stays. Absent/undefined = the original behaviour exactly.
-               `true` is only meaningful alongside a rating: without evidence we
-               still refuse to make the claim. */
-            const endorsed = Boolean(trip.ladsRating) && trip.bookingEndorsed !== false
-            return (
-              <div key={i} className="fw-trip">
-                <div className="fw-trip-header">
-                  <div>
-                    <div className="fw-trip-name">{trip.name}</div>
-                    <div className="fw-trip-from">FROM {trip.from.toUpperCase()}</div>
-                  </div>
-                  {trip.ladsRating && <div className="fw-trip-rating">Lads: {trip.ladsRating}</div>}
+          {data.dayTrips.map((trip, i) => (
+            /* The endorsement gradient and the link-tagging gate that used to
+               be written out inline here now live in `BookingCTA` +
+               `src/utils/affiliate.js`, because places need exactly the same
+               two rules and a second copy would have drifted from this one.
+               Behaviour for day trips is unchanged: `ladsRating` is still the
+               only evidence, `bookingEndorsed: false` still forces neutral. */
+            <div key={i} className="fw-trip">
+              <div className="fw-trip-header">
+                <div>
+                  <div className="fw-trip-name">{trip.name}</div>
+                  <div className="fw-trip-from">FROM {trip.from.toUpperCase()}</div>
                 </div>
-                <p className="fw-trip-desc">{trip.description}</p>
-                {trip.bookingUrl && (
-                  <a
-                    href={trip.bookingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`fw-trip-book${endorsed ? ' fw-trip-book--endorsed' : ''}`}
-                  >
-                    {endorsed ? (
-                      <>
-                        <span className="fw-trip-book-flag">WE DID THIS</span>
-                        Book on {trip.bookingPlatform} &rarr;
-                      </>
-                    ) : (
-                      <>Book this tour &rarr;</>
-                    )}
-                  </a>
-                )}
+                {trip.ladsRating && <div className="fw-trip-rating">Lads: {trip.ladsRating}</div>}
               </div>
-            )
-          })}
+              <p className="fw-trip-desc">{trip.description}</p>
+              <BookingCTA place={trip} className="fw-trip-book" />
+            </div>
+          ))}
         </div>
       </section>
 

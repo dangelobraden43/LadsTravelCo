@@ -32,15 +32,65 @@
  * countSpotsByCity have used since June 7 2026: any object carrying a `name`
  * AND a `description` or `notes` is a spot. Day anchors, category headings and
  * bare coordinate records are not spots and are not counted — which is why
- * peru.js's 10 day anchors and the 16 silent saved places do not move a
- * total. The `seen` set guards the cycles that cross-referenced data can
- * introduce. */
+ * peru.js's 10 day anchors and the silent saved places do not move a total.
+ * The `seen` set guards the cycles that cross-referenced data can introduce.
+ *
+ * ── AMENDED September 24, 2026, on Brady's note→notes ruling ──
+ *
+ * A place carrying a founder's verbatim `ladsTake` IS a described place. It is
+ * described by a person rather than by a research pass, which is the stronger
+ * of the two and the entire product. Counting `description` while ignoring
+ * `ladsTake` meant Peru's 25 places contributed 0 to the canonical total while
+ * nine of them carried Brady's own words — the site under-reporting its single
+ * most valuable content.
+ *
+ * ⛔ WHY NOT THE OBVIOUS FIX. The recorded plan was to rename peru.js's `note`
+ * key to `notes` and let the walker see it. That would have counted the wrong
+ * nine. `note` in peru.js does NOT hold Brady's voice — it holds ENGINEERING
+ * PROVENANCE: EXIF anchor coordinates, Tivoli-rule reasoning, and instructions
+ * to the renderer like "Do NOT render this as the trek's location". Promoting
+ * those would have published our own paperwork onto place cards, which is the
+ * exact thing Brady ruled against on /peru, and would have passed the 300+
+ * gate on entries that describe nothing to a reader. The gate is "published
+ * AND described"; padding it with silent entries fails it rather than passing
+ * it. `ladsTake` is the key that actually holds a description.
+ *
+ * ⛔ OFFICE RECORDS ARE NOT PLACES. A record whose coordinate is a tour
+ * operator's downtown sales office is a booking record, not somewhere a reader
+ * can go — peru.js flags two of them (`Salkantay Trek` and `Red Valley Cusco`,
+ * both sitting in central Cusco ~100 km from what they name) with
+ * `recordIsOffice: true`, and PeruMap already refuses to draw them. They are
+ * now excluded from the count for the same reason, which is why this ruling
+ * lands on 227 rather than the forecast 229: that forecast counted both office
+ * records as places. The duplicate-quote guard in PeruPage already resolves
+ * the one shared `ladsTake` in favour of the real place (Vinicunca) over the
+ * office record, so no founder sentence is counted twice.
+ */
 import { FRAMEWORKS } from '../data/canonical.js'
+
+/* A framework's ROOT object carries a `name` and, on every one of the eleven,
+ * a framework-level `ladsTake` — the founder quote FrameworkPage renders once
+ * at the foot of the page, about the destination as a whole. It is not a
+ * place. Counting it added exactly +1 to all eleven frameworks the first time
+ * this walk accepted `ladsTake`, which is the kind of silent inflation this
+ * whole derived-numbers system exists to prevent. A node holding an array of
+ * places is a container, never one of them. */
+const isContainer = (node) =>
+  Array.isArray(node.spots) || Array.isArray(node.categories) || Array.isArray(node.dayTrips)
 
 export function walkSpots(node, seen = new Set(), out = []) {
   if (!node || typeof node !== 'object' || seen.has(node)) return out
   seen.add(node)
-  if (!Array.isArray(node) && node.name && (node.description || node.notes)) out.push(node)
+  const described = node.description || node.notes || node.ladsTake
+  if (
+    !Array.isArray(node) &&
+    node.name &&
+    described &&
+    node.recordIsOffice !== true &&
+    !isContainer(node)
+  ) {
+    out.push(node)
+  }
   for (const v of Object.values(node)) {
     if (v && typeof v === 'object') walkSpots(v, seen, out)
   }
