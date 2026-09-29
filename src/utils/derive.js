@@ -66,7 +66,7 @@
  * the one shared `ladsTake` in favour of the real place (Vinicunca) over the
  * office record, so no founder sentence is counted twice.
  */
-import { FRAMEWORKS } from '../data/canonical.js'
+import { FRAMEWORKS, PIN_ATTRIBUTION } from '../data/canonical.js'
 
 /* A framework's ROOT object carries a `name` and, on every one of the eleven,
  * a framework-level `ladsTake` — the founder quote FrameworkPage renders once
@@ -78,19 +78,24 @@ import { FRAMEWORKS } from '../data/canonical.js'
 const isContainer = (node) =>
   Array.isArray(node.spots) || Array.isArray(node.categories) || Array.isArray(node.dayTrips)
 
+/* THE one rule for "is this node a place we count". walkSpots and the globe's
+ * per-city bucketing both call it, so they cannot drift apart again (Globe.jsx
+ * kept its own copy until Sept 29 2026 and summed to 220 under a 227 caption). */
+export const isCountedSpot = (node) =>
+  Boolean(
+    node &&
+    typeof node === 'object' &&
+    !Array.isArray(node) &&
+    node.name &&
+    (node.description || node.notes || node.ladsTake) &&
+    node.recordIsOffice !== true &&
+    !isContainer(node)
+  )
+
 export function walkSpots(node, seen = new Set(), out = []) {
   if (!node || typeof node !== 'object' || seen.has(node)) return out
   seen.add(node)
-  const described = node.description || node.notes || node.ladsTake
-  if (
-    !Array.isArray(node) &&
-    node.name &&
-    described &&
-    node.recordIsOffice !== true &&
-    !isContainer(node)
-  ) {
-    out.push(node)
-  }
+  if (isCountedSpot(node)) out.push(node)
   for (const v of Object.values(node)) {
     if (v && typeof v === 'object') walkSpots(v, seen, out)
   }
@@ -98,6 +103,45 @@ export function walkSpots(node, seen = new Set(), out = []) {
 }
 
 export const countSpots = (data) => walkSpots(data).length
+
+/* Spots bucketed by city for the globe. A spot inherits its parent's
+ * `city`/`area` when its own is empty; spots with no city at all land in
+ * '__primary__' and fold into the framework's primary pin. `total` always
+ * equals walkSpots(data).length (tools/tests/pins.test.mjs). */
+export function countSpotsByCity(data) {
+  const buckets = {}
+  let total = 0
+  const seen = new Set()
+  const walk = (o, parentCity) => {
+    if (!o || typeof o !== 'object' || seen.has(o)) return
+    seen.add(o)
+    const city = (!Array.isArray(o) && (o.city || o.area)) || parentCity
+    if (isCountedSpot(o)) {
+      const bucket = city || '__primary__'
+      buckets[bucket] = (buckets[bucket] || 0) + 1
+      total += 1
+    }
+    for (const v of Object.values(o)) walk(v, city)
+  }
+  walk(data, null)
+  return { buckets, total }
+}
+
+/* One pin's count. Every spot maps to exactly one pin: a sub-city with its
+ * own pin takes its bucket; everything else folds into the primary pin.
+ * Attribution lives in canonical.js with the rest of the geography. */
+export function derivePinCount(data, slug, pinCity) {
+  const attr = PIN_ATTRIBUTION[slug]
+  if (!attr || !data) return 0
+  const { buckets, total } = countSpotsByCity(data)
+  if (pinCity === attr.primary) {
+    let subTotal = 0
+    for (const bucketKey of Object.values(attr.subs)) subTotal += buckets[bucketKey] || 0
+    return total - subTotal
+  }
+  const bucketKey = attr.subs[pinCity]
+  return bucketKey ? buckets[bucketKey] || 0 : 0
+}
 
 /* Spots in one city. Multi-city frameworks state a per-city split in their
  * overview prose - dublin's "Dublin and Galway", spain's "Barcelona and

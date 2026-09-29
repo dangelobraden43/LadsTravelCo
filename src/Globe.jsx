@@ -16,6 +16,8 @@ import viennaData from './data/vienna'
 import munichData from './data/munich'
 import polandData from './data/poland'
 import michiganData from './data/michigan'
+import peruData from './data/peru'
+import { derivePinCount } from './utils/derive'
 import {
   VALIDATED_CITY_PINS,
   RESEARCH_CITY_PINS,
@@ -33,66 +35,17 @@ const FRAMEWORK_DATA = {
   munich: munichData,
   poland: polandData,
   michigan: michiganData,
+  peru: peruData,
 }
 
 const R = 1.5
 
-/* ===== SPOT COUNTING ===== */
-// Same walker as App.jsx countSpots, but bucketed by city/area.
-// Any object with `name` AND (`description` || `notes`) is a spot.
-// Spots inherit their parent's city when their own city field is empty.
-function countSpotsByCity(data) {
-  const buckets = {}
-  let total = 0
-  const walk = (o, parentCity) => {
-    if (!o) return
-    if (Array.isArray(o)) return o.forEach((x) => walk(x, parentCity))
-    if (typeof o !== 'object') return
-    const city = o.city || o.area || parentCity
-    if (o.name && (o.description || o.notes)) {
-      const bucket = city || '__primary__'
-      buckets[bucket] = (buckets[bucket] || 0) + 1
-      total += 1
-    }
-    Object.values(o).forEach((v) => walk(v, city || parentCity))
-  }
-  walk(data, null)
-  return { buckets, total }
-}
-
-/* ===== ATTRIBUTION ===== */
-// Per Brady's spec: every spot maps to exactly one pin.
-// - A spot tagged to a city that has its own pin → counted on that city's pin.
-// - All other spots in the framework (untagged, sub-regions without pins,
-//   the framework's anchor city) → folded into the framework's PRIMARY pin.
-// `subs` maps pinCity → bucket key in the data file.
-const PIN_ATTRIBUTION = {
-  dublin: { primary: 'Dublin', subs: { Galway: 'Galway' } },
-  spain: { primary: 'Barcelona', subs: { Madrid: 'Madrid' } },
-  rome: { primary: 'Rome', subs: {} },
-  australia: { primary: 'Sydney', subs: { Tasmania: 'Hobart' } },
-  iceland: { primary: 'Reykjavik', subs: {} },
-  prague: { primary: 'Prague', subs: {} },
-  vienna: { primary: 'Vienna', subs: {} },
-  munich: { primary: 'Munich', subs: {} },
-  poland: { primary: 'Krakow', subs: {} },
-  michigan: { primary: 'Michigan', subs: {} },
-}
-
-function derivePinCount(slug, pinCity) {
-  const attr = PIN_ATTRIBUTION[slug]
-  if (!attr) return 0
-  const { buckets, total } = countSpotsByCity(FRAMEWORK_DATA[slug])
-  if (pinCity === attr.primary) {
-    let subTotal = 0
-    for (const bucketKey of Object.values(attr.subs)) {
-      subTotal += buckets[bucketKey] || 0
-    }
-    return total - subTotal
-  }
-  const bucketKey = attr.subs[pinCity]
-  return bucketKey ? buckets[bucketKey] || 0 : 0
-}
+/* ===== SPOT COUNTING =====
+ * Not done here. Pin counts come from derivePinCount in src/utils/derive.js,
+ * which uses the same isCountedSpot rule as the homepage total, and the
+ * attribution table lives in canonical.js. This file kept its own walker
+ * until Sept 29 2026; it had not learned the Sept 24 rules and the gold pins
+ * summed to 220 under a 227 caption. tools/tests/pins.test.mjs pins them. */
 
 /* ===== CITIES =====
  *
@@ -111,7 +64,7 @@ function derivePinCount(slug, pinCity) {
  */
 const VALIDATED_PINS = VALIDATED_CITY_PINS.map((c) => ({
   ...c,
-  n: derivePinCount(c.slug, c.city),
+  n: derivePinCount(FRAMEWORK_DATA[c.slug], c.slug, c.city),
   validated: true,
 }))
 
