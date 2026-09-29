@@ -441,8 +441,8 @@ in staging and must never be typed onto a page.
 3. **Every page carries the site-wide meta description**; per-page descriptions are
    added alongside, not instead. Real fix: pre-render (or strip the static tag once
    pages set their own).
-4. `/gift/michigan` has no title/canonical (unlinked personal gift page; Brady to decide
-   keep, noindex or retire).
+4. ✅ **`/gift/michigan` RETIRED Sept 29 (Brady):** an Apr 15 standalone "premium gift" Michigan page,
+   unlinked since May. Deleted; `/gift/*` permanently redirects to `/local`, which replaces it.
 
 ### 6 — THE FINAL REVIEW (independent, Opus) — 0 Critical, 3 Important, all fixed
 
