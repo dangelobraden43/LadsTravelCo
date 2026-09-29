@@ -4,6 +4,7 @@ import { Nav } from './App'
 import LadsSection from './LadsSection'
 import './LadsSection.css'
 import Footer from './Footer'
+import { Helmet } from 'react-helmet-async'
 import { TOTAL_SPOTS } from './utils/siteStats.js'
 
 function useReveal(threshold = 0.15) {
@@ -46,6 +47,15 @@ function Reveal({ children, style = {}, delay = 0, type = 'up' }) {
 export default function LadsPage() {
   return (
     <>
+      <Helmet>
+        <title>Who We Are — The Lads Travel Co.</title>
+        <meta
+          name="description"
+          content="Meet the founders of The Lads Travel Co. and how we plan trips: AI research, independent fact-checking and hands-on planning."
+        />
+        <link rel="canonical" href="https://ladstravel.com/lads" />
+        <meta property="og:url" content="https://ladstravel.com/lads" />
+      </Helmet>
       <Nav scrolled={true} />
       <div style={{ background: 'var(--bg)', minHeight: '100vh', paddingTop: 80 }}>
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 32px 40px' }}>

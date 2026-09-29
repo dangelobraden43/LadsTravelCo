@@ -8,7 +8,7 @@ const COLLECTIONS = [
   { label: 'Outdoors', path: '/outdoors' },
   { label: 'Bucket List', path: '/bucket-list' },
   { label: 'Local', path: '/local' },
-  { label: 'Shop', path: '/shop' },
+  // Shop hidden Sept 29 2026 while the Shopify store is suspended.
 ]
 
 const SOCIALS = [

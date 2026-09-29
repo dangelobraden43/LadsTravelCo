@@ -70,6 +70,7 @@ LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   homepage, `/local` and its own page, plus a gold nav CTA. Two tracks: the
   founding-member list, and a 2026 trip enquiry. See the Sept 17 record.
 LIVE: `/privacy` + footer affiliate disclosure.
+⏸ **`/shop` HIDDEN since Sept 29, 2026** — Shopify store suspended. Out of nav/footer, `/shop` 302s to `/`. See the Sept 29 record §7 to restore.
 AFFILIATES: **VIATOR-DIRECT ONLY** (company Viator Partners account).
   Link format is PINNED from real dashboard links — append
   `?pid=P00297284&mcid=42383&medium=link` to a Viator PRODUCT url. Use
@@ -382,6 +383,49 @@ in staging and must never be typed onto a page.
 5. **Two pilot questions:** (a) may a trip budget be *added up by an agent* from
    published prices, or only quoted from a published source? (b) may places the
    agents *discovered* (not on a founder's list) appear in a framework, as copper?
+
+### 7 — EVENING: SHOP HIDDEN, HOW IT WORKS MOVED, FULL QUALITY SWEEP (branch `fix/quality-sweep`)
+
+- ✅ **Production verified:** Vercel READY for the research-agents merge (`8057f29`);
+  the live page showed How It Works, 13 agents, 14 cities, the survey. ⚠️ The domain
+  switched ~1 minute AFTER READY — check the served `index-*.js` against the local
+  build before concluding a deploy is stale. Phones may show a cached page.
+- ⏸ **`/shop` HIDDEN (Shopify store suspended).** Removed from nav and footer;
+  `/shop` → `/` as a **temporary (302)** redirect plus a client `<Navigate>`.
+  `ShopPage.jsx` stays in `src/`, unrouted and unbundled. To restore: re-add the
+  nav/footer items, the route and the `/shop` rewrite; drop the redirect.
+- **How It Works moved directly beneath the globe** (Brady).
+- **Quality sweep:** a Playwright audit of 21 routes at 1440 and 390 — overflow,
+  broken images, alt text, retired links, headings, titles/canonicals, tap targets,
+  banned/stale phrasing. **Structure is clean everywhere** (0 overflow, 0 broken
+  images, 0 missing alt, 0 retired links, one h1 per page, no JS errors).
+  Fixed in this batch:
+  1. **`/bucket-list` was stale:** Vivid Sydney "HAPPENING NOW" 3.5 months after it
+     ended; Oktoberfest "COMING SOON" while running. Status is now computed from
+     `start`/`end` (`src/utils/events.js`, `tools/tests/events.test.mjs`); past
+     events drop off; "framework coming soon" lines removed.
+  2. **`og:image` pointed at a file that never existed** — every shared link had no
+     preview image. `public/og-image.jpg` (1200×630 hero, 136 KB) + width/height +
+     `twitter:image`.
+  3. `/global`, `/when`, `/lads` had no title or canonical — added.
+  4. Dublin "Happy hour available (times TBD)" removed (a placeholder on a live page).
+  5. How It Works "Learn more" links raised to 44px tap targets.
+
+**⏭️ QUALITY BACKLOG — found by the sweep, NOT fixed, in priority order:**
+1. **"free" in framework copy** (~12 lines across 10 frameworks: "Church is free",
+   "Free first Sunday", "Gardens are free", "free sessions"). Brady ruled "no
+   admission charge". Some lines may be founder-written — sweep with his review.
+2. **Nav links are 20px tall on phones** (Global/Outdoors/…); "← Back home" 16px;
+   footer email 16px. Needs a nav padding pass (the mobile nav has broken before —
+   click-test it).
+3. **Every page carries the site-wide meta description**; per-page descriptions are
+   added alongside, not instead. Real fix: pre-render (or strip the static tag once
+   pages set their own).
+4. **`/michigan` shows a "Getting There — COMING SOON" logistics block** and
+   `/outdoors` shows three "COMING SOON" trek cards: absence announced, against the
+   Peru presentation rules.
+5. **Footer socials are `#`** — real URLs owed by Brady.
+6. `/gift/michigan` has no title/canonical (unlinked; decide keep, noindex or retire).
 
 ### 6 — THE FINAL REVIEW (independent, Opus) — 0 Critical, 3 Important, all fixed
 

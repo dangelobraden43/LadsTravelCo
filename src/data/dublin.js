@@ -439,7 +439,6 @@ const dublinData = {
         "Ireland's oldest pub, established 1198. Award-winning food and live music seven nights from 9pm. Touristy but the history is real and the courtyard is worth a drink.",
       priceRange: '$$',
       hours: 'Daily 12pm-late (food until 9pm)',
-      happyHour: 'Happy hour available (times TBD)',
       wayToSave:
         'Go for a pint in the courtyard, skip the full meal. Sunday trad session 3-6pm is free.',
       bestTime: 'evening',

@@ -129,7 +129,7 @@ function Nav({ scrolled }) {
     { label: 'Outdoors', short: 'Outdoors', path: '/outdoors' },
     { label: 'Bucket List', short: 'Bucket', path: '/bucket-list' },
     { label: 'Local', short: 'Local', path: '/local' },
-    { label: 'Shop', short: 'Shop', path: '/shop' },
+    // Shop hidden Sept 29 2026 while the Shopify store is suspended. /shop redirects to /.
   ]
 
   return (
@@ -912,6 +912,12 @@ export default function App() {
             </div>
           </Reveal>
         </div>
+
+        {/* How it works sits directly beneath the globe (Brady, Sept 29 2026):
+            the map shows where we cover, this shows how every trip is built. */}
+        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 32px 110px' }}>
+          <HowItWorks />
+        </section>
       </WorldSection>
 
       {/* ===== WORLD 3: CITIES ===== */}
@@ -1229,9 +1235,9 @@ export default function App() {
       {/* ===== WORLD 6: SYSTEM ===== */}
       <WorldSection worldId="system">
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
-          {/* How it works: replaced the "HOW IT WORKS / The System" header and the
-              five-word Research / Validate / Rate / Build / Deliver row on Sept 29 2026. */}
-          <HowItWorks />
+          {/* The "HOW IT WORKS / The System" header and the five-word Research /
+              Validate / Rate / Build / Deliver row were replaced on Sept 29 2026 by
+              <HowItWorks />, which now sits directly beneath the globe. */}
 
           {/* Stat Cards */}
           <div
