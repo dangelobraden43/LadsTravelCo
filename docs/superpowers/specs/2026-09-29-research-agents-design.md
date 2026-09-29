@@ -35,6 +35,28 @@ more than exists.
   "free" pricing copy about OUR services, never invent spots/prices, two-layer card.
 - The Notion review queue from `/enrich` stays the human gate before anything publishes.
 
+### Research-tier destinations are FIRST-CLASS (Brady, Sept 29)
+
+**The Lads are not committed to only sending people where a founder has been.** Most
+future trip planning — and the national parks guide above all — will be places nobody has
+walked. The pipeline must produce a trustworthy product for those destinations on its own,
+not a lesser draft waiting for a visit. Two modes, one pipeline:
+
+| | **Walked** (founder has been) | **Researched** (nobody has been) |
+|---|---|---|
+| Where the place list comes from | Founder's saved Maps list, read by provenance | **Discovery** by `lads-destination-scout` / `lads-parks-trails` from official and primary sources |
+| Where coordinates come from | Google place ID off the saved list | **An authoritative record for that exact entity**: NPS/Parks Canada unit and feature pages, Wikidata QID / Wikipedia coordinates API, the official site. Never a geocoder search on a name — the Tivoli rule, adapted for places with no saved list |
+| Sourcing bar | ≥1 source per claim, 2 for money/time | **≥2 independent sources for every claim a traveller acts on**; verifier runs stricter |
+| How it renders | Gold, founder voice where given | **Copper, framed proudly as researched-not-yet-walked** — the Dusk Field Guide's two visible tiers. Never styled as gold; never apologised for |
+| Founder role | Verdicts, ladsTake | Review and approve the packet — curation, not validation |
+
+The orchestrator takes `--mode walked|researched` (default: detected — walked if a
+founder list or validated data file exists). The packet header states the mode, so a
+reviewer always knows which bar the findings were held to.
+
+**The parks guide is the primary customer of researched mode.** Pilot 2 (section 9) is an
+unvisited national park, so researched mode is proven on the product that needs it most.
+
 ---
 
 ## 2. THE SHAPE
@@ -263,6 +285,12 @@ the pilot passes** — scheduling an unproven agent automates its mistakes.
    banked Google-pass comparison. Then the full roster.
 6. **Side-by-side comparison** vs the banked file — reported honestly, including where the
    agents lost.
+6b. **Pilot 2: an unvisited national park in researched mode** — `lads-provenance`,
+   `lads-parks-trails`, `lads-timing-events`, `lads-getting-around`, `lads-costs-budget`,
+   `lads-entry-essentials` → verifier → architect. Proposed: **Pictured Rocks National
+   Lakeshore** (Michigan — reachable, and one of the three Dusk Field Guide Phase A poster
+   samples), unless Brady names another. Output shaped to the Dusk Field Guide `parkData`
+   schema so Phase A builds on real data.
 7. **Homepage derivation** + `npm run build` + render check at 1440 and 390.
 8. **Checkpoint commit + push after every step.** CLAUDE.md record in the same push as any
    merge.
