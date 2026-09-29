@@ -417,21 +417,30 @@ in staging and must never be typed onto a page.
   4. Dublin "Happy hour available (times TBD)" removed (a placeholder on a live page).
   5. How It Works "Learn more" links raised to 44px tap targets.
 
-**⏭️ QUALITY BACKLOG — found by the sweep, NOT fixed, in priority order:**
-1. **"free" in framework copy** (~12 lines across 10 frameworks: "Church is free",
-   "Free first Sunday", "Gardens are free", "free sessions"). Brady ruled "no
-   admission charge". Some lines may be founder-written — sweep with his review.
-2. **Nav links are 20px tall on phones** (Global/Outdoors/…); "← Back home" 16px;
-   footer email 16px. Needs a nav padding pass (the mobile nav has broken before —
-   click-test it).
+**✅ QUICK FIXES SHIPPED (late Sept 29, branch `fix/quick-fixes`):**
+- **Nav pills 20px → 40px tall on phones** (`index.css`, ≤640px). Click-tested at 390
+  and 320: no overflow, header height unchanged, a tap lands on the right route.
+- **`/michigan` "COMING SOON" logistics card removed:** the Logistics section now
+  renders only when a framework has `logistics` or `costModel` (`FrameworkPage.jsx`).
+  Dublin's still renders.
+- **`/outdoors` trek badges:** "Coming soon" → "On the list" (no date promised).
+- **Footer "Follow Along" hidden** while every social link is `#`. Fill `SOCIALS` in
+  `Footer.jsx` with real URLs and the column reappears on its own.
+
+**⏭️ QUALITY BACKLOG — still open, in priority order:**
+1. **"free" in framework copy — ~130 occurrences across 11 frameworks, NOT ~12.**
+   (The first sweep reported one match per page; the recount is from `src/data`.)
+   Brady ruled "no admission charge" for no-cost entry. ⚠️ **Not a find-and-replace:**
+   "Bobby's Free" is a bar name, "KEF Duty-Free" a shop, itinerary "Free Day" means
+   free *time*, "free pasta hour" is a hostel's own offer, and `priceRange: 'Free'`
+   renders as a chip. Do it as its own pass, line by line, and never touch
+   `ladsTake`.
+2. **"← Back home" (16px) and footer email links (16px)** are still small tap targets.
 3. **Every page carries the site-wide meta description**; per-page descriptions are
    added alongside, not instead. Real fix: pre-render (or strip the static tag once
    pages set their own).
-4. **`/michigan` shows a "Getting There — COMING SOON" logistics block** and
-   `/outdoors` shows three "COMING SOON" trek cards: absence announced, against the
-   Peru presentation rules.
-5. **Footer socials are `#`** — real URLs owed by Brady.
-6. `/gift/michigan` has no title/canonical (unlinked; decide keep, noindex or retire).
+4. `/gift/michigan` has no title/canonical (unlinked personal gift page; Brady to decide
+   keep, noindex or retire).
 
 ### 6 — THE FINAL REVIEW (independent, Opus) — 0 Critical, 3 Important, all fixed
 

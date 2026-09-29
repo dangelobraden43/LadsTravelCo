@@ -371,6 +371,11 @@ a {
   .nav-pill {
     font-size: 11px !important;
     padding: 6px 12px !important;
+    /* Tap targets measured 20px tall at 390 on Sept 29 2026. 40px is the
+       tallest the pill bar takes without growing the header. */
+    min-height: 40px !important;
+    display: inline-flex !important;
+    align-items: center;
   }
   .nav-label-full {
     display: none;
