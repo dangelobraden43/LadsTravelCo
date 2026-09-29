@@ -9,7 +9,15 @@ import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
 import Footer from './Footer'
 import EarlyAccess from './EarlyAccess'
-import { TOTAL_SPOTS, VALIDATED_CITIES, COUNTRIES, CONTINENTS } from './utils/siteStats.js'
+import {
+  TOTAL_SPOTS,
+  VALIDATED_CITIES,
+  COUNTRIES,
+  CONTINENTS,
+  AGENT_COUNT,
+  AGENT_ROSTER,
+} from './utils/siteStats.js'
+import HowItWorks from './HowItWorks'
 import { LAUNCH_LABEL_UPPER } from './utils/launch.js'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
 const Globe = lazy(() => import('./Globe'))
@@ -953,10 +961,13 @@ export default function App() {
               }}
             >
               {[
-                { label: 'Browse Destinations', path: '/explore' },
-                { label: 'Adventure & Treks', path: '/adventure' },
+                /* Pointed at retired paths until Sept 29 2026: /explore and /adventure
+                   only reached their pages through redirects, and /plan redirected back
+                   to this homepage, so the primary button did nothing. */
+                { label: 'Browse Destinations', path: '/global' },
+                { label: 'Adventure & Treks', path: '/outdoors' },
                 { label: 'When to Travel', path: '/when' },
-                { label: 'Start Planning', path: '/plan', primary: true },
+                { label: 'Start Planning', path: '/join', primary: true },
               ].map((btn) => (
                 <button
                   key={btn.path}
@@ -1186,7 +1197,18 @@ export default function App() {
                   lineHeight: 1.5,
                 }}
               >
-                Framework coming soon.
+                {/* Read "Framework coming soon." until Sept 29 2026, three weeks after
+                    /peru went live on Sept 8. */}
+                <a
+                  href="/peru"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    navigate('/peru')
+                  }}
+                  style={{ color: '#d4a843', textDecoration: 'none' }}
+                >
+                  Open the Peru framework &rarr;
+                </a>
               </p>
             </div>
           </Reveal>
@@ -1207,98 +1229,9 @@ export default function App() {
       {/* ===== WORLD 6: SYSTEM ===== */}
       <WorldSection worldId="system">
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
-          <Reveal>
-            <div style={{ textAlign: 'center', marginBottom: 60 }}>
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: 4,
-                  color: '#b8886e',
-                  marginBottom: 16,
-                  textTransform: 'uppercase',
-                }}
-              >
-                HOW IT WORKS
-              </div>
-              <h2
-                style={{
-                  fontFamily: "'Fraunces', var(--display)",
-                  fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                  color: 'var(--cream, #e8dcc8)',
-                  lineHeight: 1.15,
-                  marginBottom: 12,
-                }}
-              >
-                The System
-              </h2>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 15,
-                  color: '#b8ad9a',
-                  maxWidth: 520,
-                  margin: '0 auto',
-                }}
-              >
-                {TOTAL_SPOTS} places. {COUNTRIES} countries. Built on data, not guesses.
-              </p>
-            </div>
-          </Reveal>
-
-          {/* 5-Step Process */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: 8,
-              flexWrap: 'wrap',
-              marginBottom: 60,
-            }}
-          >
-            {['Research', 'Validate', 'Rate', 'Build', 'Deliver'].map((step, i) => (
-              <Reveal key={step} delay={i * 80}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div
-                    style={{
-                      background: '#1c1915',
-                      border: '1px solid rgba(201,168,76,0.2)',
-                      borderRadius: 24,
-                      padding: '10px 20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 10,
-                        fontWeight: 700,
-                        color: '#d4a843',
-                      }}
-                    >
-                      0{i + 1}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: '#e8dcc8',
-                      }}
-                    >
-                      {step}
-                    </span>
-                  </div>
-                  {i < 4 && <span style={{ color: '#5a5550', fontSize: 16 }}>{'\u2192'}</span>}
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          {/* How it works: replaced the "HOW IT WORKS / The System" header and the
+              five-word Research / Validate / Rate / Build / Deliver row on Sept 29 2026. */}
+          <HowItWorks />
 
           {/* Stat Cards */}
           <div
@@ -1321,9 +1254,9 @@ export default function App() {
                 sub: `${CONTINENTS} continents. ${VALIDATED_CITIES} cities.`,
               },
               {
-                value: '6',
+                value: String(AGENT_COUNT),
                 label: 'AI RESEARCH AGENTS',
-                sub: 'Flight, cost, neighborhood, validation, booking, local intel.',
+                sub: `${AGENT_ROSTER.filter((a) => a.group !== 'verify').length} research specialists and ${AGENT_ROSTER.filter((a) => a.group === 'verify').length} independent fact-checker. Founders validate.`,
               },
             ].map((stat, i) => (
               <Reveal key={stat.label} delay={i * 100}>
@@ -1397,8 +1330,32 @@ export default function App() {
                   marginBottom: 12,
                 }}
               >
-                "90% of AI-generated travel itineraries contain factual errors. We fix that."
+                {/* Was "90% of AI-generated travel itineraries contain factual errors",
+                    unsourced on the page and resting on a May 2024 ChatGPT-3.5 test.
+                    Replaced Sept 29 2026 with a current, cited survey. An external
+                    statistic must carry its source on the page, and gets re-checked
+                    with the rest of the site's dated claims. */}
+                "More than half of travelers who planned with AI hit at least one bad
+                recommendation. Our research agents source and fact-check every finding, then we fit
+                the trip to your group, your budget and every saving along the way."
               </p>
+              <a
+                href="https://www.boston25news.com/news/survey-ai/QRFTAFVXAU4JDOMIMCVSBFROFY/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'block',
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 12,
+                  color: '#8a8070',
+                  marginBottom: 14,
+                  textDecoration: 'underline',
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Greetwell survey of 1,000 U.S. leisure travelers, August 2026: 55% of AI users hit a
+                bad recommendation.
+              </a>
               <div
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
@@ -1551,7 +1508,10 @@ export default function App() {
           <Reveal>
             <div style={{ textAlign: 'center' }}>
               <button
-                onClick={() => navigate('/plan')}
+                onClick={
+                  () =>
+                    navigate('/join') /* was '/plan', which has redirected to / since May 31 2026 */
+                }
                 style={{
                   padding: '16px 40px',
                   borderRadius: 28,

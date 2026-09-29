@@ -1,0 +1,1 @@
+- [Source behaviour](reference_source_behaviour.md) — which sites block or mislead, how to spend a 12-call budget, validator gotchas

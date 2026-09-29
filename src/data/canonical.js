@@ -84,7 +84,31 @@ export const VALIDATED_CITY_PINS = [
   { city: 'Munich', lat: 48.14, lng: 11.58, slug: 'munich', primary: true },
   { city: 'Krakow', lat: 50.06, lng: 19.94, slug: 'poland', primary: true },
   { city: 'Michigan', lat: 42.96, lng: -85.67, slug: 'michigan', primary: true, showLabel: true },
+  /* Graduated Sept 29 2026, ruled by Brady. Peru has counted 7 places since
+   * Sept 24 (the founder-voice places); the founders walked Cusco in May 2026.
+   * This moves validated cities 13 -> 14 and makes the gold pins sum to the
+   * site total. */
+  { city: 'Cusco', lat: -13.52, lng: -71.97, slug: 'peru', primary: true, showLabel: true },
 ]
+
+/* Which pin each framework's spots land on. Every spot maps to exactly one
+ * pin: a sub-city with its own pin takes its bucket (value = the city/area
+ * string in the data file); everything else folds into `primary`. Consumed by
+ * derivePinCount in src/utils/derive.js. Moved here from Globe.jsx on Sept 29
+ * 2026 so a new framework is added in this file and nowhere else. */
+export const PIN_ATTRIBUTION = {
+  dublin: { primary: 'Dublin', subs: { Galway: 'Galway' } },
+  spain: { primary: 'Barcelona', subs: { Madrid: 'Madrid' } },
+  rome: { primary: 'Rome', subs: {} },
+  australia: { primary: 'Sydney', subs: { Tasmania: 'Hobart' } },
+  iceland: { primary: 'Reykjavik', subs: {} },
+  prague: { primary: 'Prague', subs: {} },
+  vienna: { primary: 'Vienna', subs: {} },
+  munich: { primary: 'Munich', subs: {} },
+  poland: { primary: 'Krakow', subs: {} },
+  michigan: { primary: 'Michigan', subs: {} },
+  peru: { primary: 'Cusco', subs: {} },
+}
 
 /* COPPER PINS — explored, ingested, or planned, but no published framework.
  * They render at a uniform small size with NO count, because a count here
@@ -109,10 +133,13 @@ export const RESEARCH_CITY_PINS = [
  * gains a `slug` so it actually reaches the live page, and the tooltip states
  * the fact rather than announcing what we have not finished yet — the same
  * rule that keeps the 16 silent Peru places silent. It graduates to gold, with
- * a real derived count, in the session that gives those places descriptions. */
-export const PUBLISHED_UNCOUNTED_CITY_PINS = [
-  { city: 'Cusco', lat: -13.52, lng: -71.97, slug: 'peru', published: true },
-]
+ * a real derived count, in the session that gives those places descriptions.
+ *
+ * ✅ Cusco GRADUATED Sept 29 2026 (see VALIDATED_CITY_PINS). It sat here five
+ * days after Peru began counting 7 places on Sept 24. The table stays for the
+ * next framework that publishes before its places are described;
+ * tools/tests/pins.test.mjs fails if a counted framework is parked here. */
+export const PUBLISHED_UNCOUNTED_CITY_PINS = []
 
 /* The counts themselves. Never type these numbers anywhere else. */
 export const VALIDATED_CITY_COUNT = VALIDATED_CITY_PINS.length

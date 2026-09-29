@@ -1,0 +1,1 @@
+- [Packet assembly lessons](packet-assembly-lessons.md) — verifier additions aren't findings, no derived numbers, 0.6 km clustering, oldest-evidence checkedOn

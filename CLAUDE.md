@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 29, 2026
+## Last Updated: September 29, 2026 (evening — research agents shipped)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -17,7 +17,8 @@ Posture: PREVIEW — **launch target JANUARY 1, 2027, quality-gated.**
 Structure: LLC. No charity, no nonprofit, no "free" anywhere on site.
 Frameworks: **11** React destination routes (Peru went public Sept 8 and entered
   `canonical.js` Sept 16; Vienna split from Prague Aug 29)
-Canonical total: **227 places · 13 validated cities · 11 countries · 4 continents**
+Canonical total: **227 places · 14 validated cities · 11 countries · 4 continents**
+  (cities 13 → 14 on **Sept 29**: Cusco graduated to a gold pin, ruled by Brady.)
   (219 → 220 on Aug 31 via Short's Elk Rapids in michigan.js. Countries 10 → 11
   and continents 3 → 4 on Sept 16 when Peru joined the table. **220 → 227 on
   Sept 24** when the live-walk began accepting a founder's verbatim take.)
@@ -274,6 +275,135 @@ memory of how you left it.** A confident stale record is worse than no record.
 ➡️ **Corollary for parallel work:** a second session builds in a **worktree on its
 own branch** (see Parallel Agent Workflow at the foot of this file), never in the
 shared checkout someone else is serving localhost from.
+
+---
+
+## 🟢 SEPTEMBER 29, 2026 — THE RESEARCH AGENTS
+
+Branch `feature/research-agents`, merged to `main` in the same push as this record.
+Spec `docs/superpowers/specs/2026-09-29-research-agents-design.md` · plan
+`docs/superpowers/plans/2026-09-29-research-agents.md`.
+
+### 1 — THE "6 AI RESEARCH AGENTS" CLAIM WAS NOT TRUE. NOW IT IS, AND IT COUNTS ITSELF.
+
+The homepage said **6** from April 15. A full search (every branch, the stash,
+the worktrees, user-level config) found **no agent ever committed**. The April
+research was Brady's Google research passes, turned into synthesis documents.
+Sept 29 made the switch to Claude Code's own research stack:
+
+- **14 agents in `.claude/agents/`** — 12 researchers in five lanes (*Where ·
+  When · Getting there & around · Cost & savings · Before you go*), one
+  **Independent Verification** fact-checker, and the internal **Itinerary
+  Architect** that assembles the founder packet. Display names, lanes and
+  one-line summaries live in each file's `lads-label / lads-group / lads-summary`.
+- **One shared law:** `.claude/skills/research-contract/SKILL.md`, preloaded by
+  every agent. Output format, sourcing bar, ranges-never-points, banned content,
+  walked vs **researched** mode.
+- **Researched mode is first-class (Brady):** most future planning, and the parks
+  guide above all, is places nobody has walked. Two independent sources for
+  anything actionable; coordinates only from an authoritative record for that
+  exact entity (Wikidata, NPS, official site). Rendered copper, never apologised for.
+- **`/research <destination>`** (`.claude/skills/research/SKILL.md`) runs them
+  two at a time, then the verifier, then the architect →
+  `internal/research/<dest>/<runId>/PACKET.md` for founder review. Publishes nothing.
+- **Enforcement is mechanical, not a promise** — `tools/research/`:
+  `validate.mjs` (the contract as code), `guard.mjs` (agents may write only to
+  `internal/research/` and `.claude/agent-memory/`), `hook-validate.mjs` (bad
+  output goes back to the agent; second failure releases with `.INVALID.txt`).
+  Both hooks are wired in **`.claude/settings.json`** and act only when
+  `agent_type` starts with `lads-`. **`npm test` → 60 tests.**
+- **Agent memory is committed** (`.claude/agent-memory/`): durable source lessons
+  only, never findings.
+- **Homepage:** `AGENT_COUNT` / `AGENT_ROSTER` come from `virtual:lads-stats`,
+  read from the agent files at build. **13** today. The literal `'6'` is gone.
+
+### 2 — THE LIVE HOOK TEST CAUGHT TWO THINGS THE UNIT TESTS COULD NOT
+
+An agent was told to write `src/data/smoke-test.js`. **It succeeded, twice.**
+1. **Hooks in an agent's frontmatter do not fire for Agent-tool subagents.**
+   Moved to `.claude/settings.json`, keyed on `agent_type`.
+2. **Exit code 2 from a PreToolUse hook is ignored inside a subagent** — a
+   wrapper logged the guard exiting 2 with its reason while the write went
+   through. The structured stdout form (`permissionDecision: "deny"`;
+   `{"decision":"block"}` for SubagentStop) **is** honoured. Verified live: the
+   write refused, a "$18" point price sent back and fixed. The stray file was
+   never committed. ➡️ **Click the things applies to infrastructure too.**
+
+### 3 — PILOT 1: VANCOUVER (researched mode, 4 agents)
+
+`internal/research/vancouver/2026-09-29T15-59/` (gitignored). **81 findings, every
+file valid.** Verifier: **22 confirmed · 13 corrected · 46 unverifiable** — the
+last because it ran out at 20 calls (queue item 1). What it caught was real: the
+Museum of Anthropology "530,000 objects" is **nearly 50,000** (museum's own
+page); the Grouse Grind is **2.5 km** not ~3; the Capilano price claim had tax
+and online discounts backwards; the daily budgets were agent arithmetic, not a
+published range. Also resurfaced: Mount Seymour's saved pin is a summit point;
+the Celebration of Light cancellation. **Comparison report not yet written.**
+⚠️ The Capilano Twilight Rate (25% off after 5pm) **expires Oct 8** — it lives only
+in staging and must never be typed onto a page.
+
+### 4 — THE HOMEPAGE, CHANGED WITH BRADY IN THE VISUAL COMPANION
+
+- **How It Works** (`src/HowItWorks.jsx`): four plain steps, click an icon to go
+  deeper (the brief · the twelve specialists by lane, selectable · confirmed /
+  corrected / left out with the real museum example · what you receive). Two
+  rejected rounds taught the brief: **plain, professional, descriptive; no
+  example data a stranger has to decode; no chat-slang.** Replaced the vague
+  "Research / Validate / Rate / Build / Deliver" row. Click-tested at 1440 + 390.
+- **Cusco → gold, validated cities 13 → 14 (Brady ruled).** `Globe.jsx` kept its
+  own out-of-date walker (pre-Sept 24 rules), so gold pins summed to **220 under a
+  227 caption**. Counting now lives once in `derive.js` (`isCountedSpot`,
+  `countSpotsByCity`, `derivePinCount`); attribution moved to `canonical.js`;
+  `tools/tests/pins.test.mjs` fails if they ever disagree again.
+- **"90% of AI itineraries contain factual errors"** was unsourced and rested on a
+  May 2024 ChatGPT-3.5 test. Replaced with the **Greetwell survey, Aug 2026, 1,000
+  U.S. leisure travelers: 55% of AI users hit a bad recommendation**, linked on
+  the page, plus what we actually do. Brady approved "Founders validate."
+- **Dead CTAs fixed:** both *Start Planning* buttons went to `/plan` (redirects to
+  `/`) — now `/join`. `/explore`, `/adventure` pills → `/global`, `/outdoors`.
+  Peru's "Framework coming soon" (three weeks after it went live) → links `/peru`.
+
+### 5 — RULINGS
+
+✅ **RULED by Brady, Sept 29:**
+1. **Travel cards: recommend, but always show every option.** Cards are a real way
+   to save and earn toward future travel. A recommendation is allowed only
+   alongside every relevant option with trade-offs (fees, earning, partners, who it
+   suits, the catch); never one card alone, never urgency. Written into
+   `lads-rewards-points` and the research contract. Affiliate rendering is still a
+   separate, disclosed publish-time decision.
+2. **"No admission charge"**, never "free", for third-party no-cost entry.
+3. **Rewards research is for Lads Travel Club members** — all of it.
+
+❓ **Still open (re-asked in plain words Sept 29):**
+4. **Which AI model each agent runs on** — a cost-vs-quality dial per agent.
+   Current: 11 researchers on Sonnet (faster, cheaper); Verifier, Itinerary
+   Architect and Points & Miles on Opus (strongest). Brady had not heard the term.
+5. **Two pilot questions:** (a) may a trip budget be *added up by an agent* from
+   published prices, or only quoted from a published source? (b) may places the
+   agents *discovered* (not on a founder's list) appear in a framework, as copper?
+
+### 6 — THE FINAL REVIEW (independent, Opus) — 0 Critical, 3 Important, all fixed
+
+1. **Point-price hole:** one range anywhere excused every price in a claim ("Entry
+   is $25; tours run $40-60" passed; "euros"/"S/" missed). Now each amount must
+   itself be part of a range; notes scanned too. Re-run over the Vancouver pilot it
+   caught **6 findings the old check had passed.**
+2. **Relative hook paths failed OPEN** when cwd moved. `"$CLAUDE_PROJECT_DIR/…"`
+   was tried and **failed live** (Git Bash expands it to empty in hooks). Hooks now
+   launch via `node -e` resolving `process.env.CLAUDE_PROJECT_DIR` inside node.
+   Verified live: `src/data` write denied; the "$25; $40-60" claim bounced and fixed.
+3. **Stop hook could validate an older run.** It now checks only the run with the
+   newest `RUN.json`, and writes `<agent>.json.MISSING.txt` when nothing was written.
+4. (Minor, upgraded) **How It Works keyboard:** closed panel is `inert`; × and Esc
+   return focus to the icon. Verified in browser.
+
+**Deferred minors** (logged, not fixed): malformed hook stdin fails open (Claude
+Code always sends JSON); `claude --agent lads-x` runs get no Stop validation;
+resizing across 760px with a panel open resets the chosen specialist; roster test
+hard-codes 13/12/1; "N independent fact-checker" grammar if the count ever
+changes; the survey line mixes our copy into a quoted statistic and links a news
+report rather than Greetwell directly.
 
 ---
 
@@ -1031,80 +1161,62 @@ Images: `stagedUploadsCreate` → POST bytes to GCS → `productCreateMedia`
 
 ---
 
-## 📍 SESSION START STATE — verified September 24, 2026
+## 📍 SESSION START STATE — verified September 29, 2026
 
 **Verified from `git log`, `git status`, the Vercel API and a real browser —
 not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | Last CODE merge **`884ce47`** (`feature/affiliate-structure`), Vercel **READY** (`dpl_Gp4WTTp3…`). **Sept 29:** docs-only merge of `docs/claude-md-trim` on top — the CLAUDE.md trim + `docs/history.md`. It cannot cite its own hash; read `git log` |
-| Working tree | clean |
-| Pending `/ship` | **Nothing.** The day shipped. |
+| `main` | `feature/research-agents` merged `--no-ff` on Sept 29 **in the same push as this record**. The record cannot cite its own merge hash: read `git log`. Before it, `main` was `e73a7ab` (the CLAUDE.md trim), Vercel READY. |
+| Working tree | clean at merge |
+| Pending `/ship` | **Nothing.** |
+| Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
 
-**✅ SHIPPED TODAY, LIVE AND VERIFIED ON THE DEPLOYED SITE:** the affiliate gate
-and the place-card booking CTA · the PlanPage tree deleted · **the canonical
-total at 227**, confirmed rendering on the live homepage counter, the globe
-caption (`13 VALIDATED CITIES · 4 CONTINENTS · 227 PLACES`) and the meta
-description, with **zero stale 220s anywhere on the page.**
+**✅ SHIPPED SEPT 29 (see `SEPTEMBER 29, 2026 — THE RESEARCH AGENTS`):** the 14
+research agents + `/research` + the enforcement hooks · the interactive **How It
+Works** homepage section · the homepage agent count derived (**13**, was a typed
+"6") · **Cusco graduated to gold → 14 validated cities**, gold pins now sum to 227
+· the unsourced "90%" claim replaced by a cited Aug 2026 survey · the dead
+`Start Planning → /plan` CTAs and Peru's "Framework coming soon" fixed.
 
-⚠️ **Verified on `lads-travel-co.vercel.app`, not on the apex.** This machine's
-sandbox could not resolve `ladstravel.com` (DNS to outside resolvers is blocked
-here, so it proves nothing about the domain). Same deployment either way — but
-**someone should open `ladstravel.com` on a phone and confirm 227.**
+**✅ Also on production from before:** every displayed count derived · the launch
+date stated once · `/local` with the Live Pulse · "When to Go" on every framework ·
+`/peru` indexed · founder schema v2 + two-layer card · `/join` · the affiliate gate.
 
-**✅ Also on production from before today:** every displayed count derived · the
-launch date stated once · `/local` with the Live Pulse · every framework's "When
-to Go" · `/peru`, indexed · the founder schema v2 and the two-layer place card ·
-the truth pass and `/join` (merged Sept 17 as `9a0a47b`).
+🚩 **NEXT SESSION'S QUEUE — set Sept 29. Work in order.**
 
-🚩 **THE STALENESS THIS BLOCK CLOSED — instance five.** This section previously
-read "Pending `/ship`: the truth pass + `/join`" for **seven days** after they
-merged, and "`ladsTake` filled on 0 of 220" after the count moved. Same failure
-as Aug 26, Aug 28, Aug 31, Sept 2 and Sept 8. **The rule that ends it is now in
-CADENCE below — the docs commit ships in the SAME push as the work it
-describes, never in a later session.**
+**1 — FINISH PROVING THE RESEARCH PIPELINE. ⭐ NEXT.** Three pieces, one session:
+- **Raise the verifier's budget.** The Vancouver pilot left **46 of 81 findings
+  unverifiable** because `lads-verifier` ran out at 20 calls. Size it to the run
+  (≈ 8-9 calls per research agent) in the `/research` skill, then re-verify
+  Vancouver.
+- **Pilot 2: Pictured Rocks, researched mode** (plan Task 9). Nobody has been; it
+  is the Dusk Field Guide's first real `parkData`. Command is in the plan.
+- **Write `docs/research-pilots.md`** (plan Task 8 step 3): the side-by-side vs
+  `internal/brady/vancouver-enrichment.md`, including where the agents lost.
+⚠️ **Run pilots from a FRESH session** — agents created mid-session are not
+dispatchable in that session (see HARD-WON LESSONS). Or `claude -p "/research …"`.
 
-🚩 **TOMORROW'S QUEUE — set at session close, Sept 24. Work in order.**
+**2 — THE DUSK FIELD GUIDE, Phase A.** Brady: *the national parks guide will be the
+biggest part of this.* It now has an engine. Phase A spec is in `THE SEPTEMBER 8
+QUEUE` item 3 and has not moved: design proposal, three poster samples, Brady
+approves before any build.
 
-**1 — THE CLOUDIMAGE BUNDLE BLOCK. ⭐ NEXT BUILD, ITS OWN SESSION.**
-`dist` is **41 MB against an 8 MB target.** `dist/assets` is only **3.0 MB**, so
-**~38 MB is images shipped as build output** — the JS has never been the
-problem. `CloudImage.jsx` already exists, is already site-wide, and is already
-the answer: Cloudinary, `f_auto/q_auto`, six-width srcset, lazy below the fold.
-⛔ **Do not start this mid-block.** It touches every framework's imagery.
-Brady scheduled it as a standalone session **this week**.
+**3 — THE CLOUDIMAGE BUNDLE BLOCK.** `dist` still **41 MB against an 8 MB target**,
+~38 MB of it images. `CloudImage.jsx` is the answer. Its own session; do not start
+mid-block.
 
-**2 — THE VERDICT ROOM. The founders rate; the machine has finished preparing.**
-✅ **The worksheet is GENERATED and waiting**, in two places:
-- `internal/brady/verdict-room-worksheet.md` — 1,078 lines, gitignored, the
-  file of record. Regenerate any time; it reads the data files, never the page.
-- **The doc, for phones:** https://claude.ai/code/artifact/61dd272d-ec23-4940-abbe-cb4c96fd5cf1
-  — all 212, grouped by framework, as tick-boxes Brady and Dawson can both edit
-  and comment on. Share it to Dawson.
+**4 — THE VERDICT ROOM.** Founders rate; worksheet generated:
+`internal/brady/verdict-room-worksheet.md` and the phone doc
+https://claude.ai/code/artifact/61dd272d-ec23-4940-abbe-cb4c96fd5cf1 . 212 of 227
+places carry no `ladsRating`. ⛔ Never rate a place nobody visited.
 
-**212 of 227 places carry no `ladsRating`.** The 15 that do are all day trips —
-**no individual place on any framework has a rating today.** That is why every
-place-level booking CTA shipped Sept 24 renders neutral: the gold "WE DID THIS"
-branch is built, styled and currently unreachable on places by design.
-⛔ Three answers only: a rating · "neither of us has been" · skip. **Never rate
-a place nobody visited** — the rating is the evidence behind a claim we make to
-a stranger about something they are about to pay for.
-➡️ **Then fold the verdicts back into `src/data/*.js`.** Each one lights up its
-place's gold CTA and moves `ladsTake` coverage off 7.
+**5 — Then:** enrichment ingestion (`rome-prague`, `dublin-sanjuan`, `costa-rica-jaco`
+— now best redone through `/research`), cloud refresh routines (only after the
+pilots pass), Vancouver + Costa Rica frameworks, place-level booking links.
 
-**3 — ENRICHMENT INGESTION: `internal/brady/rome-prague-enrichment.md`.**
-Queued **behind** the Verdict Room, deliberately — a founder verdict outranks a
-researched consensus layer, and the two-layer card renders founder voice first.
-⚠️ The file was briefly committed at the repo root and untracked in `8044141`;
-it lives in `internal/brady/` and stays gitignored. Also banked and unstarted:
-`dublin-sanjuan-enrichment.md`, `vancouver-enrichment.md`,
-`costa-rica-jaco-enrichment.md`.
-
-**4 — Still unstarted, unchanged:** Vancouver + Costa Rica frameworks · THE DUSK
-FIELD GUIDE Phase A · filling booking links on places now that the slot exists.
-
-### ⚠️ BLOCKERS — ALL FIVE OWED BY BRADY, UNCHANGED AT SEPT 24 CLOSE
+### ⚠️ BLOCKERS — OWED BY BRADY (re-checked Sept 29)
 
 1. **Peru's "What We'd Do Differently" words** (+ the section intros). The
    section is hidden on the live page until they land. AI cannot write these.
@@ -1115,6 +1227,10 @@ FIELD GUIDE Phase A · filling booking links on places now that the slot exists.
 4. **The Detroit Maps list.** Closes four unpinnable Michigan spots in one step.
 5. **Licensed music for the Peru film.** Blocks publication of the cut, not its
    assembly. None sourced, and none will be invented.
+
+6. **Two research-agent rulings still open** (model per agent; derived budgets / discovered
+   places). Cards, "no admission charge" and Club-only rewards were RULED Sept 29.
+   Listed in the Sept 29 record; neither blocks anything shipped.
 
 ✅ **Closed Sept 24:** the Peru `note`→`notes` ruling. Granted, and implemented
 against the data rather than the forecast — **227, not 229.** See the record.
@@ -1237,7 +1353,7 @@ index.html meta descriptions. Single source of truth: the **11**
 Method: live-walk (any object with `name` AND `description|notes|ladsTake`,
 excluding containers and `recordIsOffice` records).
 
-  227 places  ·  13 validated cities  ·  11 countries  ·  4 continents
+  227 places  ·  14 validated cities  ·  11 countries  ·  4 continents   (cities → 14 Sept 29, Cusco)
 
 🚩 **THIS BLOCK WAS CARRYING THREE STALE NUMBERS, and two of them predate
 today.** It read `220 · 13 · 10 · 3` and "the 10 framework files". Countries
@@ -1343,6 +1459,9 @@ Data moment: Vivid Harbor Bridge drone
 
 /morning  — reads this file + sprint, outputs top 3 priorities
 /ship     — diff → commit message → confirm → push
+/research — run the Lads research agents on a destination → founder review packet
+             (`.claude/skills/research/SKILL.md`; run from a fresh session)
+npm test  — every tools/**/*.test.mjs (research contract, hooks, roster, globe pins)
 /perf     — build + bundle size report + Lighthouse
 /audit-all — checks framework data files (⚠️ its own list is stale: still names
              thailand + charleston, omits michigan/vienna/peru)
@@ -1503,6 +1622,19 @@ the rule is what matters.
 - Service programs (eSIM, transfers, car rental) get exactly ONE home — a single
   "travel tools" surface framed as services, never scattered across framework spots.
   Mixing a car-rental link into a validated spot list launders it as an endorsement.
+
+**Claude Code agents and hooks (learned Sept 29, 2026, v2.1.284-285)**
+- **Hooks in an agent's frontmatter did NOT fire for Agent-tool subagents.** Put
+  them in `.claude/settings.json` and key on the payload's `agent_type`.
+- **Exit code 2 from a PreToolUse hook was IGNORED inside a subagent.** Answer with
+  structured stdout and exit 0: `hookSpecificOutput.permissionDecision: "deny"`
+  (PreToolUse), `{"decision":"block","reason":…}` (SubagentStop).
+- **Agent files created mid-session are not dispatchable in that session.** Start
+  a fresh session, or run `claude -p "/research …"` headless.
+- `memory: project` silently adds **Edit** to an agent's tools. The guard covers it.
+- The Playwright MCP browser can be **shared with another session** (a foreign tab
+  appeared, the renderer stalled, a page navigated on its own). If animations report
+  `currentTime 0` or screenshots time out, close and reopen before trusting a result.
 
 **Git**
 - `stash@{0}` (April 11, "Reimagine Tab 1") predates the React rebrand and almost
