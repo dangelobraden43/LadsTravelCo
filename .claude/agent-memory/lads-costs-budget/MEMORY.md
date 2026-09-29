@@ -1,0 +1,1 @@
+- [Source behaviour for costs research](source_behaviour.md) — which price sources fetch, which 403/404, and how to spend the budget

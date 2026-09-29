@@ -1,0 +1,1 @@
+- [Sources and fetch tricks](reference_sources_and_fetch_tricks.md) — Wikipedia API multi-title coordinate check, operator location pages, search-summary pitfalls
