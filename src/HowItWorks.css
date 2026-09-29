@@ -178,7 +178,11 @@
 .hw-more {
   all: unset;
   cursor: pointer;
-  margin-top: 12px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 4px;
   font: 600 11px/1.4 var(--mono, 'JetBrains Mono', monospace);
   letter-spacing: 1.5px;
   color: var(--gold, #d4a843);

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Nav } from './App'
 import Footer from './Footer'
+import { Helmet } from 'react-helmet-async'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES, HERO_IMAGES, HEIC_HERO_IMAGES } from './images-paths'
 import { SPOTS_BY_FRAMEWORK } from './utils/siteStats.js'
 import { BOOKING_LEAD_TIME, FARE_BANDS_BLOCKED, isFareStale } from './data/fareIntelligence.js'
@@ -323,6 +324,15 @@ export default function WhenPage() {
 
   return (
     <>
+      <Helmet>
+        <title>When to Travel — The Lads Travel Co.</title>
+        <meta
+          name="description"
+          content="The four travel windows and what each one means for crowds, weather and price, with sourced booking lead times."
+        />
+        <link rel="canonical" href="https://ladstravel.com/when" />
+        <meta property="og:url" content="https://ladstravel.com/when" />
+      </Helmet>
       <Nav scrolled={true} />
       <div style={{ background: '#141210', minHeight: '100vh', paddingTop: 80 }}>
         {/* Page header */}

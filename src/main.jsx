@@ -27,7 +27,7 @@ const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
 const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
 const PrivacyPage = lazy(() => import('./PrivacyPage'))
-const ShopPage = lazy(() => import('./ShopPage'))
+// ShopPage stays in src/ but is not routed while the Shopify store is suspended (Sept 29 2026).
 /* Peru is NOT one of the DESTINATIONS slugs below. Those go through
    LazyFramework, which expects a data file with a default export, and
    src/data/peru.js deliberately has none - it is day anchors and saved
@@ -109,7 +109,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/bucket-list" element={<BucketListPage />} />
             <Route path="/local" element={<LocalPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/shop" element={<Navigate to="/" replace />} />
             <Route path="/peru" element={<PeruPage />} />
             {/* /join — the site's call to action, added Sept 17 2026. Until
                 then the only way to contact us was a form inside /lads, which

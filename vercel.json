@@ -10,7 +10,8 @@
     { "source": "/adventure", "destination": "/outdoors", "permanent": true },
     { "source": "/plan", "destination": "/", "permanent": true },
     { "source": "/story", "destination": "/", "permanent": true },
-    { "source": "/good-news", "destination": "/local", "permanent": true }
+    { "source": "/good-news", "destination": "/local", "permanent": true },
+    { "source": "/shop", "destination": "/", "permanent": false }
   ],
   "rewrites": [
     { "source": "/global", "destination": "/" },
@@ -18,7 +19,6 @@
     { "source": "/bucket-list", "destination": "/" },
     { "source": "/local", "destination": "/" },
     { "source": "/privacy", "destination": "/" },
-    { "source": "/shop", "destination": "/" },
     { "source": "/peru", "destination": "/" },
     { "source": "/join", "destination": "/" },
     { "source": "/when", "destination": "/" },

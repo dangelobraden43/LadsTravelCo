@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { Nav } from './App'
 import Footer from './Footer'
 import { IMAGES, BATCH3_IMAGES, NEW_IMAGES } from './images-paths'
+import { eventStatus, visibleEvents } from './utils/events'
 import './BucketListPage.css'
 
 function useReveal(threshold = 0.15) {
@@ -43,37 +44,41 @@ const EVENTS = [
     where: 'Sydney, Australia',
     note: 'Light, music, ideas. Opera House and Harbour Bridge become canvases.',
     img: IMAGES.opera,
-    status: 'now',
+    start: '2026-05-22',
+    end: '2026-06-13',
     frameworkHref: '/australia',
     frameworkLabel: 'Sydney framework',
   },
   {
     name: 'Oktoberfest 2026',
     when: 'September 19 – October 4, 2026',
+    start: '2026-09-19',
+    end: '2026-10-04',
     where: 'Theresienwiese · Munich',
     note: 'Sixteen days. Fourteen tents. Reservations close months out.',
     img: BATCH3_IMAGES.munichMarienplatz,
-    status: 'soon',
     frameworkHref: '/munich',
     frameworkLabel: 'Munich framework',
   },
   {
     name: 'Centenary Ryder Cup',
     when: 'September 17 – 19, 2027',
+    start: '2027-09-17',
+    end: '2027-09-19',
     where: 'Adare Manor · County Limerick · Ireland',
     note: 'The 100th anniversary. First time on Irish soil since 2006. Tickets ballot in 2026.',
     img: IMAGES.cliffs,
-    status: 'soon',
     frameworkHref: '/dublin',
     frameworkLabel: 'Ireland framework',
   },
   {
     name: 'European Christmas Markets',
     when: 'Late November – December',
+    start: null,
+    end: '2026-12-31',
     where: 'Vienna · Prague · Strasbourg · Dresden',
     note: 'Mulled wine, gothic squares, week-long itineraries that hop between three or four cities.',
     img: NEW_IMAGES.galwayChristmas,
-    status: 'soon',
     frameworkHref: null,
     frameworkLabel: null,
   },
@@ -121,16 +126,16 @@ export default function BucketListPage() {
           </Reveal>
 
           <div className="event-grid">
-            {EVENTS.map((ev, i) => (
+            {visibleEvents(EVENTS).map((ev, i) => (
               <Reveal key={ev.name} delay={i * 90}>
                 <article className="event-card">
                   <div className="event-card-img-wrap">
                     <img src={ev.img} alt={ev.name} className="event-card-img" loading="lazy" />
                     <div className="event-card-tint" />
-                    {ev.status === 'now' ? (
+                    {eventStatus(ev) === 'now' ? (
                       <span className="event-pill event-pill--now">HAPPENING NOW</span>
                     ) : (
-                      <span className="event-pill event-pill--soon">COMING SOON</span>
+                      <span className="event-pill event-pill--soon">UPCOMING</span>
                     )}
                   </div>
                   <div className="event-card-body">
@@ -138,15 +143,11 @@ export default function BucketListPage() {
                     <div className="event-card-when">{ev.when}</div>
                     <div className="event-card-where">{ev.where}</div>
                     <p className="event-card-note">{ev.note}</p>
-                    {ev.frameworkHref ? (
+                    {/* No "framework coming soon" line: absence is never announced. */}
+                    {ev.frameworkHref && (
                       <Link to={ev.frameworkHref} className="event-card-link">
                         {ev.frameworkLabel} &rarr;
-                        <span className="event-card-sub">framework coming soon</span>
                       </Link>
-                    ) : (
-                      <div className="event-card-link event-card-link--muted">
-                        framework coming soon
-                      </div>
                     )}
                   </div>
                 </article>

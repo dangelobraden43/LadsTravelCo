@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Nav, PhotoStrip } from './App'
 import Footer from './Footer'
+import { Helmet } from 'react-helmet-async'
 import { IMAGES, NEW_IMAGES, BATCH3_IMAGES, HERO_IMAGES, HEIC_HERO_IMAGES } from './images-paths'
 import { gsap } from './utils/animations'
 import Splitting from 'splitting'
@@ -273,6 +274,15 @@ export default function ExplorePage() {
 
   return (
     <>
+      <Helmet>
+        <title>Global Destinations — The Lads Travel Co.</title>
+        <meta
+          name="description"
+          content="Every Lads Travel Co. destination framework in one place: researched, fact-checked and built around how you actually travel."
+        />
+        <link rel="canonical" href="https://ladstravel.com/global" />
+        <meta property="og:url" content="https://ladstravel.com/global" />
+      </Helmet>
       <Nav scrolled={true} />
       <div style={{ background: '#141210', minHeight: '100vh' }}>
         {/* ===== HERO HEADER ===== */}
