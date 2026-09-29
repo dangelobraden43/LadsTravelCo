@@ -1259,6 +1259,18 @@ date stated once · `/local` with the Live Pulse · "When to Go" on every framew
 ⚠️ **Run pilots from a FRESH session** — agents created mid-session are not
 dispatchable in that session (see HARD-WON LESSONS). Or `claude -p "/research …"`.
 
+**1b — `/local` LIVE HUB CITIES (Brady, Sept 29 close).** Make Lads Local more
+interactive so visitors *"can always see the best things going on in our hub
+cities."* Architectural: brainstorm → spec → plan. The shape so far: a rolling "This
+week in [city]" view fed by `lads-timing-events` + `lads-deals-savings` on a scheduled
+refresh, every item dated so it expires itself (the Live Pulse already does this for
+58 events). ❓ **Open first question: which cities are the hubs** (GR, Detroit, Chicago,
+Milwaukee, Traverse City? college towns? the Bruce?).
+
+**Brady's goal for the agents (Sept 29):** ready to roll for new trips, improving the
+existing frameworks, expanding Lads Local, and eventually the national parks and
+hiking guide.
+
 **2 — THE DUSK FIELD GUIDE, Phase A.** Brady: *the national parks guide will be the
 biggest part of this.* It now has an engine. Phase A spec is in `THE SEPTEMBER 8
 QUEUE` item 3 and has not moved: design proposal, three poster samples, Brady
