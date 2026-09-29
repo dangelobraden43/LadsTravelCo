@@ -1404,8 +1404,32 @@ export default function App() {
                   marginBottom: 12,
                 }}
               >
-                "90% of AI-generated travel itineraries contain factual errors. We fix that."
+                {/* Was "90% of AI-generated travel itineraries contain factual errors",
+                    unsourced on the page and resting on a May 2024 ChatGPT-3.5 test.
+                    Replaced Sept 29 2026 with a current, cited survey. An external
+                    statistic must carry its source on the page, and gets re-checked
+                    with the rest of the site's dated claims. */}
+                "More than half of travelers who planned with AI hit at least one bad
+                recommendation. Our research agents source and fact-check every finding, then we fit
+                the trip to your group, your budget and every saving along the way."
               </p>
+              <a
+                href="https://www.boston25news.com/news/survey-ai/QRFTAFVXAU4JDOMIMCVSBFROFY/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'block',
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 12,
+                  color: '#8a8070',
+                  marginBottom: 14,
+                  textDecoration: 'underline',
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Greetwell survey of 1,000 U.S. leisure travelers, August 2026: 55% of AI users hit a
+                bad recommendation.
+              </a>
               <div
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",
