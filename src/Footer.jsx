@@ -12,7 +12,7 @@ const COLLECTIONS = [
 ]
 
 const SOCIALS = [
-  { label: 'Instagram', href: '#' },
+  { label: 'Instagram', href: 'https://www.instagram.com/ladstravelcompany/' },
   { label: 'TikTok', href: '#' },
   { label: 'YouTube', href: '#' },
 ]

@@ -424,8 +424,10 @@ in staging and must never be typed onto a page.
   renders only when a framework has `logistics` or `costModel` (`FrameworkPage.jsx`).
   Dublin's still renders.
 - **`/outdoors` trek badges:** "Coming soon" → "On the list" (no date promised).
-- **Footer "Follow Along" hidden** while every social link is `#`. Fill `SOCIALS` in
-  `Footer.jsx` with real URLs and the column reappears on its own.
+- **Footer "Follow Along":** shows only socials with a real URL. **Instagram is live**
+  (https://www.instagram.com/ladstravelcompany/, Brady, Sept 29) and is in the
+  homepage JSON-LD `sameAs`. TikTok and YouTube stay hidden until they have URLs —
+  add them to `SOCIALS` in `Footer.jsx`.
 
 **⏭️ QUALITY BACKLOG — still open, in priority order:**
 1. **"free" in framework copy — ~130 occurrences across 11 frameworks, NOT ~12.**
@@ -1581,7 +1583,7 @@ The tech makes them faster. It doesn't make them less human.
 
 ## OPEN DECISIONS
 
-- Real social URLs for Footer (`#` placeholders today)
+- TikTok and YouTube URLs for the footer (Instagram is live since Sept 29)
 - Salkantay framework — content + photos
 - /when route: keep dormant (out of nav, still reachable), redirect to
   /bucket-list, or kill?
