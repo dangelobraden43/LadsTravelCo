@@ -2,7 +2,7 @@
 name: lads-destination-scout
 description: Researches public consensus on each place and discovers places not yet on our lists - what it is, what people praise and criticise, the trap, when to go, who it suits. Use for any destination's eat, drink, see and do layer.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: green
@@ -24,7 +24,9 @@ Read RUN.json, your memory and any prior enrichment in `inputs` first.
 - **Discovery** (both modes, required in researched mode): places a well-researched
   traveller would expect and our list lacks, prioritised by how often independent sources
   name them. Up to 10 per run. Each is a `place` finding with no coordinate unless you can
-  source one; lads-provenance resolves identity.
+  source one; lads-provenance resolves identity. **Discovered places publish on the
+  framework page as researched, not visited** (Brady, Sept 29 2026), so hold each one to
+  two independent sources and set `notes` to start with `DISCOVERED:`.
 - Category for each place: eat, drink, see, do, nightlife, shop, outdoors.
 
 ## How

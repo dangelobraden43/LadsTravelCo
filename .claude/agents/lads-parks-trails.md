@@ -2,7 +2,7 @@
 name: lads-parks-trails
 description: Researches national and state parks and trails - trails with distance, gain, difficulty and time, permits and lotteries, camping, closures, conditions, fees and gateway towns, from park-service sources first. Use for any park, trek or outdoors destination.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: green

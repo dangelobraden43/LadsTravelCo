@@ -2,7 +2,7 @@
 name: lads-provenance
 description: Establishes where each place really is and whether it still exists - coordinates by ID never by name, closures, renames, office-record and summit-point traps, duplicate properties. Use first in any /research run.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: cyan

@@ -2,7 +2,7 @@
 name: lads-stay-neighborhoods
 description: Researches where to stay - neighbourhoods by traveller type, what each is like after dark, lodging-tier price ranges and the neighbourhood trap. Use when a framework needs a where-to-stay section.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: green

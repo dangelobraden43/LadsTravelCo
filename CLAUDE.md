@@ -376,13 +376,19 @@ in staging and must never be typed onto a page.
 2. **"No admission charge"**, never "free", for third-party no-cost entry.
 3. **Rewards research is for Lads Travel Club members** — all of it.
 
-❓ **Still open (re-asked in plain words Sept 29):**
-4. **Which AI model each agent runs on** — a cost-vs-quality dial per agent.
-   Current: 11 researchers on Sonnet (faster, cheaper); Verifier, Itinerary
-   Architect and Points & Miles on Opus (strongest). Brady had not heard the term.
-5. **Two pilot questions:** (a) may a trip budget be *added up by an agent* from
-   published prices, or only quoted from a published source? (b) may places the
-   agents *discovered* (not on a founder's list) appear in a framework, as copper?
+4. **All 14 agents run on Opus, the strongest model** (Brady, Sept 29 evening). Revisit
+   if token spend becomes a problem; the switch is one `model:` line per agent file.
+5. **Budgets the agents add up themselves may ship** when rooted in quality sources:
+   `derivedFrom` must name the sourced findings they were built from, and the
+   validator rejects a missing or self reference (`tools/research/validate.mjs`,
+   4 tests). Arithmetic goes in `notes`; the result stays a range.
+6. **Discovered places publish on framework pages as researched, not visited**, in
+   both walked and researched frameworks, held to two independent sources. Brady:
+   *"we obviously weren't able to visit everywhere even if we have been, and we are
+   going to do this for the fully researched frameworks in any case."* The scout marks
+   them `DISCOVERED:` in `notes`. ⚠️ The framework pages have no rendering for this yet:
+   when the first discovered place is published, it needs the copper
+   "researched, not visited" treatment on the card, never gold.
 
 ### 7 — EVENING: SHOP HIDDEN, HOW IT WORKS MOVED, FULL QUALITY SWEEP (branch `fix/quality-sweep`)
 
@@ -1272,9 +1278,9 @@ pilots pass), Vancouver + Costa Rica frameworks, place-level booking links.
 5. **Licensed music for the Peru film.** Blocks publication of the cut, not its
    assembly. None sourced, and none will be invented.
 
-6. **Two research-agent rulings still open** (model per agent; derived budgets / discovered
-   places). Cards, "no admission charge" and Club-only rewards were RULED Sept 29.
-   Listed in the Sept 29 record; neither blocks anything shipped.
+✅ **All research-agent rulings CLOSED Sept 29:** cards (recommend with every option),
+"no admission charge", rewards for Club members, all agents on Opus, derived budgets
+allowed with `derivedFrom`, discovered places publish as researched-not-visited.
 
 ✅ **Closed Sept 24:** the Peru `note`→`notes` ruling. Granted, and implemented
 against the data rather than the forecast — **227, not 229.** See the record.

@@ -2,7 +2,7 @@
 name: lads-flights
 description: Researches getting there by air from Midwest hubs - which airports, routes, nonstop versus one-stop, fare bands with lead time, and fare traps. Use for any destination's Getting There section.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: blue

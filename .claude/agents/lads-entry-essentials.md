@@ -2,7 +2,7 @@
 name: lads-entry-essentials
 description: Researches before-you-go essentials for US passport holders from government sources - entry and visa rules, passport validity, customs, currency, plugs, connectivity, language, safety and scams, health entry requirements, emergency numbers.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: red

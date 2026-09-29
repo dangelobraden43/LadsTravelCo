@@ -305,17 +305,11 @@ automation (reuse `/enrich` stage 2 manually first), parks guide Phase A.
 
 ---
 
-## 10. RULINGS OWED BY BRADY (none block the build)
+## 10. RULINGS — all closed by Brady, Sept 29 2026
 
-1. **Credit cards.** `lads-rewards-points` will research card programmes as facts
-   (transfer partners, earn rates, sign-up bonus ranges with dates). **Publishing a card
-   recommendation** is a financial-product endorsement with affiliate money attached —
-   same neighbourhood as the insurance ban. Default until ruled: research only, never
-   rendered, and never framed as "apply for X".
-2. **"Free" in rendered deals.** Research may state "Museum X has no-cost entry on the
-   first Sunday." Whether a page may render that sentence is a ruling on the Sept 17 rule.
-   Default until ruled: renders as "no admission charge," never "free".
-3. **Who rewards research is for** — travellers on the site, founders planning client
-   trips, or both. Default until ruled: founder-facing packet only.
-4. **Model spend.** Default: research agents on `sonnet` at `high` effort; verifier and
-   trip-architect on `opus`. The pilot compares one agent on both and reports.
+1. **Travel cards:** recommend, but always alongside every relevant option with trade-offs; never one card alone, never urgency.
+2. **Third-party no-cost entry** renders as "no admission charge", never "free".
+3. **Rewards research** is for Lads Travel Club members, all of it.
+4. **Models:** all 14 agents on Opus. Revisit if token spend becomes a problem.
+5. **Derived budgets** may ship when rooted in sourced findings (`derivedFrom`, validator-enforced).
+6. **Discovered places** publish on framework pages as researched, not visited, in both modes.

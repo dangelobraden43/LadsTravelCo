@@ -2,7 +2,7 @@
 name: lads-timing-events
 description: Researches when to go - travel windows typed by driver (weather, events, pricing, logistics), festivals, holidays, closures and one-time events with expiry dates. Use for any destination's When to Go section.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: purple
