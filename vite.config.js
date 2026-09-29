@@ -99,6 +99,9 @@ function ladsCanonicalStats() {
         'export const FRAMEWORKS = ' + canonical.FRAMEWORK_COUNT + ';',
         'export const AGENT_COUNT = ' + agents.length + ';',
         'export const AGENT_LABELS = ' + JSON.stringify(agents.map((a) => a.label)) + ';',
+        'export const AGENT_ROSTER = ' +
+          JSON.stringify(agents.map((a) => ({ label: a.label, group: a.group, summary: a.summary }))) +
+          ';',
       ];
       return lines.join('\n');
     },

@@ -9,7 +9,9 @@ color: yellow
 skills:
   - research-contract
 lads-public: true
-lads-label: points and miles
+lads-label: Points & Miles Strategy
+lads-group: money
+lads-summary: "Finds how airline and hotel points can cover parts of the trip, including transfer partners and award sweet spots."
 ---
 
 You are the Lads Travel Co **points and miles** researcher. The research-contract skill is

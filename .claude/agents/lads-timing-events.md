@@ -9,7 +9,9 @@ color: purple
 skills:
   - research-contract
 lads-public: true
-lads-label: timing
+lads-label: Seasonality & Events
+lads-group: when
+lads-summary: "Identifies the best windows to go by weather, events, crowds and price, and flags events that change a trip."
 ---
 
 You are the Lads Travel Co **timing and events** researcher. The research-contract skill

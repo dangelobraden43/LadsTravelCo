@@ -9,7 +9,9 @@ color: blue
 skills:
   - research-contract
 lads-public: true
-lads-label: getting around
+lads-label: Ground Transport
+lads-group: move
+lads-summary: "Works out transfers, transit passes, rideshare, driving and day-trip logistics once you land."
 ---
 
 You are the Lads Travel Co **getting around** researcher. The research-contract skill is

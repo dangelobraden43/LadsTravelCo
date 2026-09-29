@@ -15,8 +15,9 @@ import {
   COUNTRIES,
   CONTINENTS,
   AGENT_COUNT,
-  AGENT_LABELS,
+  AGENT_ROSTER,
 } from './utils/siteStats.js'
+import HowItWorks from './HowItWorks'
 import { LAUNCH_LABEL_UPPER } from './utils/launch.js'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
 const Globe = lazy(() => import('./Globe'))
@@ -1228,98 +1229,9 @@ export default function App() {
       {/* ===== WORLD 6: SYSTEM ===== */}
       <WorldSection worldId="system">
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '100px 32px 80px' }}>
-          <Reveal>
-            <div style={{ textAlign: 'center', marginBottom: 60 }}>
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: 4,
-                  color: '#b8886e',
-                  marginBottom: 16,
-                  textTransform: 'uppercase',
-                }}
-              >
-                HOW IT WORKS
-              </div>
-              <h2
-                style={{
-                  fontFamily: "'Fraunces', var(--display)",
-                  fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                  color: 'var(--cream, #e8dcc8)',
-                  lineHeight: 1.15,
-                  marginBottom: 12,
-                }}
-              >
-                The System
-              </h2>
-              <p
-                style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: 15,
-                  color: '#b8ad9a',
-                  maxWidth: 520,
-                  margin: '0 auto',
-                }}
-              >
-                {TOTAL_SPOTS} places. {COUNTRIES} countries. Built on data, not guesses.
-              </p>
-            </div>
-          </Reveal>
-
-          {/* 5-Step Process */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: 8,
-              flexWrap: 'wrap',
-              marginBottom: 60,
-            }}
-          >
-            {['Research', 'Validate', 'Rate', 'Build', 'Deliver'].map((step, i) => (
-              <Reveal key={step} delay={i * 80}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div
-                    style={{
-                      background: '#1c1915',
-                      border: '1px solid rgba(201,168,76,0.2)',
-                      borderRadius: 24,
-                      padding: '10px 20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: 10,
-                        fontWeight: 700,
-                        color: '#d4a843',
-                      }}
-                    >
-                      0{i + 1}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: '#e8dcc8',
-                      }}
-                    >
-                      {step}
-                    </span>
-                  </div>
-                  {i < 4 && <span style={{ color: '#5a5550', fontSize: 16 }}>{'\u2192'}</span>}
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          {/* How it works: replaced the "HOW IT WORKS / The System" header and the
+              five-word Research / Validate / Rate / Build / Deliver row on Sept 29 2026. */}
+          <HowItWorks />
 
           {/* Stat Cards */}
           <div
@@ -1344,7 +1256,7 @@ export default function App() {
               {
                 value: String(AGENT_COUNT),
                 label: 'AI RESEARCH AGENTS',
-                sub: AGENT_LABELS.join(' · ') + '. Founders validate.',
+                sub: `${AGENT_ROSTER.filter((a) => a.group !== 'verify').length} research specialists and ${AGENT_ROSTER.filter((a) => a.group === 'verify').length} independent fact-checker. Founders validate.`,
               },
             ].map((stat, i) => (
               <Reveal key={stat.label} delay={i * 100}>

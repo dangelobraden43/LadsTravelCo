@@ -53,6 +53,8 @@ export function readAgents(dir) {
         memory: fm.memory || '',
         isPublic: fm['lads-public'] === 'true',
         label: fm['lads-label'] || null,
+        group: fm['lads-group'] || null,
+        summary: fm['lads-summary'] || null,
         raw,
       }
     })

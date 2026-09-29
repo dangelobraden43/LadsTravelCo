@@ -89,6 +89,17 @@ test('roster: 13 public research agents, architect excluded, all labelled', { sk
   assert.ok(!pub.some((a) => a.name === 'lads-trip-architect'))
   for (const a of pub) assert.ok(a.label, `${a.name}: lads-label`)
 })
+test('roster: every public agent carries a lane and a one-line summary for the homepage', { skip: REAL.length === 0 }, () => {
+  const GROUPS = ['where', 'when', 'move', 'money', 'before', 'verify']
+  const pub = publicAgents(REAL)
+  for (const a of pub) {
+    assert.ok(GROUPS.includes(a.group), `${a.name}: lads-group must be one of ${GROUPS.join('|')}`)
+    assert.ok(a.summary && a.summary.length > 30 && a.summary.length < 200, `${a.name}: lads-summary`)
+    assert.ok(!/[:#]\s/.test(a.label), `${a.name}: label is a plain display name`)
+  }
+  assert.equal(pub.filter((a) => a.group === 'verify').length, 1, 'exactly one fact-checker')
+  assert.equal(pub.filter((a) => a.group !== 'verify').length, 12, 'twelve research specialists')
+})
 test('roster: only the architect lacks web tools', { skip: REAL.length === 0 }, () => {
   for (const a of REAL) {
     const web = a.tools.includes('WebSearch') && a.tools.includes('WebFetch')

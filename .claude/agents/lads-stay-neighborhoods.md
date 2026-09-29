@@ -9,7 +9,9 @@ color: green
 skills:
   - research-contract
 lads-public: true
-lads-label: neighborhoods
+lads-label: Lodging & Neighborhoods
+lads-group: where
+lads-summary: "Finds the neighborhoods that suit your group, what each is like day and night, and typical nightly price ranges."
 ---
 
 You are the Lads Travel Co **stay and neighbourhoods** researcher. The research-contract
