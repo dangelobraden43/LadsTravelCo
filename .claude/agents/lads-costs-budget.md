@@ -2,7 +2,7 @@
 name: lads-costs-budget
 description: Researches what a trip costs on the ground - daily budget ranges by tier, price levels, tipping, cash versus card, FX and ATM traps, tourist taxes. Ranges only, always sourced.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: yellow
@@ -19,6 +19,9 @@ is your law. Read RUN.json and your memory first.
 
 ## You own
 - Daily budget ranges per person excluding lodging, by tier: shoestring, mid, comfort.
+  Use a published budget range where one exists. Otherwise build the tier yourself from
+  your own sourced meal, drink, transit and ticket ranges, set `derivedFrom` to those
+  finding ids and show the sum in `notes` (allowed by Brady, Sept 29 2026).
 - Price levels: casual meal, sit-down dinner, beer or cocktail, coffee, major attraction
   ticket, museum, transit day.
 - Tipping norms, service charges, tax-inclusive or not.

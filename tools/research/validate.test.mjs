@@ -141,6 +141,33 @@ test('a point price hidden in notes is caught too', () => {
   const d = withFinding({ notes: 'Parking is $40 a day.' })
   assert.match(validateFindingsFile(d, { today: TODAY }).join('\n'), /point price/)
 })
+/* Brady, Sept 29: a budget the agents add up themselves may ship, as long as it
+ * is rooted in sourced findings. derivedFrom makes that checkable. */
+function derivedDoc(derivedFrom) {
+  const d = goodDoc()
+  d.findings.push({
+    id: 'costs-002', topic: 'lunch', kind: 'range', claim: 'A casual lunch runs CAD 10-18.',
+    value: { low: 10, high: 18, currency: 'CAD' }, sources: [src()], checkedOn: TODAY, confidence: 'high', notes: '',
+  })
+  d.findings.push({
+    id: 'costs-010', topic: 'daily-budget', kind: 'range', claim: 'A mid-range day adds up to CAD 60-120 before lodging.',
+    value: { low: 60, high: 120, currency: 'CAD' }, derivedFrom, sources: [src()], checkedOn: TODAY, confidence: 'medium',
+    notes: 'Two meals from costs-002 plus a transit day from costs-001.',
+  })
+  return d
+}
+test('derived budget that names real, sourced inputs passes', () => {
+  assert.deepEqual(validateFindingsFile(derivedDoc(['costs-001', 'costs-002']), { today: TODAY }), [])
+})
+test('derived budget naming a finding that does not exist fails', () => {
+  assert.match(validateFindingsFile(derivedDoc(['costs-001', 'costs-999']), { today: TODAY }).join('\n'), /derivedFrom.*costs-999/)
+})
+test('derivedFrom must be a non-empty list', () => {
+  assert.match(validateFindingsFile(derivedDoc([]), { today: TODAY }).join('\n'), /derivedFrom/)
+})
+test('a finding cannot be derived from itself', () => {
+  assert.match(validateFindingsFile(derivedDoc(['costs-010']), { today: TODAY }).join('\n'), /derivedFrom/)
+})
 test('hasPointPrice', () => {
   assert.equal(hasPointPrice('Lunch is about $18.'), true)
   assert.equal(hasPointPrice('Lunch runs $15-25.'), false)

@@ -139,6 +139,23 @@ export function validateFindingsFile(doc, { today = localToday(), agent } = {}) 
     }
   }
 
+  /* A number the agent added up itself (a daily budget from meal and transit
+   * ranges) may ship — Brady, Sept 29 2026 — but only when it is rooted in
+   * sourced findings: derivedFrom must name other findings in this file. */
+  const byId = new Map((doc.findings || []).filter((f) => f && f.id).map((f) => [f.id, f]))
+  for (const [i, f] of (doc.findings || []).entries()) {
+    if (!f || f.derivedFrom === undefined) continue
+    const at = `findings[${i}]${f.id ? ' ' + f.id : ''}`
+    if (!Array.isArray(f.derivedFrom) || f.derivedFrom.length === 0) {
+      errs.push(`${at}: derivedFrom must list the finding ids this was calculated from`)
+      continue
+    }
+    for (const ref of f.derivedFrom) {
+      if (ref === f.id) errs.push(`${at}: derivedFrom cannot reference itself`)
+      else if (!byId.has(ref)) errs.push(`${at}: derivedFrom references ${ref}, which is not a finding in this file`)
+    }
+  }
+
   for (const [i, g] of (doc.gaps || []).entries()) {
     if (!g || typeof g.topic !== 'string' || !g.topic) errs.push(`gaps[${i}]: topic required`)
     if (!g || !GAP_STATUS.includes(g.status)) errs.push(`gaps[${i}]: gap status must be ${GAP_STATUS.join('|')}`)

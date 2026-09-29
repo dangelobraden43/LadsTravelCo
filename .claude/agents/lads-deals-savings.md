@@ -2,7 +2,7 @@
 name: lads-deals-savings
 description: Researches time-limited promotions, city passes and whether they pay off, no-admission-charge days, happy hours, local savings programmes and discounts. Every promotion carries an expiry date.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: yellow

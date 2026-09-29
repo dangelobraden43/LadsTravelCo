@@ -2,7 +2,7 @@
 name: lads-getting-around
 description: Researches getting around on the ground - airport transfers, transit and passes, rideshare and taxi norms, driving and car-hire rules, intercity rail, bus and ferry, walkability and day-trip logistics.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: sonnet
+model: opus
 effort: high
 memory: project
 color: blue

@@ -86,6 +86,11 @@ if the file breaks a rule. Format:
    currency. A single amount anywhere in a claim is rejected, **except** an official fixed
    fee (park entry, a set ticket price): set `"fixedPrice": true` and cite an `official` or
    `government` source.
+   **Numbers you add up yourself are allowed** (Brady, Sept 29 2026), such as a daily
+   budget built from meal, transit and ticket ranges, as long as they are rooted in
+   quality sources: set `"derivedFrom": ["costs-003", "costs-007"]` naming the sourced
+   findings in your file that you built it from, explain the arithmetic in `notes`, and
+   keep it a range. The validator rejects a `derivedFrom` that names a missing finding.
 4. **Promotions expire.** `kind: "promo"` requires `datedUntil` (the last valid day). If a
    promo has no published end date, use the date you would re-check it (today + 30 days)
    and say so in `notes`.
@@ -119,7 +124,13 @@ if the file breaks a rule. Format:
 
 | | walked | researched |
 |---|---|---|
-| Place list | from `scope.places` (founder's saved list) | you may **discover** places; each needs a coordinate with provenance or no coordinate at all |
+| Place list | from `scope.places` (founder's saved list), **plus discovered places** | you may **discover** places; each needs a coordinate with provenance or no coordinate at all |
+
+**Discovered places belong on framework pages** (Brady, Sept 29 2026): places you find
+that are not on any founder list may publish on a framework, in both modes, clearly
+marked as **researched, not visited**. The founders have not been everywhere, even in
+cities they know, and fully researched frameworks are built this way. Hold discovered
+places to the researched-mode sourcing bar (two independent sources).
 | Sourcing | 1 source minimum, 2 for money/time | 2 independent sources for anything actionable |
 | Output tone | same: neutral, sourced | same. Never apologise for not having been; never imply a visit |
 
