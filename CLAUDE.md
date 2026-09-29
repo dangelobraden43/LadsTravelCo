@@ -1229,7 +1229,7 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | `feature/research-agents` merged `--no-ff` on Sept 29 **in the same push as this record**. The record cannot cite its own merge hash: read `git log`. Before it, `main` was `e73a7ab` (the CLAUDE.md trim), Vercel READY. |
+| `main` | Five merges on Sept 29, all verified LIVE by matching the served `index-*.js` to the local build: `8057f29` research agents + How It Works · `d7be4b6` quality sweep (Shop hidden, Bucket List dates, share image) · `50df815` agent rulings · `d7c6ac3` quick fixes · `431f8a5` Instagram. This docs-only commit sits on top; read `git log` for its hash. |
 | Working tree | clean at merge |
 | Pending `/ship` | **Nothing.** |
 | Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
