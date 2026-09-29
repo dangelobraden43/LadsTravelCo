@@ -1038,7 +1038,7 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | **`884ce47`** — `feature/affiliate-structure` merged `--no-ff` and pushed. Vercel **READY** (`dpl_Gp4WTTp3…`), SHA confirmed against the deployment |
+| `main` | Last CODE merge **`884ce47`** (`feature/affiliate-structure`), Vercel **READY** (`dpl_Gp4WTTp3…`). **Sept 29:** docs-only merge of `docs/claude-md-trim` on top — the CLAUDE.md trim + `docs/history.md`. It cannot cite its own hash; read `git log` |
 | Working tree | clean |
 | Pending `/ship` | **Nothing.** The day shipped. |
 
