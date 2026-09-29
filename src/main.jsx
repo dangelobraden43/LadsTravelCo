@@ -21,7 +21,7 @@ const WhenPage = lazy(() => import('./WhenPage'))
    reachable by nobody, holding 47 hand-typed fares and a retired
    destination. Deleted Sept 24 2026; git history preserves it. */
 const LadsPage = lazy(() => import('./LadsPage'))
-const GiftPage = lazy(() => import('./GiftPage'))
+// GiftPage (/gift/michigan, Apr 15 2026) retired Sept 29 2026 by Brady in favor of /local.
 const JoinPage = lazy(() => import('./JoinPage'))
 const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
 const BucketListPage = lazy(() => import('./BucketListPage'))
@@ -118,7 +118,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             {/* Kept reachable (out of nav) */}
             <Route path="/when" element={<WhenPage />} />
             <Route path="/lads" element={<LadsPage />} />
-            <Route path="/gift/michigan" element={<GiftPage />} />
+            <Route path="/gift/*" element={<Navigate to="/local" replace />} />
             {/* Old-path redirects */}
             <Route path="/explore" element={<Navigate to="/global" replace />} />
             <Route path="/adventure" element={<Navigate to="/outdoors" replace />} />
