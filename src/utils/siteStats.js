@@ -15,8 +15,14 @@
  * continents" on the founder bios describes where Brady and Dawson have been,
  * not what the site covers. The two have always been kept apart and blending
  * them would inflate our coverage claim with personal travel.
+ *
+ * AGENT_COUNT / AGENT_LABELS are read from .claude/agents/*.md (lads-public:
+ * true). The homepage said "6" from April to September 2026 with no agent in
+ * the repo; it now counts files.
  */
 export {
+  AGENT_COUNT,
+  AGENT_LABELS,
   TOTAL_SPOTS,
   SPOTS_BY_FRAMEWORK,
   VALIDATED_CITIES,

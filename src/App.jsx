@@ -9,7 +9,14 @@ import WorldManager from './worlds/WorldManager'
 import VideoBackground from './worlds/VideoBackground'
 import Footer from './Footer'
 import EarlyAccess from './EarlyAccess'
-import { TOTAL_SPOTS, VALIDATED_CITIES, COUNTRIES, CONTINENTS } from './utils/siteStats.js'
+import {
+  TOTAL_SPOTS,
+  VALIDATED_CITIES,
+  COUNTRIES,
+  CONTINENTS,
+  AGENT_COUNT,
+  AGENT_LABELS,
+} from './utils/siteStats.js'
 import { LAUNCH_LABEL_UPPER } from './utils/launch.js'
 const DepthHero = lazy(() => import('./worlds/DepthHero'))
 const Globe = lazy(() => import('./Globe'))
@@ -1321,9 +1328,9 @@ export default function App() {
                 sub: `${CONTINENTS} continents. ${VALIDATED_CITIES} cities.`,
               },
               {
-                value: '6',
+                value: String(AGENT_COUNT),
                 label: 'AI RESEARCH AGENTS',
-                sub: 'Flight, cost, neighborhood, validation, booking, local intel.',
+                sub: AGENT_LABELS.join(' · ') + '. Founders validate.',
               },
             ].map((stat, i) => (
               <Reveal key={stat.label} delay={i * 100}>

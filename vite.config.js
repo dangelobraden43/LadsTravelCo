@@ -51,7 +51,13 @@ function ladsCanonicalStats() {
       perFramework[fw.slug] = n;
       totalSpots += n;
     }
-    return { canonical, perFramework, totalSpots };
+
+    /* The research-agent count on the homepage comes from the agent files
+     * themselves (.claude/agents/*.md with lads-public: true). It said "6"
+     * from April to September 2026 while no agent existed in the repo. */
+    const manifest = await fresh(path.resolve(process.cwd(), 'tools/research/agents-manifest.mjs'));
+    const agents = manifest.publicAgents(manifest.readAgents(path.resolve(process.cwd(), '.claude/agents')));
+    return { canonical, perFramework, totalSpots, agents };
   }
 
   return {
@@ -78,7 +84,7 @@ function ladsCanonicalStats() {
     async load(id) {
       if (id !== RESOLVED_ID) return;
 
-      const { canonical, perFramework, totalSpots } = await computeStats();
+      const { canonical, perFramework, totalSpots, agents } = await computeStats();
 
       const lines = [
         '/* GENERATED AT BUILD TIME by ladsCanonicalStats() in vite.config.js.',
@@ -91,6 +97,8 @@ function ladsCanonicalStats() {
         'export const COUNTRIES = ' + canonical.COUNTRY_COUNT + ';',
         'export const CONTINENTS = ' + canonical.CONTINENT_COUNT + ';',
         'export const FRAMEWORKS = ' + canonical.FRAMEWORK_COUNT + ';',
+        'export const AGENT_COUNT = ' + agents.length + ';',
+        'export const AGENT_LABELS = ' + JSON.stringify(agents.map((a) => a.label)) + ';',
       ];
       return lines.join('\n');
     },
@@ -99,7 +107,8 @@ function ladsCanonicalStats() {
      * keeps showing a number the data no longer supports — the exact bug this
      * whole mechanism replaces. */
     handleHotUpdate({ file, server }) {
-      if (!file.split(path.sep).join('/').includes('/src/data/')) return;
+      const f = file.split(path.sep).join('/');
+      if (!f.includes('/src/data/') && !f.includes('/.claude/agents/')) return;
       const mod = server.moduleGraph.getModuleById(RESOLVED_ID);
       if (mod) server.moduleGraph.invalidateModule(mod);
     },
