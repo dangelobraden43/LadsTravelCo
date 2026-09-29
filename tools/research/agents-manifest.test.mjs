@@ -78,6 +78,19 @@ test('roster: every agent is wired to the contract, memory and both hooks', { sk
 test('settings.json wires the guard and the stop validator for every agent', { skip: REAL.length === 0 }, () => {
   const s = JSON.parse(readFileSync(path.resolve('.claude/settings.json'), 'utf8'))
   const cmds = (ev) => (s.hooks?.[ev] || []).flatMap((m) => (m.hooks || []).map((h) => ({ matcher: m.matcher || '', command: h.command })))
+  /* Review #2: a relative path crashes when the session's cwd moves, and a
+   * crashed hook fails OPEN. Every research hook is anchored to the project. */
+  for (const ev of ['PreToolUse', 'SubagentStop']) {
+    for (const h of cmds(ev).filter((x) => x.command.includes('tools/research/'))) {
+      /* Verified live Sept 29: under Git Bash the shell expands
+       * $CLAUDE_PROJECT_DIR to EMPTY in hook commands, so "$CLAUDE_PROJECT_DIR/x"
+       * crashed and failed open. Node itself does see the variable, so node
+       * resolves the path and no shell expansion is involved. */
+      assert.ok(!h.command.includes('$CLAUDE_PROJECT_DIR'), `${ev}: no shell expansion: ${h.command}`)
+      assert.match(h.command, /process\.env\.CLAUDE_PROJECT_DIR/, `${ev}: node resolves the project dir`)
+      assert.match(h.command, /\.main\(\)/, `${ev}: calls the script's exported main()`)
+    }
+  }
   const pre = cmds('PreToolUse').find((h) => h.command.includes('tools/research/guard.mjs'))
   assert.ok(pre, 'PreToolUse guard present')
   for (const t of ['Write', 'Edit', 'MultiEdit', 'NotebookEdit']) assert.match(pre.matcher, new RegExp(t))

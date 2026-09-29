@@ -119,6 +119,28 @@ test('banned term in a claim is reported', () => {
   const d = withFinding({ kind: 'fact', value: null, claim: 'We recommend the north trail.' })
   assert.match(validateFindingsFile(d, { today: TODAY }).join('\n'), /first-person/)
 })
+test('hasPointPrice: a range elsewhere in the claim does not excuse a point price (review #1)', () => {
+  assert.equal(hasPointPrice('Entry is $25; guided tours run $40-60.'), true)
+  assert.equal(hasPointPrice('Ages 12-17 pay $15.'), true)
+  assert.equal(hasPointPrice('Trains leave 2-3 times hourly; fare $12.'), true)
+  assert.equal(hasPointPrice('Open 9 to 5; entry $20.'), true)
+})
+test('hasPointPrice: currency words and symbols outside the ISO list', () => {
+  assert.equal(hasPointPrice('Entry is 25 euros.'), true)
+  assert.equal(hasPointPrice('The train is S/ 152 one way.'), true)
+  assert.equal(hasPointPrice('A beer is 30 dollars here.'), true)
+  assert.equal(hasPointPrice('Tickets run 20-30 euros.'), false)
+  assert.equal(hasPointPrice('Tickets run S/ 150 to 250.'), false)
+})
+test('hasPointPrice: genuine ranges in every written form pass', () => {
+  assert.equal(hasPointPrice('Lunch runs $15-$25.'), false)
+  assert.equal(hasPointPrice('A mid-range day runs CAD 180-260 per person.'), false)
+  assert.equal(hasPointPrice('Fares run USD 400 to 650 in winter.'), false)
+})
+test('a point price hidden in notes is caught too', () => {
+  const d = withFinding({ notes: 'Parking is $40 a day.' })
+  assert.match(validateFindingsFile(d, { today: TODAY }).join('\n'), /point price/)
+})
 test('hasPointPrice', () => {
   assert.equal(hasPointPrice('Lunch is about $18.'), true)
   assert.equal(hasPointPrice('Lunch runs $15-25.'), false)

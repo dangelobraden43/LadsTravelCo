@@ -33,12 +33,19 @@ const BANNED = [
   { re: /\b(donat(e|ion|ions)|charity|charitable|fundrais\w*)\b/i, why: 'charity content never appears' },
 ]
 
+/* Every money amount is checked ON ITS OWN: it passes only if it is one end of
+ * a range. (Until the Sept 29 review, one range anywhere in a claim excused
+ * every other amount in it: "Entry is $25; tours run $40-60" passed.) */
 const CUR = 'USD|CAD|EUR|GBP|PEN|AUD|ISK|CZK|PLN|CRC|MXN'
-const MONEY = new RegExp(
-  '(?:[$€£]\\s?\\d[\\d,]*(?:\\.\\d+)?)' +
-  '|(?:\\b\\d[\\d,]*(?:\\.\\d+)?\\s?(?:' + CUR + ')\\b)' +
-  '|(?:\\b(?:' + CUR + ')\\s?\\d[\\d,]*)', 'i')
-const RANGE = /\d[\d,.]*\s*(?:-|–|—|to)\s*(?:[$€£]\s?)?\d/i
+const CUR_WORDS = 'dollars?|euros?|soles?|pounds?|kr|kronur|koruna|zloty|colones'
+const NUM = '\\d[\\d,]*(?:\\.\\d+)?'
+const MONEY_G = new RegExp(
+  '(?:(?:[$\u20ac\u00a3]|S\\/)\\s?' + NUM + ')' +
+  '|(?:\\b(?:' + CUR + ')\\s?' + NUM + ')' +
+  '|(?:\\b' + NUM + '\\s?(?:' + CUR + '|' + CUR_WORDS + ')\\b)', 'gi')
+const SEP = '(?:-|\u2013|\u2014|to|and)'
+const RANGE_BEFORE = new RegExp('\\d[\\d,.]*\\s*' + SEP + '\\s*$', 'i')
+const RANGE_AFTER = new RegExp('^\\s*' + SEP + '\\s*(?:[$\u20ac\u00a3]|S\\/)?\\s*\\d', 'i')
 
 export const localToday = () => new Date().toLocaleDateString('en-CA')
 
@@ -48,8 +55,13 @@ export function scanBanned(text) {
 }
 
 export function hasPointPrice(text) {
-  if (!text || !MONEY.test(text)) return false
-  return !RANGE.test(text)
+  if (!text) return false
+  for (const m of String(text).matchAll(MONEY_G)) {
+    const before = text.slice(0, m.index)
+    const after = text.slice(m.index + m[0].length)
+    if (!RANGE_BEFORE.test(before) && !RANGE_AFTER.test(after)) return true
+  }
+  return false
 }
 
 const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return null } }
@@ -117,7 +129,7 @@ export function validateFindingsFile(doc, { today = localToday(), agent } = {}) 
     }
 
     const officialFee = f.fixedPrice === true && sources.some((s) => s && (s.kind === 'official' || s.kind === 'government'))
-    if (hasPointPrice(f.claim) && !officialFee) errs.push(`${at}: point price in claim; state a range, or set fixedPrice with an official source`)
+    if ((hasPointPrice(f.claim) || hasPointPrice(f.notes)) && !officialFee) errs.push(`${at}: point price in claim or notes; state a range, or set fixedPrice with an official source`)
 
     for (const why of scanBanned(`${f.claim || ''}\n${f.notes || ''}`)) errs.push(`${at}: ${why}`)
 

@@ -1,7 +1,13 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import path from 'node:path'
-import { isAllowedWrite, shouldGuard, guardDecision } from './guard.mjs'
+import { isAllowedWrite, shouldGuard, guardDecision, main as guardMain } from './guard.mjs'
+import { main as stopMain } from './hook-validate.mjs'
+
+test('both hook scripts export main() for the cwd-independent launcher', () => {
+  assert.equal(typeof guardMain, 'function')
+  assert.equal(typeof stopMain, 'function')
+})
 
 const ROOT0 = path.resolve('C:/Users/brady/lads-travel-co')
 test('guardDecision: a Lads agent writing src/data gets a structured deny', () => {

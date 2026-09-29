@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node tools/research/guard.mjs"
+            "command": "node -e \"import(require('url').pathToFileURL(require('path').join(process.env.CLAUDE_PROJECT_DIR||process.cwd(),'tools/research/guard.mjs')).href).then(m=>m.main())\""
           }
         ]
       }
@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node tools/research/hook-validate.mjs"
+            "command": "node -e \"import(require('url').pathToFileURL(require('path').join(process.env.CLAUDE_PROJECT_DIR||process.cwd(),'tools/research/hook-validate.mjs')).href).then(m=>m.main())\""
           }
         ]
       }

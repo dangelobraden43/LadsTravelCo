@@ -109,7 +109,9 @@ if the file breaks a rule. Format:
 - **Our own prices appear nowhere.** You research what others charge.
 - **"Free".** A third party's no-cost entry day is a fact and you may record it. Write it
   as "no admission charge" rather than "free".
-- **Never recommend an operator, card or product as ours.** State market facts and tiers.
+- **Never recommend an operator or product as ours.** State market facts and tiers.
+  Travel cards are the one exception (Brady, Sept 29 2026): a recommendation is allowed
+  only alongside every relevant option, with the trade-offs stated. See lads-rewards-points.
 - **Traps are the product.** For every domain, look for what goes wrong: the closure, the
   sell-out, the scam, the season that looks cheap for a reason. `kind: "trap"`.
 

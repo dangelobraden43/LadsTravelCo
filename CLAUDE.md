@@ -363,14 +363,47 @@ in staging and must never be typed onto a page.
   `/`) — now `/join`. `/explore`, `/adventure` pills → `/global`, `/outdoors`.
   Peru's "Framework coming soon" (three weeks after it went live) → links `/peru`.
 
-### 5 — RULINGS OWED BY BRADY (none block anything shipped)
-1. **Credit cards** — `lads-rewards-points` researches them as facts; may a card
-   recommendation ever render? Default: never.
-2. **"Free" in rendered deals** — default wording "no admission charge".
-3. **Who rewards research is for** — default: founder packet only.
-4. **Model spend** — default: researchers Sonnet, verifier/architect/rewards Opus.
-5. From the pilot: may a **derived** daily budget ship, or only published ranges?
-   Do **discovered** places (not on a founder list) belong in a framework?
+### 5 — RULINGS
+
+✅ **RULED by Brady, Sept 29:**
+1. **Travel cards: recommend, but always show every option.** Cards are a real way
+   to save and earn toward future travel. A recommendation is allowed only
+   alongside every relevant option with trade-offs (fees, earning, partners, who it
+   suits, the catch); never one card alone, never urgency. Written into
+   `lads-rewards-points` and the research contract. Affiliate rendering is still a
+   separate, disclosed publish-time decision.
+2. **"No admission charge"**, never "free", for third-party no-cost entry.
+3. **Rewards research is for Lads Travel Club members** — all of it.
+
+❓ **Still open (re-asked in plain words Sept 29):**
+4. **Which AI model each agent runs on** — a cost-vs-quality dial per agent.
+   Current: 11 researchers on Sonnet (faster, cheaper); Verifier, Itinerary
+   Architect and Points & Miles on Opus (strongest). Brady had not heard the term.
+5. **Two pilot questions:** (a) may a trip budget be *added up by an agent* from
+   published prices, or only quoted from a published source? (b) may places the
+   agents *discovered* (not on a founder's list) appear in a framework, as copper?
+
+### 6 — THE FINAL REVIEW (independent, Opus) — 0 Critical, 3 Important, all fixed
+
+1. **Point-price hole:** one range anywhere excused every price in a claim ("Entry
+   is $25; tours run $40-60" passed; "euros"/"S/" missed). Now each amount must
+   itself be part of a range; notes scanned too. Re-run over the Vancouver pilot it
+   caught **6 findings the old check had passed.**
+2. **Relative hook paths failed OPEN** when cwd moved. `"$CLAUDE_PROJECT_DIR/…"`
+   was tried and **failed live** (Git Bash expands it to empty in hooks). Hooks now
+   launch via `node -e` resolving `process.env.CLAUDE_PROJECT_DIR` inside node.
+   Verified live: `src/data` write denied; the "$25; $40-60" claim bounced and fixed.
+3. **Stop hook could validate an older run.** It now checks only the run with the
+   newest `RUN.json`, and writes `<agent>.json.MISSING.txt` when nothing was written.
+4. (Minor, upgraded) **How It Works keyboard:** closed panel is `inert`; × and Esc
+   return focus to the icon. Verified in browser.
+
+**Deferred minors** (logged, not fixed): malformed hook stdin fails open (Claude
+Code always sends JSON); `claude --agent lads-x` runs get no Stop validation;
+resizing across 760px with a panel open resets the chosen specialist; roster test
+hard-codes 13/12/1; "N independent fact-checker" grammar if the count ever
+changes; the survey line mixes our copy into a quoted statistic and links a news
+report rather than Greetwell directly.
 
 ---
 
@@ -1195,9 +1228,9 @@ pilots pass), Vancouver + Costa Rica frameworks, place-level booking links.
 5. **Licensed music for the Peru film.** Blocks publication of the cut, not its
    assembly. None sourced, and none will be invented.
 
-6. **The five research-agent rulings** — credit cards, "free" in rendered deals, who
-   rewards research is for, model spend, derived budgets / discovered places. Listed
-   in the Sept 29 record; none block anything shipped.
+6. **Two research-agent rulings still open** (model per agent; derived budgets / discovered
+   places). Cards, "no admission charge" and Club-only rewards were RULED Sept 29.
+   Listed in the Sept 29 record; neither blocks anything shipped.
 
 ✅ **Closed Sept 24:** the Peru `note`→`notes` ruling. Granted, and implemented
 against the data rather than the forecast — **227, not 229.** See the record.

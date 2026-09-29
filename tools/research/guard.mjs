@@ -63,10 +63,15 @@ async function readStdin() {
   return data
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
+/* Entry point. Called by the hook launcher in .claude/settings.json, which
+ * resolves this file from process.env.CLAUDE_PROJECT_DIR inside node (the
+ * shell does not expand it: verified Sept 29), and by a direct `node` run. */
+export async function main() {
   const input = JSON.parse((await readStdin()) || '{}')
   const projectDir = process.env.CLAUDE_PROJECT_DIR || input.cwd || process.cwd()
   const out = guardDecision(input, projectDir)
   if (out) process.stdout.write(JSON.stringify(out))
   process.exit(0)
 }
+
+if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main()

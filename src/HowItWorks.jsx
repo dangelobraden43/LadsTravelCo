@@ -369,9 +369,24 @@ export default function HowItWorks() {
     return () => io.disconnect()
   }, [seen])
 
+  /* Closing returns keyboard focus to the step's icon, so a keyboard user is
+   * not dropped to the top of the page (review, Sept 29). */
+  const openRef = useRef(-1)
+  useEffect(() => {
+    openRef.current = open
+  }, [open])
+  const close = () => {
+    const i = openRef.current
+    setOpen(-1)
+    if (i > -1) window.requestAnimationFrame(() => iconRefs.current[i]?.focus())
+  }
+  const closeRef = useRef(close)
+  useEffect(() => {
+    closeRef.current = close
+  })
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') setOpen(-1)
+      if (e.key === 'Escape' && openRef.current > -1) closeRef.current()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -398,8 +413,9 @@ export default function HowItWorks() {
   }, [open, narrow])
 
   const toggle = (i) => {
+    const opening = open !== i
     setOpen((cur) => (cur === i ? -1 : i))
-    if (narrow) {
+    if (narrow && opening) {
       setTimeout(
         () => iconRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
         60
@@ -415,15 +431,19 @@ export default function HowItWorks() {
       ref={panelRef}
       role="region"
       aria-label="Step details"
+      inert={open < 0}
+      aria-hidden={open < 0}
     >
       {!narrow && open > -1 && caret != null && (
         <span className="hw-caret" style={{ left: caret }} />
       )}
       <div className="hw-inner">
         <div className="hw-pad">
-          <button className="hw-close" aria-label="Close details" onClick={() => setOpen(-1)}>
-            &times;
-          </button>
+          {open > -1 && (
+            <button className="hw-close" aria-label="Close details" onClick={close}>
+              &times;
+            </button>
+          )}
           {open > -1 && <Detail i={open} onPlan={plan} key={open} />}
         </div>
       </div>
@@ -448,7 +468,7 @@ export default function HowItWorks() {
                 iconRefs.current[i] = el
               }}
               aria-expanded={open === i}
-              aria-controls="hw-panel"
+              aria-controls={!narrow || open === i ? 'hw-panel' : undefined}
               aria-label={`Step ${i + 1}, ${s.title}: more detail`}
               onClick={() => toggle(i)}
             >
