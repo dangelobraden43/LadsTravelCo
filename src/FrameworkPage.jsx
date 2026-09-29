@@ -655,81 +655,78 @@ export default function FrameworkPage({ data, heroImg }) {
         </div>
       </section>
 
-      {/* ===== LOGISTICS ===== */}
-      <section id="logistics" className="fw-section">
-        <div className="fw-section-label">LOGISTICS</div>
-        <h2 className="fw-section-title">Getting There &amp; Getting Around</h2>
-        {/* GUARDED. michigan.js has `logistics: null`, and dereferencing it
+      {/* ===== LOGISTICS =====
+          Renders only when there is something to show. Until Sept 29 2026 a
+          framework without logistics showed a "COMING SOON" card, which
+          announced an absence to readers (against the Peru presentation rules). */}
+      {(data.logistics || data.costModel) && (
+        <section id="logistics" className="fw-section">
+          <div className="fw-section-label">LOGISTICS</div>
+          <h2 className="fw-section-title">Getting There &amp; Getting Around</h2>
+          {/* GUARDED. michigan.js has `logistics: null`, and dereferencing it
             here threw "Cannot read properties of null (reading 'flights')",
             which unmounted the whole tree and rendered /michigan as a blank
             black page in production. Missing data must degrade to an honest
             placeholder, never to a crash. */}
-        {data.logistics ? (
-          <div className="fw-logistics-grid">
-            <div className="fw-logistics-card">
-              <div className="fw-logistics-label">FLIGHTS</div>
-              <p className="fw-logistics-text">{data.logistics.flights}</p>
+          {data.logistics ? (
+            <div className="fw-logistics-grid">
+              <div className="fw-logistics-card">
+                <div className="fw-logistics-label">FLIGHTS</div>
+                <p className="fw-logistics-text">{data.logistics.flights}</p>
+              </div>
+              <div className="fw-logistics-card">
+                <div className="fw-logistics-label">IN-COUNTRY</div>
+                <p className="fw-logistics-text">{data.logistics.inCountry}</p>
+              </div>
+              <div className="fw-logistics-card">
+                <div className="fw-logistics-label">GETTING AROUND</div>
+                <p className="fw-logistics-text">{data.logistics.gettingAround}</p>
+              </div>
+              <div className="fw-logistics-card">
+                <div className="fw-logistics-label">TIPPING</div>
+                <p className="fw-logistics-text">{data.logistics.tipping}</p>
+              </div>
             </div>
-            <div className="fw-logistics-card">
-              <div className="fw-logistics-label">IN-COUNTRY</div>
-              <p className="fw-logistics-text">{data.logistics.inCountry}</p>
-            </div>
-            <div className="fw-logistics-card">
-              <div className="fw-logistics-label">GETTING AROUND</div>
-              <p className="fw-logistics-text">{data.logistics.gettingAround}</p>
-            </div>
-            <div className="fw-logistics-card">
-              <div className="fw-logistics-label">TIPPING</div>
-              <p className="fw-logistics-text">{data.logistics.tipping}</p>
-            </div>
-          </div>
-        ) : (
-          <div className="fw-pending">
-            <div className="fw-pending-label">COMING SOON</div>
-            <p className="fw-pending-text">
-              Logistics for {data.name} are still being written up &mdash; flights, getting around
-              and the rest. The spots below are already validated.
-            </p>
-          </div>
-        )}
+          ) : null}
 
-        {data.costModel && (
-          <>
-            <h3 className="fw-section-title" style={{ fontSize: '1.4rem', marginTop: 48 }}>
-              Cost Model (Per Person, Group of 4)
-            </h3>
-            {/* Scroll container: the cost table has enough columns to exceed a
+          {data.costModel && (
+            <>
+              <h3 className="fw-section-title" style={{ fontSize: '1.4rem', marginTop: 48 }}>
+                Cost Model (Per Person, Group of 4)
+              </h3>
+              {/* Scroll container: the cost table has enough columns to exceed a
                 phone viewport and was pushing the whole page sideways at 390px.
                 It scrolls inside itself now instead of overflowing the body. */}
-            <div className="fw-cost-scroll">
-              <table className="fw-cost-table">
-                <thead>
-                  <tr>
-                    {data.costModel.headers.map((h, i) => (
-                      <th key={i}>{h}</th>
+              <div className="fw-cost-scroll">
+                <table className="fw-cost-table">
+                  <thead>
+                    <tr>
+                      {data.costModel.headers.map((h, i) => (
+                        <th key={i}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.costModel.rows.map((row, i) => (
+                      <tr key={i}>
+                        {row.map((cell, j) => (
+                          <td key={j}>{cell}</td>
+                        ))}
+                      </tr>
                     ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.costModel.rows.map((row, i) => (
-                    <tr key={i}>
-                      {row.map((cell, j) => (
+                    <tr>
+                      {data.costModel.totals.map((cell, j) => (
                         <td key={j}>{cell}</td>
                       ))}
                     </tr>
-                  ))}
-                  <tr>
-                    {data.costModel.totals.map((cell, j) => (
-                      <td key={j}>{cell}</td>
-                    ))}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            {data.costModel.lean && <p className="fw-cost-lean">{data.costModel.lean}</p>}
-          </>
-        )}
-      </section>
+                  </tbody>
+                </table>
+              </div>
+              {data.costModel.lean && <p className="fw-cost-lean">{data.costModel.lean}</p>}
+            </>
+          )}
+        </section>
+      )}
 
       {/* ===== LADS TAKE ===== */}
       <div className="fw-lads-take">

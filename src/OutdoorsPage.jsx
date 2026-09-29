@@ -199,7 +199,8 @@ export default function OutdoorsPage() {
                   <div className="coming-card-name">{c.name}</div>
                   <div className="coming-card-region">{c.region}</div>
                   <div className="coming-card-note">{c.note}</div>
-                  <div className="coming-card-badge">Coming soon</div>
+                  {/* "On the list", not "Coming soon": no date is promised. */}
+                  <div className="coming-card-badge">On the list</div>
                 </div>
               </Reveal>
             ))}

@@ -16,6 +16,7 @@ const SOCIALS = [
   { label: 'TikTok', href: '#' },
   { label: 'YouTube', href: '#' },
 ]
+const LIVE_SOCIALS = SOCIALS.filter((s) => s.href && s.href !== '#')
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -49,19 +50,23 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="lads-footer-col" id="follow-along">
-            <div className="lads-footer-h">Follow Along</div>
-            <ul>
-              {SOCIALS.map((s) => (
-                <li key={s.label}>
-                  <a href={s.href} target="_blank" rel="noreferrer noopener">
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p className="lads-footer-note">We launch {LAUNCH_LABEL} — follow the build.</p>
-          </div>
+          {/* Hidden until real profile URLs exist: all three links pointed at
+              "#" (Sept 29 2026 sweep). Fill SOCIALS and it reappears. */}
+          {LIVE_SOCIALS.length > 0 && (
+            <div className="lads-footer-col" id="follow-along">
+              <div className="lads-footer-h">Follow Along</div>
+              <ul>
+                {LIVE_SOCIALS.map((s) => (
+                  <li key={s.label}>
+                    <a href={s.href} target="_blank" rel="noreferrer noopener">
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p className="lads-footer-note">We launch {LAUNCH_LABEL} — follow the build.</p>
+            </div>
+          )}
 
           <div className="lads-footer-col">
             <div className="lads-footer-h">The Lads</div>
