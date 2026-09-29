@@ -960,10 +960,13 @@ export default function App() {
               }}
             >
               {[
-                { label: 'Browse Destinations', path: '/explore' },
-                { label: 'Adventure & Treks', path: '/adventure' },
+                /* Pointed at retired paths until Sept 29 2026: /explore and /adventure
+                   only reached their pages through redirects, and /plan redirected back
+                   to this homepage, so the primary button did nothing. */
+                { label: 'Browse Destinations', path: '/global' },
+                { label: 'Adventure & Treks', path: '/outdoors' },
                 { label: 'When to Travel', path: '/when' },
-                { label: 'Start Planning', path: '/plan', primary: true },
+                { label: 'Start Planning', path: '/join', primary: true },
               ].map((btn) => (
                 <button
                   key={btn.path}
@@ -1193,7 +1196,18 @@ export default function App() {
                   lineHeight: 1.5,
                 }}
               >
-                Framework coming soon.
+                {/* Read "Framework coming soon." until Sept 29 2026, three weeks after
+                    /peru went live on Sept 8. */}
+                <a
+                  href="/peru"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    navigate('/peru')
+                  }}
+                  style={{ color: '#d4a843', textDecoration: 'none' }}
+                >
+                  Open the Peru framework &rarr;
+                </a>
               </p>
             </div>
           </Reveal>
@@ -1582,7 +1596,10 @@ export default function App() {
           <Reveal>
             <div style={{ textAlign: 'center' }}>
               <button
-                onClick={() => navigate('/plan')}
+                onClick={
+                  () =>
+                    navigate('/join') /* was '/plan', which has redirected to / since May 31 2026 */
+                }
                 style={{
                   padding: '16px 40px',
                   borderRadius: 28,
