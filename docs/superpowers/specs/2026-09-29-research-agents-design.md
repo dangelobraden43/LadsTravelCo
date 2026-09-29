@@ -24,7 +24,8 @@ more than exists.
 3. No agent can write to `src/data/`, speak in the Lads' voice, or mark anything validated
    — enforced by **tool restriction**, not instruction.
 4. A pilot run on a real destination produces a review packet that is **better than the
-   banked Google-pass enrichment file** for the same place, judged side by side.
+   banked Sept 17 ad-hoc /enrich run (internal/brady/vancouver-enrichment.md)** for the
+   same place, judged side by side.
 5. The homepage agent count and its sub-label derive from `.claude/agents/` at build time.
 
 ### What does NOT change
@@ -50,8 +51,10 @@ not a lesser draft waiting for a visit. Two modes, one pipeline:
 | How it renders | Gold, founder voice where given | **Copper, framed proudly as researched-not-yet-walked** — the Dusk Field Guide's two visible tiers. Never styled as gold; never apologised for |
 | Founder role | Verdicts, ladsTake | Review and approve the packet — curation, not validation |
 
-The orchestrator takes `--mode walked|researched` (default: detected — walked if a
-founder list or validated data file exists). The packet header states the mode, so a
+The orchestrator takes `--mode walked|researched`. Default: walked only if the
+destination has a src/data file containing validated places; otherwise researched. A saved
+Maps list is a place SOURCE in either mode, never proof of a visit (Vancouver has a saved
+list and nobody has been). The packet header states the mode, so a
 reviewer always knows which bar the findings were held to.
 
 **The parks guide is the primary customer of researched mode.** Pilot 2 (section 9) is an
@@ -187,6 +190,7 @@ One JSON file per agent per run:
 {
   "agent": "lads-costs-budget",
   "destination": "vancouver",
+  "mode": "walked|researched",
   "runId": "2026-09-29T14-05",
   "generatedOn": "2026-09-29",
   "callsUsed": 14,
@@ -281,13 +285,14 @@ the pilot passes** — scheduling an unproven agent automates its mistakes.
 4. **`/research` orchestrator skill.**
 5. **Pilot: Vancouver**, a subset first (provenance · destination-scout · costs-budget ·
    deals-savings → verifier → architect). Vancouver is chosen because it is pure research
-   tier (no founder voice to protect) and `internal/brady/vancouver-enrichment.md` is the
-   banked Google-pass comparison. Then the full roster.
+   tier (no founder voice to protect) and the banked Sept 17 ad-hoc /enrich run
+   (internal/brady/vancouver-enrichment.md) is the comparison. Then the full roster.
 6. **Side-by-side comparison** vs the banked file — reported honestly, including where the
    agents lost.
 6b. **Pilot 2: an unvisited national park in researched mode** — `lads-provenance`,
    `lads-parks-trails`, `lads-timing-events`, `lads-getting-around`, `lads-costs-budget`,
-   `lads-entry-essentials` → verifier → architect. Proposed: **Pictured Rocks National
+   `lads-bookings-tickets` → verifier → architect (a US park needs permits and
+   reservations, not entry rules). Proposed: **Pictured Rocks National
    Lakeshore** (Michigan — reachable, and one of the three Dusk Field Guide Phase A poster
    samples), unless Brady names another. Output shaped to the Dusk Field Guide `parkData`
    schema so Phase A builds on real data.

@@ -11,7 +11,8 @@
     "build:full": "npm run extract-images && npm run build",
     "sync": "node scripts/airtable-sync.js",
     "sync:build": "npm run sync && npm run build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:research": "node --test \"tools/research/*.test.mjs\""
   },
   "repository": {
     "type": "git",
