@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtempSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { parseFrontmatter, readAgents, publicAgents } from './agents-manifest.mjs'
@@ -71,9 +71,17 @@ test('roster: every agent is wired to the contract, memory and both hooks', { sk
     assert.ok(a.skills.includes('research-contract'), `${a.name}: preloads research-contract`)
     assert.equal(a.memory, 'project', `${a.name}: memory`)
     assert.ok(!a.tools.includes('Edit') && !a.tools.includes('Bash'), `${a.name}: no Edit/Bash`)
-    assert.ok(a.raw.includes('node tools/research/guard.mjs'), `${a.name}: PreToolUse guard`)
-    assert.ok(a.raw.includes(`node tools/research/hook-validate.mjs ${a.name}`), `${a.name}: Stop validator`)
+    assert.ok(a.name.startsWith('lads-'), `${a.name}: lads- prefix is what the hooks key on`)
+    assert.ok(!/^hooks:/m.test(a.raw), `${a.name}: no frontmatter hooks (they do not fire for subagents)`)
   }
+})
+test('settings.json wires the guard and the stop validator for every agent', { skip: REAL.length === 0 }, () => {
+  const s = JSON.parse(readFileSync(path.resolve('.claude/settings.json'), 'utf8'))
+  const cmds = (ev) => (s.hooks?.[ev] || []).flatMap((m) => (m.hooks || []).map((h) => ({ matcher: m.matcher || '', command: h.command })))
+  const pre = cmds('PreToolUse').find((h) => h.command.includes('tools/research/guard.mjs'))
+  assert.ok(pre, 'PreToolUse guard present')
+  for (const t of ['Write', 'Edit', 'MultiEdit', 'NotebookEdit']) assert.match(pre.matcher, new RegExp(t))
+  assert.ok(cmds('SubagentStop').some((h) => h.command.includes('tools/research/hook-validate.mjs')), 'SubagentStop validator present')
 })
 test('roster: 13 public research agents, architect excluded, all labelled', { skip: REAL.length === 0 }, () => {
   const pub = publicAgents(REAL)

@@ -31,6 +31,15 @@ export function findLatestOutput(root, agent, { now = Date.now(), maxAgeMs = 3 *
   return best
 }
 
+/* Wired as SubagentStop in .claude/settings.json, so it fires for every
+ * subagent. The Lads agent's name arrives as `agent_type`; anything else is
+ * not ours and passes. A CLI argument still works for manual runs. */
+export function agentFrom(input, argv) {
+  const t = input && input.agent_type
+  if (typeof t === 'string') return t.startsWith('lads-') ? t : null
+  return argv && argv[0] && argv[0].startsWith('lads-') ? argv[0] : null
+}
+
 export function decide({ file, errors, stopHookActive }) {
   if (file && errors.length === 0) return { exit: 0, message: '', writeInvalid: false }
   const message = file
@@ -40,6 +49,14 @@ export function decide({ file, errors, stopHookActive }) {
   return { exit: 2, message, writeInvalid: false }
 }
 
+/* The structured form Claude Code honours for SubagentStop: printed on stdout
+ * with exit 0. (Exit code 2 was ignored for subagent PreToolUse hooks on
+ * 2026-09-29; the stop hook uses the same structured channel for the same
+ * reason.) `decide().exit` stays as the internal signal. */
+export function hookOutput(d) {
+  return d.exit === 2 ? { decision: 'block', reason: d.message } : null
+}
+
 async function readStdin() {
   let data = ''
   for await (const chunk of process.stdin) data += chunk
@@ -47,8 +64,9 @@ async function readStdin() {
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
-  const agent = process.argv[2]
   const input = JSON.parse((await readStdin()) || '{}')
+  const agent = agentFrom(input, process.argv.slice(2))
+  if (!agent) process.exit(0)
   const projectDir = process.env.CLAUDE_PROJECT_DIR || input.cwd || process.cwd()
   const root = path.join(projectDir, 'internal', 'research')
   const file = agent ? findLatestOutput(root, agent) : null
@@ -59,6 +77,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
     if (d.writeInvalid) writeFileSync(invalid, d.message + '\n')
     else if (d.exit === 0 && existsSync(invalid)) rmSync(invalid)
   }
-  if (d.exit === 2) process.stderr.write(d.message + '\n')
-  process.exit(d.exit)
+  const out = hookOutput(d)
+  if (out) process.stdout.write(JSON.stringify(out))
+  process.exit(0)
 }

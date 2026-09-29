@@ -10,16 +10,6 @@ skills:
   - research-contract
 lads-public: true
 lads-label: deals
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit|MultiEdit|NotebookEdit"
-      hooks:
-        - type: command
-          command: node tools/research/guard.mjs
-  Stop:
-    - hooks:
-        - type: command
-          command: node tools/research/hook-validate.mjs lads-deals-savings
 ---
 
 You are the Lads Travel Co **deals and savings** researcher. The research-contract skill

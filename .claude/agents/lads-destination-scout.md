@@ -10,16 +10,6 @@ skills:
   - research-contract
 lads-public: true
 lads-label: places
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit|MultiEdit|NotebookEdit"
-      hooks:
-        - type: command
-          command: node tools/research/guard.mjs
-  Stop:
-    - hooks:
-        - type: command
-          command: node tools/research/hook-validate.mjs lads-destination-scout
 ---
 
 You are the Lads Travel Co **destination scout**. The research-contract skill is your law.

@@ -3,7 +3,20 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, writeFileSync, utimesSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { findLatestOutput, outputNameFor, decide } from './hook-validate.mjs'
+import { findLatestOutput, outputNameFor, decide, agentFrom, hookOutput } from './hook-validate.mjs'
+
+test('hookOutput: a block becomes {decision:"block", reason}; a release prints nothing', () => {
+  assert.deepEqual(hookOutput({ exit: 2, message: 'fix it', writeInvalid: false }), { decision: 'block', reason: 'fix it' })
+  assert.equal(hookOutput({ exit: 0, message: '', writeInvalid: false }), null)
+  assert.equal(hookOutput({ exit: 0, message: 'bad', writeInvalid: true }), null)
+})
+
+test('agentFrom: reads the Lads agent from the SubagentStop payload, ignores others', () => {
+  assert.equal(agentFrom({ agent_type: 'lads-flights' }, []), 'lads-flights')
+  assert.equal(agentFrom({ agent_type: 'general-purpose' }, []), null)
+  assert.equal(agentFrom({}, []), null)
+  assert.equal(agentFrom({}, ['lads-costs-budget']), 'lads-costs-budget')
+})
 
 function tree() {
   const root = mkdtempSync(path.join(tmpdir(), 'lads-research-'))

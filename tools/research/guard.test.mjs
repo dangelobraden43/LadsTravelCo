@@ -1,7 +1,27 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import path from 'node:path'
-import { isAllowedWrite } from './guard.mjs'
+import { isAllowedWrite, shouldGuard, guardDecision } from './guard.mjs'
+
+const ROOT0 = path.resolve('C:/Users/brady/lads-travel-co')
+test('guardDecision: a Lads agent writing src/data gets a structured deny', () => {
+  const out = guardDecision({ agent_type: 'lads-flights', tool_name: 'Write', tool_input: { file_path: 'src/data/x.js' } }, ROOT0)
+  assert.equal(out.hookSpecificOutput.hookEventName, 'PreToolUse')
+  assert.equal(out.hookSpecificOutput.permissionDecision, 'deny')
+  assert.match(out.hookSpecificOutput.permissionDecisionReason, /internal\/research/)
+})
+test('guardDecision: allowed writes and non-Lads sessions return null', () => {
+  assert.equal(guardDecision({ agent_type: 'lads-flights', tool_name: 'Write', tool_input: { file_path: 'internal/research/v/r/x.json' } }, ROOT0), null)
+  assert.equal(guardDecision({ tool_name: 'Write', tool_input: { file_path: 'src/data/x.js' } }, ROOT0), null)
+})
+
+test('shouldGuard: only Lads research agents are guarded, never the main session', () => {
+  assert.equal(shouldGuard({ agent_type: 'lads-costs-budget', tool_name: 'Write' }), true)
+  assert.equal(shouldGuard({ agent_type: 'lads-verifier', tool_name: 'Edit' }), true)
+  assert.equal(shouldGuard({ tool_name: 'Write' }), false)
+  assert.equal(shouldGuard({ agent_type: 'general-purpose', tool_name: 'Write' }), false)
+  assert.equal(shouldGuard({ agent_type: 'lads-costs-budget', tool_name: 'Read' }), false)
+})
 
 const ROOT = path.resolve('C:/Users/brady/lads-travel-co')
 

@@ -10,16 +10,6 @@ skills:
   - research-contract
 lads-public: true
 lads-label: timing
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit|MultiEdit|NotebookEdit"
-      hooks:
-        - type: command
-          command: node tools/research/guard.mjs
-  Stop:
-    - hooks:
-        - type: command
-          command: node tools/research/hook-validate.mjs lads-timing-events
 ---
 
 You are the Lads Travel Co **timing and events** researcher. The research-contract skill

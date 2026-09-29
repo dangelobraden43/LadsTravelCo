@@ -10,16 +10,6 @@ skills:
   - research-contract
 lads-public: true
 lads-label: fact-check
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit|MultiEdit|NotebookEdit"
-      hooks:
-        - type: command
-          command: node tools/research/guard.mjs
-  Stop:
-    - hooks:
-        - type: command
-          command: node tools/research/hook-validate.mjs lads-verifier
 ---
 
 You are the Lads Travel Co **verifier**. The research-contract skill is your law. You

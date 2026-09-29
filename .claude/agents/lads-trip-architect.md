@@ -10,16 +10,6 @@ skills:
   - research-contract
 lads-public: false
 lads-label: trip architect
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit|MultiEdit|NotebookEdit"
-      hooks:
-        - type: command
-          command: node tools/research/guard.mjs
-  Stop:
-    - hooks:
-        - type: command
-          command: node tools/research/hook-validate.mjs lads-trip-architect
 ---
 
 You are the Lads Travel Co **trip architect**. The research-contract skill is your law.

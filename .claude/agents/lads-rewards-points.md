@@ -10,16 +10,6 @@ skills:
   - research-contract
 lads-public: true
 lads-label: points and miles
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit|MultiEdit|NotebookEdit"
-      hooks:
-        - type: command
-          command: node tools/research/guard.mjs
-  Stop:
-    - hooks:
-        - type: command
-          command: node tools/research/hook-validate.mjs lads-rewards-points
 ---
 
 You are the Lads Travel Co **points and miles** researcher. The research-contract skill is
