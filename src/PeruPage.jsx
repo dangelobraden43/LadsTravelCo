@@ -281,6 +281,7 @@ const SECTIONS = [
   { id: 'peru-prepare', label: 'Before You Go' },
   { id: 'peru-trek', label: 'The Trek' },
   { id: 'peru-places', label: 'The Places' },
+  { id: 'peru-differently', label: 'Do Differently' },
 ]
 
 const fmt = (n) => n.toLocaleString('en-US')
@@ -1341,8 +1342,37 @@ function Places() {
  *
  * ⛔ Do NOT write this section. It comes from Brady or Dawson verbatim or it
  * stays hidden, which is the same rule that governs every ladsTake on the site.
+ *
+ * ✅ LANDED Oct 6 2026 — Brady, direct to Claude Code in session. Every point
+ * is his (Cusco time, the day trips, trek packing, boots, soles, Machu Picchu
+ * tickets). At his direction the wording was then shaped into titled points;
+ * nothing was added that he did not say. Do not add advice to this list.
  */
-const DIFFERENTLY_COPY = null
+const DIFFERENTLY_COPY = {
+  heading: 'Give Cusco more time, and pack for the trail.',
+  changes: [
+    {
+      title: 'Spend an extra day or two in Cusco',
+      body: 'There is so much to see and do in and around the city, and the extra time helps you acclimate before the trek.',
+    },
+    {
+      title: 'Keep every day trip',
+      body: 'We would not cut a single day trip or tour. Every one of them was amazing.',
+    },
+    {
+      title: 'Pack light for the trek',
+      body: 'Bring layers you can add and take off, and leave anything heavy behind. Break in new hiking boots before you go, not on the trail.',
+    },
+    {
+      title: 'Carry soles',
+      body: 'Get Peruvian soles before the trek. You will want cash for water and snacks along the way.',
+    },
+  ],
+  trick: {
+    title: 'What we would do the same: book Machu Picchu early',
+    body: 'The biggest trick to this trip is how early you have to book Machu Picchu tickets. Book far enough ahead and you skip waiting in line for them in Cusco.',
+  },
+}
 
 function Differently() {
   if (!DIFFERENTLY_COPY) return null
@@ -1350,7 +1380,19 @@ function Differently() {
     <section id="peru-differently" className="peru-section peru-section--last">
       <Reveal variant="rise">
         <div className="peru-eyebrow">WHAT WE&rsquo;D DO DIFFERENTLY</div>
-        <p className="peru-lede">{DIFFERENTLY_COPY}</p>
+        <h2 className="peru-h2">{DIFFERENTLY_COPY.heading}</h2>
+        <div className="peru-diff-grid">
+          {DIFFERENTLY_COPY.changes.map((c) => (
+            <div className="peru-diff-item" key={c.title}>
+              <h3>{c.title}</h3>
+              <p>{c.body}</p>
+            </div>
+          ))}
+        </div>
+        <div className="peru-diff-trick">
+          <h3>{DIFFERENTLY_COPY.trick.title}</h3>
+          <p>{DIFFERENTLY_COPY.trick.body}</p>
+        </div>
       </Reveal>
     </section>
   )
@@ -1458,6 +1500,7 @@ export default function PeruPage() {
           position="center 50%"
         />
         <Places />
+        <Differently />
       </main>
 
       <Footer />

@@ -20,8 +20,10 @@ Spec: `docs/superpowers/specs/2026-09-29-research-agents-design.md`.
 5. `scope.places`: known places with coordinates and `coordSource`, from a data file or a
    saved list only. Names from ASCII staging text are acceptable for research scope, but
    the packet must flag them to be re-read from the browser before any data file is built.
-6. Call budgets: 12 per research agent, 20 for the verifier, unless the user says
-   otherwise. Keep the whole run under ~180 WebSearch calls.
+6. Call budgets: 12 per research agent unless the user says otherwise. The verifier's
+   budget is sized to the run: **9 per research agent dispatched, minimum 30**. A flat 20
+   left 46 of 81 Vancouver findings unverifiable (Sept 29). Keep the whole run under
+   ~260 WebSearch calls (12 agents × 12 + a 108-call verifier).
 7. Write `RUN.json` with: `destination, displayName, mode, runId, runDir, today,
    callBudgets, inputs, scope` (field meanings are in the research-contract skill).
 

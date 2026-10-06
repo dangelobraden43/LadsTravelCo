@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: September 29, 2026 (evening — research agents shipped)
+## Last Updated: October 6, 2026 (Peru founder words + research pipeline proven; intake-to-guide spec)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -64,8 +64,8 @@ LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
   days while /peru was public, which is how every derived surface said "3
   continents" with a South American framework live. That is the fourth instance
   of the same failure. **Re-read `git log` before writing any status here.**
-  Still open on Peru: Brady's "What We'd Do Differently" words (the section is
-  hidden on the live page until they land) and the photo-people ruling.
+  ✅ Peru's "What We'd Do Differently" LANDED Oct 6 (Brady's words, shaped into
+  titled points at his direction). Still open on Peru: the photo-people ruling.
 🟢 **LIVE CALL TO ACTION — `/join`, shipped Sept 17.** `EarlyAccess.jsx` on the
   homepage, `/local` and its own page, plus a gold nav CTA. Two tracks: the
   founding-member list, and a 2026 trip enquiry. See the Sept 17 record.
@@ -276,6 +276,42 @@ memory of how you left it.** A confident stale record is worse than no record.
 ➡️ **Corollary for parallel work:** a second session builds in a **worktree on its
 own branch** (see Parallel Agent Workflow at the foot of this file), never in the
 shared checkout someone else is serving localhost from.
+
+---
+
+## 🟢 OCTOBER 6, 2026 — STATE OF THE COMPANY, PIPELINE PROVEN, INTAKE TO GUIDE
+
+Branch `feature/intake-to-guide`, merged to `main` in the same push as this record.
+**Review + plan + Work log (living doc, keep it current):**
+https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
+
+1. **The review's finding (corrected by Brady):** the product is defined — Peru-template
+   frameworks built by the agents and validated by founders, plus the Club. What is
+   missing is **packaging + checkout + price**. Never describe the product as undefined.
+2. **Brady's product vision, ruled Oct 6:** intake quiz + preference talk → a full
+   researched guide for ANY destination, visited or not. Spec:
+   `docs/superpowers/specs/2026-10-06-intake-to-guide-design.md` (private web guide at
+   `/guide/<token>`, PDF on request; founder starts every run; Airtable; companion
+   links; MailerSend + MailerLite). Prototype v2 (approved look):
+   https://claude.ai/artifact/KsTsgXnu1kKfFxroZUo6aB . **Phase 1 (quiz + functions +
+   Airtable) is the next build; target live in November.**
+3. **Peru "What We'd Do Differently" is live** — Brady's points, shaped into four titled
+   points + the Machu Picchu ticket callout (`DIFFERENTLY_COPY` in `PeruPage.jsx`).
+4. **How It Works museum example corrected.** The "530,000 → 50,000" correction was
+   itself wrong: MOA holds nearly 50,000 works and its building houses the Laboratory
+   of Archaeology's 535,000 more (moa.ubc.ca/about-moa, checked Oct 6).
+5. **Research pipeline proven.** Verifier budget is now 9 calls per research agent
+   (min 30). Vancouver re-verify: 46 confirmed · 26 corrected · 9 unverifiable (was 46
+   unverifiable). Pictured Rocks pilot: 102 of 106 verified; trail difficulty/gain are
+   the gap; five founder questions in the doc. Run dirs are gitignored.
+6. **Market research banked** (`internal/research/market/`, gitignored): landscape (43
+   sources), intake UX, holiday deals (36). Key dates: Vienna market opens Nov 13 →
+   Christmas markets guide targets ~Oct 15; Travel Tuesday Dec 1 needs a founder price
+   if a Club offer runs; otherwise waitlist only.
+7. **New queue (Brady, Oct 6), in order:** Christmas markets guide (`/christmas-markets`,
+   research-led, Dublin-at-Christmas is the gold hook) → intake phase 1 → holiday deals
+   page → Midwest ski guide on /local → Dusk Field Guide → global ski. Research runs for
+   Christmas markets and Midwest skiing were in progress at merge time.
 
 ---
 
@@ -1222,14 +1258,14 @@ Images: `stagedUploadsCreate` → POST bytes to GCS → `productCreateMedia`
 
 ---
 
-## 📍 SESSION START STATE — verified September 29, 2026
+## 📍 SESSION START STATE — verified October 6, 2026
 
 **Verified from `git log`, `git status`, the Vercel API and a real browser —
 not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | Five merges on Sept 29, all verified LIVE by matching the served `index-*.js` to the local build: `8057f29` research agents + How It Works · `d7be4b6` quality sweep (Shop hidden, Bucket List dates, share image) · `50df815` agent rulings · `d7c6ac3` quick fixes · `431f8a5` Instagram. This docs-only commit sits on top; read `git log` for its hash. |
+| `main` | Oct 6: the `feature/intake-to-guide` merge (Peru founder words, How It Works museum fix, verifier budget, agent memory, intake spec) rides with this record — read `git log` for the merge hash and check Vercel READY by SHA at the next `/morning`. Sept 29's five merges were verified live before it. |
 | Working tree | clean at merge |
 | Pending `/ship` | **Nothing.** |
 | Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
@@ -1291,8 +1327,8 @@ pilots pass), Vancouver + Costa Rica frameworks, place-level booking links.
 
 ### ⚠️ BLOCKERS — OWED BY BRADY (re-checked Sept 29)
 
-1. **Peru's "What We'd Do Differently" words** (+ the section intros). The
-   section is hidden on the live page until they land. AI cannot write these.
+1. ✅ **CLOSED Oct 6 — Peru's "What We'd Do Differently"** is live. (Section intros
+   in his voice remain optional.)
 2. **The photo-people ruling.** Three of the twelve Peru frames show people who
    are not the founders and stay unused until he rules.
 3. **The Costa Rica visited-split**, per spot. Blocks that framework; a saved
@@ -1704,6 +1740,12 @@ the rule is what matters.
   (PreToolUse), `{"decision":"block","reason":…}` (SubagentStop).
 - **Agent files created mid-session are not dispatchable in that session.** Start
   a fresh session, or run `claude -p "/research …"` headless.
+- ⛔ **Headless `claude -p` kills background subagents 10 minutes after its last turn**
+  (Oct 6: the Christmas markets run died after wave 1). Launch headless research with
+  `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0` and tell it to dispatch agents in the
+  foreground.
+- A subagent's report of "validated by hand" is not validation: the Vancouver
+  re-verify claimed it and `validate.mjs` still caught a point price. Always run it.
 - `memory: project` silently adds **Edit** to an agent's tools. The guard covers it.
 - The Playwright MCP browser can be **shared with another session** (a foreign tab
   appeared, the renderer stalled, a page navigated on its own). If animations report

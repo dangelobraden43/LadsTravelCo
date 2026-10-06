@@ -1240,6 +1240,51 @@
 
 /* ===== 7. WHAT WE'D DO DIFFERENTLY ======================================= */
 
+.peru-diff-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 40px;
+  margin-top: 30px;
+  max-width: 980px;
+}
+.peru-diff-item {
+  border-top: 2px solid var(--peru-jade);
+  padding-top: 16px;
+}
+.peru-diff-item h3,
+.peru-diff-trick h3 {
+  font-family: var(--editorial);
+  font-weight: 400;
+  font-size: clamp(20px, 2.2vw, 24px);
+  line-height: 1.25;
+  margin: 0 0 8px;
+  color: var(--peru-text);
+}
+.peru-diff-item p,
+.peru-diff-trick p {
+  font-family: var(--sans);
+  font-size: clamp(15px, 1.6vw, 16.5px);
+  line-height: 1.7;
+  color: var(--peru-text2);
+  margin: 0;
+  max-width: 52ch;
+}
+.peru-diff-trick {
+  margin-top: 40px;
+  max-width: 980px;
+  padding: 24px clamp(20px, 3vw, 30px);
+  border: 1px solid var(--peru-line2);
+  border-left: 3px solid var(--peru-clay);
+  border-radius: var(--radius);
+  background: var(--peru-surface);
+}
+@media (max-width: 620px) {
+  .peru-diff-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
 .peru-empty {
   margin-top: 34px;
   padding: 34px clamp(20px, 4vw, 34px);

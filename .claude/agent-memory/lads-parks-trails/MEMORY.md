@@ -1,0 +1,2 @@
+- [NPS sources](reference_nps_sources.md) — which nps.gov page patterns work/404, PDFs unreadable, no gain on NPS, visitors bureau as second host
+- [Two-source honesty](feedback_two_source_honesty.md) — two NPS hosts are one source; NPS-only trails ship as fact, not route
