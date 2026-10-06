@@ -381,7 +381,7 @@ export default function ChristmasMarketsPage() {
       cities: new Set(MARKETS.map((m) => m.city)).size,
     }
   }, [])
-  const description = `Official 2026 dates for ${stats.count} European Christmas markets, which are open on your travel dates, train routes between them, flights from the Midwest, what things cost and the traps to avoid.`
+  const description = `Official 2026 dates for ${stats.count} European Christmas markets, which are open on your travel dates, train routes between them, how to fly in, what things cost and the traps to avoid.`
 
   return (
     <>
@@ -479,10 +479,10 @@ export default function ChristmasMarketsPage() {
         />
         <Panels
           id="flights"
-          tag="Researched · flying from the Midwest"
+          tag="Researched"
           title={
             <>
-              Getting there <em>from home.</em>
+              Getting there, <em>wherever you start.</em>
             </>
           }
           items={FLY}
