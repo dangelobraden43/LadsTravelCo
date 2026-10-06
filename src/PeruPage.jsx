@@ -1343,21 +1343,35 @@ function Places() {
  * ⛔ Do NOT write this section. It comes from Brady or Dawson verbatim or it
  * stays hidden, which is the same rule that governs every ladsTake on the site.
  *
- * ✅ LANDED Oct 6 2026 — Brady, direct to Claude Code in session. His words,
- * split into his own points; only spelling and capitals were touched
- * (Cusco, acclimate, Machu Picchu). Do not edit the substance. The last line
- * is his "not something we would change" note and renders apart on purpose.
+ * ✅ LANDED Oct 6 2026 — Brady, direct to Claude Code in session. Every point
+ * is his (Cusco time, the day trips, trek packing, boots, soles, Machu Picchu
+ * tickets). At his direction the wording was then shaped into titled points;
+ * nothing was added that he did not say. Do not add advice to this list.
  */
 const DIFFERENTLY_COPY = {
+  heading: 'Give Cusco more time, and pack for the trail.',
   changes: [
-    'Try to spend an extra day or two in Cusco. There is so much to do and see in and near the city, and it gives extra time to acclimate.',
-    'As far as the day trips and tours, we found them all to be amazing.',
-    'For the trek, I would recommend packing light and effective, making sure to bring layers but not bringing anything too heavy.',
-    'Break in new hiking boots before going on the trek.',
-    'Make sure you get some soles before the trek for buying water and snacks along the way.',
+    {
+      title: 'Spend an extra day or two in Cusco',
+      body: 'There is so much to see and do in and around the city, and the extra time helps you acclimate before the trek.',
+    },
+    {
+      title: 'Keep every day trip',
+      body: 'We would not cut a single day trip or tour. Every one of them was amazing.',
+    },
+    {
+      title: 'Pack light for the trek',
+      body: 'Bring layers you can add and take off, and leave anything heavy behind. Break in new hiking boots before you go, not on the trail.',
+    },
+    {
+      title: 'Carry soles',
+      body: 'Get Peruvian soles before the trek. You will want cash for water and snacks along the way.',
+    },
   ],
-  trick:
-    'It is not something we would change, but the biggest trick to this trip is how early you have to book Machu Picchu tickets to avoid having to wait in line in Cusco.',
+  trick: {
+    title: 'What we would do the same: book Machu Picchu early',
+    body: 'The biggest trick to this trip is how early you have to book Machu Picchu tickets. Book far enough ahead and you skip waiting in line for them in Cusco.',
+  },
 }
 
 function Differently() {
@@ -1366,12 +1380,19 @@ function Differently() {
     <section id="peru-differently" className="peru-section peru-section--last">
       <Reveal variant="rise">
         <div className="peru-eyebrow">WHAT WE&rsquo;D DO DIFFERENTLY</div>
-        <ul className="peru-diff-list">
-          {DIFFERENTLY_COPY.changes.map((line) => (
-            <li key={line}>{line}</li>
+        <h2 className="peru-h2">{DIFFERENTLY_COPY.heading}</h2>
+        <div className="peru-diff-grid">
+          {DIFFERENTLY_COPY.changes.map((c) => (
+            <div className="peru-diff-item" key={c.title}>
+              <h3>{c.title}</h3>
+              <p>{c.body}</p>
+            </div>
           ))}
-        </ul>
-        <p className="peru-diff-trick">{DIFFERENTLY_COPY.trick}</p>
+        </div>
+        <div className="peru-diff-trick">
+          <h3>{DIFFERENTLY_COPY.trick.title}</h3>
+          <p>{DIFFERENTLY_COPY.trick.body}</p>
+        </div>
       </Reveal>
     </section>
   )
