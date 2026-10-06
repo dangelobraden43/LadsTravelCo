@@ -1,1 +1,1 @@
-- [Packet assembly lessons](packet-assembly-lessons.md) — verifier additions aren't findings, no derived numbers, 0.6 km clustering, oldest-evidence checkedOn
+- [Packet assembly lessons](packet-assembly-lessons.md) — verifier additions aren't findings, no derived numbers, scale-dependent clustering, park trail GAPs, checkedOn

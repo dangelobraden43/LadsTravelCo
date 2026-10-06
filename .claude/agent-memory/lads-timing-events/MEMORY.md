@@ -1,0 +1,1 @@
+- [Source lessons](source-lessons.md) — empty NPS hours pages, stale-year bureau event pages, unattributed search dates, trap-season pattern, budget split

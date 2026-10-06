@@ -1,1 +1,1 @@
-- [Sources and fetch tricks](reference_sources_and_fetch_tricks.md) — Wikipedia API multi-title coordinate check, operator location pages, search-summary pitfalls
+- [Sources and fetch tricks](reference_sources_and_fetch_tricks.md) — Wikipedia API batch check, park-feature SPARQL, NPS status lives in news releases, redirect traps

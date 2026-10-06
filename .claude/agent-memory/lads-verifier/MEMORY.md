@@ -1,2 +1,2 @@
-- [Verification patterns](verification-patterns.md) — recurring agent errors: derived ranges, stale dates, promo-as-fact, tax-included, overstated rules
-- [Source access notes](source-access-notes.md) — sites that 403 or redirect; vancouvertourism.org is independent; official pages that fetch cleanly
+- [Verification patterns](verification-patterns.md) — recurring agent errors: derived ranges, stale dates, invented trail ratings, non-permitted operators, overstated rules
+- [Source access notes](source-access-notes.md) — sites that 403/cert-fail; NPS + Wikidata + recreation.gov API tricks; official pages that fetch cleanly
