@@ -1,0 +1,535 @@
+<title>Plan Your Trip Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one phone-width column. A passport strip of six stamps tracks progress, a boarding pass builds itself from the answers, and each step inks its choices in its own colour. Lads palette, dark by design. */
+:root {
+  --bg: #141210;
+  --surface: #1c1915;
+  --raise: #25211c;
+  --paper: #efe4cf;
+  --paper-ink: #2a241c;
+  --line: rgba(232, 220, 200, 0.14);
+  --cream: #e8dcc8;
+  --muted: #a89c8a;
+  --gold: #d4a843;
+  --copper: #b8886e;
+  --danger: #e07a5f;
+  /* stamp inks, one per step */
+  --ink-0: #d4a843;
+  --ink-1: #7fa6d6;
+  --ink-2: #c98bb9;
+  --ink-3: #8fbf7a;
+  --ink-4: #e39a5c;
+  --ink-5: #9d8fe0;
+  --ink-6: #e0c26b;
+  --ink: var(--ink-0);
+  --editorial: 'Fraunces', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 500px; margin: 0 auto; padding-inline: 16px; padding-block: 0 130px; }
+.proto { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--copper); padding-block: 12px 6px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.viewas { display: flex; gap: 6px; }
+.viewas button { font: inherit; letter-spacing: inherit; text-transform: inherit; background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 6px 10px; min-height: 32px; cursor: pointer; }
+.viewas button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+
+header.bar { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); padding-block: 10px 12px; z-index: 5; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+.brand { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); display: flex; justify-content: space-between; }
+.brand span:last-child { color: var(--muted); }
+.stamps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.stamp { aspect-ratio: 1; max-width: 58px; justify-self: center; width: 100%; border-radius: 50%; border: 1.5px dashed var(--line); display: grid; place-items: center; font-family: var(--mono); font-size: 9px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; text-align: center; line-height: 1.1; padding: 4px; background: none; cursor: pointer; }
+.stamp.now { border-style: solid; border-color: var(--s); color: var(--s); }
+.stamp.done { border: 2px solid var(--s); color: var(--s); transform: rotate(var(--r)); background: color-mix(in srgb, var(--s) 12%, transparent); font-weight: 600; }
+.stamp.done.fresh { animation: thunk .45s cubic-bezier(.2, 1.6, .4, 1); }
+@keyframes thunk { 0% { transform: scale(1.8) rotate(var(--r)); opacity: 0; } 100% { transform: scale(1) rotate(var(--r)); opacity: 1; } }
+
+.pass { background: var(--paper); color: var(--paper-ink); border-radius: 14px; display: grid; grid-template-columns: 1fr auto; position: relative; overflow: hidden; }
+.pass::before, .pass::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: var(--bg); right: 96px; }
+.pass::before { top: -9px; } .pass::after { bottom: -9px; }
+.pass .main { padding: 12px 14px; display: grid; gap: 4px; min-width: 0; }
+.pass .route { display: flex; align-items: baseline; gap: 10px; font-family: var(--mono); font-weight: 600; font-size: 22px; letter-spacing: .02em; }
+.pass .route i { font-style: normal; font-size: 14px; opacity: .55; }
+.pass .route .to { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pass .meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.pass .meta b { display: block; font-size: 9px; opacity: .55; font-weight: 500; }
+.pass .stub { width: 96px; border-left: 2px dashed rgba(42, 36, 28, .3); padding: 12px 10px; display: grid; align-content: center; justify-items: center; gap: 4px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; text-align: center; }
+.pass .stub strong { font-size: 18px; font-family: var(--editorial); font-weight: 600; letter-spacing: 0; text-transform: none; }
+.pass.mini .meta { display: none; }
+.pass.mini .route { font-size: 17px; }
+.pass.mini .stub strong { font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tags span { background: rgba(42, 36, 28, .1); border-radius: 6px; padding: 2px 7px; font-size: 11px; font-family: var(--sans); text-transform: none; letter-spacing: 0; }
+
+.kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); margin-top: 26px; }
+h1 { font-family: var(--editorial); font-weight: 400; font-size: 31px; line-height: 1.12; margin: 6px 0 6px; text-wrap: balance; }
+h1 em { color: var(--ink); font-style: italic; }
+.lede { color: var(--muted); margin: 0 0 6px; max-width: 60ch; }
+.q { margin-top: 24px; display: grid; gap: 10px; }
+.q > label, .q > .ql { font-weight: 600; font-size: 15px; }
+.hint { font-size: 13px; color: var(--muted); font-weight: 400; }
+.opt { font-weight: 400; color: var(--muted); }
+input[type=text], input[type=email], input[type=tel], input[type=date], textarea { width: 100%; background: var(--surface); color: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font: inherit; min-height: 48px; }
+textarea { min-height: 84px; resize: vertical; }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { background: var(--surface); color: var(--cream); border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; min-height: 44px; font: inherit; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: transform .12s, background .12s, border-color .12s; }
+.chip[aria-pressed="true"] { background: color-mix(in srgb, var(--ink) 18%, var(--surface)); border-color: var(--ink); }
+.chip:active { transform: scale(.96); }
+.chip .rank { font-family: var(--mono); font-size: 12px; background: var(--ink); color: var(--bg); border-radius: 999px; width: 22px; height: 22px; display: inline-grid; place-items: center; font-weight: 600; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: relative; }
+.pair .or { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--bg); border: 1px solid var(--line); border-radius: 50%; width: 30px; height: 30px; display: grid; place-items: center; font-family: var(--mono); font-size: 10px; color: var(--muted); pointer-events: none; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 14px; min-height: 92px; text-align: left; color: var(--cream); font: inherit; cursor: pointer; display: grid; gap: 4px; align-content: start; transition: transform .12s, border-color .12s, background .12s; }
+.tile .em { font-size: 22px; line-height: 1; }
+.tile b { font-weight: 600; font-size: 15px; }
+.tile small { color: var(--muted); font-size: 13px; }
+.tile[aria-pressed="true"] { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 16%, var(--surface)); }
+.tile:active { transform: scale(.97); }
+.nopref { justify-self: start; background: none; border: none; color: var(--muted); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; padding: 4px 0; min-height: 32px; }
+.nopref[aria-pressed="true"] { color: var(--ink); }
+.counter { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 8px 8px 8px 16px; }
+.counter .n { font-family: var(--mono); font-size: 20px; min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; color: var(--ink); }
+.counter .ctl { display: flex; align-items: center; gap: 10px; }
+.counter button { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--raise); color: var(--cream); font-size: 20px; cursor: pointer; }
+.sugg { display: grid; margin-top: 4px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.sugg button { text-align: left; background: var(--surface); color: var(--cream); border: none; border-bottom: 1px solid var(--line); padding: 12px 14px; min-height: 44px; font: inherit; cursor: pointer; }
+.sugg button:last-child { border-bottom: none; }
+.sugg code { font-family: var(--mono); color: var(--ink); margin-right: 8px; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 3px; justify-self: start; }
+.seg button { background: none; border: none; color: var(--muted); font: inherit; font-size: 14px; padding: 8px 14px; min-height: 40px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); font-weight: 600; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sub { border-top: 1px solid var(--line); margin-top: 30px; padding-top: 2px; }
+.sub h2 { font-family: var(--editorial); font-weight: 400; font-size: 22px; margin: 18px 0 0; }
+.why { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+.more { border-left: 2px solid var(--ink); padding-left: 12px; display: grid; gap: 8px; }
+.more .ql { font-size: 14px; font-weight: 600; }
+.hard { border: 1px solid var(--danger); border-radius: 12px; padding: 14px 16px; background: rgba(224, 122, 95, 0.08); }
+.hard .why { color: var(--danger); }
+.companions { display: grid; gap: 8px; }
+.comp { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-family: var(--editorial); font-size: 16px; background: color-mix(in srgb, var(--ink) 25%, var(--raise)); color: var(--cream); }
+.comp .lnk { font-family: var(--mono); font-size: 11px; color: var(--muted); grid-column: 2 / -1; overflow-wrap: anywhere; }
+.status { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 3px 9px; }
+.status.ok { color: var(--bg); background: var(--ink); }
+.status.wait { color: var(--muted); border: 1px solid var(--line); }
+.addrow { display: flex; gap: 8px; }
+.addrow input { flex: 1; min-width: 0; }
+.small-btn { background: var(--raise); color: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; min-height: 48px; font: inherit; font-size: 14px; cursor: pointer; white-space: nowrap; }
+.list { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { background: var(--raise); border-radius: 8px; padding: 6px 10px; font-size: 14px; display: inline-flex; gap: 8px; align-items: center; }
+.tag button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; min-width: 28px; min-height: 28px; }
+.review { display: grid; gap: 12px; margin-top: 16px; }
+.rv { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--s); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; }
+.rv .head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.rv .head span { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--s); }
+.rv button { background: none; border: none; color: var(--s); text-decoration: underline; font: inherit; font-size: 14px; cursor: pointer; min-height: 32px; }
+.rv p { margin: 0; font-size: 15px; }
+.rv ul { margin: 0; padding-left: 18px; }
+nav.foot { position: fixed; left: 0; right: 0; bottom: 0; background: var(--bg); border-top: 1px solid var(--line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 5; }
+nav.foot .in { max-width: 500px; margin: 0 auto; display: flex; gap: 10px; align-items: center; }
+.back { background: none; border: none; color: var(--muted); font: inherit; text-decoration: underline; cursor: pointer; min-height: 48px; padding: 0 6px; }
+.next { margin-left: auto; background: var(--ink); color: var(--bg); border: none; border-radius: 999px; padding: 0 26px; min-height: 50px; font: inherit; font-weight: 600; cursor: pointer; transition: background .2s; }
+.saved { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.done .big { font-family: var(--editorial); font-size: 34px; line-height: 1.1; margin: 28px 0 10px; }
+.bigstamp { margin: 24px auto 6px; width: 150px; height: 150px; border-radius: 50%; border: 3px double var(--gold); color: var(--gold); display: grid; place-items: center; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; transform: rotate(-8deg); animation: thunk .6s cubic-bezier(.2, 1.6, .4, 1); --r: -8deg; }
+.bigstamp b { font-family: var(--editorial); font-size: 22px; letter-spacing: 0; text-transform: none; display: block; }
+.card { background: var(--surface); border: 1px solid var(--gold); border-radius: 14px; padding: 18px; margin-top: 18px; display: grid; gap: 8px; }
+.card b { font-family: var(--editorial); font-weight: 400; font-size: 20px; }
+.note { font-size: 13px; color: var(--muted); border-left: 2px solid var(--copper); padding-left: 10px; margin-top: 16px; }
+main { animation: rise .25s ease-out; }
+@keyframes rise { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <div class="proto">
+    <span>Prototype · example answers filled in · nothing is sent</span>
+    <div class="viewas" role="group" aria-label="View as">
+      <button id="as-org" aria-pressed="true">Organiser</button>
+      <button id="as-comp" aria-pressed="false">Companion</button>
+    </div>
+  </div>
+  <header class="bar" id="bar"></header>
+  <main id="screen"></main>
+</div>
+<nav class="foot"><div class="in">
+  <button class="back" id="back">Back</button>
+  <span class="saved" id="saved">Saved</span>
+  <button class="next" id="next">Continue</button>
+</div></nav>
+
+<script>
+const AIRPORTS = [
+  ['DTW', 'Detroit Metropolitan'], ['GRR', 'Grand Rapids, Gerald R. Ford'], ['ORD', "Chicago O'Hare"], ['MDW', 'Chicago Midway'],
+  ['MKE', 'Milwaukee Mitchell'], ['MSP', 'Minneapolis-St Paul'], ['CLE', 'Cleveland Hopkins'], ['CMH', 'Columbus John Glenn'],
+  ['IND', 'Indianapolis'], ['TVC', 'Traverse City Cherry Capital'], ['LAN', 'Lansing Capital Region'], ['AZO', 'Kalamazoo/Battle Creek'],
+  ['FNT', 'Flint Bishop'], ['CVG', 'Cincinnati/Northern Kentucky']
+];
+const DESTS = [['Dublin & Galway, Ireland', 'DUB'], ['Spain', 'MAD'], ['Rome, Italy', 'FCO'], ['Iceland', 'KEF'], ['Prague, Czechia', 'PRG'], ['Vienna, Austria', 'VIE'], ['Munich, Germany', 'MUC'], ['Poland', 'KRK'], ['Australia', 'SYD'], ['Peru', 'CUZ'], ['Lisbon, Portugal', 'LIS'], ['San Juan, Puerto Rico', 'SJU'], ['Costa Rica', 'SJO'], ['Vancouver, Canada', 'YVR']];
+const INTERESTS = {
+  'Food & drink': ['Street food', 'Markets', 'Local classics', 'Fine dining', 'Cooking class', 'Food tour', 'Coffee and bakeries'],
+  'Bars & nightlife': ['Pubs', 'Cocktail bars', 'Breweries', 'Wine bars', 'Live music', 'Clubs', 'Rooftops'],
+  'History & museums': ['Big museums', 'Ruins and sites', 'Castles and palaces', 'Guided history tours', 'Small, odd museums'],
+  'Outdoors & hiking': ['Day hikes', 'Multi-day treks', 'Viewpoints', 'Wildlife', 'Water sports', 'Cycling'],
+  'Beaches': ['Lively beach', 'Quiet beach', 'Snorkeling', 'Surfing', 'Beach clubs'],
+  'Live sport': ['Football (soccer)', 'Rugby', 'Local league games', 'Stadium tours', 'Watching in a pub'],
+  'Festivals & events': ['Music festivals', 'Cultural festivals', 'Holidays and parades', 'Christmas markets'],
+  'Art & architecture': ['Galleries', 'Street art', 'Churches and cathedrals', 'Modern architecture'],
+  'Photography': ['Sunrise spots', 'Sunset spots', 'Cityscapes', 'Landscapes', 'Night shots'],
+  'Shopping & markets': ['Flea markets', 'Local makers', 'Fashion', 'Food markets'],
+  'Wellness & spas': ['Thermal baths', 'Spa day', 'Sauna', 'Yoga'],
+  'Day trips': ['Nearby towns', 'Nature', 'Wine regions', 'Another country']
+};
+const INTEREST_NAMES = Object.keys(INTERESTS);
+const FEELS = ['Sun and water', 'Big city energy', 'Mountains and trails', 'Old towns and history', 'Food above all', 'Somewhere nobody we know has been'];
+const PAIRS = [
+  ['pace', '⚡', 'Packed days', 'See as much as we can', '🌿', 'Slow days', 'Room to wander and rest'],
+  ['plan', '🗓', 'Planned', 'A plan for every hour', '🎲', 'Spontaneous', 'A few anchors, the rest open'],
+  ['clock', '🌅', 'Early starts', 'Beat the crowds', '🌙', 'Late nights', 'Sleep in, stay out'],
+  ['fame', '🏛', 'The icons', 'The famous sights, done right', '🗝', 'Hidden gems', 'Where the locals go'],
+  ['guide', '🎟', 'Guided', 'Tours and experts', '🧭', 'On our own', 'Just tell us where'],
+  ['crowd', '👥', 'Crowds are fine', 'Worth it for the big sights', '🚪', 'Avoid crowds', 'Go early, go elsewhere']
+];
+const STEPS = [
+  { key: 'start', label: 'Start', stamp: 'Hello' },
+  { key: 'trip', label: 'The trip', stamp: 'Trip' },
+  { key: 'group', label: 'Your group', stamp: 'Crew' },
+  { key: 'budget', label: 'Budget', stamp: 'Budget' },
+  { key: 'style', label: 'Your style', stamp: 'Style' },
+  { key: 'details', label: 'The details', stamp: 'Details' },
+  { key: 'you', label: 'You and the trip', stamp: 'Wishes' },
+  { key: 'review', label: 'Check your pass', stamp: '' },
+  { key: 'sent', label: 'Sent', stamp: '' }
+];
+const ROT = ['-7deg', '5deg', '-3deg', '8deg', '-6deg', '4deg', '-5deg'];
+
+const S = {
+  name: 'Alex', email: 'alex@example.com', phone: '', occasion: 'Graduation trip', heard: 'TikTok',
+  destMode: 'know', dest: 'Lisbon, Portugal', nearby: 'Yes, show us', bases: 'Two or three stops', feels: [], flyFar: 'Up to 9 hours',
+  dateMode: 'flex', start: '', end: '', flexDays: 'Yes, a few days', length: '7 to 9 nights', months: ['Apr', 'May'],
+  airport: 'DTW', airportQ: '',
+  adults: 4, kids: 0, ages: ['22 to 29'], rel: 'Friends', experience: 'A few trips', firstAbroad: 'Yes, for someone', passport: 'All valid', split: 'Everyone pays their own',
+  companions: [{ name: 'Sam', done: true }, { name: 'Jordan', done: true }, { name: 'Riley', done: false }],
+  budgetMode: 'day', budget: '$175 to $275', budgetExact: '', firm: 'A rough guide', splurge: ['Food', 'Nightlife'], save: ['Where we sleep'],
+  pairs: { pace: 0, plan: 1, clock: 1, fame: 1, guide: 1, crowd: 1 }, top3: ['Food & drink', 'Bars & nightlife', 'Outdoors & hiking'], also: ['Day trips'],
+  more: { 'Food & drink': ['Markets', 'Local classics', 'Food tour'], 'Bars & nightlife': ['Pubs', 'Live music', 'Rooftops'], 'Outdoors & hiking': ['Day hikes', 'Viewpoints'] },
+  perfectDay: 'Pastries by the water, a long walk somewhere with a view, a big seafood-free dinner, then a bar with live music',
+  diet: ['Allergy'], allergy: 'Shellfish', severity: 'Severe (anaphylaxis)', crossContact: 'Yes', adventurous: 0, drinking: 'Yes, we drink', bigDinner: 'Yes',
+  lodging: ['Apartment'], vibe: ['Central', 'Near nightlife'], sharing: 'Shared rooms are fine', lightSleepers: 'No',
+  around: ['Walking', 'Public transit'], walk: '15,000+ steps', drive: 'No', travelDay: 'Up to 4 hours', earlyTransit: 'Yes, if it saves a day', access: 'No', accessNeeds: [], motion: 'No',
+  hike: '3 to 5 hours', altitude: 'Never been high', heat: 1,
+  points: ['Chase Ultimate Rewards', 'Delta SkyMiles'], openCards: 'Yes',
+  booked: ['Flights DTW to LIS, Apr 18 to 26'], mustDo: ['A day trip to Sintra'], avoid: ['Tourist-trap restaurants'],
+  loved: 'Dublin: the pubs, and every day had one anchor and room to wander', hated: 'A resort trip where we never left the hotel',
+  tenOutOfTen: 'One night we talk about for years, and nobody stressed about money or plans',
+  shareWith: ['sam@example.com', 'jordan@example.com'], needBy: '2027-03-20', pdf: 'Web guide only', contact: 'Text',
+  comp: { name: 'Jordan', diet: ['Vegetarian'], allergy: '', hike: '1 to 3 hours', altitude: 'Never been high', drinking: 'Sometimes', pairs: { pace: 1, plan: 1, clock: 0, fame: 1, guide: -1, crowd: 1 }, top3: ['History & museums', 'Food & drink', 'Photography'], note: 'Bad knee, so steep descents are hard', mustDo: 'The tile museum' }
+};
+
+let mode = 'org', step = 0, fresh = -1;
+const COMP_STEPS = ['Hello', 'Limits', 'Style', 'Done'];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const on = (arr, v) => (arr || []).includes(v);
+const O = obj => obj === S ? 's' : 'c';
+const code = () => S.destMode === 'help' ? '???' : ((DESTS.find(d => d[0] === S.dest) || [, S.dest.slice(0, 3).toUpperCase()])[1]);
+
+function chips(key, options, { multi = true, max = 0, obj = S } = {}) {
+  return `<div class="chips">${options.map(o => {
+    const sel = multi ? on(obj[key], o) : obj[key] === o;
+    return `<button class="chip" data-chip="${key}" data-multi="${multi ? 1 : 0}" data-max="${max}" data-obj="${O(obj)}" data-v="${esc(o)}" aria-pressed="${sel}">${esc(o)}</button>`;
+  }).join('')}</div>`;
+}
+function seg(key, options, obj = S) {
+  return `<div class="seg">${options.map(o => { const [v, l] = Array.isArray(o) ? o : [o, o]; return `<button data-seg="${key}" data-obj="${O(obj)}" data-v="${esc(v)}" aria-pressed="${obj[key] === v}">${esc(l)}</button>`; }).join('')}</div>`;
+}
+function tilePair(key, a, b, val, obj = S, k2 = '') {
+  return `<div class="pair">
+    <button class="tile" data-pair="${key}" data-obj="${O(obj)}" data-v="0" aria-pressed="${val === 0}"><span class="em">${a[0]}</span><b>${a[1]}</b><small>${a[2]}</small></button>
+    <button class="tile" data-pair="${key}" data-obj="${O(obj)}" data-v="1" aria-pressed="${val === 1}"><span class="em">${b[0]}</span><b>${b[1]}</b><small>${b[2]}</small></button>
+    <span class="or">or</span></div>`;
+}
+function pairs(obj) {
+  return PAIRS.map(([k, ae, a, as, be, b, bs]) => `<div class="q">${tilePair(k, [ae, a, as], [be, b, bs], obj.pairs[k], obj)}
+    <button class="nopref" data-pair="${k}" data-obj="${O(obj)}" data-v="-1" aria-pressed="${obj.pairs[k] === -1}">No preference</button></div>`).join('');
+}
+function ranker(obj) {
+  return `<div class="chips">${INTEREST_NAMES.map(i => {
+    const r = obj.top3.indexOf(i);
+    return `<button class="chip" data-rank="${esc(i)}" data-obj="${O(obj)}" aria-pressed="${r > -1}">${r > -1 ? `<span class="rank">${r + 1}</span>` : ''}${esc(i)}</button>`;
+  }).join('')}</div>`;
+}
+function listAdd(key, ph) {
+  return `<div class="list">${S[key].map((v, i) => `<span class="tag">${esc(v)}<button data-del="${key}" data-i="${i}" aria-label="Remove ${esc(v)}">×</button></span>`).join('')}</div>
+  <div class="addrow"><input type="text" id="add-${key}" placeholder="${ph}"><button class="small-btn" data-add="${key}">Add</button></div>`;
+}
+const outdoorsPicked = () => on(S.top3, 'Outdoors & hiking') || on(S.also, 'Outdoors & hiking');
+
+function pass(mini) {
+  const when = S.dateMode === 'flex' ? `${S.months.join('/') || 'Any month'}` : `${S.start || '—'}`;
+  const len = S.dateMode === 'flex' ? S.length : 'Fixed dates';
+  const vibe = [...S.top3.slice(0, 3)].map(t => `<span>${esc(t)}</span>`).join('');
+  return `<div class="pass ${mini ? 'mini' : ''}"><div class="main">
+    <div class="route"><span>${esc(S.airport || '???')}</span><i>→</i><span class="to">${esc(code())}</span></div>
+    ${mini ? `<div class="tags">${vibe}</div>` : ''}
+    <div class="meta"><span><b>Passenger</b>${esc(S.name || '—')}</span><span><b>When</b>${esc(when)}</span><span><b>Length</b>${esc(len)}</span><span><b>Daily budget</b>${esc(S.budgetMode === 'day' ? S.budget : S.budget + ' total')}</span><span><b>Occasion</b>${esc(S.occasion || '—')}</span></div>
+    ${mini ? '' : `<div class="tags" style="margin-top:6px">${vibe}${S.pairs.pace === 0 ? '<span>Packed days</span>' : S.pairs.pace === 1 ? '<span>Slow days</span>' : ''}${S.pairs.fame === 1 ? '<span>Hidden gems</span>' : ''}</div>`}
+  </div><div class="stub">Party<strong>${S.adults + S.kids}</strong>${esc(S.rel)}</div></div>`;
+}
+
+function header() {
+  if (mode === 'comp') {
+    return `<div class="brand"><span>The Lads Travel Co</span><span>${step < 3 ? `Step ${step + 1} of 3` : 'Done'}</span></div>
+      <div class="stamps" style="grid-template-columns:repeat(3,1fr)">${COMP_STEPS.slice(0, 3).map((s, i) => `<span class="stamp ${i < step ? 'done' : i === step ? 'now' : ''}" style="--s:var(--ink-${i + 2});--r:${ROT[i]}">${s}</span>`).join('')}</div>`;
+  }
+  const label = step < 7 ? `Step ${step + 1} of 7 · ${STEPS[step].label}` : step === 7 ? 'Check your pass' : 'Sent';
+  return `<div class="brand"><span>Plan your trip</span><span>${label}</span></div>
+    <div class="stamps">${STEPS.slice(1, 7).map((s, j) => { const i = j + 1; return `<button class="stamp ${i < step ? 'done' : i === step ? 'now' : ''} ${i === fresh ? 'fresh' : ''}" data-goto="${i}" style="--s:var(--ink-${i});--r:${ROT[i]}" aria-label="${s.label}${i < step ? ', done' : ''}">${s.stamp}</button>`; }).join('')}</div>
+    ${step >= 1 && step <= 6 ? pass(true) : ''}`;
+}
+
+function orgScreen() {
+  switch (step) {
+    case 0: return `<div class="kicker">Your trip, researched</div>
+      <h1>Tell us about the trip. <em>We'll do the research.</em></h1>
+      <p class="lede">About 10 minutes. Everything saves as you go, and the rest of your group can add their own answers from their phones.</p>
+      <div class="q"><label for="f-name">Your first name</label><input id="f-name" type="text" data-f="name" value="${esc(S.name)}"></div>
+      <div class="q"><label for="f-email">Email <span class="hint">We send a link to pick up where you left off.</span></label><input id="f-email" type="email" data-f="email" value="${esc(S.email)}"></div>
+      <div class="q"><label for="f-phone">Phone <span class="opt">(optional, only if you'd like a call)</span></label><input id="f-phone" type="tel" data-f="phone" value="${esc(S.phone)}"></div>
+      <div class="q"><div class="ql">What's the occasion?</div>${chips('occasion', ['Just because', 'Graduation trip', 'Birthday', 'Honeymoon or anniversary', 'Bachelor or bachelorette', 'Study abroad visit', 'Reunion', 'A big event or game'], { multi: false })}</div>
+      <div class="q"><div class="ql">How did you find us? <span class="opt">(optional)</span></div>${chips('heard', ['TikTok', 'Instagram', 'A friend', 'Google', 'In person', 'Other'], { multi: false })}</div>`;
+    case 1: return `<div class="kicker">Stamp 1 · The trip</div><h1>Where are you <em>headed?</em></h1>
+      <div class="q">${seg('destMode', [['know', 'I know where'], ['help', 'Help me choose']])}</div>
+      ${S.destMode === 'know' ? `<div class="q"><label for="f-dest">Destination</label><input id="f-dest" type="text" data-f="dest" data-sugg="dest" value="${esc(S.dest)}" autocomplete="off"><div id="sugg-dest"></div></div>
+        <div class="q"><div class="ql">Open to nearby places we'd recommend?</div>${seg('nearby', ['Yes, show us', 'No, just there'])}</div>
+        <div class="q"><div class="ql">One base or on the move?</div>${chips('bases', ['One base', 'Two or three stops', 'On the move'], { multi: false })}</div>`
+        : `<div class="q"><div class="ql">What should it feel like? <span class="hint">Pick any.</span></div>${chips('feels', FEELS)}</div>
+        <div class="q"><div class="ql">How far will you fly?</div>${chips('flyFar', ['Under 5 hours', 'Up to 9 hours', 'Anywhere'], { multi: false })}</div>`}
+      <div class="q"><div class="ql">Dates</div>${seg('dateMode', [['fixed', 'I have dates'], ['flex', "I'm flexible"]])}</div>
+      ${S.dateMode === 'fixed' ? `<div class="row2"><div class="q"><label for="f-start">Leave</label><input id="f-start" type="date" data-f="start" value="${S.start}"></div><div class="q"><label for="f-end">Return</label><input id="f-end" type="date" data-f="end" value="${S.end}"></div></div>
+        <div class="q"><div class="ql">Could they move a few days for a better price?</div>${seg('flexDays', ['Yes, a few days', 'No, fixed'])}</div>`
+        : `<div class="q"><div class="ql">How long?</div>${chips('length', ['A long weekend', '4 to 6 nights', '7 to 9 nights', '10 to 14 nights', '2 weeks+'], { multi: false })}</div>
+           <div class="q"><div class="ql">Which months could work? <span class="hint">Pick any.</span></div>${chips('months', ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])}</div>`}
+      <div class="q"><label for="f-air">Home airport <span class="hint">Type a code, city or name.</span></label>
+        <input id="f-air" type="text" data-f="airportQ" data-sugg="air" value="${esc(S.airportQ || (S.airport ? S.airport + ' · ' + (AIRPORTS.find(a => a[0] === S.airport) || [, ''])[1] : ''))}" autocomplete="off"><div id="sugg-air"></div></div>`;
+    case 2: return `<div class="kicker">Stamp 2 · Your crew</div><h1>Who's <em>coming?</em></h1>
+      <div class="q"><div class="counter"><span>Adults</span><span class="ctl"><button data-cnt="adults" data-d="-1" aria-label="Fewer adults">−</button><span class="n">${S.adults}</span><button data-cnt="adults" data-d="1" aria-label="More adults">+</button></span></div>
+      <div class="counter"><span>Kids under 18</span><span class="ctl"><button data-cnt="kids" data-d="-1" aria-label="Fewer kids">−</button><span class="n">${S.kids}</span><button data-cnt="kids" data-d="1" aria-label="More kids">+</button></span></div></div>
+      <div class="q"><div class="ql">Ages in the group <span class="hint">Pick any.</span></div>${chips('ages', ['Under 21', '21', '22 to 29', '30s', '40s', '50+'])}</div>
+      <div class="q"><div class="ql">Who's going?</div>${chips('rel', ['Friends', 'Couple', 'Family', 'Mixed group', 'Solo'], { multi: false })}</div>
+      <div class="q"><div class="ql">How much has the group travelled?</div>${chips('experience', ['First big trip', 'A few trips', 'Seasoned travellers'], { multi: false })}</div>
+      <div class="q"><div class="ql">Is this anyone's first trip abroad?</div>${seg('firstAbroad', ['Yes, for someone', 'No'])}</div>
+      <div class="q"><div class="ql">Passports</div>${chips('passport', ['All valid', 'Someone expires within 6 months', "Someone doesn't have one", 'Not sure'], { multi: false })}</div>
+      <div class="q"><div class="ql">How are you splitting costs? <span class="hint">Money is the top cause of group-trip arguments. This helps us plan around it.</span></div>${chips('split', ['Everyone pays their own', 'Split evenly', 'One person is paying', 'Not sure yet'], { multi: false })}</div>
+      <div class="q"><div class="ql">Invite your group <span class="hint">Each person answers their own diet, limits and style on their own phone. About 3 minutes. You can send yours without waiting.</span></div>
+        <div class="companions">${S.companions.map(c => `<div class="comp"><span class="avatar">${esc(c.name[0])}</span><b>${esc(c.name)}</b><span class="status ${c.done ? 'ok' : 'wait'}">${c.done ? 'Answered' : 'Waiting'}</span><span class="lnk">ladstravel.com/plan-your-trip/join/k7f2-${esc(c.name.toLowerCase())}</span></div>`).join('')}</div>
+        <div class="addrow"><input type="text" id="add-comp" placeholder="Their first name"><button class="small-btn" data-addcomp="1">Add person</button></div></div>`;
+    case 3: return `<div class="kicker">Stamp 3 · Budget</div><h1>What should it <em>cost?</em></h1>
+      <div class="q">${seg('budgetMode', [['day', 'Per person, per day'], ['total', 'Per person, whole trip']])}
+        <p class="hint" style="margin:0">${S.budgetMode === 'day' ? 'Everything except flights: where you sleep, food, drinks, getting around, tickets.' : 'Everything including flights.'}</p></div>
+      <div class="q">${chips('budget', S.budgetMode === 'day' ? ['Under $100', '$100 to $175', '$175 to $275', '$275 to $400', '$400+'] : ['Under $1,500', '$1,500 to $2,500', '$2,500 to $4,000', '$4,000 to $6,000', '$6,000+'], { multi: false })}
+        <label for="f-bx" class="hint">Or type an exact amount <span class="opt">(optional)</span></label><input id="f-bx" type="text" data-f="budgetExact" value="${esc(S.budgetExact)}" placeholder="e.g. about $220 a day"></div>
+      <div class="q"><div class="ql">How firm is that?</div>${seg('firm', ['A hard limit', 'A rough guide', 'Flexible for the right thing'])}</div>
+      <div class="q"><div class="ql">Where should the money go? <span class="hint">Pick up to 2.</span></div>${chips('splurge', ['Food', 'Nightlife', 'Where we sleep', 'Experiences and tours', 'Getting around easily'], { max: 2 })}</div>
+      <div class="q"><div class="ql">Where can we save? <span class="hint">Pick any.</span></div>${chips('save', ['Food', 'Nightlife', 'Where we sleep', 'Experiences and tours', 'Getting around easily'])}</div>`;
+    case 4: return `<div class="kicker">Stamp 4 · Your style</div><h1>This <em>or</em> that?</h1><p class="lede">One tap each. Go with your gut.</p>${pairs(S)}
+      <div class="q"><div class="ql">Your top 3, in order <span class="hint">Tap in order of how much it matters. Tap again to remove.</span></div>${ranker(S)}</div>
+      ${S.top3.map((t, i) => `<div class="q more"><span class="why">#${i + 1} · ${esc(t)}</span><div class="ql">Which kind? <span class="hint">Pick any.</span></div>${moreChips(t)}</div>`).join('')}
+      <div class="q"><div class="ql">Also into <span class="opt">(optional)</span></div>${chips('also', INTEREST_NAMES.filter(i => !on(S.top3, i)))}</div>
+      <div class="q"><label for="f-pd">Describe a perfect day there, in a line <span class="opt">(optional)</span></label><textarea id="f-pd" data-f="perfectDay">${esc(S.perfectDay)}</textarea></div>`;
+    case 5: return `<div class="kicker">Stamp 5 · The details</div><h1>The things that <em>make or break</em> a trip.</h1><p class="lede">Anything marked as a limit becomes a rule we plan around.</p>
+      <div class="sub"><h2>Food and drink</h2>
+        <div class="q"><div class="ql">Any dietary needs?</div>${chips('diet', ['None', 'Allergy', 'Vegetarian', 'Vegan', 'Gluten-free', 'Halal', 'Kosher', 'Other'])}</div>
+        ${on(S.diet, 'Allergy') ? `<div class="q hard"><span class="why">Hard limit</span><label for="f-al">Allergic to</label><input id="f-al" type="text" data-f="allergy" value="${esc(S.allergy)}">
+          <div class="ql">How serious?</div>${chips('severity', ['Mild', 'Moderate', 'Severe (anaphylaxis)'], { multi: false })}
+          <div class="ql">Does cross-contact matter (shared fryers, kitchens)?</div>${seg('crossContact', ['Yes', 'No'])}</div>` : ''}
+        <div class="q">${tilePair('adv', ['🦑', 'Adventurous', 'Bring on the local dishes'], ['🍝', 'Familiar', 'Good versions of what we know'], S.adventurous)}</div>
+        <div class="q"><div class="ql">Drinking</div>${chips('drinking', ['Yes, we drink', 'Some of us', "We don't drink"], { multi: false })}</div>
+        <div class="q"><div class="ql">One big dinner worth booking ahead?</div>${seg('bigDinner', ['Yes', 'No'])}</div></div>
+      <div class="sub"><h2>Where you sleep</h2>
+        <div class="q"><div class="ql">What kind of place? <span class="hint">Pick any.</span></div>${chips('lodging', ['Hotel', 'Hostel', 'Apartment', 'Boutique or guesthouse', 'Resort'])}</div>
+        <div class="q"><div class="ql">The area should be</div>${chips('vibe', ['Central', 'Quiet', 'Near nightlife', 'Near nature', 'Local, not touristy'])}</div>
+        <div class="q"><div class="ql">Rooms</div>${chips('sharing', ['Shared rooms are fine', 'Everyone gets a bed', 'Private rooms'], { multi: false })}</div>
+        <div class="q"><div class="ql">Any light sleepers?</div>${seg('lightSleepers', ['Yes', 'No'])}</div></div>
+      <div class="sub"><h2>Getting around</h2>
+        <div class="q"><div class="ql">Happy to use <span class="hint">Pick any.</span></div>${chips('around', ['Walking', 'Public transit', 'Taxis and rideshare', 'A rental car', 'Bikes and scooters'])}</div>
+        <div class="q"><div class="ql">Most walking in a day</div>${chips('walk', ['Under 5,000 steps', '5,000 to 10,000', '10,000 to 15,000', '15,000+ steps'], { multi: false })}</div>
+        <div class="q"><div class="ql">Longest travel day you'd accept between stops</div>${chips('travelDay', ['Under 2 hours', 'Up to 4 hours', 'A full travel day'], { multi: false })}</div>
+        <div class="q"><div class="ql">Early flights or overnight trains?</div>${seg('earlyTransit', ['Yes, if it saves a day', 'Avoid them'])}</div>
+        <div class="q"><div class="ql">Anyone comfortable driving abroad?</div>${seg('drive', ['Yes', 'No'])}</div>
+        <div class="q"><div class="ql">Does anyone get motion sick (boats, winding roads)?</div>${seg('motion', ['Yes', 'No'])}</div>
+        <div class="q"><div class="ql">Any mobility or accessibility needs?</div>${seg('access', ['Yes', 'No'])}</div>
+        ${S.access === 'Yes' ? `<div class="q hard"><span class="why">Hard limit</span>${chips('accessNeeds', ['Step-free access', 'Wheelchair', 'Limited stairs', 'Short walks only', 'Other'])}</div>` : ''}</div>
+      ${outdoorsPicked() ? `<div class="sub"><span class="why">Shown because you picked Outdoors</span><h2>Active limits</h2><p class="hint">Plan to the least keen person in the group.</p>
+        <div class="q"><div class="ql">Longest hike the whole group would enjoy</div>${chips('hike', ['Under 1 hour', '1 to 3 hours', '3 to 5 hours', 'A full day', 'Multi-day'], { multi: false })}</div>
+        <div class="q"><div class="ql">Altitude</div>${chips('altitude', ['Never been high', 'Fine up to 2,500 m', 'Fine above 3,000 m'], { multi: false })}</div>
+        <div class="q">${tilePair('heat', ['☀️', 'Heat is fine', "30°C (86°F) doesn't bother us"], ['❄️', 'Keep it mild', 'We wilt in the heat'], S.heat)}</div></div>` : ''}
+      <div class="sub"><h2>Points and cards <span class="opt">(optional)</span></h2>
+        <div class="q"><div class="ql">Programmes and cards you hold</div>${chips('points', ['Chase Ultimate Rewards', 'Amex Membership Rewards', 'Capital One', 'Citi ThankYou', 'Delta SkyMiles', 'United MileagePlus', 'American AAdvantage', 'Marriott Bonvoy', 'Hilton Honors', 'None'])}</div>
+        <div class="q"><div class="ql">Open to hearing about card options?</div>${seg('openCards', ['Yes', 'No'])}</div></div>`;
+    case 6: return `<div class="kicker">Stamp 6 · Your wishes</div><h1>Make it a <em>ten out of ten.</em></h1>
+      <div class="q"><label for="f-ten">What would make this trip a 10 out of 10?</label><textarea id="f-ten" data-f="tenOutOfTen">${esc(S.tenOutOfTen)}</textarea></div>
+      <div class="q"><div class="ql">Must-dos <span class="opt">(optional)</span></div>${listAdd('mustDo', 'e.g. A day trip to Sintra')}</div>
+      <div class="q"><div class="ql">Please avoid <span class="opt">(optional)</span></div>${listAdd('avoid', 'e.g. Long bus transfers')}</div>
+      <div class="q"><div class="ql">Already booked <span class="opt">(optional)</span></div>${listAdd('booked', 'e.g. Flights, Apr 18 to 26')}</div>
+      <div class="q"><label for="f-loved">A trip you loved, and why <span class="opt">(optional)</span></label><input id="f-loved" type="text" data-f="loved" value="${esc(S.loved)}"></div>
+      <div class="q"><label for="f-hated">A trip you didn't, and why <span class="opt">(optional)</span></label><input id="f-hated" type="text" data-f="hated" value="${esc(S.hated)}"></div>
+      <div class="sub"><h2>Getting it to you</h2>
+      <div class="q"><div class="ql">Who else gets the guide link?</div>${listAdd('shareWith', 'their@email.com')}</div>
+      <div class="q"><label for="f-need">When do you need the guide by?</label><input id="f-need" type="date" data-f="needBy" value="${S.needBy}"></div>
+      <div class="q"><div class="ql">Format</div>${chips('pdf', ['Web guide only', 'Web guide plus a PDF'], { multi: false })}</div>
+      <div class="q"><div class="ql">Best way to reach you with questions</div>${seg('contact', ['Email', 'Text', 'Call'])}</div></div>`;
+    case 7: return reviewScreen();
+    case 8: return `<div class="done"><div class="bigstamp"><span>Received<b>${esc(code())}</b>${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span></div>
+      <div class="big">Got it, ${esc(S.name)}. <em style="color:var(--gold)">Your trip is with us.</em></div>
+      <p class="lede">A founder reads every request. We'll ${S.contact === 'Text' ? 'text' : S.contact === 'Call' ? 'call' : 'email'} you within two days with next steps, or with a question if something needs clearing up.</p>
+      <div class="card"><b>Rather talk it through?</b><p class="hint" style="margin:0">Book a 15 to 20 minute call. We'll already have your answers, so it starts where the quiz left off.</p><span class="small-btn" style="display:inline-grid;place-items:center;justify-self:start">Book a call (Cal.com)</span></div>
+      ${S.companions.some(c => !c.done) ? `<p class="note">${S.companions.filter(c => !c.done).map(c => esc(c.name)).join(' and ')} hasn't answered yet. Their link still works, and their answers join your request when they do.</p>` : ''}</div>`;
+  }
+}
+function moreChips(t) {
+  if (!S.more[t]) S.more[t] = [];
+  return `<div class="chips">${INTERESTS[t].map(o => `<button class="chip" data-more="${esc(t)}" data-v="${esc(o)}" aria-pressed="${on(S.more[t], o)}">${esc(o)}</button>`).join('')}</div>`;
+}
+
+function hardLimits() {
+  const out = [];
+  if (on(S.diet, 'Allergy') && S.allergy) out.push(`Anywhere that can't safely handle a ${S.severity.toLowerCase()} ${S.allergy.toLowerCase()} allergy${S.crossContact === 'Yes' ? ', including cross-contact' : ''}`);
+  if (S.comp.diet.length && !on(S.comp.diet, 'None')) out.push(`A meal without a ${S.comp.diet.join(', ').toLowerCase()} option, for ${esc(S.comp.name)}`);
+  if (S.comp.note) out.push(`${esc(S.comp.note)} (${esc(S.comp.name)})`);
+  if (S.drive === 'No') out.push('Anything that needs someone to drive');
+  if (S.motion === 'Yes') out.push('Long boat trips or winding mountain roads');
+  if (outdoorsPicked()) out.push(`Hikes longer than ${S.comp.hike.toLowerCase()} (the group's shortest limit)${S.altitude === 'Never been high' ? ', or high altitude' : ''}`);
+  if (S.access === 'Yes' && S.accessNeeds.length) out.push(`Places without ${S.accessNeeds.join(', ').toLowerCase()}`);
+  if (S.firm === 'A hard limit') out.push(`Going over ${S.budget} ${S.budgetMode === 'day' ? 'a day' : 'for the trip'}, per person`);
+  if (S.passport !== 'All valid') out.push('A destination whose entry rules your passports might not meet');
+  return out;
+}
+function rv(title, goto, body) { return `<div class="rv" style="--s:var(--ink-${goto})"><div class="head"><span>${title}</span><button data-goto="${goto}">Change</button></div>${body}</div>`; }
+function reviewScreen() {
+  const pairTxt = obj => PAIRS.map(([k, , a, , , b]) => obj.pairs[k] === 0 ? a.toLowerCase() : obj.pairs[k] === 1 ? b.toLowerCase() : null).filter(Boolean).join(', ');
+  const hl = hardLimits(), answered = S.companions.filter(c => c.done);
+  return `<div class="kicker" style="--ink:var(--gold)">Last check</div><h1>Here's your <em style="color:var(--gold)">boarding pass.</em></h1>
+  <p class="lede">This is what our research starts from. Tap Change on anything that isn't right.</p>
+  ${pass(false)}
+  <div class="review">
+    <div class="rv hard" style="--s:var(--danger)"><span class="why">We will never plan…</span><ul>${hl.map(h => `<li>${h}</li>`).join('')}</ul><p class="hint">Is anything missing? Change it in the section it came from.</p></div>
+    ${rv('The trip', 1, `<p>${S.destMode === 'know' ? `${esc(S.dest)}, ${S.bases.toLowerCase()}${S.nearby.startsWith('Yes') ? ', open to nearby places' : ''}` : 'Help us choose: ' + S.feels.join(', ').toLowerCase() + `, ${S.flyFar.toLowerCase()} away`}. ${S.dateMode === 'flex' ? `${S.length} in ${S.months.join(' or ')}` : `${S.start} to ${S.end}`}, flying from ${S.airport}. Occasion: ${S.occasion.toLowerCase()}.</p>`)}
+    ${rv('Your crew', 2, `<p>${S.adults} adults${S.kids ? ` and ${S.kids} kids` : ''}, ${S.rel.toLowerCase()} aged ${S.ages.join(', ')}, ${S.experience.toLowerCase()}. ${S.split}. Passports: ${S.passport.toLowerCase()}.</p><p class="hint">${answered.length} of ${S.companions.length} companions have answered${answered.length ? ': ' + answered.map(c => esc(c.name)).join(', ') : ''}.</p>`)}
+    ${rv('Budget', 3, `<p>${S.budget} per person ${S.budgetMode === 'day' ? 'per day, before flights' : 'for the whole trip'}, ${S.firm.toLowerCase()}. Spend on ${S.splurge.join(' and ').toLowerCase()}; save on ${S.save.join(', ').toLowerCase()}.</p>`)}
+    ${rv('Your style', 4, `<p>You like ${pairTxt(S)}. Top 3: ${S.top3.map((t, i) => `${i + 1}. ${t}${S.more[t] && S.more[t].length ? ` (${S.more[t].join(', ').toLowerCase()})` : ''}`).join('; ')}.</p>${S.perfectDay ? `<p><em>"${esc(S.perfectDay)}"</em></p>` : ''}<p class="hint">${esc(S.comp.name)} leans ${pairTxt(S.comp)}. We'll plan for both and flag where you differ.</p>`)}
+    ${rv('The details', 5, `<p>${S.drinking}. ${S.lodging.join(' or ')} in a ${S.vibe.join(', ').toLowerCase()} area, ${S.sharing.toLowerCase()}. Getting around by ${S.around.join(' and ').toLowerCase()}, up to ${S.walk.toLowerCase()} a day, travel days ${S.travelDay.toLowerCase()}. Points: ${S.points.join(', ')}.</p>`)}
+    ${rv('Your wishes', 6, `<p>A ten out of ten: <em>"${esc(S.tenOutOfTen)}"</em></p><p>Must-do: ${S.mustDo.join('; ') || 'none'}. Avoid: ${S.avoid.join('; ') || 'none'}. Booked: ${S.booked.join('; ') || 'nothing yet'}.</p><p>Guide by ${S.needBy}, shared with ${S.shareWith.length} others. ${S.pdf}. Reach you by ${S.contact.toLowerCase()}.</p>`)}
+  </div>`;
+}
+
+function compScreen() {
+  const C = S.comp;
+  switch (step) {
+    case 0: return `<div class="kicker" style="--ink:var(--ink-2)">You're invited</div><h1>${esc(S.name)} is planning <em>${esc(S.dest)}</em>, and wants your input.</h1>
+      <p class="lede">About 3 minutes. Just your own needs and tastes, so the plan works for you too. Only the planners see your answers.</p>
+      ${pass(true)}
+      <div class="q"><label for="c-name">Your first name</label><input id="c-name" type="text" data-cf="name" value="${esc(C.name)}"></div>`;
+    case 1: return `<div class="kicker">Your limits</div><h1>What should we <em>plan around?</em></h1>
+      <div class="q"><div class="ql">Any dietary needs?</div>${chips('diet', ['None', 'Allergy', 'Vegetarian', 'Vegan', 'Gluten-free', 'Halal', 'Kosher', 'Other'], { obj: C })}</div>
+      <div class="q"><div class="ql">Drinking</div>${chips('drinking', ['Yes', 'Sometimes', "I don't drink"], { multi: false, obj: C })}</div>
+      <div class="q"><div class="ql">Longest hike you'd enjoy</div>${chips('hike', ['Under 1 hour', '1 to 3 hours', '3 to 5 hours', 'A full day', 'Multi-day'], { multi: false, obj: C })}</div>
+      <div class="q"><div class="ql">Altitude</div>${chips('altitude', ['Never been high', 'Fine up to 2,500 m', 'Fine above 3,000 m'], { multi: false, obj: C })}</div>
+      <div class="q hard"><span class="why">Anything we must plan around?</span><label for="c-note" class="hint">Injuries, fears, medical needs. Only the planners see this.</label><input id="c-note" type="text" data-cf="note" value="${esc(C.note)}"></div>`;
+    case 2: return `<div class="kicker">Your style</div><h1>This <em>or</em> that?</h1>${pairs(C)}<div class="q"><div class="ql">Your top 3, in order</div>${ranker(C)}</div>
+      <div class="q"><label for="c-must">One thing you'd hate to miss <span class="opt">(optional)</span></label><input id="c-must" type="text" data-cf="mustDo" value="${esc(C.mustDo)}"></div>`;
+    case 3: return `<div class="done"><div class="bigstamp" style="border-color:var(--ink-2);color:var(--ink-2)"><span>Added<b>${esc(C.name)}</b>to the trip</span></div><div class="big">Thanks, ${esc(C.name)}.</div><p class="lede">Your answers are with ${esc(S.name)}'s request. We plan to everyone's limits and flag where the group's tastes differ.</p></div>`;
+  }
+}
+
+function render() {
+  const last = mode === 'org' ? 8 : 3;
+  const ink = mode === 'org' ? (step >= 1 && step <= 6 ? `var(--ink-${step})` : 'var(--gold)') : `var(--ink-${Math.min(step + 2, 4)})`;
+  document.documentElement.style.setProperty('--ink', ink);
+  document.getElementById('bar').innerHTML = header();
+  const scr = document.getElementById('screen');
+  scr.innerHTML = mode === 'org' ? orgScreen() : compScreen();
+  scr.style.animation = 'none'; void scr.offsetWidth; scr.style.animation = '';
+  document.getElementById('back').hidden = step === 0 || step === last;
+  const next = document.getElementById('next');
+  next.hidden = step === last;
+  next.textContent = mode === 'org' ? (step === 7 ? 'Send to the Lads' : step === 6 ? 'Check my pass' : step === 0 ? "Let's go" : 'Stamp it') : (step === 2 ? 'Send my answers' : 'Continue');
+  document.getElementById('saved').textContent = step === last ? '' : 'Saved ✓';
+  fresh = -1;
+}
+function go(n) { if (mode === 'org' && n === step + 1 && step >= 1 && step <= 6) fresh = step; step = n; render(); window.scrollTo({ top: 0 }); }
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  const obj = t.dataset.obj === 'c' ? S.comp : S;
+  if (t.id === 'next') return go(step + 1);
+  if (t.id === 'back') return go(step - 1);
+  if (t.id === 'as-org' || t.id === 'as-comp') {
+    mode = t.id === 'as-org' ? 'org' : 'comp';
+    document.getElementById('as-org').setAttribute('aria-pressed', mode === 'org');
+    document.getElementById('as-comp').setAttribute('aria-pressed', mode === 'comp');
+    return go(0);
+  }
+  if (t.dataset.chip) {
+    const k = t.dataset.chip, v = t.dataset.v, max = +t.dataset.max;
+    if (t.dataset.multi === '1') {
+      if (!Array.isArray(obj[k])) obj[k] = [];
+      if (v === 'None') obj[k] = on(obj[k], 'None') ? [] : ['None'];
+      else {
+        obj[k] = obj[k].filter(x => x !== 'None');
+        if (on(obj[k], v)) obj[k] = obj[k].filter(x => x !== v);
+        else { obj[k].push(v); if (max && obj[k].length > max) obj[k].shift(); }
+      }
+    } else {
+      obj[k] = v;
+      if (k === 'budget' && t.closest('.chips')) {}
+    }
+    return render();
+  }
+  if (t.dataset.more) { const k = t.dataset.more, v = t.dataset.v; S.more[k] = on(S.more[k], v) ? S.more[k].filter(x => x !== v) : [...S.more[k], v]; return render(); }
+  if (t.dataset.seg) {
+    obj[t.dataset.seg] = t.dataset.v;
+    if (t.dataset.seg === 'budgetMode') S.budget = t.dataset.v === 'day' ? '$175 to $275' : '$2,500 to $4,000';
+    return render();
+  }
+  if (t.dataset.pair) {
+    const k = t.dataset.pair, v = +t.dataset.v;
+    if (k === 'adv') S.adventurous = v; else if (k === 'heat') S.heat = v; else obj.pairs[k] = v;
+    return render();
+  }
+  if (t.dataset.rank) {
+    const v = t.dataset.rank;
+    if (on(obj.top3, v)) obj.top3 = obj.top3.filter(x => x !== v);
+    else if (obj.top3.length < 3) obj.top3.push(v);
+    if (obj === S) S.also = S.also.filter(x => !on(S.top3, x));
+    return render();
+  }
+  if (t.dataset.cnt) { const k = t.dataset.cnt; S[k] = Math.max(k === 'adults' ? 1 : 0, S[k] + +t.dataset.d); return render(); }
+  if (t.dataset.del) { S[t.dataset.del].splice(+t.dataset.i, 1); return render(); }
+  if (t.dataset.add) { const inp = document.getElementById('add-' + t.dataset.add); if (inp.value.trim()) { S[t.dataset.add].push(inp.value.trim()); render(); } return; }
+  if (t.dataset.addcomp) { const inp = document.getElementById('add-comp'); if (inp.value.trim()) { S.companions.push({ name: inp.value.trim(), done: false }); render(); } return; }
+  if (t.dataset.goto) return go(+t.dataset.goto);
+  if (t.dataset.pick) {
+    if (t.dataset.pick === 'air') { S.airport = t.dataset.v; S.airportQ = ''; } else { S.dest = t.dataset.v; }
+    return render();
+  }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.f) S[t.dataset.f] = t.value;
+  if (t.dataset.cf) S.comp[t.dataset.cf] = t.value;
+  if (t.dataset.sugg) {
+    const q = t.value.trim().toLowerCase(), box = document.getElementById('sugg-' + t.dataset.sugg);
+    if (!q) { box.innerHTML = ''; return; }
+    const hits = t.dataset.sugg === 'air'
+      ? AIRPORTS.filter(a => (a[0] + ' ' + a[1]).toLowerCase().includes(q)).slice(0, 5).map(a => `<button data-pick="air" data-v="${a[0]}"><code>${a[0]}</code>${esc(a[1])}</button>`)
+      : DESTS.filter(d => d[0].toLowerCase().includes(q)).slice(0, 5).map(d => `<button data-pick="dest" data-v="${esc(d[0])}"><code>${d[1]}</code>${esc(d[0])}</button>`);
+    box.innerHTML = hits.length ? `<div class="sugg">${hits.join('')}</div>` : '';
+  }
+});
+document.addEventListener('submit', e => e.preventDefault());
+render();
+</script>
