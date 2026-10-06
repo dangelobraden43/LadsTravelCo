@@ -308,6 +308,23 @@ https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
    sources), intake UX, holiday deals (36). Key dates: Vienna market opens Nov 13 →
    Christmas markets guide targets ~Oct 15; Travel Tuesday Dec 1 needs a founder price
    if a Club offer runs; otherwise waitlist only.
+8. **Intake phase 1 SHIPPED as a hidden route** (`/plan-your-trip`, `/plan-your-trip/join/:invite`,
+   noindex, unlinked, `INTAKE_LIVE = false` in `src/intake/config.js`). Plan:
+   `docs/superpowers/plans/2026-10-06-intake-phase-1.md`. Functions `api/intake.js`,
+   `api/companion.js` (+ `api/_lib/`). Airtable base **"Lads Intakes"** `appMZByKEjR93axZb`
+   (tables Intakes, Companions) created Oct 6; Brady set `AIRTABLE_TOKEN` and
+   `AIRTABLE_BASE_ID` in Vercel. Independent review: 1 critical + 9 important fixed
+   (server-side normalise/caps, 502 on failed write, serialised saves, founder status never
+   overwritten). **Before `INTAKE_LIVE = true`:** Turnstile widget + `TURNSTILE_ENFORCE=1`,
+   MailerSend resume/received emails, `/privacy` intake paragraph, `CAL_URL` from Brady.
+   Local end-to-end: `npm run build && node tools/intake/dev-server.mjs`.
+9. ⛔ **Two `/research` runs started in the same minute collide**: both get the same runId and
+   the SubagentStop hook validates "the newest RUN.json", so it checked the wrong folder and
+   wrote false `.MISSING.txt` notes (Oct 6, ski + Christmas). Stagger runs by a minute until
+   the hook keys on the agent's own run directory.
+10. **Correction logged:** I told Brady the Schönbrunn Christmas market had closed. The
+    verifier REFUTED it (successor market, Nov 6 2026 – Jan 6 2027). Never relay an
+    unverified finding as fact, even in chat.
 7. **New queue (Brady, Oct 6), in order:** Christmas markets guide (`/christmas-markets`,
    research-led, Dublin-at-Christmas is the gold hook) → intake phase 1 → holiday deals
    page → Midwest ski guide on /local → Dusk Field Guide → global ski. Research runs for
