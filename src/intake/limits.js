@@ -63,7 +63,7 @@ export function hardLimits(i, companions) {
   if (i.drive === 'No') out.push({ kind: 'driving', text: 'Anything that needs someone to drive' })
   if (i.motion === 'Yes')
     out.push({ kind: 'motion', text: 'Long boat trips or winding mountain roads' })
-  if (outdoors(i) && g.hike)
+  if (outdoors(i) && g.hike && g.hike !== 'Multi-day')
     out.push({
       kind: 'hike',
       text: `Hikes longer than ${g.hike.toLowerCase()} (the group's shortest limit)`,
