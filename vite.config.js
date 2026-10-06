@@ -138,6 +138,7 @@ export default defineConfig({
         '/munich', '/poland', '/michigan',
         '/peru',
         '/join',
+        '/plan-your-trip',
         // thailand + charleston were RETIRED Aug 13 2026 and have no route.
         // They sat in this sitemap for three weeks pointing search engines at
         // two 404s. Removed Sept 2 2026 - do not re-add them unless the
@@ -153,6 +154,7 @@ export default defineConfig({
         '/michigan': 0.7,
         '/peru': 0.9,
         '/join': 0.9,
+        '/plan-your-trip': 0.9,
       },
     }),
   ],

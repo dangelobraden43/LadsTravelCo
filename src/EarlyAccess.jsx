@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import React, { useState } from 'react'
 import { FRAMEWORKS } from './data/canonical.js'
 import { LAUNCH_LABEL } from './utils/launch.js'
@@ -254,6 +255,12 @@ export default function EarlyAccess({ variant = 'full', source = 'unknown' }) {
                   </span>
                 </button>
 
+                {hasTrip && (
+                  <p className="ea-trip-sub ea-trip-quiz">
+                    Planning a real trip? <Link to="/plan-your-trip">Tell us about it in full</Link>{' '}
+                    and your group can add their own answers.
+                  </p>
+                )}
                 {hasTrip && (
                   <div className="ea-trip-form">
                     <div className="ea-field">

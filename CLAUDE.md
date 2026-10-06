@@ -308,15 +308,18 @@ https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
    sources), intake UX, holiday deals (36). Key dates: Vienna market opens Nov 13 →
    Christmas markets guide targets ~Oct 15; Travel Tuesday Dec 1 needs a founder price
    if a Club offer runs; otherwise waitlist only.
-8. **Intake phase 1 SHIPPED as a hidden route** (`/plan-your-trip`, `/plan-your-trip/join/:invite`,
-   noindex, unlinked, `INTAKE_LIVE = false` in `src/intake/config.js`). Plan:
+8. **Intake phase 1 is LIVE (Oct 6, Brady: "a massive upgrade").** `/plan-your-trip` and
+   `/plan-your-trip/join/:invite`, `INTAKE_LIVE = true`, indexed, in the sitemap at 0.9. The nav CTA now
+   reads **"Plan your trip"**, and homepage Start Planning + How It Works point at it; `/join` keeps the
+   founding list and links the quiz from its trip track. Anti-bot floor lowered 45 s → 20 s after it
+   rejected Brady's own real run. Submit outcomes log as `[intake] …` in Vercel runtime logs. Plan:
    `docs/superpowers/plans/2026-10-06-intake-phase-1.md`. Functions `api/intake.js`,
    `api/companion.js` (+ `api/_lib/`). Airtable base **"Lads Intakes"** `appMZByKEjR93axZb`
    (tables Intakes, Companions) created Oct 6; Brady set `AIRTABLE_TOKEN` and
    `AIRTABLE_BASE_ID` in Vercel. Independent review: 1 critical + 9 important fixed
    (server-side normalise/caps, 502 on failed write, serialised saves, founder status never
-   overwritten). **Before `INTAKE_LIVE = true`:** Turnstile widget + `TURNSTILE_ENFORCE=1`,
-   MailerSend resume/received emails, `/privacy` intake paragraph, `CAL_URL` from Brady.
+   overwritten). **Still owed after go-live:** Turnstile widget + `TURNSTILE_ENFORCE=1`, MailerSend
+   resume/received emails, `CAL_URL` from Brady. (`/privacy` intake paragraph shipped.)
    Local end-to-end: `npm run build && node tools/intake/dev-server.mjs`. Airtable HTTP errors log as `[airtable] … -> HTTP nnn` in Vercel runtime logs.
 9. ⛔ **Two `/research` runs started in the same minute collide**: both get the same runId and
    the SubagentStop hook validates "the newest RUN.json", so it checked the wrong folder and

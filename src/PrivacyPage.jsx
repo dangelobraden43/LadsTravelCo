@@ -179,6 +179,13 @@ export default function PrivacyPage() {
                 Analytics are used to work out which pages are worth building on and which are
                 broken. That is the entire list of purposes.
               </p>
+              <p className="privacy-p">
+                If you plan a trip with us at /plan-your-trip, your answers (and any answers your
+                travel companions add through their own links) are stored in our private trip
+                database so a founder can read them and research your trip. We use them only for
+                that trip. We delete a trip&rsquo;s answers 12 months after you travel, or sooner if
+                you ask us at brady@ladstravel.com.
+              </p>
             </section>
           </Reveal>
 

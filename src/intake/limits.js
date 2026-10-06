@@ -17,7 +17,7 @@ export function mergeGroup(i, companions) {
   const notes = []
   for (const p of people) {
     for (const d of p.diet || [])
-      if (d !== 'None' && d !== 'Allergy') diets.push({ who: p.who, diet: d })
+      if (d !== 'None' && d !== 'Allergy' && d !== 'Other') diets.push({ who: p.who, diet: d })
     const note = p.note && p.note.trim()
     if (note) notes.push({ who: p.who, text: note })
   }

@@ -234,7 +234,7 @@ function Nav({ scrolled }) {
             in the nav, so a visitor who liked the site had nowhere to go. */}
         <button
           className="nav-cta"
-          onClick={() => navigate('/join')}
+          onClick={() => navigate('/plan-your-trip')}
           style={{
             background: 'var(--gold, #d4a843)',
             color: '#141210',
@@ -250,7 +250,7 @@ function Nav({ scrolled }) {
             marginLeft: 10,
           }}
         >
-          Early access
+          Plan your trip
         </button>
       </div>
     </nav>
@@ -973,7 +973,7 @@ export default function App() {
                 { label: 'Browse Destinations', path: '/global' },
                 { label: 'Adventure & Treks', path: '/outdoors' },
                 { label: 'When to Travel', path: '/when' },
-                { label: 'Start Planning', path: '/join', primary: true },
+                { label: 'Start Planning', path: '/plan-your-trip', primary: true },
               ].map((btn) => (
                 <button
                   key={btn.path}
@@ -1516,7 +1516,9 @@ export default function App() {
               <button
                 onClick={
                   () =>
-                    navigate('/join') /* was '/plan', which has redirected to / since May 31 2026 */
+                    navigate(
+                      '/plan-your-trip'
+                    ) /* the intake quiz, live Oct 6 2026 (was /join, and /plan before that) */
                 }
                 style={{
                   padding: '16px 40px',
