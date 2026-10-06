@@ -1,1 +1,1 @@
-- [Packet assembly lessons](packet-assembly-lessons.md) — verifier additions aren't findings, no derived numbers, scale-dependent clustering, park trail GAPs, checkedOn
+- [Packet assembly lessons](packet-assembly-lessons.md) — verifier additions aren't findings, no derived numbers, scale-dependent clustering (incl. multi-country two-pass), park trail GAPs, checkedOn, count verdicts yourself, withhold agent self-flags, contract-flag fix tables, pass "No" vs "not named"

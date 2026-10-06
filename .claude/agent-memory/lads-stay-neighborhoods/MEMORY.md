@@ -1,0 +1,2 @@
+- [Source lessons](source-lessons.md) — resort off-site lodging pages for distances; snippets can't make price ranges; STR articles are often stale
+- [Run strategy](stay-run-strategy.md) — 12 calls = ~5 cities snippet-grade; fetch tourism boards over searches; STR sources; district-level bans
