@@ -76,33 +76,33 @@ export const SPEND_ON = [
 export const PAIRS = [
   {
     key: 'pace',
-    a: ['⚡', 'Packed days', 'See as much as we can'],
-    b: ['🌿', 'Slow days', 'Room to wander and rest'],
+    a: ['bolt', 'Packed days', 'See as much as we can'],
+    b: ['leaf', 'Slow days', 'Room to wander and rest'],
   },
   {
     key: 'plan',
-    a: ['🗓', 'Planned', 'A plan for every hour'],
-    b: ['🎲', 'Spontaneous', 'A few anchors, the rest open'],
+    a: ['calendar', 'Planned', 'A plan for every hour'],
+    b: ['dice', 'Spontaneous', 'A few anchors, the rest open'],
   },
   {
     key: 'clock',
-    a: ['🌅', 'Early starts', 'Beat the crowds'],
-    b: ['🌙', 'Late nights', 'Sleep in, stay out'],
+    a: ['sunrise', 'Early starts', 'Beat the crowds'],
+    b: ['moon', 'Late nights', 'Sleep in, stay out'],
   },
   {
     key: 'fame',
-    a: ['🏛', 'The icons', 'The famous sights, done right'],
-    b: ['🗝', 'Hidden gems', 'Where the locals go'],
+    a: ['columns', 'The icons', 'The famous sights, done right'],
+    b: ['key', 'Hidden gems', 'Where the locals go'],
   },
   {
     key: 'guide',
-    a: ['🎟', 'Guided', 'Tours and experts'],
-    b: ['🧭', 'On our own', 'Just tell us where'],
+    a: ['ticket', 'Guided', 'Tours and experts'],
+    b: ['compass', 'On our own', 'Just tell us where'],
   },
   {
     key: 'crowd',
-    a: ['👥', 'Crowds are fine', 'Worth it for the big sights'],
-    b: ['🚪', 'Avoid crowds', 'Go early, go elsewhere'],
+    a: ['people', 'Crowds are fine', 'Worth it for the big sights'],
+    b: ['door', 'Avoid crowds', 'Go early, go elsewhere'],
   },
 ]
 export const INTERESTS = {
@@ -232,4 +232,24 @@ export const AIRPORTS = [
   ['AZO', 'Kalamazoo/Battle Creek'],
   ['FNT', 'Flint Bishop'],
   ['CVG', 'Cincinnati/Northern Kentucky'],
+]
+
+/* Destination suggestions for the typeahead: our frameworks first, then places we
+ * are researching. Codes are the main airport, used on the boarding pass only. */
+export const DESTINATIONS = [
+  ['Dublin & Galway, Ireland', 'DUB'],
+  ['Spain', 'MAD'],
+  ['Rome, Italy', 'FCO'],
+  ['Iceland', 'KEF'],
+  ['Prague, Czechia', 'PRG'],
+  ['Vienna, Austria', 'VIE'],
+  ['Munich, Germany', 'MUC'],
+  ['Poland', 'KRK'],
+  ['Australia', 'SYD'],
+  ['Peru', 'CUZ'],
+  ['San Juan, Puerto Rico', 'SJU'],
+  ['Costa Rica', 'SJO'],
+  ['Vancouver, Canada', 'YVR'],
+  ['Lisbon, Portugal', 'LIS'],
+  ['European Christmas markets', 'EUR'],
 ]

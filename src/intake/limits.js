@@ -72,15 +72,29 @@ export function hardLimits(i, companions) {
     out.push({ kind: 'altitude', text: 'High altitude' })
   if (i.access === 'Yes' && (i.accessNeeds || []).length)
     out.push({ kind: 'access', text: `Places without ${i.accessNeeds.join(', ').toLowerCase()}` })
-  if (i.firm === 'A hard limit' && i.budget)
+  if (i.firm === 'A hard limit' && i.budget) {
+    const cap = budgetCap(i.budget)
+    const per = i.budgetMode === 'day' ? 'a day' : 'for the trip'
     out.push({
       kind: 'budget',
-      text: `Going over ${i.budget} ${i.budgetMode === 'day' ? 'a day' : 'for the trip'}, per person`,
+      text: cap
+        ? `Going over ${cap} ${per}, per person`
+        : `Spending well past ${i.budget} ${per}, per person`,
     })
+  }
   if (i.passport && i.passport !== 'All valid')
     out.push({
       kind: 'passport',
       text: 'A destination whose entry rules your passports might not meet',
     })
   return out
+}
+
+/* The ceiling of a budget band: "$175 to $275" → "$275", "Under $100" → "$100".
+ * An open band ("$400+") has no ceiling and returns null. */
+export function budgetCap(band) {
+  const to = band.match(/to (\$[\d,]+)/)
+  if (to) return to[1]
+  const under = band.match(/^Under (\$[\d,]+)/)
+  return under ? under[1] : null
 }

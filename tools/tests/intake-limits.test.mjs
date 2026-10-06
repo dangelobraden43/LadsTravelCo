@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { strictest, mergeGroup, hardLimits } from '../../src/intake/limits.js'
+import { strictest, mergeGroup, hardLimits, budgetCap } from '../../src/intake/limits.js'
 import { HIKE_ORDER } from '../../src/intake/options.js'
 import { emptyIntake, emptyCompanion } from '../../src/intake/schema.js'
 
@@ -34,4 +34,11 @@ test('hike limits only appear when outdoors was picked', () => {
 test('an allergy without a named allergen is not turned into a sentence about "undefined"', () => {
   const l = hardLimits({ ...emptyIntake(), diet: ['Allergy'], allergy: '' }, [])
   assert.ok(l.every((x) => !x.text.includes('undefined')))
+})
+test('a hard budget names its ceiling, not the whole band', () => {
+  assert.equal(budgetCap('$175 to $275'), '$275')
+  assert.equal(budgetCap('Under $100'), '$100')
+  assert.equal(budgetCap('$400+'), null)
+  const l = hardLimits({ ...emptyIntake(), firm: 'A hard limit', budget: '$1,500 to $2,500', budgetMode: 'trip' }, [])
+  assert.ok(l.some((x) => x.text === 'Going over $2,500 for the trip, per person'))
 })

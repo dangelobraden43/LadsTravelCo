@@ -23,6 +23,7 @@ const WhenPage = lazy(() => import('./WhenPage'))
 const LadsPage = lazy(() => import('./LadsPage'))
 // GiftPage (/gift/michigan, Apr 15 2026) retired Sept 29 2026 by Brady in favor of /local.
 const JoinPage = lazy(() => import('./JoinPage'))
+const PlanYourTrip = lazy(() => import('./PlanYourTrip'))
 const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
 const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
@@ -115,6 +116,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 then the only way to contact us was a form inside /lads, which
                 is not in the nav. */}
             <Route path="/join" element={<JoinPage />} />
+            <Route path="/plan-your-trip" element={<PlanYourTrip />} />
+            <Route path="/plan-your-trip/join/:invite" element={<PlanYourTrip companion />} />
             {/* Kept reachable (out of nav) */}
             <Route path="/when" element={<WhenPage />} />
             <Route path="/lads" element={<LadsPage />} />

@@ -22,6 +22,8 @@
     { "source": "/privacy", "destination": "/" },
     { "source": "/peru", "destination": "/" },
     { "source": "/join", "destination": "/" },
+    { "source": "/plan-your-trip", "destination": "/" },
+    { "source": "/plan-your-trip/join/:invite", "destination": "/" },
     { "source": "/when", "destination": "/" },
     { "source": "/lads", "destination": "/" },
     { "source": "/rome", "destination": "/" },
