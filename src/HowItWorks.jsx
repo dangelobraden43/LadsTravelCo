@@ -276,12 +276,13 @@ function Detail({ i, onPlan }) {
           <span className="hw-k">From a recent research run</span>
           <p>
             A widely shared figure put the Museum of Anthropology in Vancouver at{' '}
-            <s>about 530,000 objects</s>. The museum&apos;s own page says <em>nearly 50,000</em>.
-            The plan uses the museum&apos;s number.
+            <s>about 530,000 objects</s>. The museum&apos;s own page says it holds{' '}
+            <em>nearly 50,000 works</em>, and that a separate archaeology lab in the same building
+            holds another 535,000. The plan gives both numbers and says which is which.
           </p>
           <small>
-            Checked against moa.ubc.ca on September 29, 2026. Prices are shown as ranges with the
-            date they were checked, and re-checked before you travel.
+            Checked against moa.ubc.ca on October 6, 2026. Prices are shown as ranges with the date
+            they were checked, and re-checked before you travel.
           </small>
         </div>
       </div>
