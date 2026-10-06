@@ -317,7 +317,7 @@ https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
    (server-side normalise/caps, 502 on failed write, serialised saves, founder status never
    overwritten). **Before `INTAKE_LIVE = true`:** Turnstile widget + `TURNSTILE_ENFORCE=1`,
    MailerSend resume/received emails, `/privacy` intake paragraph, `CAL_URL` from Brady.
-   Local end-to-end: `npm run build && node tools/intake/dev-server.mjs`.
+   Local end-to-end: `npm run build && node tools/intake/dev-server.mjs`. Airtable HTTP errors log as `[airtable] … -> HTTP nnn` in Vercel runtime logs.
 9. ⛔ **Two `/research` runs started in the same minute collide**: both get the same runId and
    the SubagentStop hook validates "the newest RUN.json", so it checked the wrong folder and
    wrote false `.MISSING.txt` notes (Oct 6, ski + Christmas). Stagger runs by a minute until

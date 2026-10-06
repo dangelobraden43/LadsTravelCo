@@ -18,7 +18,10 @@ export function createStore(env, fetchImpl = fetch) {
     try {
       const formula = encodeURIComponent(`{${KEY[kind]}}='${key}'`)
       const res = await fetchImpl(`${base}/${encodeURIComponent(TABLES[kind])}?maxRecords=1&filterByFormula=${formula}`, { headers })
-      if (!res.ok) return failed
+      if (!res.ok) {
+        console.error(`[airtable] find ${kind} -> HTTP ${res.status}`)
+        return failed
+      }
       const rec = (await res.json()).records?.[0]
       return rec ? { stored: true, id: rec.id, fields: rec.fields } : none
     } catch {
@@ -37,7 +40,10 @@ export function createStore(env, fetchImpl = fetch) {
         headers,
         body: JSON.stringify({ fields: { ...fields, [KEY[kind]]: key }, typecast: true }),
       })
-      if (!res.ok) return none
+      if (!res.ok) {
+        console.error(`[airtable] write ${kind} -> HTTP ${res.status}`)
+        return none
+      }
       const rec = await res.json()
       return { stored: true, id: rec.id }
     } catch {
