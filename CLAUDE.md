@@ -1313,7 +1313,18 @@ Works** homepage section · the homepage agent count derived (**13**, was a type
 date stated once · `/local` with the Live Pulse · "When to Go" on every framework ·
 `/peru` indexed · founder schema v2 + two-layer card · `/join` · the affiliate gate.
 
-🚩 **NEXT SESSION'S QUEUE — set Sept 29. Work in order.**
+🚩 **NEXT SESSION'S QUEUE — RESET Oct 6 (supersedes the Sept 29 list below where they differ).**
+Shipped Oct 6 and verified live: `/plan-your-trip` (intake quiz → Airtable) and `/christmas-markets`.
+1. **Holiday deals page** — explainer live by Nov 1, sale cards from ~Nov 13 (research:
+   `internal/research/market/2026-10-06-holiday-deals.md`).
+2. **Intake go-live leftovers** — Turnstile widget + `TURNSTILE_ENFORCE=1`, MailerSend emails
+   (MailerLite reopened for the founding list), `CAL_URL` from Brady.
+3. **Midwest ski guide** on /local (run `internal/research/midwest-skiing/2026-10-06T15-15/`, 4 founder Qs).
+4. **Dusk Field Guide Phase A** (Pictured Rocks pilot done; 5 founder Qs in the work-plan doc).
+5. **Global ski guide** (Brady picks regions). Mid-November: re-check Christmas market dates.
+Living plan + Work log: https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
+
+🚩 **(older) NEXT SESSION'S QUEUE — set Sept 29. Work in order.**
 
 **1 — FINISH PROVING THE RESEARCH PIPELINE. ⭐ NEXT.** Three pieces, one session:
 - **Raise the verifier's budget.** The Vancouver pilot left **46 of 81 findings
