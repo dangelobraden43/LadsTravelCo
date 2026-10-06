@@ -328,6 +328,17 @@ https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
 10. **Correction logged:** I told Brady the Schönbrunn Christmas market had closed. The
     verifier REFUTED it (successor market, Nov 6 2026 – Jan 6 2027). Never relay an
     unverified finding as fact, even in chat.
+11. **`/christmas-markets` is LIVE (Oct 6, Brady approved the design and asked for an improvement pass).**
+    `src/ChristmasMarketsPage.jsx` + `src/data/christmasMarkets.js`. 23 markets with official 2026
+    dates in a "what's open on my dates" calendar (filters: classics, small towns, open after
+    Christmas, rides and rinks), 8 city guides (known for / beyond the stalls / the catch / where to
+    stay / drink ranges), 3 rail routes, when to go, flights from the Midwest, money, getting
+    around, the gold Dublin-at-Christmas block, CTA to `/plan-your-trip`. Built ONLY from findings
+    the verifier confirmed or corrected (2 passes, 175 findings). Markets without confirmed 2026
+    dates (Dresden, Kraków, Rothenburg, Zurich) are left out on purpose. Strasbourg's closing date
+    is unpublished and shows "not yet confirmed". **Re-check mid-November** (dates, hours,
+    Colmar car-free dates). Linked from the Bucket List card (whose image reference was broken:
+    `NEW_IMAGES.galwayChristmas` does not exist; it is `BATCH3_IMAGES`). Sitemap 0.8.
 7. **New queue (Brady, Oct 6), in order:** Christmas markets guide (`/christmas-markets`,
    research-led, Dublin-at-Christmas is the gold hook) → intake phase 1 → holiday deals
    page → Midwest ski guide on /local → Dusk Field Guide → global ski. Research runs for

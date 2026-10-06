@@ -139,6 +139,7 @@ export default defineConfig({
         '/peru',
         '/join',
         '/plan-your-trip',
+        '/christmas-markets',
         // thailand + charleston were RETIRED Aug 13 2026 and have no route.
         // They sat in this sitemap for three weeks pointing search engines at
         // two 404s. Removed Sept 2 2026 - do not re-add them unless the
@@ -155,6 +156,7 @@ export default defineConfig({
         '/peru': 0.9,
         '/join': 0.9,
         '/plan-your-trip': 0.9,
+        '/christmas-markets': 0.8,
       },
     }),
   ],

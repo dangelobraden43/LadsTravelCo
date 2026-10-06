@@ -73,14 +73,14 @@ const EVENTS = [
   },
   {
     name: 'European Christmas Markets',
-    when: 'Late November – December',
-    start: null,
-    end: '2026-12-31',
-    where: 'Vienna · Prague · Strasbourg · Dresden',
-    note: 'Mulled wine, gothic squares, week-long itineraries that hop between three or four cities.',
-    img: NEW_IMAGES.galwayChristmas,
-    frameworkHref: null,
-    frameworkLabel: null,
+    when: 'November 6, 2026 – January 7, 2027',
+    start: '2026-11-06',
+    end: '2027-01-07',
+    where: 'Vienna · Nuremberg · Prague · Strasbourg',
+    note: 'Official 2026 dates for every major market, which are open on your dates, and train routes that link three cities in a week.',
+    img: BATCH3_IMAGES.galwayChristmas,
+    frameworkHref: '/christmas-markets',
+    frameworkLabel: 'Christmas markets guide',
   },
 ]
 
