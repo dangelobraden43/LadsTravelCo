@@ -1,1 +1,1 @@
-- [Source behaviour and budget lessons](reference_source-behaviour.md) — what fetches, what 403s, how the 12-call budget got spent, promo two-source trap
+- [Source behaviour and budget lessons](reference_source-behaviour.md) — what fetches, what 403s, eurail merger, ski pass pages (Boyne/Crystal/Nub's), Ikon Crystal WA trap, promo two-source trap

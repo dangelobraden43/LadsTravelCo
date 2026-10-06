@@ -54,4 +54,44 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   When rewriting a claim that carries an official fixed fee (camp fee, shuttle fare), refer to "the
   fee on the NPS fees page" instead of typing the amount; ranges ("USD 5-15") pass.
 
+- **"Drop it, the operator closed" traps can be operator changes** (Christmas markets 2026-10-06,
+  Schönbrunn). A farewell page from the old organiser is not proof the event ended: search for the
+  event name plus the year and look for a new organiser domain before accepting a closure.
+- **One sub-venue's span reported as the city range.** Vienna punch "EUR 4.80-8.80" was Spittelberg's
+  own row; the survey's real span was wider. Re-read the table, then recompute every derived budget
+  that used the component.
+- **Aggregator route listings reflect the summer schedule.** "Daily nonstop" from flightsfrom/idealo
+  can be a summer-only route (DTW-MUC), and a "winter cut" from last year can be reversed in the new
+  filing (KLM MSP returned for NW26). AeroRoutes NWxx filings settle winter frequency in one fetch.
+- **"The one / the only" in transit claims.** Check the official disruption page for other services
+  (ÖBB listed REX 7 alongside the Railjets).
+- **Second sources often differ by minutes.** Tourism-board rail times differed from seat61 by 3-10
+  minutes on three legs; propose bands, not points.
+
+- **Quoted fee/tax wording that is not on the page** (Midwest skiing 2026-10-06). Agent quoted Blue
+  Mountain as "before the 1% fee plus 13% HST"; two reads found only "products are subject to a 1% fee;
+  this fee is also subject to HST". Ask a yes/no fetch question ("does 'before' appear?").
+- **Aggregator deadline labels vs operator press releases.** OnTheSnow showed an Epic "price expires
+  Oct 31"; Vail's own release said "after October 7". The operator's release wins. Ski aggregators
+  (OnTheSnow, Skiinfo) put a new-season heading over last season's dated samples.
+- **Drive times from merged snippets disagree with the resort's own page** by 30-60 minutes (Boyne,
+  Wilmot, Crystal). Fetch the resort's getting-here page first; it usually settles several findings.
+- **Pass partner vs "allied"/discount tier.** Indy lists Mont Ripley as Indy Allied (discount only),
+  not a partner. Check the pass's How It Works page before confirming a coverage list.
+- **Promo recoded as fact plus `fixedPrice: true`** to carry a dated season-pass price on one official
+  site. Confirm the substance, flag the kind and the fixedPrice misuse.
+- **Superlatives that contradict the agent's own source** (a "largest by acreage" claim where the same
+  guide lists a bigger resort). Read the whole source table, not just the row cited.
+
+- **Scout praise lines inflate a listicle rank into "consensus"** (markets pass 2): "the town consensus
+  calls most atmospheric" from a #15 rank; "the major market closest to London" from "one of the
+  nearest". Rewrite as "Time Out ranked it N and says X".
+- **Trap magnitudes grow between source and claim**: "two or three times the amount" where the source
+  says "a little more than you asked for". Re-read the trap's own wording.
+- **A cited page that does not carry the sentence.** Stay agents blend search summaries and attribute
+  lines (sell-out order, tram stops, "car parks fill") to a page that says none of it. One fetch with
+  yes/no questions per line exposes it; a later press piece may even contradict (parking expanded).
+- **Second-pass edits:** a confirmed pass-1 verdict can still be overstated in a part pass 1 did not
+  read (Aachen). Change it, and say in the reason that pass 2 changed it.
+
 Related: [[source-access-notes]]

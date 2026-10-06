@@ -18,3 +18,17 @@ Learned on Vancouver (2026-09-29) and Pictured Rocks (2026-10-06). Re-verify, so
 - Coffee and other small items tend to have only one source; plan the second-source search early or record a gap.
 - Fares and attraction prices reset each July 1 (transit) or each season; guides written before then show old figures. Check for both old and new figures.
 - Two same-domain pages do not count as two independent sources for the validator.
+
+Learned on European Christmas Markets (2026-10-06):
+- Gov PDFs that WebFetch calls "unreadable binary" ARE readable: WebFetch saves the PDF to tool-results, then the Read tool on that path (no `pages` param for short files) returns the text. Worked for nuernberg.de press releases and the steuerzahler.de Kommunaldatenbank.
+- Bund der Steuerzahler `Kommunaldatenbank/<year>/Bettensteuer/Anhang_-_Bettensteuer.pdf` lists every German city bed tax and rate in one table. wien.gv.at `/amtshelfer/finanzielles/rechnungswesen/abgaben/ortstaxe.html` fetches with dated rates. praha1.cz `/potrebuji-si-vyridit/odbory/poplatek-z-pobytu/` fetches.
+- Christmas-market drink prices: local press runs a yearly price survey (vienna.at "Punsch-Test", seznamzpravy.cz, novinky.cz, web.de, lecker.de). Search in the local language ("Glühwein Preis <year> Tassenpfand", "svařák cena"). Surveys appear in Nov-Dec, so an October run only finds last season.
+- Numbeo `/cost-of-living/in/<City>` fetches for Munich, Vienna, Prague. livingcost.org works as `/cost/austria/vienna`, `/cost/czech-republic/prague`, but Germany 404s or returns a summary without restaurant items, leaving German cities with one source. expatistan, falstaff.com, postoffice.co.uk, tn.nova.cz return 403. wienerlinien.at/tickets shows no prices; dpp.cz/en/fares/fares-in-prague 404s.
+- Multi-country scopes do not fit 12 searches: pick two or three anchor cities for budget tiers and record the rest as gaps early.
+
+Ski runs (Midwest skiing, 2026-10-06):
+- OnTheSnow (and sister site skiinfo.fr, same publisher) heads ticket tables with the NEXT season label while the figures say "last updated" the previous autumn and quote December sample dates. Treat them as last-season and never as corroboration of each other. State tables (`onthesnow.com/<state>/lift-tickets`) fetch fine and give a weekday spread in one call.
+- Resort ticket pages that print real tables: lutsen.com/lift-tickets (booking-window x tier grid), cascademountain.com/lift-tickets (tickets + rentals), bluemountain.ca winter-lift-tickets ("from" prices, pre-fee/HST). Boyne and Crystal pages print no prices (shop portal). snowstash.com gives dynamic low/peak ranges and fetches.
+- epicpass.com and Vail resort pages redirect to waitingroom.snow.com; do not spend calls there. Use OnTheSnow's dated Epic/Ikon buyer's guides plus a press article; retailer pages (peterglenn.com) carry current Ikon prices.
+- Numbeo URL forms that worked: `Traverse-City-MI-United-States`, `Collingwood-Canada` (the latter has 2 contributors and junk values; reject). livingcost.org guessed paths 404.
+- Resort "cashless" and service-charge policies live on a `/cashless-resort` or `/cashless-payments` page; one search surfaced several.

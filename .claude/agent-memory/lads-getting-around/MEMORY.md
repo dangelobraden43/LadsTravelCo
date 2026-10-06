@@ -1,1 +1,1 @@
-- [Transport sources](reference_transport_sources.md) — NPS directions pages lack drive times; fetch airport /airlines/ subpage; site-scope toll authority searches
+- [Transport sources](reference_transport_sources.md) — NPS/airport/toll fetch tricks; seat61 truncation; check operator construction notices; notes price scan; resort Getting Here pages; MDOT 403s

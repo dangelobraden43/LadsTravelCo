@@ -1,1 +1,2 @@
+- [Ski pass and resort booking sources](reference_ski_pass_sources.md) — Indy/Ikon pages that fetch, epicpass.com queue, Vail Pre-Arrival pages, Viator for ski regions
 - [Booking sources and Viator matching](reference_booking_sources.md) — NPS concessioner/CUA pages, operator FAQs, Recreation.gov conflicts, why viator.com-scoped searches mis-resolve
