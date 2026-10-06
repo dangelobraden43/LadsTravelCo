@@ -467,7 +467,7 @@ export const ROUTES = [
       'Vienna → Budapest: about 2h30–2h40 (optional fourth stop)',
     ],
     window: 'All four are open Nov 20 – Dec 24.',
-    tip: 'Fly into Munich and home from Vienna: Chicago O’Hare has nonstops to both this winter.',
+    tip: 'Fly into Munich and home from Vienna (or the reverse) and you never backtrack.',
     src: [
       'https://www.seat61.com/trains-and-routes/munich-to-salzburg-by-train.htm',
       'https://www.seat61.com/trains-and-routes/vienna-to-salzburg-by-train.htm',
@@ -531,34 +531,34 @@ export const WHEN = [
 
 export const FLY = [
   {
-    title: 'Chicago is the gateway',
-    body: 'O’Hare has nonstops to Munich on Lufthansa and United (about 8h30) and to Vienna on Austrian, 4–5 times a week from Oct 25. Vienna pauses Jan 9 – Feb 7.',
-    src: 'https://www.airlineinformation.com/ORD-MUC',
-  },
-  {
-    title: 'Fly in one city, home from another',
-    body: 'Into Munich, out of Vienna covers the whole Danube route by train with no backtracking.',
+    title: 'Fly into a gateway city',
+    body: 'The big market cities have their own international airports, so fly straight into one rather than a market town. Munich and Vienna anchor the Danube route; Prague, Budapest and Brussels anchor theirs.',
     src: 'https://roame.travel/flightmap/ORD/VIE',
   },
   {
-    title: 'Detroit and Minneapolis',
-    body: 'No winter Detroit–Munich nonstop was found. KLM keeps Minneapolis–Amsterdam at three a week through the season, then pauses from Jan 4.',
-    src: 'https://thriftytraveler.com/news/airlines/klm-minneapolis-portland',
-  },
-  {
-    title: 'What it costs',
-    body: 'Aggregator data puts typical Chicago–Munich economy round trips at about USD 729–1,276, with December the priciest month. Late-November departures tend to price lower.',
-    src: 'https://www.ratepunk.com/flights-from-to/CHI/MUC/cheap-flights-from-chicago-to-munich',
+    title: 'In one city, home from another',
+    body: 'Flying into Munich and home from Vienna (or the reverse) covers the whole Danube route by train with no backtracking. Check the price against a round trip.',
+    src: 'https://www.airlineinformation.com/ORD-MUC',
   },
   {
     title: 'When to book',
-    body: 'Google’s data puts the lowest Christmas fares about 51 days out (32–73 days), which means mid-October to mid-November. Some booking sites say June to early October instead; neither looked at Midwest routes specifically.',
+    body: 'Google’s 2021–25 data on US departures puts the lowest Christmas fares about 51 days out (within 32–73 days), so mid-October to mid-November. Some booking sites say June to early October instead; treat late booking as the riskier bet.',
     src: 'https://blog.google/products/search/holiday-travel-trends-2025/',
   },
   {
-    title: 'Two fare traps',
-    body: 'Basic economy charges for checked bags, and winter layers usually need one. Low-cost airports borrow big-city names: Memmingen, sold as “Munich West”, is about two hours from Munich.',
+    title: 'Watch the airport name',
+    body: 'Low-cost airports borrow big-city names. Memmingen, sold as “Munich West”, is about two hours from Munich; Frankfurt-Hahn is about 120 km from Frankfurt. The transfer can eat the saving.',
     src: 'https://germanyhandbook.com/?p=5113',
+  },
+  {
+    title: 'Basic economy and a winter bag',
+    body: 'Basic fares often charge for checked bags, and cold-weather layers usually need one. Price the bag in before you compare.',
+    src: 'https://www.going.com/guides/the-ultimate-guide-to-basic-economy-on-international-flights-from-the-us',
+  },
+  {
+    title: 'Flying from the US Midwest',
+    body: 'Chicago O’Hare has nonstops to Munich (about 8h30) and to Vienna 4–5 times a week this winter; Vienna pauses Jan 9 – Feb 7. No winter Detroit–Munich nonstop was found; KLM keeps Minneapolis–Amsterdam at three a week until Jan 4.',
+    src: 'https://www.airlineinformation.com/ORD-MUC',
   },
 ]
 
