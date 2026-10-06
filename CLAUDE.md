@@ -332,8 +332,9 @@ https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
     `src/ChristmasMarketsPage.jsx` + `src/data/christmasMarkets.js`. 23 markets with official 2026
     dates in a "what's open on my dates" calendar (filters: classics, small towns, open after
     Christmas, rides and rinks), 8 city guides (known for / beyond the stalls / the catch / where to
-    stay / drink ranges), 3 rail routes, when to go, flights from the Midwest, money, getting
-    around, the gold Dublin-at-Christmas block, CTA to `/plan-your-trip`. Built ONLY from findings
+    stay / drink ranges), 3 rail routes, when to go, origin-neutral flights (Brady: "we are planning
+    worldwide"; Midwest is one labelled panel; `lads-flights` now researches from the brief's
+    home airport), money, getting around, the gold Dublin-at-Christmas block, CTA to `/plan-your-trip`. Built ONLY from findings
     the verifier confirmed or corrected (2 passes, 175 findings). Markets without confirmed 2026
     dates (Dresden, Kraków, Rothenburg, Zurich) are left out on purpose. Strasbourg's closing date
     is unpublished and shows "not yet confirmed". **Re-check mid-November** (dates, hours,
