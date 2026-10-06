@@ -281,6 +281,7 @@ const SECTIONS = [
   { id: 'peru-prepare', label: 'Before You Go' },
   { id: 'peru-trek', label: 'The Trek' },
   { id: 'peru-places', label: 'The Places' },
+  { id: 'peru-differently', label: 'Do Differently' },
 ]
 
 const fmt = (n) => n.toLocaleString('en-US')
@@ -1341,8 +1342,23 @@ function Places() {
  *
  * ⛔ Do NOT write this section. It comes from Brady or Dawson verbatim or it
  * stays hidden, which is the same rule that governs every ladsTake on the site.
+ *
+ * ✅ LANDED Oct 6 2026 — Brady, direct to Claude Code in session. His words,
+ * split into his own points; only spelling and capitals were touched
+ * (Cusco, acclimate, Machu Picchu). Do not edit the substance. The last line
+ * is his "not something we would change" note and renders apart on purpose.
  */
-const DIFFERENTLY_COPY = null
+const DIFFERENTLY_COPY = {
+  changes: [
+    'Try to spend an extra day or two in Cusco. There is so much to do and see in and near the city, and it gives extra time to acclimate.',
+    'As far as the day trips and tours, we found them all to be amazing.',
+    'For the trek, I would recommend packing light and effective, making sure to bring layers but not bringing anything too heavy.',
+    'Break in new hiking boots before going on the trek.',
+    'Make sure you get some soles before the trek for buying water and snacks along the way.',
+  ],
+  trick:
+    'It is not something we would change, but the biggest trick to this trip is how early you have to book Machu Picchu tickets to avoid having to wait in line in Cusco.',
+}
 
 function Differently() {
   if (!DIFFERENTLY_COPY) return null
@@ -1350,7 +1366,12 @@ function Differently() {
     <section id="peru-differently" className="peru-section peru-section--last">
       <Reveal variant="rise">
         <div className="peru-eyebrow">WHAT WE&rsquo;D DO DIFFERENTLY</div>
-        <p className="peru-lede">{DIFFERENTLY_COPY}</p>
+        <ul className="peru-diff-list">
+          {DIFFERENTLY_COPY.changes.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+        <p className="peru-diff-trick">{DIFFERENTLY_COPY.trick}</p>
       </Reveal>
     </section>
   )
@@ -1458,6 +1479,7 @@ export default function PeruPage() {
           position="center 50%"
         />
         <Places />
+        <Differently />
       </main>
 
       <Footer />

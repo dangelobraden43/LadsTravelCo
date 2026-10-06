@@ -1240,6 +1240,44 @@
 
 /* ===== 7. WHAT WE'D DO DIFFERENTLY ======================================= */
 
+.peru-diff-list {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+  max-width: 68ch;
+}
+.peru-diff-list li {
+  position: relative;
+  padding-left: 24px;
+  font-family: var(--sans);
+  font-size: clamp(15px, 1.7vw, 17px);
+  line-height: 1.7;
+  color: var(--peru-text2);
+}
+.peru-diff-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 10px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--peru-jade);
+}
+.peru-diff-trick {
+  margin: 30px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--peru-line2);
+  max-width: 68ch;
+  font-family: var(--editorial);
+  font-style: italic;
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.5;
+  color: var(--peru-text2);
+}
+
 .peru-empty {
   margin-top: 34px;
   padding: 34px clamp(20px, 4vw, 34px);
