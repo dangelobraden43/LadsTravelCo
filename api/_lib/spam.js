@@ -1,7 +1,8 @@
 /* Three cheap checks before a human ever reads an intake: a hidden field only bots
  * fill, a floor on how fast a person can finish, and Cloudflare Turnstile when its
  * secret is configured. Founder triage is the fourth. */
-export const MIN_MS = { intake: 45_000, companion: 12_000 }
+/* 45 s rejected a founder's real run on Oct 6: skipping the optional questions is fast. */
+export const MIN_MS = { intake: 20_000, companion: 8_000 }
 
 export async function checkSpam({ honeypot, startedAt, now, kind, turnstile, ip }, env, fetchImpl = fetch) {
   if (honeypot) return { ok: false, reason: 'honeypot' }

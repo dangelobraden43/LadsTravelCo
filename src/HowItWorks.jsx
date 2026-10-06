@@ -423,7 +423,7 @@ export default function HowItWorks() {
       )
     }
   }
-  const plan = () => navigate('/join')
+  const plan = () => navigate('/plan-your-trip')
 
   const panel = (
     <div

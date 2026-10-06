@@ -44,10 +44,16 @@ export async function handleIntake(req, { store, env, now, fetchImpl }) {
   if (!req.body?.data) return { status: 400, json: { errors: ['data: required'] } }
   const data = normalizeIntake(req.body.data)
   const v = validateIntake(data, { final })
-  if (!v.ok) return { status: 400, json: { errors: v.errors } }
+  if (!v.ok) {
+    if (final) console.warn(`[intake] invalid final submit: ${v.errors.map((e) => e.split(':')[0]).join(',')}`)
+    return { status: 400, json: { errors: v.errors } }
+  }
   if (meta.honeypot || final) {
     const spam = await checkSpam({ ...meta, now, kind: 'intake', ip: req.ip }, env, fetchImpl)
-    if (!spam.ok) return { status: 422, json: { reason: spam.reason } }
+    if (!spam.ok) {
+      console.warn(`[intake] rejected final=${final} reason=${spam.reason}`)
+      return { status: 422, json: { reason: spam.reason } }
+    }
   }
 
   const resume = TOKEN.test(given || '') ? given : mintToken()
@@ -69,6 +75,7 @@ export async function handleIntake(req, { store, env, now, fetchImpl }) {
     const row = await store.findCompanion(c.invite)
     if (!row.stored && !row.error) await store.upsertCompanion(c.invite, { Name: c.name, Intake: resume, Status: 'Waiting' })
   }
+  if (final) console.log(`[intake] final submit stored=${saved.stored} status=${clientOwned ? 'New' : current}`)
   const status = clientOwned ? (final ? 'new' : 'draft') : 'received'
   return { status: 200, json: { resume, status, stored: saved.stored, invites: companions } }
 }
