@@ -165,10 +165,20 @@ export function Ranker({ options, value, onRank }) {
   )
 }
 
-export function ListAdd({ id, items, placeholder, onAdd, onDel }) {
+/* max: entries allowed (the server caps lists at 20). check(text) returns an error
+ * message to refuse an entry, e.g. a duplicate companion name. */
+export function ListAdd({ id, items, placeholder, onAdd, onDel, max = 20, check }) {
   const [text, setText] = useState('')
+  const [err, setErr] = useState('')
+  const full = items.length >= max
   const add = () => {
-    if (!text.trim()) return
+    if (!text.trim() || full) return
+    const problem = check ? check(text.trim()) : ''
+    if (problem) {
+      setErr(problem)
+      return
+    }
+    setErr('')
     onAdd(text)
     setText('')
   }
@@ -201,10 +211,15 @@ export function ListAdd({ id, items, placeholder, onAdd, onDel }) {
             }
           }}
         />
-        <button type="button" className="pyt-small" onClick={add}>
+        <button type="button" className="pyt-small" onClick={add} disabled={full}>
           Add
         </button>
       </div>
+      {(err || full) && (
+        <p className="pyt-hint" role="status">
+          {err || "That's the most we can take here."}
+        </p>
+      )}
     </>
   )
 }

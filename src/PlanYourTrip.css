@@ -62,7 +62,7 @@
 .pyt-stamps {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
+  gap: 4px;
 }
 .pyt-stamps-3 {
   grid-template-columns: repeat(3, 1fr);
@@ -71,6 +71,7 @@
   aspect-ratio: 1;
   width: 100%;
   max-width: 56px;
+  min-width: 44px;
   min-height: 44px;
   justify-self: center;
   border-radius: 50%;
@@ -348,7 +349,7 @@ button.pyt-stamp.is-done {
   border: 1px solid var(--pyt-line);
 }
 .pyt-seg button {
-  min-height: 42px;
+  min-height: 44px;
   padding: 8px 14px;
   border: none;
   border-radius: 999px;
@@ -421,7 +422,7 @@ button.pyt-stamp.is-done {
 }
 .pyt-link {
   justify-self: start;
-  min-height: 32px;
+  min-height: 44px;
   padding: 4px 0;
   border: none;
   background: none;
@@ -624,8 +625,8 @@ button.pyt-stamp.is-done {
   font-size: 14px;
 }
 .pyt-tag button {
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
   background: none;
   color: var(--muted);

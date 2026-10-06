@@ -390,6 +390,12 @@ export function StepCrew({ s, d, invites, onCopy }) {
           id="pyt-add-comp"
           items={[]}
           placeholder="Their first name"
+          max={12 - s.companions.length}
+          check={(name) =>
+            s.companions.some((c) => c.name.toLowerCase() === name.toLowerCase())
+              ? `${name} is already invited. Add a last initial to tell them apart.`
+              : ''
+          }
           onAdd={(name) =>
             a.set('companions')([...s.companions, { name: name.trim().slice(0, 60) }])
           }
@@ -903,8 +909,8 @@ export function StepSent({ s, stored, calUrl }) {
       </h1>
       {stored ? (
         <p className="pyt-lede">
-          A founder reads every request. We&rsquo;ll {how} you within two days with next steps, or
-          with a question if something needs clearing up.
+          A founder reads every request and will {how} you with next steps, or with a question if
+          something needs clearing up.
         </p>
       ) : (
         <p className="pyt-lede">

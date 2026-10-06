@@ -6,7 +6,9 @@ export const MIN_MS = { intake: 45_000, companion: 12_000 }
 export async function checkSpam({ honeypot, startedAt, now, kind, turnstile, ip }, env, fetchImpl = fetch) {
   if (honeypot) return { ok: false, reason: 'honeypot' }
   if (!(now - startedAt >= MIN_MS[kind])) return { ok: false, reason: 'too-fast' }
-  if (env.TURNSTILE_SECRET) {
+  /* Enforced only once the client widget exists and both are set: a secret alone
+   * would reject every submission (Oct 6 review). */
+  if (env.TURNSTILE_SECRET && env.TURNSTILE_ENFORCE === '1') {
     try {
       const body = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: turnstile || '', remoteip: ip || '' })
       const res = await fetchImpl('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body })

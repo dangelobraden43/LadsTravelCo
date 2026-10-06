@@ -8,6 +8,8 @@ const SAFE = /^[0-9a-f]{16,64}$/
 export function createStore(env, fetchImpl = fetch) {
   const live = Boolean(env.AIRTABLE_TOKEN && env.AIRTABLE_BASE_ID)
   const none = { stored: false, id: null }
+  /* A lookup that errored is not "not found": writing after it would duplicate the row. */
+  const failed = { stored: false, id: null, error: true }
   const base = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}`
   const headers = { Authorization: `Bearer ${env.AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' }
 
@@ -16,11 +18,11 @@ export function createStore(env, fetchImpl = fetch) {
     try {
       const formula = encodeURIComponent(`{${KEY[kind]}}='${key}'`)
       const res = await fetchImpl(`${base}/${encodeURIComponent(TABLES[kind])}?maxRecords=1&filterByFormula=${formula}`, { headers })
-      if (!res.ok) return none
+      if (!res.ok) return failed
       const rec = (await res.json()).records?.[0]
       return rec ? { stored: true, id: rec.id, fields: rec.fields } : none
     } catch {
-      return none
+      return failed
     }
   }
 
@@ -28,6 +30,7 @@ export function createStore(env, fetchImpl = fetch) {
     if (!live || !SAFE.test(key || '')) return none
     try {
       const found = await find(kind, key)
+      if (found.error) return none
       const url = `${base}/${encodeURIComponent(TABLES[kind])}${found.id ? `/${found.id}` : ''}`
       const res = await fetchImpl(url, {
         method: found.id ? 'PATCH' : 'POST',

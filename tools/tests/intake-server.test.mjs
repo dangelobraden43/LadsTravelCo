@@ -20,7 +20,7 @@ test('turnstile is skipped without a secret and enforced with one', async () => 
   const ok = await checkSpam({ honeypot: '', startedAt: 0, now: 10 ** 9, kind: 'intake' }, {})
   assert.equal(ok.ok, true)
   const fake = async () => ({ json: async () => ({ success: false }) })
-  const r = await checkSpam({ honeypot: '', startedAt: 0, now: 10 ** 9, kind: 'intake', turnstile: 't' }, { TURNSTILE_SECRET: 's' }, fake)
+  const r = await checkSpam({ honeypot: '', startedAt: 0, now: 10 ** 9, kind: 'intake', turnstile: 't' }, { TURNSTILE_SECRET: 's', TURNSTILE_ENFORCE: '1' }, fake)
   assert.equal(r.reason, 'turnstile')
 })
 test('without credentials the store is a stub that stores nothing and never throws', async () => {

@@ -1,7 +1,7 @@
 /* /plan-your-trip — the intake quiz. Spec: docs/superpowers/specs/2026-10-06-intake-to-guide-design.md
  * Hidden (noindex, unlinked) until INTAKE_LIVE: the route ships before the
  * Airtable credentials exist so it can be click-tested on a real phone. */
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import './PlanYourTrip.css'
@@ -48,6 +48,8 @@ const FRIENDLY = [
   [/^adults/, 2, 'At least one adult is travelling.'],
   [/^budget/, 3, 'Pick a budget range.'],
   [/^top3/, 4, 'Pick your top interests (one to three).'],
+  [/^phone/, 6, 'Add a phone number so we can text or call you, or choose email.'],
+  [/^answers/, 6, 'Some answers are too long. Shorten the longest notes and try again.'],
 ]
 const explain = (errs) =>
   errs.map((e) => {
@@ -65,7 +67,7 @@ function loadDraft() {
 
 function Organiser() {
   const [params] = useSearchParams()
-  const draft = loadDraft()
+  const [draft] = useState(loadDraft)
   const [s, d] = useReducer(reduceIntake, null, () => ({
     ...emptyIntake(),
     ...(draft?.data || {}),
@@ -78,6 +80,10 @@ function Organiser() {
       (draft?.data?.companions || []).filter((c) => c.invite).map((c) => [c.name, c.invite])
     )
   )
+  const [maxStep, setMaxStep] = useState(() => Math.min(draft?.step ?? 0, REVIEW))
+  const resumeRef = useRef(draft?.resume || '')
+  const invitesRef = useRef({})
+  const saveChain = useRef(Promise.resolve())
   const [fresh, setFresh] = useState(-1)
   const [saved, setSaved] = useState('')
   const [problems, setProblems] = useState([])
@@ -96,6 +102,7 @@ function Organiser() {
         if (!j?.data) return
         d({ type: 'load', state: j.data })
         setResume(r)
+        resumeRef.current = r
         setInvites(
           Object.fromEntries(
             (j.data.companions || []).filter((c) => c.invite).map((c) => [c.name, c.invite])
@@ -122,10 +129,29 @@ function Organiser() {
     }
   }, [s, step, resume, startedAt, invites])
 
-  async function post(final) {
+  useEffect(() => {
+    invitesRef.current = invites
+  }, [invites])
+
+  /* Phone back button moves between steps instead of leaving the quiz (review #12). */
+  useEffect(() => {
+    window.history.replaceState({ ...(window.history.state || {}), pytStep: step }, '')
+    const onPop = (e) => {
+      const n = e.state?.pytStep
+      if (typeof n === 'number' && n < SENT) {
+        setStep(n)
+        setProblems([])
+      }
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  async function post(final, data) {
     const body = {
-      resume: resume || undefined,
-      data: { ...s, companions: withInvites(s.companions, invites) },
+      resume: resumeRef.current || undefined,
+      data: { ...data, companions: withInvites(data.companions, invitesRef.current) },
       final,
       meta: { honeypot, startedAt },
     }
@@ -138,25 +164,45 @@ function Organiser() {
     return { res, j }
   }
 
-  async function saveDraft() {
-    if (!validateIntake(s, { final: false }).ok) return
-    try {
-      const { res, j } = await post(false)
-      if (!res.ok) return
-      if (j.resume) setResume(j.resume)
-      if (j.invites)
-        setInvites((m) => ({
-          ...m,
-          ...Object.fromEntries(j.invites.map((x) => [x.name, x.invite])),
-        }))
-      setSaved(j.stored ? 'Saved ✓' : 'Saved on this device')
-    } catch {
-      setSaved('Saved on this device')
+  /* Saves run one after another, each with the latest resume token, so a double
+   * tap on a slow network cannot mint two intakes (review #3). */
+  function saveDraft() {
+    const snapshot = s
+    if (!validateIntake(snapshot, { final: false }).ok) {
+      setSaved('')
+      return saveChain.current
     }
+    saveChain.current = saveChain.current.then(async () => {
+      try {
+        const { res, j } = await post(false, snapshot)
+        if (!res.ok) {
+          setSaved('Saved on this device')
+          return
+        }
+        if (j.resume) {
+          resumeRef.current = j.resume
+          setResume(j.resume)
+        }
+        if (j.invites) {
+          const next = {
+            ...invitesRef.current,
+            ...Object.fromEntries(j.invites.map((x) => [x.name, x.invite])),
+          }
+          invitesRef.current = next
+          setInvites(next)
+        }
+        setSaved(j.stored ? 'Saved ✓' : 'Saved on this device')
+      } catch {
+        setSaved('Saved on this device')
+      }
+    })
+    return saveChain.current
   }
 
   function go(n) {
     if (n > step && step >= 1 && step <= 6) setFresh(step)
+    if (n !== step) window.history.pushState({ ...(window.history.state || {}), pytStep: n }, '')
+    setMaxStep((m) => Math.max(m, n))
     setStep(n)
     setProblems([])
     window.scrollTo({ top: 0 })
@@ -183,22 +229,36 @@ function Organiser() {
     }
     setSending(true)
     try {
-      const { res, j } = await post(true)
+      await saveChain.current
+      const { res, j } = await post(true, s)
       if (res.status === 400) setProblems(explain(j.errors || []))
       else if (res.status === 422)
         setProblems([
           {
             step: REVIEW,
-            text: 'That was quicker than we expected. Please check your answers and send again.',
+            text:
+              j.reason === 'too-fast'
+                ? 'That was quicker than we expected. Please check your answers and send again.'
+                : "We couldn't send this. Your answers are saved on this device; email brady@ladstravel.com and we'll sort it out.",
+          },
+        ])
+      else if (res.status === 502)
+        setProblems([
+          {
+            step: REVIEW,
+            text: "We couldn't save that just now. Your answers are kept on this device; try again in a minute.",
           },
         ])
       else if (!res.ok) throw new Error(String(res.status))
       else {
         setStored(Boolean(j.stored))
-        try {
-          window.localStorage.removeItem(DRAFT_KEY)
-        } catch {
-          /* ignore */
+        /* Only forget the local copy once the server has it (review #2). */
+        if (j.stored) {
+          try {
+            window.localStorage.removeItem(DRAFT_KEY)
+          } catch {
+            /* ignore */
+          }
         }
         go(SENT)
       }
@@ -243,7 +303,7 @@ function Organiser() {
           <div className="pyt-stamps">
             {STEPS.slice(1).map((st, j) => {
               const i = j + 1
-              const done = i < step
+              const done = i < maxStep && i !== step
               return (
                 <button
                   key={st.stamp}
@@ -296,7 +356,7 @@ function Organiser() {
         <input
           className="pyt-hp"
           type="text"
-          name="company"
+          name="lads_hp_x"
           tabIndex={-1}
           autoComplete="off"
           aria-hidden="true"

@@ -27,15 +27,17 @@ export default function CompanionFlow({ invite }) {
   const [error, setError] = useState('')
   const [honeypot, setHoneypot] = useState('')
 
+  const [attempt, setAttempt] = useState(0)
   useEffect(() => {
+    /* A 404 is a dead link; anything else is a blip worth retrying (review #16). */
     fetch(`/api/companion?invite=${encodeURIComponent(invite)}`)
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((j) => {
         setMeta(j)
         setState('ready')
       })
-      .catch(() => setState('missing'))
-  }, [invite])
+      .catch((status) => setState(status === 404 ? 'missing' : 'offline'))
+  }, [invite, attempt])
 
   useEffect(() => {
     try {
@@ -65,15 +67,28 @@ export default function CompanionFlow({ invite }) {
       const j = await r.json().catch(() => ({}))
       if (r.status === 422) {
         setState('ready')
-        setError('That was quicker than we expected. Please check your answers and send again.')
+        setError(
+          j.reason === 'too-fast'
+            ? 'That was quicker than we expected. Please check your answers and send again.'
+            : "We couldn't send this. Your answers are saved on this phone; email brady@ladstravel.com and we'll sort it out."
+        )
+        return
+      }
+      if (r.status === 502) {
+        setState('ready')
+        setError(
+          "We couldn't save that just now. Your answers are kept on this phone; try again in a minute."
+        )
         return
       }
       if (!r.ok) throw new Error(String(r.status))
       setState(j.stored ? 'done' : 'unsaved')
-      try {
-        window.localStorage.removeItem(key)
-      } catch {
-        /* ignore */
+      if (j.stored) {
+        try {
+          window.localStorage.removeItem(key)
+        } catch {
+          /* ignore */
+        }
       }
     } catch {
       setState('ready')
@@ -82,6 +97,23 @@ export default function CompanionFlow({ invite }) {
   }
 
   if (state === 'loading') return <p className="pyt-lede pyt-pad">Loading your invite…</p>
+  if (state === 'offline')
+    return (
+      <div className="pyt-done pyt-pad">
+        <h1 className="pyt-h1">We couldn&rsquo;t load your invite.</h1>
+        <p className="pyt-lede">Check your connection and try again.</p>
+        <button
+          type="button"
+          className="pyt-small"
+          onClick={() => {
+            setState('loading')
+            setAttempt((n) => n + 1)
+          }}
+        >
+          Try again
+        </button>
+      </div>
+    )
   if (state === 'missing')
     return (
       <div className="pyt-done pyt-pad">
@@ -272,7 +304,7 @@ export default function CompanionFlow({ invite }) {
         <input
           className="pyt-hp"
           type="text"
-          name="company"
+          name="lads_hp_x"
           tabIndex={-1}
           autoComplete="off"
           aria-hidden="true"

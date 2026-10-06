@@ -50,7 +50,7 @@ export function hardLimits(i, companions) {
       const whose = p === people[0] ? 'your' : `${p.who}'s`
       out.push({
         kind: 'allergy',
-        text: `Anywhere that can't safely handle ${whose} ${sev ? `${sev} ` : ''}${what} allergy${cross}`,
+        text: `Anywhere we can't confirm can safely handle ${whose} ${sev ? `${sev} ` : ''}${what} allergy${cross}`,
       })
     }
   }
