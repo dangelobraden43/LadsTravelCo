@@ -1,28 +1,9 @@
 {
   "mcpServers": {
-    "brave-search": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-brave-search"],
-      "env": {
-        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
-      }
-    },
     "filesystem": {
       "command": "cmd",
       "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "."],
       "env": {}
-    },
-    "fetch": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-fetch"],
-      "env": {}
-    },
-    "github": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
-      }
     }
   }
 }

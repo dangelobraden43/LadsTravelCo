@@ -117,6 +117,11 @@ if the file breaks a rule. Format:
 - **Never recommend an operator or product as ours.** State market facts and tiers.
   Travel cards are the one exception (Brady, Sept 29 2026): a recommendation is allowed
   only alongside every relevant option, with the trade-offs stated. See lads-rewards-points.
+- **Every brand, operator and venue must still exist.** Before recording anything a named
+  company offers, confirm it still operates under that name as of `today` (shutdowns,
+  mergers, rebrands). Oct 12 2026: a deals page nearly published Spirit Airlines, which
+  ceased May 2 2026, and Eurail, folded into Interrail in Sept 2026. The terms were
+  checked; the company was not.
 - **Traps are the product.** For every domain, look for what goes wrong: the closure, the
   sell-out, the scam, the season that looks cheap for a reason. `kind: "trap"`.
 

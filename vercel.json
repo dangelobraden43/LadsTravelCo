@@ -24,6 +24,7 @@
     { "source": "/join", "destination": "/" },
     { "source": "/plan-your-trip", "destination": "/" },
     { "source": "/christmas-markets", "destination": "/" },
+    { "source": "/deals", "destination": "/" },
     { "source": "/plan-your-trip/join/:invite", "destination": "/" },
     { "source": "/when", "destination": "/" },
     { "source": "/lads", "destination": "/" },

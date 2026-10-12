@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: October 6, 2026 (Peru founder words + research pipeline proven; intake-to-guide spec)
+## Last Updated: October 12, 2026 (/deals shipped after a rebuild; 2027 slate; park guides designed)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -278,6 +278,58 @@ own branch** (see Parallel Agent Workflow at the foot of this file), never in th
 shared checkout someone else is serving localhost from.
 
 ---
+
+## 🟢 OCTOBER 12, 2026 — `/deals` SHIPPED, THE 2027 SLATE, PARK GUIDES DESIGNED
+
+Branch `feature/deals`, merged to `main` in the same push as this record.
+
+1. **`/deals` is LIVE — "Holiday Travel Sales 2026"** (`src/DealsPage.jsx`, `src/data/holidayDeals.js`,
+   `src/utils/deals.js`, `tools/tests/deals.test.mjs`; spec `docs/superpowers/specs/2026-10-12-deals-page-design.md`).
+   Leads with **"What are you planning?"** (Jan–Feb trip, spring break, Christmas, summer in Europe,
+   ski, not sure), then five rules, "would a sale cover your dates?" (last year's windows tested
+   against the same dates a year back), "are the deals real?", and a short tap-to-expand sales list.
+   The hero's "Right now" line, expiry and staleness are computed. Sitemap 0.8, not in the nav yet.
+   ⛔ **The first build was REJECTED by Brady** ("very hard to read understand or apply… the wording
+   is very subpar") and it **listed Spirit Airlines, which ceased operations May 2, 2026.** The
+   rebuild is ~1,300 words against ~3,500. Lessons, now rules:
+   - **A page of verified facts is not a useful page.** Lead with what the reader should DO, in plain
+     second-person sentences; fine print behind a tap.
+   - **Every named brand must still exist.** The fact-checker had confirmed Spirit's sale terms, never
+     the company. Added to `research-contract` §4 and `lads-verifier` step 3. Also found: **Eurail was
+     folded into Interrail (Sept 2026)**; Allegiant bought Sun Country (May 2026); Hawaiian runs on
+     Alaska's system; Southwest has assigned seats. Table: `internal/research/market/2026-10-12-brand-status.md`.
+   - Which? DID test travel sales in 2022/2023 and most were real (88%/73%); the Oct 6 file said the
+     opposite. Verified file: `internal/research/market/2026-10-12-deals-verified.md`.
+   **Refresh:** weekly from Nov 2, every 2–3 days Nov 13 – Dec 5, adding 2026 sales as announced
+   (Royal Caribbean live; Hostelworld opens Nov 20). In January, switch the edition to "Book your 2027".
+2. **Founder rulings (Oct 12):** Peru photo-people (use only where strangers' faces aren't clear);
+   ski pass break-evens publish with every option; official government fees may show exactly with
+   source + `checkedOn`; NPS-authorised operators are named, unranked, no affiliate. Intake leftovers
+   (booking link, Turnstile, MailerSend) deferred; the Detroit Maps list dropped (does not exist).
+3. **Research banked** (`internal/research/market/`, gitignored):
+   - `2026-10-12-best-trips-2027.md` — top 2027 anchors mapped to our frameworks: **Aug 2 2027 total
+     eclipse over southern Spain** (lodging already filling), Rugby World Cup Australia (Oct 1 –
+     Nov 13), Lima Pan Am Games + Inca Trail permits, Oktoberfest (Sept 18 – Oct 3), St Patrick's,
+     Ryder Cup week in Ireland, NCAA Final Four in Detroit (Apr 3/5).
+   - `2026-10-12-capability-capacity.md` — measured pipeline throughput (8-agent run ≈ 1 h; 26% of
+     findings corrected); **binding constraint is founder time, unmeasured**; start timing a real
+     intake-to-guide run, Airtable status timestamps, per-run time/cost. ⚠️ Found: **all 28 framework
+     travel windows have `sources: []`**, and **9 `costModel` tables carry unsourced point prices** —
+     both fail our own gates.
+   - `2026-10-12-differentiation.md` — moats: walked validation, a public record of checks and
+     corrections, no booking/ad revenue. Top ideas: public corrections log; walked/researched marks on
+     every card; "Second Opinion" (we fact-check a pasted AI itinerary). Biggest threat: Lonely Planet's app.
+4. **Running at close (headless, gitignored output):** `/research eclipse-2027-spain`,
+   `/research rugby-world-cup-2027`, and a sequential re-sourcing pass over the 10 frameworks'
+   windows + cost tables → `internal/research/<slug>/<runId>/FIXES.md` and
+   `internal/research/framework-fixes-2026-10-12.md`. ⚠️ Three concurrent runs re-triggered the
+   Oct 6 hook bug (false `.MISSING.txt` in Dublin's run). Check the agent JSON files themselves, not
+   the notes, and fix the hook to key on the agent's own run dir before running in parallel again.
+   Agent-memory edits from these runs are uncommitted at close; commit them next session.
+5. **Park guides designed** — `docs/superpowers/specs/2026-10-12-park-guides-design.md`. Two
+   standalone guides (`/outdoors/new-river-gorge`, `/outdoors/shenandoah`) + the route
+   `/outdoors/gorge-and-ridge`, from Brady's personal *Gorge & the Ridge* guide. **The founders walk
+   both Oct 23–27**, so they launch gold. Pictured Rocks second on the same template.
 
 ## 🟢 OCTOBER 6, 2026 — STATE OF THE COMPANY, PIPELINE PROVEN, INTAKE TO GUIDE
 
@@ -1297,7 +1349,7 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | Oct 6: the `feature/intake-to-guide` merge (Peru founder words, How It Works museum fix, verifier budget, agent memory, intake spec) rides with this record — read `git log` for the merge hash and check Vercel READY by SHA at the next `/morning`. Sept 29's five merges were verified live before it. |
+| `main` | Oct 12: the `feature/deals` merge (`/deals`, Oct 12 rulings, brand-status rule, park-guide spec) rides with this record — read `git log` for the merge hash and check Vercel READY by SHA at the next `/morning`. Oct 6's merge was verified READY on Oct 12 (`e74b902`). |
 | Working tree | clean at merge |
 | Pending `/ship` | **Nothing.** |
 | Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
@@ -1313,13 +1365,25 @@ Works** homepage section · the homepage agent count derived (**13**, was a type
 date stated once · `/local` with the Live Pulse · "When to Go" on every framework ·
 `/peru` indexed · founder schema v2 + two-layer card · `/join` · the affiliate gate.
 
-🚩 **NEXT SESSION'S QUEUE — RESET Oct 6 (supersedes the Sept 29 list below where they differ).**
-Shipped Oct 6 and verified live: `/plan-your-trip` (intake quiz → Airtable) and `/christmas-markets`.
-1. **Holiday deals page** — explainer live by Nov 1, sale cards from ~Nov 13 (research:
-   `internal/research/market/2026-10-06-holiday-deals.md`).
-2. **Intake go-live leftovers** — Turnstile widget + `TURNSTILE_ENFORCE=1`, MailerSend emails
-   (MailerLite reopened for the founding list), `CAL_URL` from Brady.
-3. **Midwest ski guide** on /local (run `internal/research/midwest-skiing/2026-10-06T15-15/`, 4 founder Qs).
+🚩 **NEXT SESSION'S QUEUE — RESET Oct 12 (supersedes the lists below where they differ).**
+Shipped Oct 12: `/deals`. Shipped Oct 6: `/plan-your-trip`, `/christmas-markets`.
+0. **Collect the background runs:** eclipse + Rugby World Cup packets; the framework FIXES.md files →
+   apply the re-sourced windows and ranged costs (Brady said improvement passes may be committed).
+   Commit the agent-memory changes. Fix the SubagentStop hook's newest-RUN.json collision.
+1. **Park guides Phase A** + the pre-trip phone checklist **before Oct 23** (spec
+   `docs/superpowers/specs/2026-10-12-park-guides-design.md`).
+1b. **Event guides for 2027** (Brady: "a lot more opportunities… sporting events, international
+   events, concerts and holidays"): eclipse Spain first, then Rugby World Cup; slate in
+   `internal/research/market/2026-10-12-best-trips-2027.md`.
+1c. **`/deals` upkeep:** add to the nav/bucket list if Brady wants it; weekly checks from Nov 2.
+2. **Intake go-live leftovers — DEFERRED, not blocking (Brady, Oct 12).** Booking link (`CAL_URL`)
+   stays off: no call-booking step after the quiz. Turnstile only if spam appears in the
+   `[intake]` logs (the 20 s floor is the guard today). Confirmation emails: Claude sets up
+   MailerSend with Brady step by step when he chooses; until then replies go from Gmail.
+3. **Midwest ski guide** on /local (run `internal/research/midwest-skiing/2026-10-06T15-15/`). Founder Qs
+   closed Oct 12: Brady has skied most resorts but the guide stays **researched** (no walked claims);
+   pass break-evens publish with every option. Defaults taken: Illinois (Chestnut Mtn) in scope;
+   AllTrails acceptable as a labelled second source for trail gain.
 4. **Dusk Field Guide Phase A** (Pictured Rocks pilot done; 5 founder Qs in the work-plan doc).
 5. **Global ski guide** (Brady picks regions). Mid-November: re-check Christmas market dates.
 Living plan + Work log: https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
@@ -1372,11 +1436,19 @@ pilots pass), Vancouver + Costa Rica frameworks, place-level booking links.
 
 1. ✅ **CLOSED Oct 6 — Peru's "What We'd Do Differently"** is live. (Section intros
    in his voice remain optional.)
-2. **The photo-people ruling.** Three of the twelve Peru frames show people who
-   are not the founders and stay unused until he rules.
+2. ✅ **CLOSED Oct 12 — the photo-people ruling.** Use the three frames only where
+   strangers' faces are not clear (small, turned away, background); skip any
+   close identifiable face.
+   ✅ **Also ruled Oct 12 (Brady):** (a) ski pass break-even comparisons PUBLISH,
+   every pass and day-ticket option side by side, never one pass alone (the
+   travel-card rule); (b) **government-set official fees** (NPS campsite, shuttle)
+   may show as exact figures with source + `checkedOn` — everything else stays a
+   range; (c) NPS-authorised concessioners/permitted guides are NAMED as
+   "authorised by the National Park Service", unranked, unendorsed, no affiliate.
 3. **The Costa Rica visited-split**, per spot. Blocks that framework; a saved
    list is a superset of a trip and is never flipped wholesale.
-4. **The Detroit Maps list.** Closes four unpinnable Michigan spots in one step.
+4. ✅ **DROPPED Oct 12 — the Detroit Maps list.** No such list exists; `/local` covers the
+   Midwest. The four unpinnable Michigan spots stay list-only.
 5. **Licensed music for the Peru film.** Blocks publication of the cut, not its
    assembly. None sourced, and none will be invented.
 
