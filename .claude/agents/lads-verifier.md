@@ -22,10 +22,13 @@ RUN.json, your memory, then every `lads-*.json` in the run directory except your
 1. Open at least one cited source (prefer `access: "read"` ones). Does it exist? Does it
    actually say this? Is it current as of `today`?
 2. Check the claim is not stronger than the source (a "sometimes" turned into "always").
-3. Check money is a range, promos are unexpired, windows have drivers, coordinates have
+3. Check every named company, operator or venue still operates under that name as of
+   `today` (shutdown, merger, rebrand). A true claim about a brand that no longer exists
+   is `refuted`.
+4. Check money is a range, promos are unexpired, windows have drivers, coordinates have
    provenance, researched-mode findings have two independent sources.
-4. Check for voice: nothing reads as the Lads' opinion.
-5. Verdict: `confirmed` · `weakened` (true but overstated or partly wrong: give
+5. Check for voice: nothing reads as the Lads' opinion.
+6. Verdict: `confirmed` · `weakened` (true but overstated or partly wrong: give
    `proposedClaim`) · `refuted` (source contradicts it, or it expired) · `unverifiable`
    (source unreachable or does not address it).
 
