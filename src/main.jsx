@@ -25,6 +25,7 @@ const LadsPage = lazy(() => import('./LadsPage'))
 const JoinPage = lazy(() => import('./JoinPage'))
 const PlanYourTrip = lazy(() => import('./PlanYourTrip'))
 const ChristmasMarketsPage = lazy(() => import('./ChristmasMarketsPage'))
+const DealsPage = lazy(() => import('./DealsPage'))
 const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
 const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
@@ -119,6 +120,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/join" element={<JoinPage />} />
             <Route path="/plan-your-trip" element={<PlanYourTrip />} />
             <Route path="/christmas-markets" element={<ChristmasMarketsPage />} />
+            <Route path="/deals" element={<DealsPage />} />
             <Route path="/plan-your-trip/join/:invite" element={<PlanYourTrip companion />} />
             {/* Kept reachable (out of nav) */}
             <Route path="/when" element={<WhenPage />} />
