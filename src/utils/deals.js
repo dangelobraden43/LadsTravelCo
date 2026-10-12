@@ -75,3 +75,12 @@ export function heroState(edition, sales, today = todayISO()) {
   if (open.length) return { state: 'tail' }
   return { state: 'over' }
 }
+
+/* Move an ISO date by whole years (Feb 29 falls back to Feb 28). Used to test
+ * last year's sale windows against the same trip one year earlier. */
+export function shiftYears(iso, n) {
+  const [y, m, d] = iso.split('-').map(Number)
+  const ny = y + n
+  const last = new Date(Date.UTC(ny, m, 0)).getUTCDate()
+  return `${ny}-${String(m).padStart(2, '0')}-${String(Math.min(d, last)).padStart(2, '0')}`
+}

@@ -9,6 +9,7 @@ import {
   blackoutHits,
   missesSpringBreak,
   heroState,
+  shiftYears,
 } from '../../src/utils/deals.js'
 import { EDITION, SALES } from '../../src/data/holidayDeals.js'
 
@@ -93,4 +94,15 @@ test('the data: edition dates are the confirmed 2026 dates', () => {
     cyberMonday: '2026-11-30',
     travelTuesday: '2026-12-01',
   })
+})
+
+test('shiftYears moves a date by whole years and clamps Feb 29', () => {
+  assert.equal(shiftYears('2027-01-18', -1), '2026-01-18')
+  assert.equal(shiftYears('2028-02-29', -1), '2027-02-28')
+})
+test('the data: every last-year sale with a window is testable by the finder', () => {
+  for (const s of SALES.filter((x) => x.travelStart)) {
+    assert.ok(s.travelEnd >= s.travelStart, `${s.id} window runs backwards`)
+    if (s.bookBy) assert.ok(s.bookBy <= s.travelEnd, `${s.id} book-by after travel end`)
+  }
 })

@@ -18,6 +18,7 @@ import {
   blackoutHits,
   missesSpringBreak,
   heroState,
+  shiftYears,
 } from './utils/deals.js'
 import {
   EDITION,
@@ -34,7 +35,7 @@ const fmt = (d, opts = { month: 'short', day: 'numeric' }) =>
   new Date(`${d}T12:00:00`).toLocaleDateString('en-US', opts)
 const fmtY = (d) => fmt(d, { month: 'short', day: 'numeric', year: 'numeric' })
 const fmtLong = (d) => fmt(d, { month: 'long', day: 'numeric', year: 'numeric' })
-const span = (a, b) => (a && b ? `${fmtY(a)} – ${fmtY(b)}` : null)
+const span = (a, b) => (a && b ? `${fmtY(a)} – ${fmtY(b)}` : b ? `By ${fmtY(b)}` : null)
 const blackoutText = (b) => (Array.isArray(b) ? `${fmt(b[0])}–${fmt(b[1])}` : fmt(b))
 
 const REGIONS = [
@@ -117,8 +118,8 @@ function Evidence() {
           Is it actually <em>a deal?</em>
         </h2>
         <p className="dl-sub">
-          Sometimes. The evidence that holiday sales beat normal prices is thinner than the
-          advertising suggests.
+          Often, in the only tests anyone has run, but not reliably, and it varies by brand. The
+          useful question is never the banner; it is whether the price beats what you saw before.
         </p>
         <div className="dl-grid dl-grid-2">
           {EVIDENCE.map((e) => (
@@ -188,7 +189,9 @@ function SaleCard({ sale, today }) {
         )}
         {status === 'live' && <span className="dl-chip dl-chip-on">Bookable now</span>}
       </div>
-      <p className="dl-offer">&ldquo;{sale.offer}&rdquo;</p>
+      <p className="dl-offer">
+        {sale.quoted === false ? sale.offer : <>&ldquo;{sale.offer}&rdquo;</>}
+      </p>
       <dl className="dl-terms">
         {sale.appliesTo && (
           <>
@@ -196,10 +199,10 @@ function SaleCard({ sale, today }) {
             <dd>{sale.appliesTo}</dd>
           </>
         )}
-        {sale.bookBy && (
+        {(sale.bookBy || status !== 'last-year') && (
           <>
             <dt>Book by</dt>
-            <dd>{fmtY(sale.bookBy)}</dd>
+            <dd>{sale.bookBy ? fmtY(sale.bookBy) : 'Not on the brand’s page yet'}</dd>
           </>
         )}
         {travel && (
@@ -245,18 +248,23 @@ function SaleCard({ sale, today }) {
 }
 
 function Finder({ today }) {
-  const [from, setFrom] = useState('2027-01-18')
-  const [to, setTo] = useState('2027-01-25')
+  const [from, setFrom] = useState('2027-03-13')
+  const [to, setTo] = useState('2027-03-20')
   const [region, setRegion] = useState('all')
-  const current = currentSales(SALES, EDITION, today)
+  const dated = (s) => s.travelStart && s.travelEnd
+  const current = currentSales(SALES, EDITION, today).filter(dated)
   const usingLastYear = current.length === 0
-  const pool = (usingLastYear ? lastYearSales(SALES, EDITION) : current).filter(
-    (s) => (region === 'all' || s.region === region) && s.travelStart && s.travelEnd
+  const pool = (usingLastYear ? lastYearSales(SALES, EDITION).filter(dated) : current).filter(
+    (s) => region === 'all' || s.region === region
   )
   const valid = from && to && from <= to
+  // last year's windows are compared against the same dates one year earlier
+  const back = (d) => (usingLastYear ? shiftYears(d, -1) : d)
+  const f = back(from)
+  const t = back(to)
   const rows = valid
     ? pool
-        .map((s) => ({ s, ok: coversTrip(s, from, to), hits: blackoutHits(s, from, to) }))
+        .map((s) => ({ s, ok: coversTrip(s, f, t), hits: blackoutHits(s, f, t) }))
         .sort((a, b) => Number(b.ok) - Number(a.ok) || a.s.brand.localeCompare(b.s.brand))
     : []
   const yes = rows.filter((r) => r.ok).length
@@ -301,8 +309,9 @@ function Finder({ today }) {
         ) : (
           <>
             <p className="dl-note" aria-live="polite">
-              {yes} of {rows.length} {usingLastYear ? `${EDITION.year - 1} sales` : 'sales'} would
-              have covered {fmt(from)} – {fmt(to)}.
+              {usingLastYear
+                ? `Last year, ${yes} of ${rows.length} sales with a published travel window would have covered ${fmt(from)} – ${fmt(to)}.`
+                : `${yes} of ${rows.length} sales cover ${fmt(from)} – ${fmt(to)}.`}
             </p>
             <ul className="dl-results">
               {rows.map(({ s, ok, hits }) => (
