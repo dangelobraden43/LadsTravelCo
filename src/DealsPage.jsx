@@ -1,14 +1,13 @@
 /* /deals — Holiday Travel Sales 2026.
- * Spec: docs/superpowers/specs/2026-10-12-deals-page-design.md (approved by Brady Oct 12 2026).
- * The honest alternative to deal sites: the catch printed first, a finder that answers "will
- * this sale cover my trip?", and every state computed from dates in src/data/holidayDeals.js
- * (src/utils/deals.js). Nothing here is typed as "on now" or counted by hand. */
+ * Spec: docs/superpowers/specs/2026-10-12-deals-page-design.md. Rebuilt Oct 12 2026 after
+ * Brady's review: lead with what to do for your trip, then five rules, then a short list of
+ * sales. Every state is computed from dates in src/data/holidayDeals.js (src/utils/deals.js);
+ * nothing is typed as "on now" or counted by hand. */
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Nav } from './App'
 import Footer from './Footer'
-import { resolveBooking } from './utils/affiliate.js'
 import {
   todayISO,
   saleStatus,
@@ -16,71 +15,68 @@ import {
   lastYearSales,
   coversTrip,
   blackoutHits,
-  missesSpringBreak,
   heroState,
   shiftYears,
 } from './utils/deals.js'
 import {
   EDITION,
-  EVIDENCE,
-  TRAPS,
+  PLANS,
+  RULES,
+  RIGHTS,
+  PROOF,
+  HABIT,
+  GROUPS,
   SALES,
-  SEASONAL,
-  KINDS,
   CHECKED_ON,
 } from './data/holidayDeals.js'
 import './DealsPage.css'
 
 const fmt = (d, opts = { month: 'short', day: 'numeric' }) =>
   new Date(`${d}T12:00:00`).toLocaleDateString('en-US', opts)
-const fmtY = (d) => fmt(d, { month: 'short', day: 'numeric', year: 'numeric' })
 const fmtLong = (d) => fmt(d, { month: 'long', day: 'numeric', year: 'numeric' })
-const span = (a, b) => (a && b ? `${fmtY(a)} – ${fmtY(b)}` : b ? `By ${fmtY(b)}` : null)
-const blackoutText = (b) => (Array.isArray(b) ? `${fmt(b[0])}–${fmt(b[1])}` : fmt(b))
-
-const REGIONS = [
-  ['world', 'Worldwide'],
-  ['us', 'From the US'],
-]
-
-function Src({ href, checkedOn }) {
-  if (!href) return null
-  let host = 'source'
+const blackoutText = (b) => (Array.isArray(b) ? `${fmt(b[0])} to ${fmt(b[1])}` : fmt(b))
+const host = (href) => {
   try {
-    host = new URL(href).hostname.replace(/^www\./, '')
+    return new URL(href).hostname.replace(/^www\./, '')
   } catch {
-    /* keep the fallback */
+    return 'source'
   }
+}
+
+function Sources({ list }) {
   return (
-    <span className="dl-src">
-      <a href={href} target="_blank" rel="noopener noreferrer">
-        Source: {host}
-      </a>
-      {checkedOn && <> · checked {fmtY(checkedOn)}</>}
-    </span>
+    <p className="dl-sources">
+      Sources:{' '}
+      {list.map((href, i) => (
+        <span key={href}>
+          {i > 0 && ', '}
+          <a href={href} target="_blank" rel="noopener noreferrer">
+            {host(href)}
+          </a>
+        </span>
+      ))}
+    </p>
   )
 }
 
 function Hero({ today }) {
   const hs = heroState(EDITION, SALES, today)
   const { blackFriday, cyberMonday, travelTuesday } = EDITION.dates
-  const line = {
-    before: `${hs.daysToGo} ${hs.daysToGo === 1 ? 'day' : 'days'} until Black Friday.`,
-    week: 'Sale week is on. Read the catch before the percentage.',
-    tail: 'The main days are over. A few sales are still bookable below.',
-    over: `The ${EDITION.year} sales are over. Below is what ran, to plan for next year.`,
+  const now = {
+    before: `Nothing worth buying is on sale yet. Use the next ${hs.daysToGo} days to look up what your trip costs today, so you’ll know a real deal when you see one.`,
+    week: 'The sales are on. Check the travel dates and blackouts before you look at the percentage.',
+    tail: 'The big days are over, but a few sales run into mid-December. The ones still open are at the top of the list below.',
+    over: 'This year’s sales are over. The next big round is the first week of January.',
   }[hs.state]
   return (
     <header className="dl-hero">
       <div className="dl-wrap">
-        <div className="dl-eyebrow">{EDITION.eyebrow}</div>
+        <p className="dl-eyebrow">Holiday travel sales {EDITION.year}</p>
         <h1>
-          Holiday travel sales, <em>with the catch printed first.</em>
+          The travel sales are coming. <em>Here’s how to use them.</em>
         </h1>
         <p className="dl-lede">
-          When the {EDITION.year} sales run, how to tell a real deal from a normal fare with a
-          banner on it, and which sales actually cover the trip you want. Every offer is in the
-          brand&rsquo;s own words, with its source and the date we checked it.
+          When they run, whether they’ll cover the trip you want, and what to check before you pay.
         </p>
         <ol className="dl-dates" aria-label={`${EDITION.year} sale dates`}>
           <li>
@@ -93,164 +89,120 @@ function Hero({ today }) {
             <b>{fmt(travelTuesday)}</b>Travel Tuesday
           </li>
         </ol>
-        <p className="dl-state" role="status">
-          {line}
-        </p>
-        <div className="dl-ctas">
-          <a className="dl-btn dl-btn-main" href="#finder">
-            Will a sale cover my trip?
-          </a>
-          <a className="dl-btn dl-btn-ghost" href="#traps">
-            Read the traps
-          </a>
+        <div className="dl-now" role="status">
+          <span>Right now</span>
+          <p>{now}</p>
         </div>
       </div>
     </header>
   )
 }
 
-function Evidence() {
+function Plans() {
+  const [active, setActive] = useState(PLANS[0].id)
+  const plan = PLANS.find((p) => p.id === active)
   return (
-    <section id="evidence" className="dl-section">
+    <section id="plan-it" className="dl-section">
       <div className="dl-wrap">
-        <span className="dl-tag">Researched · the evidence</span>
-        <h2 className="dl-h2">
-          Is it actually <em>a deal?</em>
-        </h2>
-        <p className="dl-sub">
-          Often, in the only tests anyone has run, but not reliably, and it varies by brand. The
-          useful question is never the banner; it is whether the price beats what you saw before.
-        </p>
-        <div className="dl-grid dl-grid-2">
-          {EVIDENCE.map((e) => (
-            <article key={e.id} className="dl-panel">
-              <span className="dl-k">{e.kicker}</span>
-              <h3>{e.title}</h3>
-              <p>{e.body}</p>
-              <Src href={e.src} checkedOn={e.checkedOn} />
-            </article>
+        <h2 className="dl-h2">What are you planning?</h2>
+        <div className="dl-tabs" role="tablist" aria-label="Choose your trip">
+          {PLANS.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              role="tab"
+              id={`tab-${p.id}`}
+              aria-selected={p.id === active}
+              aria-controls="plan-panel"
+              onClick={() => setActive(p.id)}
+            >
+              {p.label}
+            </button>
           ))}
         </div>
-        <div className="dl-habit">
-          <span className="dl-k">The one habit that works</span>
-          <p>{EDITION.habit}</p>
+        <div className="dl-plan" id="plan-panel" role="tabpanel" aria-labelledby={`tab-${plan.id}`}>
+          <p className="dl-verdict">{plan.verdict}</p>
+          <ol className="dl-steps">
+            {plan.steps.map((s) => (
+              <li key={s}>{s}</li>
+            ))}
+          </ol>
+          <div className="dl-plan-foot">
+            {plan.tool && (
+              <a className="dl-link" href="#check">
+                Check your dates against last year’s sales
+              </a>
+            )}
+            {plan.link && (
+              <Link className="dl-link" to={plan.link.to}>
+                {plan.link.label}
+              </Link>
+            )}
+          </div>
+          <Sources list={plan.sources} />
         </div>
       </div>
     </section>
   )
 }
 
-function Traps() {
+function Rules() {
   return (
-    <section id="traps" className="dl-section">
+    <section id="rules" className="dl-section">
       <div className="dl-wrap">
-        <span className="dl-tag">Researched · quoted from the brands&rsquo; own terms</span>
-        <h2 className="dl-h2">
-          The traps, <em>in their own fine print.</em>
-        </h2>
-        <div className="dl-grid dl-grid-3">
-          {TRAPS.map((t) => (
-            <article key={t.id} className="dl-panel dl-trap">
-              <h3>{t.name}</h3>
-              {t.quote && (
-                <blockquote>
-                  <mark>&ldquo;{t.quote}&rdquo;</mark>
-                  <cite>{t.who}</cite>
-                </blockquote>
-              )}
-              <p>{t.explain}</p>
-              <Src href={t.src} checkedOn={t.checkedOn} />
-            </article>
+        <h2 className="dl-h2">Five rules before you buy</h2>
+        <ol className="dl-rules">
+          {RULES.map((r) => (
+            <li key={r.id}>
+              <h3>{r.title}</h3>
+              <p>
+                {r.body}{' '}
+                <a className="dl-cite" href={r.src} target="_blank" rel="noopener noreferrer">
+                  Source
+                </a>
+              </p>
+            </li>
           ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function SaleCard({ sale, today }) {
-  const status = saleStatus(sale, EDITION, today)
-  const travel = span(sale.travelStart, sale.travelEnd)
-  const viator = sale.viator ? resolveBooking(sale.viator) : null
-  const [catchLine, ...rest] = sale.fineprint || []
-  return (
-    <article className={`dl-card dl-card-${status}`}>
-      {catchLine && (
-        <p className="dl-catch">
-          <span>The catch</span>
-          {catchLine}
-        </p>
-      )}
-      <div className="dl-card-head">
-        <h4>{sale.brand}</h4>
-        {status === 'last-year' && <span className="dl-chip">{sale.year} · last year</span>}
-        {status === 'announced' && (
-          <span className="dl-chip dl-chip-on">Opens {fmt(sale.bookStart)}</span>
-        )}
-        {status === 'live' && <span className="dl-chip dl-chip-on">Bookable now</span>}
-      </div>
-      <p className="dl-offer">
-        {sale.quoted === false ? sale.offer : <>&ldquo;{sale.offer}&rdquo;</>}
-      </p>
-      <dl className="dl-terms">
-        {sale.appliesTo && (
-          <>
-            <dt>Applies to</dt>
-            <dd>{sale.appliesTo}</dd>
-          </>
-        )}
-        {(sale.bookBy || status !== 'last-year') && (
-          <>
-            <dt>Book by</dt>
-            <dd>{sale.bookBy ? fmtY(sale.bookBy) : 'Not on the brand’s page yet'}</dd>
-          </>
-        )}
-        {travel && (
-          <>
-            <dt>Travel</dt>
-            <dd>{travel}</dd>
-          </>
-        )}
-        {sale.blackouts?.length > 0 && (
-          <>
-            <dt>Blackouts</dt>
-            <dd>{sale.blackouts.map(blackoutText).join(', ')}</dd>
-          </>
-        )}
-      </dl>
-      {rest.length > 0 && (
-        <ul className="dl-fine">
-          {rest.map((f) => (
-            <li key={f}>{f}</li>
-          ))}
-        </ul>
-      )}
-      {missesSpringBreak(sale) && (
-        <p className="dl-flag">
-          Travel window ends {fmt(sale.travelEnd)}: it misses most US spring breaks.
-        </p>
-      )}
-      <div className="dl-card-foot">
-        <Src href={sale.src} checkedOn={sale.checkedOn} />
-        {viator && (
-          <a
-            className="dl-viator"
-            href={viator.href}
-            target="_blank"
-            rel="sponsored noopener noreferrer"
-          >
-            See it on {viator.platform} · we earn a commission
+        </ol>
+        <p className="dl-rights">
+          {RIGHTS.body}{' '}
+          <a className="dl-cite" href={RIGHTS.src} target="_blank" rel="noopener noreferrer">
+            Source
           </a>
-        )}
+        </p>
       </div>
-    </article>
+    </section>
   )
 }
 
-function Finder({ today }) {
+function Proof() {
+  return (
+    <section id="real" className="dl-section">
+      <div className="dl-wrap">
+        <h2 className="dl-h2">Are the deals real?</h2>
+        <div className="dl-proof">
+          {PROOF.map((p) => (
+            <div key={p.id}>
+              <h3>{p.title}</h3>
+              <p>
+                {p.body}{' '}
+                <a className="dl-cite" href={p.src} target="_blank" rel="noopener noreferrer">
+                  Source
+                </a>
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="dl-habit">{HABIT}</p>
+      </div>
+    </section>
+  )
+}
+
+function Checker({ today }) {
   const [from, setFrom] = useState('2027-03-13')
   const [to, setTo] = useState('2027-03-20')
-  const [region, setRegion] = useState('all')
+  const [region, setRegion] = useState('us')
   const dated = (s) => s.travelStart && s.travelEnd
   const current = currentSales(SALES, EDITION, today).filter(dated)
   const usingLastYear = current.length === 0
@@ -258,29 +210,26 @@ function Finder({ today }) {
     (s) => region === 'all' || s.region === region
   )
   const valid = from && to && from <= to
-  // last year's windows are compared against the same dates one year earlier
   const back = (d) => (usingLastYear ? shiftYears(d, -1) : d)
-  const f = back(from)
-  const t = back(to)
   const rows = valid
     ? pool
-        .map((s) => ({ s, ok: coversTrip(s, f, t), hits: blackoutHits(s, f, t) }))
+        .map((s) => ({
+          s,
+          ok: coversTrip(s, back(from), back(to)),
+          hits: blackoutHits(s, back(from), back(to)),
+        }))
         .sort((a, b) => Number(b.ok) - Number(a.ok) || a.s.brand.localeCompare(b.s.brand))
     : []
   const yes = rows.filter((r) => r.ok).length
 
   return (
-    <section id="finder" className="dl-section dl-finder">
+    <section id="check" className="dl-section dl-check">
       <div className="dl-wrap">
-        <span className="dl-tag">Tool</span>
-        <h2 className="dl-h2">
-          Will a sale <em>cover my trip?</em>
-        </h2>
+        <h2 className="dl-h2">Would a sale cover your dates?</h2>
         <p className="dl-sub">
-          Most holiday sales only cover travel in a fixed window, with blackout dates on the busiest
-          days. Put in your dates and see which ones fit.
+          Each sale only covers trips inside its own dates.
           {usingLastYear &&
-            ` Until the ${EDITION.year} terms are published, this uses last year's sales as a guide.`}
+            ' This year’s haven’t been announced, so put in your dates and see which of last year’s sales would have covered the same week.'}
         </p>
         <div className="dl-controls">
           <label>
@@ -288,11 +237,14 @@ function Finder({ today }) {
             <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
           </label>
           <label>
-            Return
+            Come back
             <input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
           </label>
-          <div className="dl-seg" role="group" aria-label="Region">
-            {[['all', 'All'], ...REGIONS].map(([k, label]) => (
+          <div className="dl-seg" role="group" aria-label="Which sales">
+            {[
+              ['us', 'Flying from the U.S.'],
+              ['all', 'Everything'],
+            ].map(([k, label]) => (
               <button
                 key={k}
                 type="button"
@@ -305,25 +257,29 @@ function Finder({ today }) {
           </div>
         </div>
         {!valid ? (
-          <p className="dl-note">Pick a return date on or after the day you leave.</p>
+          <p className="dl-answer">Pick a return date on or after the day you leave.</p>
         ) : (
           <>
-            <p className="dl-note" aria-live="polite">
-              {usingLastYear
-                ? `Last year, ${yes} of ${rows.length} sales with a published travel window would have covered ${fmt(from)} – ${fmt(to)}.`
-                : `${yes} of ${rows.length} sales cover ${fmt(from)} – ${fmt(to)}.`}
+            <p className="dl-answer" aria-live="polite">
+              {usingLastYear && 'Last year, '}
+              <b>
+                {yes} of {rows.length}
+              </b>{' '}
+              {usingLastYear ? 'sales would have covered' : 'sales cover'} {fmt(from)} to {fmt(to)}.
             </p>
             <ul className="dl-results">
               {rows.map(({ s, ok, hits }) => (
                 <li key={s.id} className={ok ? 'is-yes' : 'is-no'}>
-                  <b>{ok ? 'Fits' : 'No'}</b>
+                  <span className="dl-mark" aria-hidden="true">
+                    {ok ? '✓' : '✕'}
+                  </span>
                   <span className="dl-r-brand">{s.brand}</span>
                   <span className="dl-r-why">
                     {ok
-                      ? `Travel ${fmt(s.travelStart)} – ${fmt(s.travelEnd)}`
+                      ? s.summary
                       : hits.length
-                        ? `Blackout: ${hits.map(blackoutText).join(', ')}`
-                        : `Travel window is ${fmt(s.travelStart)} – ${fmt(s.travelEnd)}`}
+                        ? `Blacked out ${hits.map(blackoutText).join(', ')}`
+                        : `Only covered ${fmt(s.travelStart)} to ${fmt(s.travelEnd)}`}
                   </span>
                 </li>
               ))}
@@ -335,85 +291,97 @@ function Finder({ today }) {
   )
 }
 
-function SalesSection({ region, label, today }) {
-  const mine = SALES.filter((s) => s.region === region)
-  const current = currentSales(mine, EDITION, today)
-  const past = lastYearSales(mine, EDITION)
-  const kinds = KINDS.filter(([k]) => past.some((s) => s.kind === k))
+function SaleRow({ sale, today }) {
+  const status = saleStatus(sale, EDITION, today)
+  const covers =
+    sale.travelStart && sale.travelEnd
+      ? `${fmt(sale.travelStart)} to ${fmt(sale.travelEnd)}`
+      : sale.travelEnd
+        ? `Until ${fmt(sale.travelEnd)}`
+        : null
+  const booking =
+    status === 'last-year'
+      ? sale.bookStart
+        ? `${fmt(sale.bookStart)} to ${fmt(sale.bookBy)}`
+        : `Until ${fmt(sale.bookBy)}`
+      : sale.bookStart && status === 'announced'
+        ? `Opens ${fmt(sale.bookStart)}`
+        : sale.bookBy
+          ? `Ends ${fmt(sale.bookBy)}`
+          : 'On now, no end date given'
   return (
-    <section id={`sales-${region}`} className="dl-section">
-      <div className="dl-wrap">
-        <span className="dl-tag">Researched · {label}</span>
-        <h2 className="dl-h2">
-          {region === 'us' ? (
-            <>
-              The sales, <em>from the US.</em>
-            </>
-          ) : (
-            <>
-              The sales, <em>worldwide.</em>
-            </>
-          )}
-        </h2>
-        <p className="dl-sub">{EDITION.intro[region]}</p>
-        {current.length > 0 && (
-          <>
-            <h3 className="dl-h3">{EDITION.year} sales</h3>
-            <div className="dl-grid dl-grid-3">
-              {current.map((s) => (
-                <SaleCard key={s.id} sale={s} today={today} />
-              ))}
-            </div>
-          </>
-        )}
-        {past.length > 0 && (
-          <>
-            <h3 className="dl-h3">
-              What ran last year <span>({EDITION.year - 1}), the pattern to expect</span>
-            </h3>
-            {kinds.map(([k, kindLabel]) => (
-              <div key={k} className="dl-kind">
-                <h4 className="dl-kind-h">{kindLabel}</h4>
-                <div className="dl-grid dl-grid-3">
-                  {past
-                    .filter((s) => s.kind === k)
-                    .map((s) => (
-                      <SaleCard key={s.id} sale={s} today={today} />
-                    ))}
-                </div>
-              </div>
+    <li className="dl-row">
+      <details>
+        <summary>
+          <span className="dl-row-brand">{sale.brand}</span>
+          <span className="dl-row-what">{sale.summary}</span>
+          <span className="dl-row-meta">
+            {covers && (
+              <span>
+                <i>Trips</i>
+                {covers}
+              </span>
+            )}
+            <span>
+              <i>{status === 'last-year' ? 'Sale ran' : 'Booking'}</i>
+              {booking}
+            </span>
+          </span>
+        </summary>
+        <div className="dl-row-more">
+          <ul>
+            {sale.fineprint.map((f) => (
+              <li key={f}>{f}</li>
             ))}
-          </>
-        )}
-      </div>
-    </section>
+            {sale.blackouts?.length > 0 && (
+              <li>Blacked out: {sale.blackouts.map(blackoutText).join(', ')}.</li>
+            )}
+          </ul>
+          <a href={sale.src} target="_blank" rel="noopener noreferrer">
+            Source: {host(sale.src)}
+          </a>
+        </div>
+      </details>
+    </li>
   )
 }
 
-function Seasonal({ today }) {
-  const items = SEASONAL.filter((s) => !s.until || today <= s.until)
+function SalesList({ today }) {
+  const current = currentSales(SALES, EDITION, today)
+  const past = lastYearSales(SALES, EDITION)
   return (
-    <section id="seasonal" className="dl-section">
+    <section id="sales" className="dl-section">
       <div className="dl-wrap">
-        <span className="dl-tag">Researched · the calendar</span>
-        <h2 className="dl-h2">
-          The deals that <em>aren&rsquo;t on Black Friday.</em>
-        </h2>
-        <div className="dl-grid dl-grid-2">
-          {items.map((s) => (
-            <article key={s.id} className="dl-panel">
-              <span className="dl-k">{s.when}</span>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-              {s.href && (
-                <Link className="dl-inline" to={s.href}>
-                  {s.hrefLabel}
-                </Link>
-              )}
-              <Src href={s.src} checkedOn={s.checkedOn} />
-            </article>
-          ))}
-        </div>
+        <h2 className="dl-h2">The sales to watch</h2>
+        {current.length > 0 && (
+          <>
+            <h3 className="dl-h3">Announced for {EDITION.year}</h3>
+            <ul className="dl-rows dl-rows-now">
+              {current.map((s) => (
+                <SaleRow key={s.id} sale={s} today={today} />
+              ))}
+            </ul>
+          </>
+        )}
+        <h3 className="dl-h3">What ran last year</h3>
+        <p className="dl-sub">
+          Most brands repeat the same kind of sale each year, so last year’s is the best guide to
+          what’s coming. Tap any line for the fine print.
+        </p>
+        {GROUPS.map(([g, label]) => {
+          const rows = past.filter((s) => s.group === g)
+          if (!rows.length) return null
+          return (
+            <div key={g} className="dl-group">
+              <h4>{label}</h4>
+              <ul className="dl-rows">
+                {rows.map((s) => (
+                  <SaleRow key={s.id} sale={s} today={today} />
+                ))}
+              </ul>
+            </div>
+          )
+        })}
       </div>
     </section>
   )
@@ -421,7 +389,7 @@ function Seasonal({ today }) {
 
 export default function DealsPage() {
   const today = useMemo(() => todayISO(), [])
-  const description = `When the ${EDITION.year} Black Friday, Cyber Monday and Travel Tuesday travel sales run, the catch in each one's fine print, and which sales cover the dates you want to travel.`
+  const description = `When the ${EDITION.year} Black Friday, Cyber Monday and Travel Tuesday travel sales run, whether they cover your trip, and five things to check before you pay.`
   return (
     <>
       <Helmet>
@@ -435,33 +403,26 @@ export default function DealsPage() {
       <Nav scrolled={true} />
       <main className="dl-page">
         <Hero today={today} />
-        <Evidence />
-        <Traps />
-        <Finder today={today} />
-        {REGIONS.map(([r, label]) => (
-          <SalesSection key={r} region={r} label={label} today={today} />
-        ))}
-        <Seasonal today={today} />
+        <Plans />
+        <Rules />
+        <Checker today={today} />
+        <Proof />
+        <SalesList today={today} />
 
         <section id="plan" className="dl-section dl-ask">
           <div className="dl-wrap">
-            <h2 className="dl-h2">
-              Found the sale? <em>We&rsquo;ll build the trip around it.</em>
-            </h2>
-            <div className="dl-ask-box">
-              <p>
-                Tell us your dates, who&rsquo;s coming and what you like. We research where to go,
-                where to stay and what to book first, checked against official sources, so a sale
-                fare turns into a trip worth taking.
-              </p>
-              <div className="dl-ctas">
-                <Link className="dl-btn dl-btn-main" to="/plan-your-trip">
-                  Plan my trip
-                </Link>
-                <Link className="dl-btn dl-btn-ghost" to="/join">
-                  Join the founding list
-                </Link>
-              </div>
+            <h2 className="dl-h2">Found a good fare? We’ll build the trip.</h2>
+            <p className="dl-sub">
+              Tell us your dates, who’s coming and what you’re into. We’ll research where to go,
+              where to stay and what to book first.
+            </p>
+            <div className="dl-ctas">
+              <Link className="dl-btn dl-btn-main" to="/plan-your-trip">
+                Plan my trip
+              </Link>
+              <Link className="dl-btn dl-btn-ghost" to="/join">
+                Join the founding list
+              </Link>
             </div>
           </div>
         </section>
@@ -469,16 +430,9 @@ export default function DealsPage() {
         <section className="dl-section dl-method">
           <div className="dl-wrap">
             <p>
-              <b>Nobody paid to be on this page.</b> Brands do not pay for placement and we rank
-              nothing. Links to airlines, hotels, rail and ski passes go to the brand&rsquo;s own
-              page and earn us nothing; only a Viator link can earn us a commission, and it says so
-              where it appears.
-            </p>
-            <p>
-              Researched, not endorsed: every offer is quoted from the brand&rsquo;s own page where
-              it publishes one, checked by our research agents and an independent fact-checker. Last
-              full check {fmtLong(CHECKED_ON)}. Sales disappear from this page after their book-by
-              date.
+              No brand pays to be on this page, and none of these links earn us anything. Every fact
+              was checked against the brand’s own page or a named source on {fmtLong(CHECKED_ON)}.
+              Sales drop off this page when they end.
             </p>
           </div>
         </section>

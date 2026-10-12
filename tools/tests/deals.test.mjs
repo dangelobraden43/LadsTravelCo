@@ -106,3 +106,12 @@ test('the data: every last-year sale with a window is testable by the finder', (
     if (s.bookBy) assert.ok(s.bookBy <= s.travelEnd, `${s.id} book-by after travel end`)
   }
 })
+
+test('the data: every sale has a one-line summary a reader can act on', () => {
+  for (const s of SALES) assert.ok(s.summary && s.summary.length <= 80, `${s.id} summary`)
+})
+test('the data: no brand that has stopped operating is listed', () => {
+  // Spirit Airlines ceased May 2 2026 and was nearly published on Oct 12 2026.
+  const ceased = [/spirit/i]
+  for (const s of SALES) for (const re of ceased) assert.ok(!re.test(s.brand), `${s.brand} ceased`)
+})
