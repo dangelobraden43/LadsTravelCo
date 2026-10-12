@@ -1317,9 +1317,14 @@ date stated once · `/local` with the Live Pulse · "When to Go" on every framew
 Shipped Oct 6 and verified live: `/plan-your-trip` (intake quiz → Airtable) and `/christmas-markets`.
 1. **Holiday deals page** — explainer live by Nov 1, sale cards from ~Nov 13 (research:
    `internal/research/market/2026-10-06-holiday-deals.md`).
-2. **Intake go-live leftovers** — Turnstile widget + `TURNSTILE_ENFORCE=1`, MailerSend emails
-   (MailerLite reopened for the founding list), `CAL_URL` from Brady.
-3. **Midwest ski guide** on /local (run `internal/research/midwest-skiing/2026-10-06T15-15/`, 4 founder Qs).
+2. **Intake go-live leftovers — DEFERRED, not blocking (Brady, Oct 12).** Booking link (`CAL_URL`)
+   stays off: no call-booking step after the quiz. Turnstile only if spam appears in the
+   `[intake]` logs (the 20 s floor is the guard today). Confirmation emails: Claude sets up
+   MailerSend with Brady step by step when he chooses; until then replies go from Gmail.
+3. **Midwest ski guide** on /local (run `internal/research/midwest-skiing/2026-10-06T15-15/`). Founder Qs
+   closed Oct 12: Brady has skied most resorts but the guide stays **researched** (no walked claims);
+   pass break-evens publish with every option. Defaults taken: Illinois (Chestnut Mtn) in scope;
+   AllTrails acceptable as a labelled second source for trail gain.
 4. **Dusk Field Guide Phase A** (Pictured Rocks pilot done; 5 founder Qs in the work-plan doc).
 5. **Global ski guide** (Brady picks regions). Mid-November: re-check Christmas market dates.
 Living plan + Work log: https://claude.ai/code/artifact/M7UeJb5sc32gtu45Tikj1K
@@ -1372,11 +1377,19 @@ pilots pass), Vancouver + Costa Rica frameworks, place-level booking links.
 
 1. ✅ **CLOSED Oct 6 — Peru's "What We'd Do Differently"** is live. (Section intros
    in his voice remain optional.)
-2. **The photo-people ruling.** Three of the twelve Peru frames show people who
-   are not the founders and stay unused until he rules.
+2. ✅ **CLOSED Oct 12 — the photo-people ruling.** Use the three frames only where
+   strangers' faces are not clear (small, turned away, background); skip any
+   close identifiable face.
+   ✅ **Also ruled Oct 12 (Brady):** (a) ski pass break-even comparisons PUBLISH,
+   every pass and day-ticket option side by side, never one pass alone (the
+   travel-card rule); (b) **government-set official fees** (NPS campsite, shuttle)
+   may show as exact figures with source + `checkedOn` — everything else stays a
+   range; (c) NPS-authorised concessioners/permitted guides are NAMED as
+   "authorised by the National Park Service", unranked, unendorsed, no affiliate.
 3. **The Costa Rica visited-split**, per spot. Blocks that framework; a saved
    list is a superset of a trip and is never flipped wholesale.
-4. **The Detroit Maps list.** Closes four unpinnable Michigan spots in one step.
+4. ✅ **DROPPED Oct 12 — the Detroit Maps list.** No such list exists; `/local` covers the
+   Midwest. The four unpinnable Michigan spots stay list-only.
 5. **Licensed music for the Peru film.** Blocks publication of the cut, not its
    assembly. None sourced, and none will be invented.
 
