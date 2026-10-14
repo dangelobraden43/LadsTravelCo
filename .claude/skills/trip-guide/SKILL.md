@@ -68,6 +68,7 @@ Load the `artifact-design` skill first. One page, phone-first at 390, dark-frien
   source), closures for the dates, no-signal zones, offline-map reminder.
 - **Walked / skipped checklist** (artifact storage capability, so both founders' marks
   are shared and readable afterwards), with a one-line note field per place.
+- **No traveller names anywhere on the guide** (Brady, Oct 14): "the two of you", never names.
 - No first-person Lads voice, no ratings, no "covered by the Lads", no receipts, no
   insurance, no "free" (say "no admission charge").
 
