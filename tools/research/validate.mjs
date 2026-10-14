@@ -206,7 +206,8 @@ export function validateFile(filePath, { today = localToday() } = {}) {
   let doc
   try { doc = JSON.parse(raw) } catch (e) { return [`not valid JSON: ${e.message}`] }
   if (doc && doc.agent === 'lads-verifier') return validateVerdictFile(doc, { today })
-  const agent = path.basename(filePath, '.json')
+  /* A run may split one agent across parts: lads-destination-scout.eat.json (Oct 14). */
+  const agent = path.basename(filePath, '.json').split('.')[0]
   return validateFindingsFile(doc, { today, agent })
 }
 

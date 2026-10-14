@@ -6,7 +6,7 @@
  * then let the agent stop and leave <output>.INVALID.txt beside the file so
  * /research reports it, rather than looping forever.
  */
-import { readdirSync, statSync, existsSync, writeFileSync, rmSync } from 'node:fs'
+import { readdirSync, statSync, existsSync, writeFileSync, rmSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { validateFile } from './validate.mjs'
@@ -63,6 +63,34 @@ export function outputFor(root, agent, opts = {}) {
   return { runDir, file: existsSync(f) ? f : null }
 }
 
+/* The agent's OWN output, read from its transcript (Oct 14). /research names the
+ * run directory, and optionally a part file, in every dispatch prompt, so the
+ * first path in the transcript that belongs to this agent is where it was told
+ * to write. Picking the newest RUN.json instead (above) checked the wrong run
+ * whenever two runs overlapped: false .MISSING.txt notes on Oct 6 and Oct 12. */
+export function outputFromTranscript(text, root, agent) {
+  if (!text || !agent) return null
+  const re = /internal[\\/]+research[\\/]+([a-z0-9-]+)[\\/]+(\d{4}-\d{2}-\d{2}T\d{2}-\d{2})(?:[\\/]+([A-Za-z0-9.-]+\.(?:json|md)))?/g
+  let dirOnly = null
+  for (const m of text.matchAll(re)) {
+    const runDir = path.join(root, m[1], m[2])
+    if (!existsSync(path.join(runDir, 'RUN.json'))) continue
+    const name = m[3]
+    if (name && (name === outputNameFor(agent) || (name.startsWith(agent + '.') && name.endsWith('.json')))) {
+      const file = path.join(runDir, name)
+      return { runDir, file: existsSync(file) ? file : null, expected: file }
+    }
+    if (!dirOnly) dirOnly = runDir
+  }
+  if (!dirOnly) return null
+  const file = path.join(dirOnly, outputNameFor(agent))
+  return { runDir: dirOnly, file: existsSync(file) ? file : null, expected: file }
+}
+
+function readTranscript(p) {
+  try { return p && existsSync(p) ? readFileSync(p, 'utf8') : '' } catch { return '' }
+}
+
 /* Wired as SubagentStop in .claude/settings.json, so it fires for every
  * subagent. The Lads agent's name arrives as `agent_type`; anything else is
  * not ours and passes. A CLI argument still works for manual runs. */
@@ -104,12 +132,14 @@ export async function main() {
   if (!agent) process.exit(0)
   const projectDir = process.env.CLAUDE_PROJECT_DIR || input.cwd || process.cwd()
   const root = path.join(projectDir, 'internal', 'research')
-  const { runDir, file } = outputFor(root, agent)
+  const own = outputFromTranscript(readTranscript(input.agent_transcript_path), root, agent)
+  const { runDir, file } = own || outputFor(root, agent)
+  const expected = own ? own.expected : runDir ? path.join(runDir, outputNameFor(agent)) : null
   const errors = file ? validateFile(file) : []
   const d = decide({ file, errors, stopHookActive: Boolean(input.stop_hook_active) })
-  /* The marker lands beside the expected output in the current run, so
+  /* The marker lands beside the expected output in the agent's own run, so
    * /research sees a MISSING file too, not only an invalid one (review #4). */
-  const marker = file ? file + '.INVALID.txt' : runDir ? path.join(runDir, outputNameFor(agent) + '.MISSING.txt') : null
+  const marker = file ? file + '.INVALID.txt' : expected ? expected + '.MISSING.txt' : null
   if (marker) {
     if (d.writeInvalid) writeFileSync(marker, d.message + '\n')
     else if (d.exit === 0 && existsSync(marker)) rmSync(marker)
