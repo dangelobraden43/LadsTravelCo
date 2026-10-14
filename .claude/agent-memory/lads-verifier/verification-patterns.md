@@ -94,4 +94,14 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
 - **Second-pass edits:** a confirmed pass-1 verdict can still be overstated in a part pass 1 did not
   read (Aachen). Change it, and say in the reason that pass 2 changed it.
 
+- **A guide's single-day budget widened to a whole window** (Dublin fix pass 2026-10-12): Go-to-Ireland's
+  tiers were for 17 March itself, and the claim said "a day around St Patrick's". Ask what day or period
+  the published band covers.
+- **A range whose top is a floor.** A rail band topped with a shorter leg's walk-up fare, while the
+  agent's own note says the real walk-up fare is higher. Weaken it, and weaken every derived total that uses it.
+- **One event's price data stretched across "festival weeks".** Race-week hotel prices (2022) were applied
+  to the Arts Festival as well. Check which event and which year the price comes from.
+- **Framework fix passes:** check the founder-voice copy elsewhere on the site against UNVERIFIABLE window
+  fields (Dublin's "70% local" is quoted on /christmas-markets). Flag it to the founders; never rewrite it.
+
 Related: [[source-access-notes]]

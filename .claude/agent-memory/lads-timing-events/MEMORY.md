@@ -1,2 +1,2 @@
-- [Source lessons](source-lessons.md) — empty NPS hours pages, stale-year bureau pages, unattributed/wrong-weekday search dates, OPM holidays, ski-season sources, budget split
-- [Event season sources](event-season-sources.md) — fetch-first tactic; which market/festival sites post early, which 403/503/404; operator-quit trap
+- [Source lessons](source-lessons.md) — empty NPS pages, stale-year bureau pages, search-date traps, OPM holidays, ski, eclipse (NASA ok, timeanddate 403), AEMET normals, tournament fixtures, Australia gov pages
+- [Event season sources](event-season-sources.md) — fetch-first tactic; market/festival sites; operator-quit trap; Spain eclipse-trio year mix-up; Ireland sources, folklore-elsewhere trap

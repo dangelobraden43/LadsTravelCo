@@ -65,4 +65,13 @@ metadata:
   OnTheSnow resort pages sometimes time out. Resort getting-here and season-pass pages (Boyne,
   Crystal, Wilmot, Highlands, Lutsen, Cascade, bluemountain.ca) fetch cleanly.
 
+- **Ireland (Dublin fix pass 2026-10-12), fetch cleanly:** stpatricksfestival.ie, giaf.ie, galwayraces.com,
+  transportforireland.ie (christmas-services, fares pages), thisisgalway.ie, dublintown.ie, travelextra.ie,
+  met.ie climate pages (rainfall gives 1991-2020 normals; the sunshine page has no period), enterprise.gov.ie,
+  kpmg.com/ie, seat61.com, racingpost.com, ie.irishnews.com, ECB eurofxref graph pages (min/max/latest).
+  irishrail.ie fares-info pages list letter fares as text, but the station-to-letter grid is an image
+  (only some pairs are in the text). guinness-storehouse.com shows no prices outside its booking calendar.
+  A search for Ireland's current Christmas Day alcohol rule finds nothing later than 2018; try the Irish
+  Statute Book directly.
+
 Related: [[verification-patterns]]

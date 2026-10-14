@@ -21,4 +21,10 @@ Durable source lessons for the getting-around lane (first learned on Pictured Ro
 - Airport-transfer search results are dominated by aggregator blogs (thebettervacation, nomadepicureans); add the transit authority domain via `allowed_domains` to get an official fare instead.
 - The validator scans `notes` for point prices too: describe the ends of a range in words in notes, never "EUR x" alone (unless `fixedPrice` with an official source).
 
+- **Spain (eclipse-2027-spain, 2026-10-12):** DGT `comunicacion/noticias` pages are prose with no figures; the numbers live in the DGT `notas-de-prensa` and lamoncloa.gob.es Interior notes. Fetch those, not the noticia. Rail works and bus replacements show up in Adif TCR PDFs (atlantic-corridor.eu, "tcr-rfc4-adif_update") and regional press; check them before trusting any seat61 through-train route (Algeciras line was bus-replaced in 2026).
+- Spanish place names that collide with foreign ones (Bolonia = Bologna, Bol) poison searches; always add the municipality ("Bolonia Tarifa") and the ayuntamiento.
+- US driving-permit rules: one `allowed_domains: ["travel.state.gov"]` search gives the country advisory's IDP line; pair with a press second source.
+- Ferry brand drift: FRS Strait routes are now DFDS; DFDS left Tarifa-Tangier in May 2025. Check the operator's own route page for exits.
+- Plan the 12 calls up front: ~3 for official plans/precedent, ~3 rail/bus, 1 ferry, 1 border, 1 airport transfer, 1 driving, leaving 2 spare. Vague multi-route searches ("Madrid Cadiz, Seville Cadiz, Madrid Malaga") return one leg only.
+
 See [[feedback-lane-overlap]] if written later: closures and winter roads are often already covered by provenance and timing agents; reference their ids rather than re-spending calls.

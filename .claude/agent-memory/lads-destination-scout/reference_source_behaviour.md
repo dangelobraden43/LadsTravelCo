@@ -20,4 +20,13 @@ metadata:
 - lonelyplanet.com/articles/best-christmas-markets-in-europe is 404; do not guess Lonely Planet article slugs.
 - europeanbestdestinations.com rankings are social-media votes, the page is over 170k chars (only the top part gets read), and venue details go stale (2026 page still named an ended Zurich market). Popularity evidence only.
 - In a later wave, read the earlier agents' files for contradictions (e.g. one says an event ended, another found a successor). Recording the conflict as a finding is cheap and valuable.
+- Stadium/match-day scouting (Australia, Oct 2026): searches for "pre-game pubs near X stadium" mostly return transport-authority event pages (transportnsw.info, transperth). Good for practicals and traps, useless for named pubs. City tourism boards' "pre and post game" pages (visit.brisbane.qld.au) are the one-fetch buy for precinct venues, but check the page date (Brisbane's was 2023) and confirm each named venue still trades.
+- Fan-experience polls for Australian stadiums are old (Austadiums 2021 vote, AFL 2018 survey); there is no current ranking. Label the poll year.
+- Distances from a venue to a framework's walked places: compute from the Wikidata venue point and the stored coordinates in src/data, call them straight-line, and say it is your arithmetic. Costs zero calls.
+- Check the framework's actual place list before trusting a brief's pairing claim: the Australia brief said Sydney/Melbourne/Tasmania but australia.js has no Melbourne places.
+- mona.net.au/visit fetches cleanly (hours, closed days, ferry, booking).
 - German travel press (travelbook.de) and festivalsindeutschland.de come up for German market facts; the latter is an aggregator.
+- Eclipse/event viewing runs: spainsolareclipse.com/best-locations-2027/ is a one-fetch multi-town table (duration, Sun altitude, short warnings). treseclipses.es viewpoint pages fetch cleanly, but they are terrain-model rankings: no access, parking or crowd data, and no page date. Use them for names and durations, never for site quality.
+- space.com list articles fetch as header only; use search snippets and mark them `snippet`.
+- Spanish searches for beach parking or summer vehicle rules (Bolonia, Trafalgar) return little; "Bolonia" pulls Bologna, Italy. Spend those calls on the council or local press instead, or record the gap.
+- Commercial trip blogs (e.g. tripprof.com) can be dated and detailed but mix in entry/border claims; use them for site character only and leave entry rules to government sources.

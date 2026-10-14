@@ -1,1 +1,1 @@
-- [Flight source lessons](reference_flight_sources.md) — aeroroutes + ratepunk fetch clean; route sites show summer data; article-year trap; MSP winter exits; 12-call budget split
+- [Flight source lessons](reference_flight_sources.md) — aeroroutes/ratepunk/Wikipedia airport pages fetch clean; article-year trap; event-week fare traps; 12-call budget split

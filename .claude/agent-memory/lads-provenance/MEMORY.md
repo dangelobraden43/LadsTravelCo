@@ -1,1 +1,1 @@
-- [Sources and fetch tricks](reference_sources_and_fetch_tricks.md) — Wikipedia API batch check, park-feature SPARQL, NPS status lives in news releases, redirect traps, one-call SPARQL candidate lists, Overpass timeouts
+- [Sources and fetch tricks](reference_sources_and_fetch_tricks.md) — Wikipedia API batch check, park/Spanish-municipality SPARQL, stadium aliases, NASA eclipse path table, event-weekday closures, blocked sites

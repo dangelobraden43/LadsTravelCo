@@ -10,5 +10,6 @@ metadata:
 - **One search per city for STR rules pays off.** shorttermrentalz.com (trade press) indexes European city rules and pairs well with local English-language press (expats.cz, The Local) for the two-source bar. City sites (e.g. strasbourg.eu "changement d'usage") show in results; fetch them to upgrade from snippet.
 - **District-level STR bans are a recurring trap shape** (Budapest District VI from 2026; Prague 1 pushing for powers). Search by district, not just city.
 - **Check article dates on "night-life / noise" press.** A night-mayor piece looked current and was from 2019. Name the year in notes.
+- **Multi-venue sports tournaments (7+ host cities):** 12 calls = 3 fill-evidence calls + 3 STR-rule calls + 4 city bases + 2 regional fill. The smallest host cities went unresearched. Next time, batch two small cities per search, or skip the 4th big-city search.
 - Read other agents' JSON first: provenance gives each market's district (P131), which tells you which neighbourhood the market is in for free.
 - See [[stay-source-lessons]].
