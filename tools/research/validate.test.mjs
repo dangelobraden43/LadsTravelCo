@@ -192,3 +192,9 @@ test('packet: needs a Mode line and no banned voice', () => {
   assert.deepEqual(validatePacket('# Packet\n**Mode:** researched\n'), [])
   assert.match(validatePacket('**Mode:** walked\nWe loved it.').join('\n'), /first-person/)
 })
+
+test('scanBanned: the "I Prefer" hotel programme is not first-person voice; "I prefer" still is (Oct 14)', () => {
+  assert.deepEqual(scanBanned('Hotel transfers are Accor at 2 to 1, I Prefer at 1 to 2.'), [])
+  assert.deepEqual(scanBanned('Points move to I Prefer Hotel Rewards.'), [])
+  assert.equal(scanBanned('I prefer the window seat.').length, 1)
+})
