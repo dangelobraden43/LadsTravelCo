@@ -10,6 +10,12 @@ for the report itself.
 
 ## 1. Inventory (no agents yet)
 
+`node tools/research/runs.mjs --md internal/research/RUNS.md` does steps 1-5 below and
+prints the table. Each run is validated against its own `RUN.json.today` (a run made on
+Oct 12 is not "invalid" because today is Oct 14). Then read the invalid files' errors
+with `node tools/research/validate.mjs` before deciding: one point price in one finding
+is a fix for the verifier to weaken, not a reason to re-run the agent.
+
 For every `internal/research/<slug>/<runId>/RUN.json` (skip `market/` and `_setup/`):
 
 1. **Expected outputs** = `RUN.json.roster` (fall back to the agents named in
