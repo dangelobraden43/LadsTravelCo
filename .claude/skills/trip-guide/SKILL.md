@@ -35,7 +35,10 @@ RUN.json carries `brief`, `trip` (bases, nights, travellers, constraints), `rost
 `parts`, `callBudgets`, `inputs`.
 
 - **Region run roster:** provenance, timing-events, parks-trails (if any park/trail),
-  `lads-destination-scout.eat`, `.drink`, `.see`, getting-around, bookings-tickets.
+  `lads-destination-scout.eat`, `.drink`, `.see`, **`.nearbase`** (everything within
+  30-40 minutes of the house, every category, ordered by drive time: Brady, Oct 14, "make
+  sure the research is covering the areas nearby our stays"), getting-around, bookings-tickets.
+  Dispatch `.nearbase` after the other scouts so it reads their files and fills the gaps.
   Scout and parks budgets ~30; others 15-20; verifier ~90.
 - **Drive run roster:** getting-around (route options under the constraints, per leg)
   then one `lads-destination-scout.legN` per driving day. Dispatch the leg scouts after
