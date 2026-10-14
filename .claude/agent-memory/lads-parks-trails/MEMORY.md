@@ -1,2 +1,2 @@
-- [NPS sources](reference_nps_sources.md) — which nps.gov page patterns work/404, PDFs unreadable, no gain on NPS, visitors bureau as second host
+- [NPS sources](reference_nps_sources.md) — NPS places API (DEMO_KEY) beats district pages; closures page; WV State Parks trail URLs; OSRM matrix (no toll exclude); SHEN hours.htm + faqs-oldrag
 - [Two-source honesty](feedback_two_source_honesty.md) — two NPS hosts are one source; NPS-only trails ship as fact, not route

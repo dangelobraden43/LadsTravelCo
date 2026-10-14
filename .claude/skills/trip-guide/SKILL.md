@@ -67,6 +67,10 @@ Load the `artifact-design` skill first. One page, phone-first at 390, dark-frien
   provenance-checked name and coordinates, and "unconfirmed" flags where earned.
 - **Along the way** per leg, in driving order.
 - **Every hike** filterable by park, distance, difficulty.
+- **Book these (top of the guide):** every ticket, pass and reservation with its OFFICIAL
+  booking link, release date/time and official fee, ordered by deadline. Brady buys from the
+  guide (Oct 14: "include links in the deliverable"). Every place card also carries its
+  official site link and a Maps link.
 - **Before you go:** tickets and passes with release times (official fees exact with
   source), closures for the dates, no-signal zones, offline-map reminder.
 - **Walked / skipped checklist** (artifact storage capability, so both founders' marks
