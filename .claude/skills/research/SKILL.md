@@ -41,6 +41,13 @@ form:
 `Research <displayName> for the Lads. Your run directory is <runDir>. Read <runDir>RUN.json first. Your call budget is <n>. Write <runDir><agent>.json.`
 Launch the pair in one message; wait for both before the next pair.
 
+**Parts (Oct 14).** For exhaustive coverage one agent may run several times in a run, each
+writing `<runDir>lads-<agent>.<part>.json` (e.g. `lads-destination-scout.eat.json`). Put the
+part list and each part's scope in `RUN.json.parts` and the roster; the file's `agent` field
+stays the base name. **Every dispatch prompt must name the exact output file** — the stop
+hook validates the path it finds in the agent's own transcript, so separate runs may now
+proceed in parallel (the Oct 6/12 newest-RUN.json collision is fixed).
+
 After each agent returns: `node tools/research/validate.mjs <runDir><agent>.json`.
 If invalid, or a `.INVALID.txt` exists, re-dispatch that agent once with the errors
 pasted in. If still invalid, keep the file, mark it in SUMMARY.md, and continue.
