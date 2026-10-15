@@ -97,7 +97,16 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
     const items = buildItems(loaded)
     const counts = items.reduce((m, i) => ((m[i.status] = (m[i.status] || 0) + 1), m), {})
     console.log(`${loaded.run.destination}: ${items.length} items (verified: ${loaded.verified})`, counts)
-    runs.push({ destination: loaded.run.destination, displayName: loaded.run.displayName, verified: loaded.verified, trip: loaded.run.trip, items })
+    const verdictCounts = {}
+    for (const v of loaded.verdicts.values()) verdictCounts[v.verdict] = (verdictCounts[v.verdict] || 0) + 1
+    const stats = {
+      findings: loaded.findings.length,
+      sources: new Set(loaded.findings.flatMap((f) => (f.sources || []).map((s) => s.url))).size,
+      agentFiles: new Set(loaded.findings.map((f) => f.agent + (f.part ? '.' + f.part : ''))).size,
+      agents: [...new Set(loaded.findings.map((f) => f.agent))],
+      verdicts: verdictCounts,
+    }
+    runs.push({ destination: loaded.run.destination, displayName: loaded.run.displayName, verified: loaded.verified, trip: loaded.run.trip, stats, items })
   }
   writeFileSync(out, JSON.stringify({ builtOn: new Date().toLocaleDateString('en-CA'), runs }, null, 1))
 }

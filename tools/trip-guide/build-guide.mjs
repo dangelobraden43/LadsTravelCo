@@ -28,8 +28,32 @@ export function category(it) {
   return 'see'
 }
 
-/* a part file named for a leg ("leg1") belongs to the road */
-const trim = (s, n) => (s && s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '…' : s || '')
+/* Reader copy only. Our own pipeline (agent names, finding ids, "the founder's plan", DISCOVERED
+ * tags, verifier notes) is paperwork, never product: Brady's Peru rule. Claims lose any sentence
+ * that mentions it; notes keep only the labelled lines a reader can use. */
+const PAPERWORK = /\b(lads-[a-z-]+|scout-[a-z0-9-]+|prov-\d+|park-\d+|move-\d+|book-\d+|time-\d+|founders?'?s?|brady|dawson|lukas|personal guide|oct 4 (plan|guide|draft)|draft guide|candidate list|discovered|orchestrator|two-source|second source|verifier|run\.json|this run|the brief|routing agent|OSRM|engine|thin\b)/i
+export function readerClaim(text) {
+  const sentences = String(text || '').replace(/^DISCOVERED(\s*\(thin\))?:\s*/i, '').split(/(?<=[.!?])\s+(?=[A-Z0-9])/)
+  // first try cutting just the clause (", the lunch stop in the founder's plan,"), then the sentence
+  const clause = new RegExp('(,|\\(|;)[^,.;()]*' + PAPERWORK.source + '[^,.;()]*(,|\\)|;)', 'gi')
+  const kept = sentences.map((s) => s.replace(clause, (m0) => { const a = m0[0]; const c = m0[m0.length - 1]; return a === '(' || (a === ',' && c === ',') ? ' ' : a === ';' ? ';' : ',' }).replace(/\s+,/g, ',').replace(/,\s*\./g, '.').replace(/\s{2,}/g, ' ')).filter((s) => !PAPERWORK.test(s))
+  return (kept.length ? kept : sentences.slice(0, 1).map((s) => s.replace(PAPERWORK, '').trim())).join(' ')
+}
+const NOTE_LABELS = { praised: 'Praised', criticised: 'Watch out', criticized: 'Watch out', trap: 'Watch out', practical: 'Practical', 'best time': 'Best time', suits: 'Who it suits', 'who it suits': 'Who it suits', detour: 'Detour', option: 'Route', options: 'Route', routes: 'Route' }
+export function readerNotes(notes) {
+  const rows = []
+  for (const line of String(notes || '').split(/\n/)) {
+    const m = line.match(/^\s*([A-Za-z][A-Za-z /]{1,24}):\s*(.+)$/)
+    if (!m) continue
+    const label = NOTE_LABELS[m[1].trim().toLowerCase()]
+    if (!label) continue
+    const body = m[2].split(/(?<=[.!?])\s+/).filter((s) => !PAPERWORK.test(s)).join(' ').trim()
+    if (body && !/^(nothing found|none found|n\/a)\.?$/i.test(body)) rows.push([label, trim(body, 360)])
+  }
+  return rows
+}
+
+const trim =(s, n) => (s && s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '…' : s || '')
 const fmtRange = (v, unit = '') => {
   if (v == null) return null
   if (typeof v === 'number') return String(v) + unit
@@ -37,18 +61,28 @@ const fmtRange = (v, unit = '') => {
   return String(v)
 }
 
-export function build(data, mod) {
+export function build(data, mod, map = null) {
   const { plan, sections, areas, legs, knowGroups, skipPlace = () => false } = mod
   const items = []; const hikes = []; const know = []
   const seen = new Map()
+  const byId = new Map()
   for (const run of data.runs) {
     const section = sections[run.destination]
     for (const it of run.items) {
+      byId.set(it.id + '@' + run.destination, it); byId.set(it.id, byId.get(it.id) || it)
+      const claim = readerClaim(it.claim)
       const areaHit = areas.find((a) => (!a.section || a.section === section) && a.match.test(`${it.topic} ${it.name || ''}`))
       // hikes: trail routes and trail facts with stats
       if (it.agent === 'lads-parks-trails' && /trail/.test(it.topic) && (it.kind === 'route' || it.kind === 'fact') && it.value && it.value.miles != null) {
         const hikeArea = areas.find((a) => a.section === section && a.match.test(`${it.value.trailhead || ''} ${it.topic} ${it.name}`))
-        hikes.push({ id: it.id, section, name: it.name, miles: fmtRange(it.value.miles), gain: fmtRange(it.value.gainFt), difficulty: it.value.difficulty ? String(it.value.difficulty).replace(/\s*\(.*\)$/, '') : null, hours: fmtRange(it.value.hours), where: it.value.trailhead || null, drive: hikeArea ? hikeArea.drive : null, status: it.status, closed: /closed/i.test(it.claim.slice(0, 200)) ? 'Partly closed: see note' : null, claim: it.claim })
+        const v = it.value
+        hikes.push({
+          id: it.id, section, name: it.name, miles: fmtRange(v.miles), gain: fmtRange(v.gainFt), hours: fmtRange(v.hours),
+          difficulty: v.difficulty ? String(v.difficulty).replace(/\s*\(.*\)$/, '') : null, where: v.trailhead ? String(v.trailhead).replace(/\s*\(.*\)$/, '') : null,
+          drive: hikeArea ? hikeArea.drive : null, status: it.status, claim,
+          closed: /\bclosed\b/i.test(claim.slice(0, 220)) ? 'Partly closed: see note' : null,
+          geo: typeof v.lat === 'number' && v.coordSource ? { lat: v.lat, lng: v.lng } : null,
+        })
         continue
       }
       if (it.kind === 'place') {
@@ -57,8 +91,8 @@ export function build(data, mod) {
         const key = section + '|' + (it.name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
         const site = (it.sources.find((s) => s.kind === 'official' || s.kind === 'government') || {}).url || null
         const g = {
-          id: it.id, section, kind: 'place', name: it.name, claim: it.claim, notes: trim(it.notes, 900), status: it.status,
-          why: it.verifierReason ? trim(it.verifierReason, 500) : null, sources: it.sources.slice(0, 4), site, geo: it.geo,
+          id: it.id, section, kind: 'place', name: it.name, claim, rows: readerNotes(it.notes), status: it.status,
+          why: it.verifierReason ? trim(readerClaim(it.verifierReason), 420) : null, sources: it.sources.slice(0, 4), site, geo: it.geo,
           cat: category(it), areaLabel: areaHit ? areaHit.label : null, drive: areaHit ? areaHit.drive : null,
           driveSort: areaHit ? areaHit.sort ?? 999 : 999, near: Boolean(areaHit && areaHit.near), state: areaHit ? areaHit.state : null,
           leg: section === 'road' ? legs[it.part] || null : null, markable: true,
@@ -66,7 +100,7 @@ export function build(data, mod) {
         const prev = seen.get(key)
         if (prev) { // same place twice in one section: keep the richer card, carry coordinates over
           if (!prev.geo && g.geo) prev.geo = g.geo
-          if (prev.agent === 'lads-provenance' || g.claim.length > prev.claim.length * 1.6) Object.assign(prev, { claim: g.claim, notes: g.notes, sources: g.sources, site: g.site || prev.site, cat: g.cat, status: g.status, why: g.why })
+          if (prev.agent === 'lads-provenance' || g.claim.length > prev.claim.length * 1.6) Object.assign(prev, { claim: g.claim, rows: g.rows, sources: g.sources, site: g.site || prev.site, cat: g.cat, status: g.status, why: g.why })
           continue
         }
         g.agent = it.agent
@@ -74,28 +108,50 @@ export function build(data, mod) {
         continue
       }
       if (it.kind === 'trap' || it.kind === 'requirement' || it.kind === 'window' || (it.kind === 'fact' && /closure|status|hours|season|ticket|fee|pass|toll|road|cell|fuel|parking|weather|sun|moon|colou?r|event|hunting|river/.test(it.topic))) {
-        know.push({ id: it.id, group: knowGroups[run.destination], kind: it.kind, claim: it.claim, status: it.status, link: (it.sources[0] || {}).url || null })
+        know.push({ id: it.id, group: knowGroups[run.destination], kind: it.kind, claim, status: it.status, link: (it.sources[0] || {}).url || null })
       }
     }
   }
   items.sort((a, b) => a.driveSort - b.driveSort || a.name.localeCompare(b.name))
   hikes.sort((a, b) => (a.section > b.section ? 1 : a.section < b.section ? -1 : 0) || a.name.localeCompare(b.name))
-  const verified = data.runs.filter((r) => r.verified).length
-  const counts = `${items.length} places, ${hikes.length} hikes, ${know.length} notes. Fact-check: ${verified} of ${data.runs.length} research runs verified.`
   for (const it of items) { delete it.driveSort; delete it.agent }
-  return { builtOn: data.builtOn, plan: { ...plan, cats: CATS }, items, hikes, know, counts }
+
+  // how it was made: counted from the runs, never typed
+  const tot = { findings: 0, sources: 0, agentFiles: 0, agents: new Set(), verdicts: {} }
+  for (const r of data.runs) {
+    const st = r.stats || {}
+    tot.findings += st.findings || 0; tot.sources += st.sources || 0; tot.agentFiles += st.agentFiles || 0
+    for (const a of st.agents || []) tot.agents.add(a)
+    for (const [k, n] of Object.entries(st.verdicts || {})) tot.verdicts[k] = (tot.verdicts[k] || 0) + n
+  }
+  const catches = (plan.catches || []).map((c) => {
+    const f = byId.get(c.id)
+    return { title: c.title, text: c.text, status: f ? f.status : 'pending', link: f && f.sources[0] ? f.sources[0].url : null }
+  })
+  const made = {
+    runs: data.runs.length, verifiedRuns: data.runs.filter((r) => r.verified).length,
+    findings: tot.findings, sources: tot.sources, agentPasses: tot.agentFiles, specialists: [...tot.agents].length,
+    verdicts: tot.verdicts, catches,
+  }
+  const counts = `${items.length} places, ${hikes.length} hikes, ${know.length} notes from ${made.findings} findings. Fact-check: ${made.verifiedRuns} of ${made.runs} research runs verified.`
+  return { builtOn: data.builtOn, plan: { ...plan, cats: CATS, catches: undefined }, items, hikes, know, made, map, counts }
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
-  const [dataPath, planPath, out] = process.argv.slice(2)
+  const [dataPath, planPath, out, mapPath] = process.argv.slice(2)
   const data = JSON.parse(readFileSync(dataPath, 'utf8'))
   const mod = await import(pathToFileURL(path.resolve(planPath)).href)
-  const g = build(data, mod)
+  let map = null
+  if (mapPath) {
+    const m = JSON.parse(readFileSync(mapPath, 'utf8'))
+    map = { trip: m.map, profile: m.profile.map((p) => [p.km, p.m]), regions: m.regions, profileLegs: mod.mapSpec.profile.map((id) => ({ id, mi: m.map.routes[id].mi, label: m.map.routes[id].label })) }
+  }
+  const g = build(data, mod, map)
   const tpl = readFileSync(new URL('./template.html', import.meta.url), 'utf8')
   const json = JSON.stringify(g).replace(/</g, '\\u003c')
   const html = tpl.replace('__TITLE__', mod.plan.title).replace('__DATA__', () => json)
   writeFileSync(out, html)
   console.log(`${out}: ${(html.length / 1024).toFixed(0)} KB. ${g.counts}`)
-  const byCat = {}; for (const i of g.items) byCat[i.section + ':' + i.cat] = (byCat[i.section + ':' + i.cat] || 0) + 1
-  console.log(byCat, 'no area:', g.items.filter((i) => !i.areaLabel).map((i) => i.section + ':' + i.name).slice(0, 40))
+  const leaks = g.items.filter((i) => /\b(lads-|founder|brady|dawson|lukas|DISCOVERED)/i.test(i.claim + JSON.stringify(i.rows)))
+  if (leaks.length) { console.error('PAPERWORK LEAK:', leaks.map((i) => i.id)); process.exitCode = 1 }
 }
