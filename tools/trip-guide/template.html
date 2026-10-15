@@ -192,6 +192,30 @@ td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space
 .catch { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 4px; }
 footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--rule); margin-top: 44px; padding-top: 14px; display: grid; gap: 6px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } .profile .line { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: draw 2.2s ease-out 0.2s forwards; } @keyframes draw { to { stroke-dashoffset: 0; } } }
+
+/* light, cross-sections, history, ask */
+:root { --sky-top: #c9d9e3; --sky-bottom: #eef2ec; --terrain: #2c3b33; --terrain-edge: #1a2520; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --sky-top: #0b1620; --sky-bottom: #1b2a2a; --terrain: #3b4f45; --terrain-edge: #8fa79a; } }
+:root[data-theme="dark"] { --sky-top: #0b1620; --sky-bottom: #1b2a2a; --terrain: #3b4f45; --terrain-edge: #8fa79a; }
+.st.unchecked { color: var(--muted); }
+.light { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 6px; }
+@media (max-width: 520px) { .light { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.light .lt { background: var(--paper); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; display: grid; gap: 1px; min-width: 0; }
+.light .lt strong { font-size: 0.95rem; }
+.light .live { grid-column: 1 / -1; color: var(--steel); font-weight: 600; font-size: 0.86rem; }
+.xsec { margin: 0; display: grid; gap: 6px; }
+.xsec svg { width: 100%; height: auto; display: block; border-radius: 6px; }
+.xsec .cap { font: 600 0.78rem/1.45 var(--mono); color: var(--muted); }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.timeline li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; border-left: 2px solid var(--rule); padding-left: 10px; }
+.timeline .yr { font-weight: 600; color: var(--steel); font-size: 0.9rem; }
+.timeline p { font-size: 0.92rem; margin-top: 2px; }
+.askbox { display: grid; gap: 8px; }
+.askbox textarea { width: 100%; min-height: 64px; resize: vertical; border: 1px solid var(--rule); border-radius: 6px; padding: 10px; background: var(--card); color: var(--ink); font: 400 1rem/1.4 var(--body); }
+.chat { display: grid; gap: 10px; }
+.msg { border-radius: 8px; padding: 10px 12px; max-width: 92%; white-space: pre-wrap; }
+.msg.user { justify-self: end; background: var(--ink); color: var(--paper); }
+.msg.ai { justify-self: start; background: var(--card); border: 1px solid var(--rule); }
 </style>
 
 <div class="wrap">
@@ -228,7 +252,7 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
     for (const kid of kids.flat()) if (kid) el.append(kid)
     return el
   }
-  const STATUS = { confirmed: 'Fact-checked', corrected: 'Corrected', unconfirmed: 'Call ahead', pending: 'Being checked', searched: 'Searched' }
+  const STATUS = { confirmed: 'Fact-checked', corrected: 'Corrected', unconfirmed: 'Call ahead', unchecked: 'Not re-checked', pending: 'Being checked', searched: 'Searched' }
   const statusEl = (st) => h('span', { class: 'st ' + st, text: STATUS[st] || st })
   const driveEl = (m) => (m ? h('span', { class: 'sign', title: 'Drive from the house', text: '→ ' + m }) : null)
   const CATCOL = { eat: 'var(--c-eat)', coffee: 'var(--c-coffee)', drink: 'var(--c-drink)', see: 'var(--c-see)', views: 'var(--c-views)', outdoors: 'var(--c-outdoors)' }
@@ -293,7 +317,8 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
     const det = h('details', {}, h('summary', { text: 'Sources' + (it.why ? ' and the fact-check' : '') }))
     if (it.why) det.append(h('div', { class: 'why', text: (it.status === 'corrected' ? 'What changed: ' : 'Why it is flagged: ') + it.why }))
     if (it.sources && it.sources.length) det.append(h('ol', { class: 'srcs' }, it.sources.map((x) => h('li', {}, h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title || x.url })))))
-    const rows = (it.rows || []).length ? h('dl', {}, it.rows.map(([k, v]) => h('div', {}, h('dt', { text: k }), h('dd', { text: v })))) : null
+    const allRows = (it.rows || []).concat((it.history || []).slice(0, 2).map((t) => ['History', t]))
+    const rows = allRows.length ? h('dl', {}, allRows.map(([k, v]) => h('div', {}, h('dt', { text: k }), h('dd', { text: v })))) : null
     return h('article', { class: 'card', id: 'i-' + it.id },
       h('div', { class: 'row' }, it.areaLabel ? h('span', { class: 'tag', text: it.areaLabel }) : null, driveEl(it.drive), statusEl(it.status)),
       h('h3', {}, h('span', { class: 'dot', style: 'background:' + (CATCOL[it.cat] || 'var(--muted)') }), it.name || 'Note'),
@@ -399,6 +424,165 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
     return h('div', { class: 'mapbox' }, svg, legend, h('p', { class: 'count', text: `${pins.length} mapped from official records. Tap a pin for its card. Places without an authoritative coordinate are in the list below, not on the map.` }), panel)
   }
 
+  /* ---------- light: sunrise, golden hour, dusk, computed on the device ---------- */
+  const SUN = (() => {
+    const rad = Math.PI / 180; const dayMs = 864e5; const J1970 = 2440588; const J2000 = 2451545; const e = rad * 23.4397; const J0 = 0.0009
+    const toDays = (d) => d.valueOf() / dayMs - 0.5 + J1970 - J2000
+    const fromJ = (j) => new Date((j + 0.5 - J1970) * dayMs)
+    const M_ = (d) => rad * (357.5291 + 0.98560028 * d)
+    const L_ = (M) => M + rad * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M)) + rad * 102.9372 + Math.PI
+    const dec = (L) => Math.asin(Math.sin(e) * Math.sin(L))
+    return function times(date, lat, lng) {
+      const lw = rad * -lng; const phi = rad * lat; const d = toDays(date)
+      const n = Math.round(d - J0 - lw / (2 * Math.PI)); const ds = J0 + lw / (2 * Math.PI) + n
+      const M = M_(ds); const L = L_(M); const de = dec(L)
+      const transit = (a) => J2000 + a + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L)
+      const noon = transit(ds)
+      const at = (hDeg) => {
+        const w = Math.acos((Math.sin(hDeg * rad) - Math.sin(phi) * Math.sin(de)) / (Math.cos(phi) * Math.cos(de)))
+        const set = transit(J0 + (w + lw) / (2 * Math.PI) + n)
+        return [fromJ(noon - (set - noon)), fromJ(set)]
+      }
+      const [rise, set] = at(-0.833); const [dawn, dusk] = at(-6); const [gEnd, gStart] = at(6)
+      return { dawn, rise, gEnd, gStart, set, dusk }
+    }
+  })()
+  const clock = (d) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })
+  function lightPanel(day) {
+    const b = M && M.trip && M.trip.bases.find((x) => x.id === day.base); if (!b) return null
+    const t = SUN(new Date(day.iso + 'T12:00:00-04:00'), b.lat, b.lng)
+    const cell = (label, d, hint) => h('div', { class: 'lt' }, h('span', { class: 'eyebrow', text: label }), h('strong', { class: 'num', text: clock(d) }), hint ? h('span', { class: 'count', text: hint }) : null)
+    const box = h('div', { class: 'light', 'aria-label': 'Light at ' + b.name },
+      cell('First light', t.dawn), cell('Sunrise', t.rise), cell('Golden hour', t.gStart, 'until sunset'), cell('Sunset', t.set), cell('Dark', t.dusk))
+    if (todayDay && todayDay.iso === day.iso) {
+      const live = h('p', { class: 'live num' })
+      const tick = () => {
+        const now = new Date(); const fmtDur = (ms) => { const m = Math.round(ms / 60000); return (m >= 60 ? Math.floor(m / 60) + ' h ' : '') + (m % 60) + ' min' }
+        live.textContent = now < t.rise ? 'Sunrise in ' + fmtDur(t.rise - now) : now < t.gStart ? 'Golden hour in ' + fmtDur(t.gStart - now) + ', sunset in ' + fmtDur(t.set - now) : now < t.set ? 'Sunset in ' + fmtDur(t.set - now) : now < t.dusk ? 'Dark in ' + fmtDur(t.dusk - now) : 'After dark: watch for deer on the drive back'
+      }
+      tick(); setInterval(tick, 30000); box.append(live)
+    }
+    return h('div', {}, h('div', { class: 'eyebrow', text: 'Light at ' + b.name.toLowerCase().replace(/^the /, 'the ') + ' (computed for this date)' }), box)
+  }
+
+  /* ---------- cross-sections cut from real terrain ---------- */
+  function crossSection(id) {
+    const S = M && M.sections && M.sections[id]; const spec = (P.sectionArt || {})[id]; if (!S || !spec) return null
+    const W = 1000; const ex = S.exaggeration || 1; const ms = S.profile.map((p) => p[1]); const lo = Math.min(...ms); const hi = Math.max(...ms)
+    const kx = W / (S.km * 1000); const ky = kx * ex
+    const top = U(W, 46); const Hh = (hi - lo) * ky + top + U(W, 26)
+    const X = (km) => km * 1000 * kx; const Y = (m) => top + (hi - m) * ky
+    const elevAt = (km) => { const p = S.profile; for (let i = 1; i < p.length; i++) if (p[i][0] >= km) { const t = (km - p[i - 1][0]) / (p[i][0] - p[i - 1][0]); return p[i - 1][1] + t * (p[i][1] - p[i - 1][1]) } return p[p.length - 1][1] }
+    const line = S.profile.map((p, i) => (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1)).join('')
+    const gid = 'sky-' + id
+    const svg = s('svg', { viewBox: `0 0 ${W} ${Hh.toFixed(0)}`, role: 'img', 'aria-label': spec.alt },
+      s('defs', {}, s('linearGradient', { id: gid, x1: 0, y1: 0, x2: 0, y2: 1 }, s('stop', { offset: '0', 'stop-color': 'var(--sky-top)' }), s('stop', { offset: '1', 'stop-color': 'var(--sky-bottom)' }))),
+      s('rect', { x: 0, y: 0, width: W, height: Hh, fill: `url(#${gid})` }),
+      s('path', { d: line + `L${W} ${Hh}L0 ${Hh}Z`, fill: 'var(--terrain)' }),
+      s('path', { d: line, fill: 'none', stroke: 'var(--terrain-edge)', 'stroke-width': U(W, 1.4) }))
+    for (const m of S.marks) {
+      const x = X(m.km); const y = Y(elevAt(m.km))
+      if (m.kind === 'bridge' && spec.bridge) {
+        const halfDeck = spec.bridge.deckM / 2 / 1000; const halfArch = spec.bridge.archM / 2 / 1000
+        const deckY = Y(Math.max(elevAt(m.km - halfDeck), elevAt(m.km + halfDeck)))
+        const springY = Y(Math.max(elevAt(m.km - halfArch), elevAt(m.km + halfArch)))
+        const ax0 = X(m.km - halfArch); const ax1 = X(m.km + halfArch); const apexY = deckY + U(W, 3)
+        const arch = `M${ax0} ${springY}Q${x} ${apexY - (springY - apexY)} ${ax1} ${springY}`
+        svg.append(s('path', { d: arch, fill: 'none', stroke: 'var(--steel)', 'stroke-width': U(W, 2.6) }))
+        const nStruts = 14
+        for (let i = 1; i < nStruts; i++) {
+          const t = i / nStruts; const sx = ax0 + (ax1 - ax0) * t; const sy = (1 - t) * (1 - t) * springY + 2 * (1 - t) * t * (apexY - (springY - apexY)) + t * t * springY
+          svg.append(s('line', { x1: sx, x2: sx, y1: deckY, y2: sy, stroke: 'var(--steel)', 'stroke-width': U(W, 0.9), opacity: 0.8 }))
+        }
+        svg.append(s('line', { x1: X(m.km - halfDeck), x2: X(m.km + halfDeck), y1: deckY, y2: deckY, stroke: 'var(--steel)', 'stroke-width': U(W, 2.4) }))
+        svg.append(s('text', { x: X(m.km + halfDeck) - U(W, 4), y: deckY - U(W, 8), 'text-anchor': 'end', 'font-size': U(W, 12), 'font-weight': 800, 'stroke-width': U(W, 3), stroke: 'var(--sky-bottom)', text: m.name }))
+        continue
+      }
+      if (m.kind === 'river') {
+        svg.append(s('circle', { cx: x, cy: y, r: U(W, 3.5), fill: 'var(--water)' }))
+        svg.append(s('text', { x: x + U(W, 6), y: y + U(W, 16), 'font-size': U(W, 12), 'font-weight': 800, 'stroke-width': U(W, 3), stroke: 'var(--terrain)', fill: 'var(--water)', text: m.name }))
+        continue
+      }
+      const labY = m.kind === 'valley' ? y + U(W, 18) : y - U(W, 12)
+      if (m.kind !== 'valley') svg.append(s('line', { x1: x, x2: x, y1: y - U(W, 2), y2: labY + U(W, 3), stroke: 'var(--ink)', 'stroke-width': U(W, 1) }))
+      svg.append(s('text', { x, y: labY, 'text-anchor': 'middle', 'font-size': U(W, 12), 'font-weight': 800, 'stroke-width': U(W, 3), stroke: m.kind === 'valley' ? 'var(--terrain)' : 'var(--sky-bottom)', fill: m.kind === 'valley' ? 'var(--paper)' : 'var(--ink)', text: m.name }))
+    }
+    const reliefFt = Math.round(((hi - lo) * 3.28084) / 10) * 10
+    const cap = spec.caption.replace('{relief}', fmt(reliefFt)).replace('{km}', S.km.toFixed(1)).replace('{mi}', (S.km * 0.621371).toFixed(1)) + (ex > 1 ? ` Height drawn ×${ex}.` : ' Drawn to scale, height and width alike.')
+    return h('figure', { class: 'xsec' }, svg, h('figcaption', { class: 'cap', text: cap }))
+  }
+
+  /* ---------- history timeline ---------- */
+  function storyBlock(section, title) {
+    const st = (G.stories || []).filter((x) => x.section === section && x.status !== 'unconfirmed')
+    if (!st.length) return null
+    const det = h('details', { class: 'day story' }, h('summary', {}, h('div', {}, h('div', { class: 'eyebrow', text: st.length + ' stories, oldest first' }), h('h3', { text: title }))))
+    det.append(h('div', { class: 'body' }, h('ol', { class: 'timeline' }, st.map((x) => h('li', {},
+      h('span', { class: 'yr num', text: x.year || '' }),
+      h('div', {}, x.name ? h('strong', { text: x.name }) : null, h('p', { text: x.claim }), h('div', { class: 'row' }, statusEl(x.status), x.link ? h('a', { href: x.link, target: '_blank', rel: 'noopener', class: 'count', text: 'Source' }) : null)))))))
+    return det
+  }
+
+  /* ---------- ask the guide: Claude answers from this page's checked research only ---------- */
+  function askSection(sec) {
+    const out = h('div', { class: 'chat', 'aria-live': 'polite' })
+    const input = h('textarea', { id: 'ask-input', rows: '2', placeholder: 'We’re at Grandview at 3 pm. What’s close and worth it before sunset?', 'aria-label': 'Ask the guide' })
+    const send = h('button', { class: 'btn primary', type: 'button', text: 'Ask' })
+    const stop = h('button', { class: 'btn', type: 'button', text: 'Stop', hidden: true })
+    const note = h('p', { class: 'count' })
+    const chips = h('div', { class: 'filters' }, (P.askExamples || []).map((q) => h('button', { class: 'chipbtn', type: 'button', text: q, onclick: () => { input.value = q; go() } })))
+    sec.append(chips, h('div', { class: 'askbox' }, input, h('div', { class: 'btns' }, send, stop)), note, out)
+    let sample = null; let ctl = null; const turns = []
+    note.textContent = 'Connecting to Claude…'
+    ;(async () => {
+      try { sample = window.claude && window.claude.use ? await window.claude.use('sample') : null } catch (e) { sample = null }
+      if (!sample) { note.textContent = 'Ask works when this guide is open in Claude. Everything else on the page works anywhere.'; send.disabled = true; chips.hidden = true }
+      else note.textContent = 'Answers come only from this guide’s fact-checked research. Each question uses a little of your Claude usage.'
+    })()
+    const words = (q) => String(q || '').toLowerCase().split(/[^a-z0-9']+/).filter((w) => w.length > 2)
+    const score = (txt, ws) => ws.reduce((n, w) => n + (txt.includes(w) ? 1 : 0), 0)
+    const brief = (i) => ({ name: i.name, region: i.section, area: i.areaLabel, driveFromHouse: i.drive, category: i.cat, status: STATUS[i.status], what: i.claim, details: Object.fromEntries((i.rows || []).map(([k, v]) => [k, v])), history: i.history || undefined, website: i.site || undefined })
+    const tools = [
+      { name: 'search_places', description: 'Search the guide’s places (food, coffee, drink, sights, views, falls). Returns up to 8 matches with drive time from the house, fact-check status and details. Use region gorge, ridge or road, or any.', inputSchema: { type: 'object', properties: { query: { type: 'string' }, region: { type: 'string', enum: ['gorge', 'ridge', 'road', 'any'] }, category: { type: 'string', enum: ['eat', 'coffee', 'drink', 'see', 'views', 'outdoors', 'any'] } }, required: ['query'] },
+        execute: (a) => { const ws = words(a.query); const reg = String(a.region || 'any'); const cat = String(a.category || 'any'); return G.items.filter((i) => (reg === 'any' || i.section === reg) && (cat === 'any' || i.cat === cat)).map((i) => [score((i.name + ' ' + (i.areaLabel || '') + ' ' + i.claim + ' ' + JSON.stringify(i.rows)).toLowerCase(), ws), i]).filter(([n]) => n > 0 || !ws.length).sort((x, y) => y[0] - x[0]).slice(0, 8).map(([, i]) => brief(i)) } },
+      { name: 'get_day_plan', description: 'The suggested plan for one trip day (2026-10-23 to 2026-10-27): drives with toll-free route options, timed suggestions and sunrise/sunset.', inputSchema: { type: 'object', properties: { date: { type: 'string', description: 'YYYY-MM-DD' } }, required: ['date'] },
+        execute: (a) => { const d = (P.days || []).find((x) => x.iso === String(a.date)); if (!d) throw new Error('No plan for that date; trip days are 2026-10-23 to 2026-10-27'); return { date: d.date, title: d.title, sun: d.sun, legs: d.legs, slots: d.slots } } },
+      { name: 'find_hikes', description: 'Trails in the guide with miles, gain, difficulty, hours, drive time from the house and status. Filter by region and max miles.', inputSchema: { type: 'object', properties: { region: { type: 'string', enum: ['gorge', 'ridge', 'any'] }, max_miles: { type: 'number' }, query: { type: 'string' } } },
+        execute: (a) => { const ws = words(a.query); return (G.hikes || []).filter((k) => (!a.region || a.region === 'any' || k.section === a.region) && (!a.max_miles || parseFloat(String(k.miles).split('–').pop()) <= Number(a.max_miles)) && (!ws.length || score((k.name + ' ' + k.claim).toLowerCase(), ws) > 0)).slice(0, 12).map((k) => ({ name: k.name, region: k.section, miles: k.miles, gainFt: k.gain, difficulty: k.difficulty, hours: k.hours, trailhead: k.where, driveFromHouse: k.drive, status: STATUS[k.status], note: k.claim })) } },
+      { name: 'get_notes', description: 'Closures, seasonal hours, fees, traps and history notes for a region, filtered by a query.', inputSchema: { type: 'object', properties: { region: { type: 'string', enum: ['gorge', 'ridge', 'road'] }, query: { type: 'string' } }, required: ['region'] },
+        execute: (a) => { const ws = words(a.query); const pick = (arr) => arr.map((k) => [score(k.claim.toLowerCase(), ws), k]).filter(([n]) => n > 0 || !ws.length).sort((x, y) => y[0] - x[0]).slice(0, 8).map(([, k]) => ({ kind: k.kind || 'history', name: k.name, text: k.claim, status: STATUS[k.status] })); return { notes: pick((G.know || []).filter((k) => k.group === a.region)), history: pick((G.stories || []).filter((k) => k.section === a.region)) } } },
+      { name: 'get_bookings', description: 'Everything to book or confirm, with official links, deadlines and official fees.', execute: () => P.book },
+    ]
+    const RULES = [
+      'You are the built-in assistant of a private road-trip guide for two travellers. Trip: Fri Oct 23 to Tue Oct 27, 2026. They sleep at a river house on New River Road near Hinton, WV (Oct 23 and 24) and at Triquetra Farm, 815 Foothills Rd, Stanardsville, VA (Oct 25 and 26), drive their own car and avoid every toll road.',
+      'Today is ' + new Date().toLocaleString('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' Eastern.',
+      'Answer ONLY from what the tools return. Look things up before answering. Never invent hours, prices, distances or places. If the guide does not cover it, say so plainly.',
+      'Status meanings: "Fact-checked" and "Corrected" are verified; "Call ahead" means a source could not confirm it; "Not re-checked" means it was not verified. Tell them to call ahead for anything not verified, especially hours.',
+      'Drive times are from the house they are staying at that night. Be brief and practical: a short answer, then at most 4 options as a list with drive time and why. Plain words, no emoji, no marketing tone.',
+    ].join('\n')
+    function bubble(role, text) { const b = h('div', { class: 'msg ' + role }, h('p', { text })); out.append(b); return b }
+    async function go() {
+      const q = input.value.trim(); if (!q || !sample) return
+      input.value = ''; bubble('user', q)
+      const b = bubble('ai', 'Thinking…'); const p = b.querySelector('p')
+      turns.push({ role: 'user', content: q })
+      ctl = new AbortController(); send.disabled = true; stop.hidden = false
+      try {
+        const { text } = await sample([{ role: 'user', content: RULES + '\n\nFirst question follows.' }, { role: 'assistant', content: 'Understood. I will look things up in the guide and answer only from it.' }, ...turns], {
+          tools, signal: ctl.signal, modelTier: 'default', onText: ({ text: t }) => { p.textContent = t },
+        })
+        p.textContent = text; turns.push({ role: 'assistant', content: text })
+      } catch (e) {
+        turns.pop()
+        p.textContent = e && e.text ? e.text : ''
+        const why = { not_granted: 'Ask needs your permission to use Claude. Allow it and try again.', rate_limited: 'Too many questions at once. Wait a moment, then ask again.', cancelled: 'Stopped.' }[e && e.code] || 'That did not go through. Try again in a moment.'
+        b.append(h('p', { class: 'count', text: why }))
+      } finally { send.disabled = false; stop.hidden = true }
+    }
+    send.addEventListener('click', go); stop.addEventListener('click', () => ctl && ctl.abort())
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); go() } })
+  }
+
   /* ---------- hero ---------- */
   const hero = $('#top')
   hero.append(h('div', { class: 'brand' }, h('i', { text: 'L' }), 'The Lads Travel Co. · Trip guide'))
@@ -456,6 +640,7 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
       const det = h('details', { class: 'day' + (isToday ? ' is-today' : ''), id: 'day-' + d.iso, open: isToday || (!tripStarted && i === 0) ? true : null },
         h('summary', {}, h('div', {}, h('div', { class: 'eyebrow', text: d.date + (isToday ? ' · Today' : '') }), h('h3', { text: d.title })), h('span', { class: 'sun', text: d.sun || '' })))
       const body = h('div', { class: 'body' })
+      const lp = lightPanel(d); if (lp) body.append(lp)
       for (const leg of d.legs || []) {
         body.append(h('div', { class: 'ledger' }, h('div', { class: 'eyebrow', text: leg.label }), leg.options.map((o) => {
           const parts = String(o.time).replace(/[^\d.–½¼ -]/g, '').replace('½', '.5').replace('¼', '.25').split(/[–-]/).map(parseFloat).filter((n) => !isNaN(n))
@@ -472,13 +657,17 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
     sec.append(wrap)
   }
 
+  { const sec = addSection('ask', 'Ask the guide', P.askIntro); askSection(sec) }
+
   if (M && M.trip) { const sec = addSection('route', 'The route', P.routeIntro); sec.append(tripMap()) }
 
   for (const r of P.regions) {
     const items = G.items.filter((i) => i.section === r.id)
     const sec = addSection(r.id, r.title, r.intro)
     const rm = M ? regionMap(r.id, items, (G.hikes || []).filter((k) => k.section === r.id)) : null
+    const cs = crossSection(r.id); if (cs) sec.insertBefore(cs, sec.children[1] || null)
     if (rm) sec.append(rm)
+    const sb = storyBlock(r.id, r.storyTitle || 'The story'); if (sb) sec.append(sb)
     const near = items.filter((i) => i.near)
     if (near.length) { const sub = h('div', { class: 'sub' }, h('h3', { text: r.nearTitle })); sec.append(sub); filterable(sub, near, { id: r.id + '-near', limit: 12, label: r.nearTitle }) }
     const sub = h('div', { class: 'sub' }, h('h3', { text: r.restTitle })); sec.append(sub)
@@ -487,6 +676,7 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
 
   if (P.road) {
     const sec = addSection('road', P.road.title, P.road.intro)
+    const rsb = storyBlock('road', 'Roadside history'); if (rsb) sec.append(rsb)
     for (const leg of P.road.legs) {
       const items = G.items.filter((i) => i.section === 'road' && i.leg === leg.id)
       const sub = h('div', { class: 'sub' }, h('h3', {}, h('span', { class: 'dot', style: 'background:' + LEGCOL[leg.id] }), ' ' + leg.title), leg.text ? h('p', { class: 'intro', text: leg.text }) : null)

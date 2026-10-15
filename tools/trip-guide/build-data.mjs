@@ -26,6 +26,8 @@ export function statusFor(v) {
   if (v.verdict === 'confirmed') return 'confirmed'
   if (v.verdict === 'weakened') return 'corrected'
   if (v.verdict === 'refuted') return 'refuted'
+  /* a budget-limited pass is not a failed check: say it was not re-checked */
+  if (/^\s*not checked/i.test(v.reason || '')) return 'unchecked'
   return 'unconfirmed'
 }
 

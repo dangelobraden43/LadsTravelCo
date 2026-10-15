@@ -63,7 +63,7 @@ const fmtRange = (v, unit = '') => {
 
 export function build(data, mod, map = null) {
   const { plan, sections, areas, legs, knowGroups, skipPlace = () => false } = mod
-  const items = []; const hikes = []; const know = []
+  const items = []; const hikes = []; const know = []; const stories = []
   const seen = new Map()
   const byId = new Map()
   for (const run of data.runs) {
@@ -71,6 +71,11 @@ export function build(data, mod, map = null) {
     for (const it of run.items) {
       byId.set(it.id + '@' + run.destination, it); byId.set(it.id, byId.get(it.id) || it)
       const claim = readerClaim(it.claim)
+      if (it.part === 'history') {
+        const yr = (claim.match(/(1[5-9]\d\d|20[0-2]\d)/) || [])[1]
+        stories.push({ id: it.id, section, name: it.name, claim, year: yr ? +yr : null, status: it.status, link: (it.sources[0] || {}).url || null, key: (it.name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim() })
+        continue
+      }
       const areaHit = areas.find((a) => (!a.section || a.section === section) && a.match.test(`${it.topic} ${it.name || ''}`))
       // hikes: trail routes and trail facts with stats
       if (it.agent === 'lads-parks-trails' && /trail/.test(it.topic) && (it.kind === 'route' || it.kind === 'fact') && it.value && it.value.miles != null) {
@@ -112,6 +117,13 @@ export function build(data, mod, map = null) {
       }
     }
   }
+  // history attaches to the place it is about (exact name in the same section), and also lives in the timeline
+  for (const st of stories) {
+    const it = items.find((i) => i.section === st.section && (i.name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim() === st.key)
+    if (it && st.status !== 'unconfirmed') (it.history = it.history || []).push(st.claim)
+    delete st.key
+  }
+  stories.sort((a, b) => (a.year ?? 9999) - (b.year ?? 9999))
   items.sort((a, b) => a.driveSort - b.driveSort || a.name.localeCompare(b.name))
   hikes.sort((a, b) => (a.section > b.section ? 1 : a.section < b.section ? -1 : 0) || a.name.localeCompare(b.name))
   for (const it of items) { delete it.driveSort; delete it.agent }
@@ -135,7 +147,7 @@ export function build(data, mod, map = null) {
   }
   made.checked = Object.values(tot.verdicts).reduce((x, n) => x + n, 0)
   const counts = `${items.length} places, ${hikes.length} hikes, ${know.length} notes from ${made.findings} findings. Fact-checked: ${made.checked} of ${made.findings} findings.`
-  return { builtOn: data.builtOn, plan: { ...plan, cats: CATS, catches: undefined }, items, hikes, know, made, map, counts }
+  return { builtOn: data.builtOn, plan: { ...plan, cats: CATS, catches: undefined }, items, hikes, know, stories, made, map, counts }
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
@@ -146,6 +158,8 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   if (mapPath) {
     const m = JSON.parse(readFileSync(mapPath, 'utf8'))
     map = { trip: m.map, profile: m.profile.map((p) => [p.km, p.m]), regions: m.regions, profileLegs: mod.mapSpec.profile.map((id) => ({ id, mi: m.map.routes[id].mi, label: m.map.routes[id].label })) }
+    const secPath = path.join(path.dirname(mapPath), 'sections.json')
+    try { map.sections = JSON.parse(readFileSync(secPath, 'utf8')) } catch { map.sections = null }
   }
   const g = build(data, mod, map)
   const tpl = readFileSync(new URL('./template.html', import.meta.url), 'utf8')
