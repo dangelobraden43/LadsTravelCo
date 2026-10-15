@@ -1,1 +1,1 @@
-- [Source behaviour and budget lessons](reference_source-behaviour.md) — what fetches, what 403s, eurail merger, ski pass pages (Boyne/Crystal/Nub's), Ikon Crystal WA trap, promo two-source trap
+- [Source behaviour and budget lessons](reference_source-behaviour.md) — what fetches/403s, eurail merger, ski pass pages, shared session search cap, Andalusia museum pages, EU-only/Monday-closure traps

@@ -1,0 +1,2 @@
+- [Source behaviour](reference_source_behaviour.md) — which issuer/airline pages fetch cleanly (Chase, Capital One) and which fail (Amex, aa.com 403)
+- [Run lessons](feedback_run_lessons.md) — card side-by-side shape, bonus re-check dates, transfer-path trap, carrying other agents' sources

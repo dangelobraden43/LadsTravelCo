@@ -1,1 +1,1 @@
-- [Transport sources](reference_transport_sources.md) — NPS/airport/toll fetch tricks; seat61 truncation; operator works notices; notes price scan; Spain DGT/Adif sources; ferry brand drift
+- [Transport sources](reference_transport_sources.md) — NPS/airport/toll fetch tricks; seat61; Spain DGT/Adif; ferry drift; OSRM (reads high, no exclude=toll) + Valhalla matrix URLs; toll bypasses; WV DOT ramp closures; shared search pool, fetch-only fallback; AU airport-rail fees
