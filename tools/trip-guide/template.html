@@ -526,6 +526,23 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
     }
   }
 
+  /* trip log: fills itself from the shared marks */
+  {
+    const sec = addSection('log', 'Trip log', P.logIntro || 'Everything either of you has marked, newest first. It fills in as you tap “We did this” or “Skipped” on any card.')
+    const list = h('div', { class: 'know' })
+    const empty = h('p', { class: 'empty', text: 'Nothing marked yet.' })
+    const byIdAll = new Map(G.items.map((i) => [i.id, i]))
+    sec.append(empty, list)
+    const paintLog = () => {
+      const rows = [...marks.entries()].filter(([, m]) => m && (m.status || m.note)).sort((a, b) => String(b[1].at || '').localeCompare(String(a[1].at || '')))
+      empty.hidden = rows.length > 0
+      list.replaceChildren(...rows.map(([id, m]) => { const it = byIdAll.get(id); return h('div', { class: 'k' },
+        h('div', { class: 'row' }, h('span', { class: 'tag', text: m.status === 'did' ? 'Did it' : m.status === 'skip' ? 'Skipped' : 'Note' }), it && it.areaLabel ? h('span', { class: 'count', text: it.areaLabel }) : null, m.at ? h('span', { class: 'count', text: new Date(m.at).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' }) }) : null),
+        h('p', {}, h('strong', { text: it ? it.name : id })), m.note ? h('p', { class: 'muted', text: '“' + m.note + '”' }) : null) }))
+    }
+    markListeners.add(paintLog); paintLog()
+  }
+
   if (G.made) {
     const D = G.made; const v = D.verdicts || {}
     const sec = addSection('made', 'How this guide was made', P.madeIntro)
@@ -536,7 +553,7 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
       sec.append(h('h3', { text: 'What the research caught' }))
       sec.append(h('div', { class: 'catches' }, D.catches.map((c) => h('div', { class: 'catch' }, h('div', { class: 'row' }, statusEl(c.status)), h('h3', { text: c.title }), h('p', { class: 'muted', text: c.text }), c.link ? h('a', { href: c.link, target: '_blank', rel: 'noopener', class: 'count', text: 'Source' }) : null))))
     }
-    sec.append(h('p', { class: 'count', text: `${D.verifiedRuns} of ${D.runs} research runs fact-checked at build time.` }))
+    sec.append(h('p', { class: 'count', text: `${fmt(D.checked)} of ${fmt(D.findings)} findings fact-checked when this page was built.` }))
   }
 
   for (const [id, label] of sections) tabs.append(h('li', {}, h('a', { href: '#' + id, text: label })))

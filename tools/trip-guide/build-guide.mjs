@@ -133,7 +133,8 @@ export function build(data, mod, map = null) {
     findings: tot.findings, sources: tot.sources, agentPasses: tot.agentFiles, specialists: [...tot.agents].length,
     verdicts: tot.verdicts, catches,
   }
-  const counts = `${items.length} places, ${hikes.length} hikes, ${know.length} notes from ${made.findings} findings. Fact-check: ${made.verifiedRuns} of ${made.runs} research runs verified.`
+  made.checked = Object.values(tot.verdicts).reduce((x, n) => x + n, 0)
+  const counts = `${items.length} places, ${hikes.length} hikes, ${know.length} notes from ${made.findings} findings. Fact-checked: ${made.checked} of ${made.findings} findings.`
   return { builtOn: data.builtOn, plan: { ...plan, cats: CATS, catches: undefined }, items, hikes, know, made, map, counts }
 }
 

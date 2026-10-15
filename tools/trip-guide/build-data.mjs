@@ -31,11 +31,12 @@ export function statusFor(v) {
 
 export function loadRun(runDir) {
   const run = JSON.parse(readFileSync(path.join(runDir, 'RUN.json'), 'utf8'))
-  const files = readdirSync(runDir).filter((f) => f.startsWith('lads-') && f.endsWith('.json') && f !== 'lads-verifier.json')
+  const files = readdirSync(runDir).filter((f) => f.startsWith('lads-') && f.endsWith('.json') && !f.startsWith('lads-verifier'))
   const vfile = path.join(runDir, 'lads-verifier.json')
   const verdicts = new Map()
-  if (existsSync(vfile)) {
-    for (const v of JSON.parse(readFileSync(vfile, 'utf8')).verdicts || []) verdicts.set(v.findingId, v)
+  /* lads-verifier.json plus any top-up passes (lads-verifier.<part>.json) for later part files */
+  for (const vf of readdirSync(runDir).filter((f) => /^lads-verifier(\.[a-z0-9-]+)?\.json$/.test(f)).sort()) {
+    for (const v of JSON.parse(readFileSync(path.join(runDir, vf), 'utf8')).verdicts || []) verdicts.set(v.findingId, v)
   }
   const findings = []
   for (const f of files) {
