@@ -1,0 +1,357 @@
+<title>__TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@500;700;800&family=Overpass+Mono:wght@500;600&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: one reading column of road-trip sections (book, days, each base, the road, hikes, know),
+   sticky section tabs, cards grouped by what you want right now, sorted by drive time from the house. */
+:root {
+  --paper: #eef0ea; --card: #f8f9f5; --ink: #1b2620; --muted: #56635a; --rule: #cfd5cc;
+  --steel: #a8481f; --ridge: #345a77; --sign: #1d5a3a; --sign-ink: #ffffff;
+  --ok: #2c6a43; --warn: #8e5f0c; --bad: #9b2c2c; --chip: #e2e6df;
+  --display: "Overpass", "Highway Gothic", "Arial Narrow", system-ui, sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Overpass Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #111714; --card: #18201c; --ink: #e2e7df; --muted: #9ba79f; --rule: #2b352f;
+  --steel: #e27b4e; --ridge: #8db2cf; --sign: #1f6b45; --sign-ink: #ffffff;
+  --ok: #7cc495; --warn: #e2b55c; --bad: #ef8b8b; --chip: #222b26; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #111714; --card: #18201c; --ink: #e2e7df; --muted: #9ba79f; --rule: #2b352f;
+  --steel: #e27b4e; --ridge: #8db2cf; --sign: #1f6b45; --sign-ink: #ffffff;
+  --ok: #7cc495; --warn: #e2b55c; --bad: #ef8b8b; --chip: #222b26; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.55 var(--body); margin: 0; }
+.wrap { max-width: 860px; margin: 0 auto; padding-inline: 16px; padding-block: 0 64px; }
+a { color: var(--ridge); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.12; margin: 0; }
+h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: 1.12rem; font-weight: 700; }
+.eyebrow { font: 700 0.74rem/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+p { margin: 0; }
+
+/* hero */
+.hero { padding-block: 28px 18px; display: grid; gap: 14px; }
+.hero h1 { font-size: clamp(2.1rem, 8vw, 3.4rem); font-weight: 800; letter-spacing: -0.02em; }
+.hero h1 .amp { color: var(--steel); }
+.hero .lede { color: var(--muted); max-width: 62ch; }
+.bases { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.base { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 4px; min-width: 0; }
+.base .when { font: 600 0.82rem/1.2 var(--mono); color: var(--steel); }
+.base .addr { color: var(--muted); font-size: 0.9rem; }
+
+/* tabs */
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); margin-inline: -16px; padding-inline: 16px; }
+nav.tabs ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+nav.tabs ul::-webkit-scrollbar { display: none; }
+nav.tabs a { display: block; padding: 12px 10px 10px; font: 700 0.86rem/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 3px solid transparent; }
+nav.tabs a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--steel); }
+
+section.block { padding-block: 34px 6px; display: grid; gap: 16px; scroll-margin-top: 52px; }
+.intro { color: var(--muted); max-width: 64ch; }
+
+/* road sign chips */
+.sign { display: inline-flex; align-items: center; gap: 4px; background: var(--sign); color: var(--sign-ink); border-radius: 4px; padding: 2px 7px 1px; font: 600 0.78rem/1.4 var(--mono); white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35); }
+.sign.none { background: var(--chip); color: var(--muted); box-shadow: none; }
+.tag { display: inline-block; background: var(--chip); color: var(--muted); border-radius: 3px; padding: 2px 6px 1px; font: 600 0.74rem/1.4 var(--display); letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+.st { font: 700 0.72rem/1.4 var(--display); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.st.confirmed { color: var(--ok); } .st.corrected { color: var(--ridge); } .st.unconfirmed, .st.pending { color: var(--warn); }
+
+/* book list */
+.book { display: grid; gap: 10px; counter-reset: b; }
+.bk { background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--steel); border-radius: 6px; padding: 12px 14px; display: grid; gap: 6px; min-width: 0; }
+.bk.soft { border-left-color: var(--rule); }
+.bk .top { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; justify-content: space-between; }
+.bk .due { font: 600 0.84rem/1.3 var(--mono); color: var(--steel); }
+.bk .fee { font: 600 0.84rem/1.3 var(--mono); color: var(--muted); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 12px; border-radius: 5px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); font: 700 0.84rem/1 var(--display); letter-spacing: 0.03em; text-decoration: none; cursor: pointer; }
+.btn.primary { background: var(--steel); border-color: var(--steel); color: #fff; }
+.copy { font-family: var(--mono); }
+
+/* days */
+.day { border-top: 2px solid var(--ink); padding-top: 12px; display: grid; gap: 10px; }
+.day .head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; align-items: baseline; }
+.day .sun { font: 600 0.82rem/1.3 var(--mono); color: var(--muted); }
+.leg { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding-top: 8px; border-top: 1px dashed var(--rule); }
+.opt:first-of-type { border-top: 0; padding-top: 0; }
+.opt .via { color: var(--muted); font-size: 0.9rem; grid-column: 1 / -1; }
+.slot { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; }
+.slot .t { font: 600 0.84rem/1.6 var(--mono); color: var(--steel); }
+.slot p { color: var(--ink); }
+.slot .alt { color: var(--muted); font-size: 0.92rem; }
+
+/* filters + cards */
+.bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chipbtn { min-height: 38px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--card); color: var(--ink); font: 700 0.82rem/1 var(--display); letter-spacing: 0.03em; cursor: pointer; }
+.chipbtn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.search { flex: 1 1 200px; min-width: 0; min-height: 40px; border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; background: var(--card); color: var(--ink); font: 400 0.95rem var(--body); }
+.count { font: 600 0.8rem var(--mono); color: var(--muted); }
+.cards { display: grid; gap: 10px; }
+@media (min-width: 760px) { .cards { grid-template-columns: 1fr 1fr; } }
+.card { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 7px; align-content: start; min-width: 0; }
+.card .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.card h3 { font-size: 1.04rem; }
+.card .claim { font-size: 0.95rem; }
+.card details { font-size: 0.88rem; color: var(--muted); }
+.card summary { cursor: pointer; font: 700 0.8rem/1.9 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
+.card .notes { white-space: pre-line; margin-top: 4px; }
+.card .srcs { margin: 6px 0 0; padding-left: 18px; }
+.card .why { margin-top: 6px; border-left: 2px solid var(--ridge); padding-left: 8px; }
+.links { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 700 0.84rem/1.6 var(--display); }
+.mark { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-top: 1px dashed var(--rule); padding-top: 8px; }
+.mark button { min-height: 36px; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); font: 700 0.78rem/1 var(--display); cursor: pointer; }
+.mark button[aria-pressed="true"].did { background: var(--ok); border-color: var(--ok); color: #fff; }
+.mark button[aria-pressed="true"].skip { background: var(--muted); border-color: var(--muted); color: var(--paper); }
+.mark input { flex: 1 1 160px; min-width: 0; min-height: 36px; border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; background: var(--paper); color: var(--ink); font: 400 0.88rem var(--body); }
+.mark .saved { font: 600 0.74rem var(--mono); color: var(--muted); }
+.sub { display: grid; gap: 10px; }
+.sub > h3 { border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+.more { justify-self: start; }
+
+/* hikes */
+.tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--card); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.9rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 700 0.74rem/1.2 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--paper); position: sticky; top: 0; }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* know */
+.know { display: grid; gap: 8px; }
+.know .k { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; display: grid; gap: 4px; }
+.know .k.trap { border-left: 4px solid var(--warn); }
+footer { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--rule); margin-top: 40px; padding-top: 14px; display: grid; gap: 6px; }
+.empty { color: var(--muted); font-style: italic; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="wrap">
+  <header class="hero" id="top"></header>
+  <nav class="tabs" aria-label="Sections"><ul id="tabs"></ul></nav>
+  <main id="main"></main>
+  <footer id="foot"></footer>
+</div>
+
+<script type="application/json" id="guide-data">__DATA__</script>
+<script>
+(function () {
+  'use strict'
+  const G = JSON.parse(document.getElementById('guide-data').textContent)
+  const P = G.plan
+  const $ = (s, el = document) => el.querySelector(s)
+  const h = (tag, attrs = {}, ...kids) => {
+    const el = document.createElement(tag)
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v == null || v === false) continue
+      if (k === 'class') el.className = v
+      else if (k === 'text') el.textContent = v
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v)
+      else el.setAttribute(k, v === true ? '' : v)
+    }
+    for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : document.createTextNode(String(kid)))
+    return el
+  }
+  const STATUS = { confirmed: 'Fact-checked', corrected: 'Corrected', unconfirmed: 'Call ahead', pending: 'Being checked' }
+  const statusEl = (s) => h('span', { class: 'st ' + s, text: STATUS[s] || s })
+  const driveEl = (m) => m ? h('span', { class: 'sign', title: 'Drive from the house', text: '→ ' + m }) : null
+  const mapsUrl = (it) => {
+    if (it.geo && !it.geo.summit) return 'https://www.google.com/maps/search/?api=1&query=' + it.geo.lat + ',' + it.geo.lng
+    const q = [it.name, it.areaLabel || '', it.state || ''].filter(Boolean).join(', ')
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q)
+  }
+
+  /* ---------- checklist store (shared between the two of you) ---------- */
+  const marks = new Map(); let db = null; let me = null
+  const markListeners = new Set()
+  async function initStore() {
+    if (!window.claude || !window.claude.use) return
+    try {
+      db = await window.claude.use('db')
+      const user = await window.claude.use('user')
+      if (user && user.id) me = await user.id()
+      if (!db) return
+      db.collection('marks').onSnapshot((snap) => {
+        marks.clear()
+        for (const d of snap.docs || []) marks.set(d.id, d.data ? d.data() : d)
+        markListeners.forEach((fn) => fn())
+      })
+    } catch (e) { db = null }
+  }
+  async function saveMark(id, patch) {
+    const cur = Object.assign({}, marks.get(id) || {}, patch, { by: me || null, at: new Date().toISOString() })
+    marks.set(id, cur); markListeners.forEach((fn) => fn())
+    if (!db) return false
+    try { await db.doc('marks/' + id).set(cur); return true } catch (e) { return false }
+  }
+  function markRow(it) {
+    const did = h('button', { class: 'did', 'aria-pressed': 'false', type: 'button', text: 'We did this' })
+    const skip = h('button', { class: 'skip', 'aria-pressed': 'false', type: 'button', text: 'Skipped' })
+    const note = h('input', { type: 'text', id: 'note-' + it.id, placeholder: 'One line, if it earned one', 'aria-label': 'Note for ' + (it.name || 'this place'), maxlength: '240' })
+    const saved = h('span', { class: 'saved' })
+    const paint = () => {
+      const m = marks.get(it.id) || {}
+      did.setAttribute('aria-pressed', String(m.status === 'did'))
+      skip.setAttribute('aria-pressed', String(m.status === 'skip'))
+      if (document.activeElement !== note) note.value = m.note || ''
+    }
+    did.addEventListener('click', async () => { const m = marks.get(it.id) || {}; const ok = await saveMark(it.id, { status: m.status === 'did' ? null : 'did' }); saved.textContent = ok ? 'Saved' : (db ? 'Not saved' : 'Saved on this phone only') })
+    skip.addEventListener('click', async () => { const m = marks.get(it.id) || {}; const ok = await saveMark(it.id, { status: m.status === 'skip' ? null : 'skip' }); saved.textContent = ok ? 'Saved' : (db ? 'Not saved' : 'Saved on this phone only') })
+    note.addEventListener('change', async () => { const ok = await saveMark(it.id, { note: note.value.trim() }); saved.textContent = ok ? 'Note saved' : 'Not saved' })
+    markListeners.add(paint); paint()
+    return h('div', { class: 'mark' }, did, skip, note, saved)
+  }
+
+  /* ---------- cards ---------- */
+  function card(it) {
+    const links = h('div', { class: 'links' })
+    if (it.site) links.append(h('a', { href: it.site, target: '_blank', rel: 'noopener', text: 'Website' }))
+    if (it.kind === 'place' || it.cat) links.append(h('a', { href: mapsUrl(it), target: '_blank', rel: 'noopener', text: 'Map' }))
+    const det = h('details', {}, h('summary', { text: 'Details and sources' }))
+    if (it.notes) det.append(h('div', { class: 'notes', text: it.notes }))
+    if (it.why) det.append(h('div', { class: 'why', text: (it.status === 'corrected' ? 'What the fact-check changed: ' : 'Why it is flagged: ') + it.why }))
+    if (it.sources && it.sources.length) det.append(h('ol', { class: 'srcs' }, it.sources.map((s) => h('li', {}, h('a', { href: s.url, target: '_blank', rel: 'noopener', text: s.title || s.url })))))
+    return h('article', { class: 'card', id: 'i-' + it.id },
+      h('div', { class: 'row' }, it.areaLabel ? h('span', { class: 'tag', text: it.areaLabel }) : null, driveEl(it.drive), statusEl(it.status)),
+      h('h3', { text: it.name || 'Note' }),
+      h('p', { class: 'claim', text: it.claim }),
+      links, det, it.markable ? markRow(it) : null)
+  }
+
+  function filterable(container, items, cats, opts = {}) {
+    let cat = 'all'; let q = ''; let limit = opts.limit || 24
+    const bar = h('div', { class: 'bar' })
+    const btns = [['all', 'All']].concat(cats).map(([k, label]) => {
+      const n = k === 'all' ? items.length : items.filter((i) => i.cat === k).length
+      if (k !== 'all' && !n) return null
+      const b = h('button', { class: 'chipbtn', type: 'button', 'aria-pressed': String(k === cat), text: label + ' ' + n })
+      b.addEventListener('click', () => { cat = k; limit = opts.limit || 24; btns.forEach((x) => x && x.setAttribute('aria-pressed', String(x === b))); paint() })
+      return b
+    })
+    btns.forEach((b) => b && bar.append(b))
+    const input = h('input', { class: 'search', type: 'search', id: 'q-' + opts.id, placeholder: 'Search by name or town', 'aria-label': 'Search ' + (opts.label || 'places') })
+    input.addEventListener('input', () => { q = input.value.trim().toLowerCase(); paint() })
+    bar.append(input)
+    const count = h('div', { class: 'count' })
+    const list = h('div', { class: 'cards' })
+    const more = h('button', { class: 'btn more', type: 'button', text: 'Show more' })
+    more.addEventListener('click', () => { limit += 24; paint() })
+    container.append(bar, count, list, more)
+    function paint() {
+      const shown = items.filter((i) => (cat === 'all' || i.cat === cat) && (!q || (i.name + ' ' + (i.areaLabel || '') + ' ' + i.claim).toLowerCase().includes(q)))
+      list.replaceChildren(...shown.slice(0, limit).map(card))
+      count.textContent = shown.length + (shown.length === 1 ? ' place' : ' places') + ', nearest first'
+      more.hidden = shown.length <= limit
+      if (!shown.length) list.append(h('p', { class: 'empty', text: 'Nothing matches. Clear the search or pick another group.' }))
+    }
+    paint()
+  }
+
+  /* ---------- sections ---------- */
+  const main = $('#main'); const tabs = $('#tabs'); const sections = []
+  function addSection(id, title, intro) {
+    const s = h('section', { class: 'block', id }, h('h2', { text: title }), intro ? h('p', { class: 'intro', text: intro }) : null)
+    main.append(s); sections.push([id, P.tabs[id] || title]); return s
+  }
+
+  // hero
+  const hero = $('#top')
+  hero.append(h('div', { class: 'eyebrow', text: P.eyebrow }), h('h1', {}, ...P.titleParts.map((t, i) => i % 2 ? h('span', { class: 'amp', text: t }) : t)), h('p', { class: 'lede', text: P.lede }))
+  hero.append(h('div', { class: 'bases' }, P.bases.map((b) => h('div', { class: 'base' }, h('div', { class: 'when', text: b.when }), h('h3', { text: b.name }), h('div', { class: 'addr', text: b.address }), b.note ? h('div', { class: 'addr', text: b.note }) : null))))
+
+  // book
+  if (P.book && P.book.length) {
+    const s = addSection('book', 'Book these', P.bookIntro)
+    s.append(h('div', { class: 'book' }, P.book.map((b) => h('div', { class: 'bk' + (b.soft ? ' soft' : '') },
+      h('div', { class: 'top' }, h('h3', { text: b.name }), b.due ? h('span', { class: 'due', text: b.due }) : null),
+      b.fee ? h('div', { class: 'fee', text: b.fee }) : null,
+      h('p', { text: b.text }),
+      h('div', { class: 'btns' },
+        (b.links || []).map((l, i) => h('a', { class: 'btn' + (i === 0 ? ' primary' : ''), href: l.url, target: '_blank', rel: 'noopener', text: l.label })),
+        b.phone ? h('span', { class: 'btn copy', text: b.phone }) : null),
+      b.status ? statusEl(b.status) : null))))
+  }
+
+  // days
+  if (P.days && P.days.length) {
+    const s = addSection('days', 'Day by day', P.daysIntro)
+    for (const d of P.days) {
+      const day = h('div', { class: 'day' }, h('div', { class: 'head' }, h('div', {}, h('div', { class: 'eyebrow', text: d.date }), h('h3', { text: d.title })), d.sun ? h('span', { class: 'sun', text: d.sun }) : null))
+      for (const leg of d.legs || []) {
+        day.append(h('div', { class: 'leg' }, h('div', { class: 'eyebrow', text: leg.label }), (leg.options || []).map((o) => h('div', { class: 'opt' }, h('strong', { text: o.name }), h('span', { class: 'sign', text: o.time }), h('span', { class: 'via', text: o.via })))))
+      }
+      for (const sl of d.slots || []) day.append(h('div', { class: 'slot' }, h('span', { class: 't', text: sl.t || '' }), h('div', {}, h('p', { text: sl.text }), sl.alt ? h('p', { class: 'alt', text: sl.alt }) : null)))
+      s.append(day)
+    }
+  }
+
+  // regions
+  for (const r of P.regions) {
+    const items = G.items.filter((i) => i.section === r.id)
+    const s = addSection(r.id, r.title, r.intro)
+    const near = items.filter((i) => i.near)
+    if (near.length) { const sub = h('div', { class: 'sub' }, h('h3', { text: r.nearTitle })); s.append(sub); filterable(sub, near, P.cats, { id: r.id + '-near', limit: 12, label: r.nearTitle }) }
+    const rest = items.filter((i) => !i.near)
+    const sub = h('div', { class: 'sub' }, h('h3', { text: r.restTitle })); s.append(sub)
+    filterable(sub, rest, P.cats, { id: r.id, label: r.restTitle })
+  }
+
+  // road
+  if (P.road) {
+    const s = addSection('road', P.road.title, P.road.intro)
+    for (const leg of P.road.legs) {
+      const items = G.items.filter((i) => i.section === 'road' && i.leg === leg.id)
+      const sub = h('div', { class: 'sub' }, h('h3', { text: leg.title }), leg.text ? h('p', { class: 'intro', text: leg.text }) : null)
+      s.append(sub)
+      if (items.length) filterable(sub, items, P.cats, { id: 'road-' + leg.id, label: leg.title })
+      else sub.append(h('p', { class: 'empty', text: leg.pending || 'Stops for this leg are still being researched.' }))
+    }
+  }
+
+  // hikes
+  const hikes = G.hikes || []
+  if (hikes.length) {
+    const s = addSection('hikes', 'Every hike', P.hikesIntro)
+    let park = 'all'
+    const bar = h('div', { class: 'bar' })
+    const parks = [['all', 'Both parks']].concat(P.regions.map((r) => [r.id, r.short]))
+    const bs = parks.map(([k, l]) => { const b = h('button', { class: 'chipbtn', type: 'button', 'aria-pressed': String(k === park), text: l }); b.addEventListener('click', () => { park = k; bs.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); paint() }); return b })
+    bar.append(...bs)
+    const tb = h('tbody')
+    s.append(bar, h('div', { class: 'tablewrap' }, h('table', {}, h('thead', {}, h('tr', {}, ['Trail', 'Miles', 'Gain ft', 'Difficulty', 'Hours', 'From the house', 'Status'].map((t) => h('th', { scope: 'col', text: t })))), tb)))
+    function paint() {
+      tb.replaceChildren(...hikes.filter((k) => park === 'all' || k.section === park).map((k) => h('tr', {},
+        h('td', {}, h('strong', { text: k.name }), k.where ? h('div', { class: 'count', text: k.where }) : null, k.closed ? h('div', { class: 'st unconfirmed', text: k.closed }) : null),
+        h('td', { class: 'n', text: k.miles || '—' }), h('td', { class: 'n', text: k.gain || '—' }), h('td', { text: k.difficulty || '—' }), h('td', { class: 'n', text: k.hours || '—' }),
+        h('td', {}, k.drive ? driveEl(k.drive) : h('span', { class: 'count', text: '—' })), h('td', {}, statusEl(k.status)))))
+    }
+    paint()
+  }
+
+  // know
+  if (G.know && G.know.length) {
+    const s = addSection('know', 'Know before you go', P.knowIntro)
+    for (const grp of P.knowGroups) {
+      const ks = G.know.filter((k) => k.group === grp.id)
+      if (!ks.length) continue
+      s.append(h('div', { class: 'sub' }, h('h3', { text: grp.title }), h('div', { class: 'know' }, ks.map((k) => h('div', { class: 'k' + (k.kind === 'trap' ? ' trap' : '') },
+        h('div', { class: 'row' }, k.kind === 'trap' ? h('span', { class: 'tag', text: 'Watch out' }) : null, statusEl(k.status)),
+        h('p', { text: k.claim }),
+        k.link ? h('a', { href: k.link, target: '_blank', rel: 'noopener', class: 'count', text: 'Source' }) : null)))))
+    }
+  }
+
+  // tabs + footer
+  for (const [id, label] of sections) tabs.append(h('li', {}, h('a', { href: '#' + id, text: label })))
+  const tabLinks = [...tabs.querySelectorAll('a')]
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) tabLinks.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + e.target.id))) }), { rootMargin: '-45% 0px -50% 0px' })
+  sections.forEach(([id]) => io.observe(document.getElementById(id)))
+  $('#foot').append(...P.footer.map((t) => h('p', { text: t })), h('p', { class: 'num', text: 'Built ' + G.builtOn + '. ' + G.counts }))
+  initStore()
+})()
+</script>

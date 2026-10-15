@@ -59,6 +59,14 @@ mixed in with the confirmed list.
 
 ## 5. The guide (private Artifact, phone-first)
 
+**Tooling (Oct 15):** `node tools/trip-guide/build-data.mjs <data.json> <runDir...>` merges findings
++ verdicts; a private per-trip `plan.mjs` (worked example: `internal/trip-guides/gorge-ridge/plan.mjs`)
+holds the hand layer (bases, book list, days, area drive times as regexes); then
+`node tools/trip-guide/build-guide.mjs <data.json> <plan.mjs> <guide.html>` renders
+`tools/trip-guide/template.html`. Publish with `capabilities: {db:{}, user:{}}` (marks live in
+the `marks` collection, doc id = finding id). Publish early with "Being checked" marks, then
+rebuild and republish the same file path as each verifier lands.
+
 Load the `artifact-design` skill first. One page, phone-first at 390, dark-friendly:
 - **Day by day** with the drive ledger (each leg: route, distance, time range, toll-free
   note), sunrise/sunset, and the morning-of checks.
