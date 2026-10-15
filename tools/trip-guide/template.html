@@ -216,6 +216,12 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
 .msg { border-radius: 8px; padding: 10px 12px; max-width: 92%; white-space: pre-wrap; }
 .msg.user { justify-self: end; background: var(--ink); color: var(--paper); }
 .msg.ai { justify-self: start; background: var(--card); border: 1px solid var(--rule); }
+.prep { display: grid; gap: 8px; }
+.prep-row { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; align-items: start; background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; cursor: pointer; }
+.prep-row input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--ok); }
+.prep-row p { font-size: 0.88rem; margin-top: 2px; }
+.prep-row .due { display: inline-block; margin-top: 4px; font-size: 0.76rem; color: var(--steel); }
+.prep-row:has(input:checked) strong { text-decoration: line-through; color: var(--muted); }
 </style>
 
 <div class="wrap">
@@ -629,6 +635,27 @@ footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--ru
       h('div', { class: 'top' }, h('h3', { text: b.name }), b.due ? h('span', { class: 'due', text: b.due }) : null),
       b.fee ? h('div', { class: 'fee', text: b.fee }) : null, h('p', { text: b.text }),
       h('div', { class: 'btns' }, (b.links || []).map((l, i) => h('a', { class: 'btn' + (i === 0 ? ' primary' : ''), href: l.url, target: '_blank', rel: 'noopener', text: l.label })), b.phone ? h('span', { class: 'phone', text: b.phone }) : null)))))
+  }
+
+  /* before you leave: a shared prep checklist (db collection prep) */
+  if (P.prep && P.prep.length) {
+    const sec = addSection('prep', 'Before you leave', P.prepIntro)
+    const done = new Map(); const rowsEls = []
+    const listEl = h('div', { class: 'prep' })
+    const counter = h('p', { class: 'count' })
+    for (const it of P.prep) {
+      const cb = h('input', { type: 'checkbox', id: 'prep-' + it.id })
+      const row = h('label', { class: 'prep-row', for: 'prep-' + it.id }, cb, h('div', {}, h('strong', { text: it.text }), it.why ? h('p', { class: 'muted', text: it.why }) : null, it.when ? h('span', { class: 'due num', text: it.when }) : null))
+      cb.addEventListener('change', async () => {
+        done.set(it.id, cb.checked); paintPrep()
+        if (prepDb) { try { await prepDb.doc('prep/' + it.id).set({ done: cb.checked, by: me || null, at: new Date().toISOString() }) } catch (e) {} }
+      })
+      rowsEls.push([it.id, cb]); listEl.append(row)
+    }
+    const paintPrep = () => { let n = 0; for (const [id, cb] of rowsEls) { cb.checked = !!done.get(id); if (cb.checked) n++ } counter.textContent = n + ' of ' + rowsEls.length + ' done' + (prepDb ? ', shared between both phones' : '') }
+    let prepDb = null
+    ;(async () => { try { prepDb = window.claude && window.claude.use ? await window.claude.use('db') : null; if (prepDb) prepDb.collection('prep').onSnapshot((snap) => { for (const d of snap.docs || []) { const v = d.data ? d.data() : d; done.set(d.id, !!v.done) } paintPrep() }) } catch (e) { prepDb = null } paintPrep() })()
+    sec.append(counter, listEl); paintPrep()
   }
 
   if (P.days && P.days.length) {
