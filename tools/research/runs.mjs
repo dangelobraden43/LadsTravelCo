@@ -27,7 +27,14 @@ export function inventory(root, { now = Date.now() } = {}) {
       const state = (f) => {
         if (!files.includes(f)) return 'missing'
         /* Judge a run against its own day: generatedOn must equal RUN.json.today. */
-        try { return validateFile(path.join(dir, f), doc.today ? { today: doc.today } : undefined).length ? 'invalid' : 'ok' } catch { return 'invalid' }
+        /* A file finished on a later day (a resumed run) is judged on its own generatedOn,
+         * provided it falls between the run's day and today. */
+        let day = doc.today
+        try {
+          const g = f.endsWith('.json') ? JSON.parse(readFileSync(path.join(dir, f), 'utf8')).generatedOn : null
+          if (typeof g === 'string' && (!day || g >= day) && g <= new Date().toLocaleDateString('en-CA')) day = g
+        } catch { /* validateFile reports unparsable JSON */ }
+        try { return validateFile(path.join(dir, f), day ? { today: day } : undefined).length ? 'invalid' : 'ok' } catch { return 'invalid' }
       }
       const research = roster.map((a) => ({ a, s: state(expectedFile(a)) }))
       const verifier = state('lads-verifier.json')
