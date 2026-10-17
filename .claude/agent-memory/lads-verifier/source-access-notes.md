@@ -200,4 +200,23 @@ metadata:
   aircanada.com Aeroplan news, hilton.com/en/locations, snnairportgroup.ie, interrail.com, timeout.com, dublinexpress.ie.
   Budget: 109 findings for 70 fetches gave ~85% a real verdict by grouping on bustimes, Numbeo and issuer pages.
 
+- **WebFetch can be refused for the whole run (Galway, 2026-10-17).** The permission system denied WebFetch for every
+  agent in the session, verifier included. Then verify from search summaries: ask one targeted query per official page
+  (domain-restricted with allowed_domains works, e.g. kylemoreabbey.com), batch three in parallel, and say in the file
+  notes that no page was read. The shared 200-search session cap was hit at my 78th call; plan for it by checking the
+  money, ferry, bus and brand-status findings first. ~60% of 125 findings got a real verdict.
+
+- **Galway recheck (2026-10-17, fetch only, 80 calls).** Fail: citylink.ie 403 (gobus.ie 301s to it), kylemoreabbey.com 403
+  (search snippets worked earlier), gov.ie news 403, galwaybaybrewery.com 403, galwayoysterfest.com fails, thecranebar.com
+  self-signed cert, quaysgalway.ie cert mismatch, mcgettigans.com/galway 404, travelextra.ie timeout (fourth run), retired
+  bustimes slugs (X51) land on the operator route list. Fetch cleanly: bustimes service pages (show NTA data date and date
+  range; rail pages do not pair rows, bus pages often do), irishrail fares-info (band tables in text, station grid is an
+  image) and offer/webfares, aranislandferries.com rossaveel-ferry / rates / galwaycity / shuttle_bus.php / day-tours,
+  heritageireland.ie, paddywagontours.com, galwaytourcompany.com, nationalparks.ie/connemara, galwaycitymuseum.ie,
+  galwaycity.ie, nationalaquarium.ie, galwaycathedral.ie/visitors, aerarannislands.ie/faqs, enterprise.gov.ie, racingpost.com
+  (dated), galwaybayfm.ie (dated), catuireland.org, stay.universityofgalway.ie, hostelworld city and hostel pages,
+  galwaytourism.ie, gulliverstravel.co.uk, clifdenartsfestival.ie, thisisgalway.ie (dated), irishcentral.com, uber.com city
+  pages, aniarrestaurant.ie, USNO API. Google News RSS with OR'd venue names settles brand status for 5-6 venues per call;
+  unnamed "Galway restaurant closing" headlines cannot be tied to a venue without the article.
+
 Related: [[verification-patterns]]

@@ -224,4 +224,22 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   Travel-card comparisons: check the agent's own sources for issuers it left out (DealsPoints named Wells Fargo).
   Event products sell out between runs (The Green, Ticket+): re-read the product page for "sold out".
 
+- **Galway pass (Ryder Cup Galway, 2026-10-17).** "Closed" traps can be stale the other way: a scout listed Electric
+  nightclub as closed (2021) while it had reopened in March 2024 and was listing 2026 nights. Search "<venue> reopen" too.
+  Undated receivership/sale snippets are often a decade old (Crane Bar sale was 2013). Seasonal bus products presented as
+  standing services (Expressway X51 is a summer service). Retired brands carried as trading (GoBus folded into Citylink
+  2024; FreeNow now "Freenow by Lyft"). Official opening-times pages beat the scout's own "official" snippet, which can be
+  the winter or old homepage line (Kylemore). Galway Bay FM article ids date stories: ~101-102k is 2021, ~158k March 2024,
+  ~220k May 2026; use them when a snippet has no date. A 2014 press release cited as current booking terms (Aniar tickets).
+
+- **Snippet-only verdicts need a read pass (Galway recheck, 2026-10-17).** Reading the pages flipped ~40% of the
+  snippet verdicts. Shapes: timetable times off by minutes (08:52 vs 08:40) and an "evening example" train no longer
+  in the data; guide journey times wrong against the data (923 "2 h" is 1h30; Cliffs "1h30-2h" is 1h47-2h21); counts
+  differ between operator route page and dated data (12 vs 14); a range top called "not found" was on the official
+  chart in text (Irish Rail band tables). A sports-bar page an earlier verifier cited did not name the venue at all
+  (McGettigan's). Operator product pages lag the landing page: the Galway City ferry page announced the 2027 season
+  while the product page still showed 2026. Restaurant domains lapse to unrelated content (oscarsbistro.ie).
+  **How to apply:** in a recheck, read dated timetable data (bustimes shows the NTA data date and range) before
+  trusting any time, and read the venue's own domain for every brand-status line.
+
 Related: [[source-access-notes]]

@@ -258,7 +258,8 @@ __INTRO_STAGE__
   $('facts').innerHTML = [
     `<div class="fact"><div class="k">Match days</div><div class="v">Fri 17–Sun 19</div><div class="s">September 2027 · Adare Manor</div></div>`,
     `<div class="fact"><div class="k">First match day in</div><div class="v">${n > 0 ? n + ' days' : 'This week'}</div><div class="s">${n > 0 ? Math.floor(n / 7) + ' weeks, ' + (n % 7) + ' days' : ''}</div></div>`,
-    nextStep ? `<div class="fact"><div class="k">Next booking step</div><div class="v t"><a href="#book">${esc(nextStep.title)}</a></div><div class="s">${esc(dt(nextStep.date))} · ${daysTo(nextStep.date) === 0 ? 'today' : 'in ' + daysTo(nextStep.date) + ' days'}</div></div>` : '',
+    nextStep ? `<div class="fact"><div class="k">Next booking step</div><div class="v t"><a href="#book">${esc(nextStep.title)}</a></div><div class="s">${esc(dt(nextStep.date))} · ${daysTo(nextStep.date) === 0 ? 'today' : 'in ' + daysTo(nextStep.date) + ' days'}</div></div>`
+      : `<div class="fact"><div class="k">Ways to run the week</div><div class="v">${G.plans.length} plans</div><div class="s"><a href="#plans">Compare them below</a></div></div>`,
     `<div class="fact"><div class="k">Money</div><div class="v t">€ first, $ alongside</div><div class="s">€1 = $${G.money.USD} (ECB, ${esc(dt(G.money.date))}). Pay in euro.</div></div>`,
   ].join('')
 

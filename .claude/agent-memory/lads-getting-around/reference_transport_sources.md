@@ -50,4 +50,8 @@ Durable source lessons for the getting-around lane (first learned on Pictured Ro
 - **Two-topic queries joined by ";" return only the FIRST topic** (5 of 5 tries on the Ireland run). One topic per search.
 - The validator bans the word "insurance" even for rental excess; write "rental excess / damage-waiver" in claims, notes and gaps.
 
+- **WebFetch can be refused outright by the permission system** (ryder-cup-2027-galway, 2026-10-17: every fetch denied). Then work search-only: everything is `access: snippet`, cite earlier runs' `read` sources with their own checkedOn, and log fares/timetables that needed a direct read as `could-not-look`. Do not retry the fetch; it does not count but wastes a turn.
+- **Ireland search lessons (galway, 2026-10-17):** `allowed_domains: ["irishrail.ie"]` surfaces `offer/webfares` (Low Fare floor per destination) and `fares-info/<route>` grids (`dublin-galway`, `western-rail-corridor`) as usable snippets. `allowed_domains` bustimes + buseireann finds the Expressway route page and the bustimes service slug in one call (`51-cork-limerick-galway`, `x51-...`, `923-...`, `351-...`). Citylink timetables: search with `citylink.ie`. Coach brand drift: GoBus is part of Irish Citylink; Aircoach left Galway in April 2024; older guides and run briefs still name both.
+- Galway-type questions: other agents (scout.see) often cover ferries, tours and island transport in the same run; read their file first and reference ids instead of spending calls.
+
 See [[feedback-lane-overlap]] if written later: closures and winter roads are often already covered by provenance and timing agents; reference their ids rather than re-spending calls.

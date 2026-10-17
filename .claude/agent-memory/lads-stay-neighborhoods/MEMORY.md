@@ -1,2 +1,2 @@
-- [Source lessons](source-lessons.md) — resort lodging pages; snippets can't make ranges; CoStar/STR for event fill; AU + Ireland STR sources + fetch map; Spain INE ADR API; shared search pool; no-Bash validation
-- [Run strategy](stay-run-strategy.md) — 12 calls = ~5 cities snippet-grade; tournament + single-venue mega-event + regional follow-up splits; may lack shell for validator
+- [Source lessons](source-lessons.md) — resort lodging pages; CoStar/STR for event fill; AU + Ireland STR sources (2026 law changes); AirDNA/AirROI for group-apartment ADR; WebFetch may be denied; shared search pool
+- [Run strategy](stay-run-strategy.md) — 12 calls = ~5 cities snippet-grade; tournament, mega-event, regional and single-city (Galway) splits; may lack shell for validator

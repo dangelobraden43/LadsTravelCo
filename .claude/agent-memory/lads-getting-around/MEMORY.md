@@ -1,1 +1,1 @@
-- [Transport sources](reference_transport_sources.md) — NPS/airport/toll fetch tricks; seat61; Spain DGT/Adif; OSRM/Valhalla URLs; shared search pool (fetch first); Ireland bustimes + Irish Rail fare charts; no Bash, so no validator run
+- [Transport sources](reference_transport_sources.md) — NPS/airport/toll fetch tricks; seat61; Spain DGT/Adif; OSRM/Valhalla URLs; shared search pool (fetch first); Ireland bustimes + Irish Rail fare charts; no Bash, so no validator run; WebFetch may be refused (search-only mode); Irish coach brand drift
