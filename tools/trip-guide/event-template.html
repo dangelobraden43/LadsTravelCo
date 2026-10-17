@@ -1,0 +1,697 @@
+<title>__TITLE__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Event guide (golf): dusk links base, yardage-book cards for days and courses, scoreboard numerals
+ * for the countdown and the watch board. Palette reserved for golf events; never /outdoors. */
+:root {
+  --bg: #0E1A22; --bg2: #102029; --panel: #142630; --panel2: #1B3240; --line: rgba(237, 228, 211, .13);
+  --text: #EDE4D3; --soft: #CFC6B4; --muted: #98A6A6; --gold: #E0A75E; --gold-ink: #1A140B;
+  --fair: #2F4A3A; --fair2: #3E6149; --sea: #1F3D4C;
+  --paper: #F3EEE2; --paper2: #E9E2D2; --ink: #1F2A24; --ink-soft: #4E5A52; --rule: #C9BFA9; --flag: #B5452F;
+  --rail: #E0A75E; --bus: #CDBB98; --shuttle: #E46F4F;
+  --ok: #8CC19A; --warn: #E3B35B; --no: #E07D6A;
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --cream: var(--text);
+  color-scheme: dark;
+}
+/* One visual world on purpose: dusk on the links, carried straight on from the intro (ruled Oct 16).
+ * The cream yardage cards give the light surface; there is no separate light theme. */
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--text); }
+body { font-family: var(--sans); font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+a { color: var(--gold); text-underline-offset: 2px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.mono { font-family: var(--mono); }
+.eyebrow { font: 500 11px/1.3 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h2.sec { font-family: var(--display); font-weight: 400; font-size: clamp(24px, 3.2vw, 32px); line-height: 1.15; margin: 0 0 6px; }
+.lede { color: var(--soft); max-width: 66ch; margin: 0 0 18px; }
+.small { font-size: 13px; color: var(--muted); }
+.hidden { display: none !important; }
+
+/* ---------- intro overlay ---------- */
+#introLayer { position: fixed; inset: 0; z-index: 50; background: #0b1218; display: grid; place-items: center; padding: env(safe-area-inset-top, 0px) max(12px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(12px, env(safe-area-inset-left, 0px)); transition: opacity .7s ease, visibility .7s; }
+#introLayer.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+#introLayer .stage { width: min(1180px, 100%); }
+#introLayer .enter { position: absolute; left: 50%; bottom: max(22px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; gap: 10px; opacity: 0; transition: opacity .6s ease; }
+#introLayer.titled .enter { opacity: 1; }
+.pill { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; border-radius: 999px; padding: 13px 18px; min-height: 44px; cursor: pointer; border: 1px solid rgba(237, 228, 211, .3); background: rgba(14, 26, 34, .6); color: #EDE4D3; backdrop-filter: blur(6px); }
+.pill.gold { background: #E0A75E; color: #1A140B; border-color: #E0A75E; }
+
+/* ---------- header + scoreboard ---------- */
+header.top { padding-block: 26px 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px 28px; align-items: end; }
+header.top h1 { font-family: var(--display); font-style: italic; font-weight: 330; font-size: clamp(38px, 6vw, 64px); line-height: .98; letter-spacing: -.01em; }
+header.top .sub { color: var(--soft); margin-top: 8px; font-variant-numeric: tabular-nums; }
+.board { display: flex; gap: 6px; align-items: stretch; background: #0A141A; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; color: #EDE4D3; }
+.board .cell { display: grid; justify-items: center; gap: 3px; min-width: 54px; }
+.board .num { font: 500 30px/1 var(--mono); font-variant-numeric: tabular-nums; color: #F3C987; background: #111E26; border-radius: 4px; padding: 6px 7px; letter-spacing: .02em; box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .06), inset 0 1px 0 rgba(0, 0, 0, .5); }
+.board .lab { font: 500 9.5px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8FA0A0; }
+.board .cap { align-self: center; font: 500 10px/1.25 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #8FA0A0; max-width: 92px; padding-left: 4px; }
+@media (max-width: 720px) { header.top { grid-template-columns: minmax(0, 1fr); } .board { justify-self: start; } }
+
+/* ---------- sticky controls ---------- */
+.controls { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.controls .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block: 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--panel); }
+.seg button { background: none; border: 0; border-radius: 999px; padding: 9px 14px; min-height: 40px; cursor: pointer; color: var(--muted); font: 500 13px/1 var(--sans); white-space: nowrap; }
+.seg button[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); }
+.seg button b { font-family: var(--mono); font-weight: 500; margin-right: 6px; }
+.ctl-label { font: 500 10px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.sel { display: inline-flex; align-items: center; gap: 8px; }
+.sel select { font: 500 13px/1 var(--sans); color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 10px 30px 10px 14px; min-height: 40px; appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 16px) 52%, calc(100% - 11px) 52%; background-size: 5px 5px; background-repeat: no-repeat; }
+.more-btn { display: none; }
+@media (max-width: 760px) {
+  .controls .opt { display: none; }
+  .controls.open .opt { display: inline-flex; }
+  .more-btn { display: inline-flex; margin-left: auto; }
+  .seg button { padding: 9px 12px; }
+}
+.tabs-top { display: flex; gap: 4px; margin-left: auto; }
+.tabs-top button, .tabbar button { background: none; border: 0; cursor: pointer; color: var(--muted); font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 12px 12px; min-height: 44px; border-radius: 8px; }
+.tabs-top button[aria-selected="true"] { color: var(--text); background: var(--panel2); }
+.tabbar { display: none; }
+@media (max-width: 760px) {
+  .tabs-top { display: none; }
+  .tabbar { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: color-mix(in srgb, var(--bg2) 96%, transparent); backdrop-filter: blur(10px); border-top: 1px solid var(--line); padding: 4px max(6px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)); }
+  .tabbar button { display: grid; justify-items: center; gap: 4px; padding: 8px 2px; font-size: 10px; letter-spacing: .1em; }
+  .tabbar button svg { width: 20px; height: 20px; }
+  .tabbar button[aria-selected="true"] { color: var(--gold); }
+  main { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+}
+
+main { padding-block: 22px 60px; }
+section.tab { display: grid; gap: 34px; }
+section.tab[hidden] { display: none; }
+.block { display: grid; gap: 14px; min-width: 0; }
+
+/* ---------- shape comparison ---------- */
+.shapes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 860px) { .shapes { grid-template-columns: minmax(0, 1fr); } }
+.shape { text-align: left; cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; transition: border-color .2s, transform .2s; }
+.shape:hover { border-color: color-mix(in srgb, var(--gold) 50%, var(--line)); }
+.shape[aria-pressed="true"] { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+.shape .tag { display: flex; align-items: baseline; gap: 10px; }
+.shape .letter { font: 500 26px/1 var(--mono); color: var(--gold); }
+.shape h3 { font-family: var(--display); font-weight: 450; font-size: 20px; line-height: 1.15; }
+.shape p { margin: 0; color: var(--soft); font-size: 14px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.stat .v { font: 500 18px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.stat .k { font: 500 9.5px/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.nights { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 11px/1 var(--mono); letter-spacing: .06em; padding: 6px 9px; border-radius: 999px; background: var(--panel2); color: var(--soft); border: 1px solid var(--line); white-space: nowrap; }
+.chip.gold { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 40%, transparent); }
+.best { font: 500 11px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+
+/* ---------- simulator ---------- */
+.sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+@media (max-width: 760px) { .sim { grid-template-columns: minmax(0, 1fr); } }
+.slider { display: grid; gap: 6px; }
+.slider label { display: flex; justify-content: space-between; font-size: 14px; }
+.slider label span { font: 500 11px/1.4 var(--mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+input[type=range] { width: 100%; accent-color: var(--gold); min-height: 30px; }
+.bars { display: grid; gap: 10px; }
+.bar { display: grid; grid-template-columns: 26px minmax(0, 1fr) 40px; align-items: center; gap: 10px; }
+.bar .l { font: 500 16px/1 var(--mono); color: var(--gold); }
+.bar .track { height: 12px; border-radius: 999px; background: var(--panel2); overflow: hidden; }
+.bar .fill { height: 100%; background: linear-gradient(90deg, var(--fair2), var(--gold)); border-radius: 999px; transition: width .35s ease; }
+.bar .n { font: 500 13px/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+.why { font-size: 14px; color: var(--soft); }
+.why b { color: var(--text); }
+details.how summary { cursor: pointer; font: 500 11px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); min-height: 32px; }
+details.how table { border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+details.how td, details.how th { border-bottom: 1px solid var(--line); padding: 6px 10px 6px 0; text-align: left; font-variant-numeric: tabular-nums; }
+.btn { cursor: pointer; border-radius: 999px; padding: 11px 16px; min-height: 44px; font: 500 13px/1 var(--sans); background: var(--panel2); border: 1px solid var(--line); color: var(--text); }
+.btn.gold { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+
+/* ---------- map ---------- */
+.mapbox { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 860px) { .mapbox { grid-template-columns: minmax(0, 1fr); } }
+.map { position: relative; background: var(--sea); border-radius: 12px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 1 / 1; max-width: 100%; }
+.map svg { display: block; width: 100%; height: 100%; }
+.map .land { fill: color-mix(in srgb, var(--fair) 80%, var(--bg)); stroke: color-mix(in srgb, var(--text) 22%, transparent); stroke-width: 1.2; }
+.map .net { fill: none; stroke: color-mix(in srgb, var(--text) 18%, transparent); stroke-width: 1.4; pointer-events: none; }
+.map .leg { fill: none; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; transition: opacity .3s; }
+.map .leg.rail { stroke: var(--rail); stroke-width: 4.5; }
+.map .leg.bus { stroke: var(--bus); stroke-width: 3; stroke-dasharray: 2 9; }
+.map .leg.shuttle { stroke: var(--shuttle); stroke-width: 4; stroke-dasharray: 10 7; }
+.map .leg.off { opacity: 0; }
+.map .leg.draw { stroke-dashoffset: var(--len); animation: draw 1.6s cubic-bezier(.3, .7, .2, 1) forwards; }
+.map .leg.draw.bus, .map .leg.draw.shuttle { animation: none; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.map .pin { cursor: pointer; }
+.map .pin .hit { fill: transparent; }
+.map .pin .dot { stroke: #0E1A22; stroke-width: 2; }
+.map .pin.venue .dot { fill: var(--shuttle); }
+.map .pin.base .dot { fill: var(--gold); }
+.map .pin.golf .dot { fill: #F3EEE2; }
+.map .pin.town .dot, .map .pin.sight .dot, .map .pin.fanzone .dot { fill: var(--bus); }
+.map .pin.airport .dot { fill: #9FB7C4; }
+.map .pin.dim { opacity: .35; }
+.map .pin text { font: 500 19px var(--sans); fill: var(--text); paint-order: stroke; stroke: color-mix(in srgb, var(--fair) 85%, var(--bg)); stroke-width: 5px; pointer-events: none; }
+.map .pin .leader { stroke: color-mix(in srgb, var(--text) 45%, transparent); stroke-width: 1.2; pointer-events: none; }
+.map .pin.sel .dot { stroke: var(--text); stroke-width: 3.5; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 22px; height: 0; border-top: 3px solid var(--rail); vertical-align: middle; margin-right: 6px; }
+.legend i.bus { border-top: 3px dotted var(--bus); }
+.legend i.shuttle { border-top: 3px dashed var(--shuttle); }
+.pinlist { display: grid; gap: 6px; max-height: 520px; overflow: auto; }
+.pinrow { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 10px; align-items: start; text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-height: 44px; cursor: pointer; }
+.pinrow[aria-pressed="true"] { border-color: var(--gold); }
+.pinrow .sw { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; }
+.pinrow b { font-weight: 500; }
+.pinrow .small { display: block; }
+
+/* ---------- yardage cards ---------- */
+.yard { background: var(--paper); color: var(--ink); border-radius: 6px; padding: 18px 18px 16px; position: relative; box-shadow: 0 1px 0 rgba(0, 0, 0, .18), 0 10px 24px -18px rgba(0, 0, 0, .6);
+  background-image: repeating-linear-gradient(0deg, transparent 0 27px, rgba(31, 42, 36, .055) 27px 28px); }
+.yard a { color: #8A4A16; }
+.yard .yhead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1.5px solid var(--ink); padding-bottom: 8px; margin-bottom: 10px; }
+.yard .yno { font: 500 11px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--flag); }
+.yard h3 { font-family: var(--display); font-weight: 500; font-size: 21px; line-height: 1.15; color: var(--ink); }
+.yard .base { font: 500 11px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); text-align: right; }
+.ledger { display: grid; gap: 0; margin: 2px 0 10px; }
+.ledger .row { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 7px 0; border-bottom: 1px dashed var(--rule); }
+.ledger .row:last-child { border-bottom: 0; }
+.ledger .m { font: 500 10px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.ledger .t { font-size: 14.5px; min-width: 0; }
+.ledger .d { font: 500 12.5px/1.2 var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink); }
+.plan { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+.plan li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 8px; font-size: 14.5px; line-height: 1.5; }
+.plan li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--flag); margin-top: 7px; }
+.plan li.watch::before { background: var(--flag); }
+.yard .note { margin-top: 10px; padding: 9px 11px; background: var(--paper2); border-left: 3px solid var(--flag); font-size: 13.5px; border-radius: 0 4px 4px 0; }
+.days { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .days { grid-template-columns: minmax(0, 1fr); } }
+.yard.match { outline: 2px solid var(--flag); outline-offset: -6px; }
+
+/* source chips (status of the fact behind a line) */
+.src { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; vertical-align: 1px; font: 500 9.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; padding: 3px 6px; border: 1px solid currentColor; cursor: pointer; background: none; }
+.src.confirmed { color: var(--ok); } .src.corrected { color: var(--warn); } .src.unconfirmed, .src.unchecked, .src.pending { color: var(--no); }
+.yard .src.confirmed { color: #2F7A4A; } .yard .src.corrected { color: #7A5A12; } .yard .src.unconfirmed, .yard .src.unchecked, .yard .src.pending { color: #A63E2C; }
+.pop { position: fixed; z-index: 60; inset: auto 0 0 0; max-height: 72vh; overflow: auto; background: var(--panel); color: var(--text); border-top: 1px solid var(--line); border-radius: 16px 16px 0 0; padding: 18px max(18px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px)); box-shadow: 0 -20px 50px rgba(0, 0, 0, .45); }
+@media (min-width: 761px) { .pop { inset: auto auto 24px 24px; width: min(520px, calc(100% - 48px)); border-radius: 14px; border: 1px solid var(--line); } }
+.pop .x { float: right; min-width: 44px; min-height: 44px; border-radius: 999px; background: var(--panel2); border: 1px solid var(--line); cursor: pointer; }
+.pop h4 { margin: 0 0 8px; font-family: var(--display); font-weight: 450; font-size: 19px; }
+.pop p { margin: 0 0 10px; color: var(--soft); }
+.statusline { font: 500 11px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.statusline.confirmed { color: var(--ok); } .statusline.corrected { color: var(--warn); } .statusline.unconfirmed, .statusline.unchecked, .statusline.pending { color: var(--no); }
+
+/* ---------- places ---------- */
+.basehead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.basehead h3 { font-family: var(--display); font-weight: 400; font-size: 24px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters button { cursor: pointer; font: 500 12px/1 var(--sans); padding: 9px 12px; min-height: 40px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--soft); }
+.filters button[aria-pressed="true"] { background: var(--panel2); color: var(--text); border-color: var(--gold); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 15px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.card h4 { margin: 0; font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+.card p { margin: 0; color: var(--soft); font-size: 14px; }
+.card .rows { display: grid; gap: 4px; font-size: 13.5px; color: var(--soft); }
+.card .rows b { color: var(--text); font-weight: 500; }
+.card .links { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.card .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.stayband { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.callout { background: color-mix(in srgb, var(--shuttle) 12%, var(--panel)); border: 1px solid color-mix(in srgb, var(--shuttle) 40%, var(--line)); border-radius: 12px; padding: 14px 16px; color: var(--text); }
+.callout p { margin: 0 0 6px; } .callout p:last-child { margin: 0; }
+.marks { display: flex; gap: 6px; }
+.marks button { cursor: pointer; font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; padding: 9px 11px; min-height: 40px; border: 1px solid var(--line); background: var(--panel2); color: var(--soft); }
+.marks button[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+
+/* ---------- golf ---------- */
+.golf { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 16px; }
+.yard .facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; font-size: 14px; margin: 0 0 10px; }
+.yard .facts dt { font: 500 10px/1.6 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+.yard .facts dd { margin: 0; min-width: 0; }
+.fit { font: 500 10.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; background: var(--ink); color: var(--paper); }
+.fit.no { background: transparent; color: var(--ink-soft); border: 1px solid var(--rule); }
+.holes { display: flex; gap: 3px; margin: 8px 0 2px; }
+.holes span { flex: 1; height: 6px; border-radius: 2px; background: var(--rule); }
+.holes span.on { background: var(--flag); }
+
+/* ---------- watch board ---------- */
+.wboard { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; background: #0A141A; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; color: #EDE4D3; }
+@media (max-width: 760px) { .wboard { grid-template-columns: minmax(0, 1fr); } }
+.wday { padding: 18px; border-right: 1px solid rgba(237, 228, 211, .1); display: grid; gap: 10px; align-content: start; }
+.wday:last-child { border-right: 0; }
+@media (max-width: 760px) { .wday { border-right: 0; border-bottom: 1px solid rgba(237, 228, 211, .1); } }
+.wday .dname { font: 500 30px/1 var(--mono); color: #F3C987; letter-spacing: .04em; }
+.wday .ddate { font: 500 10px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8FA0A0; }
+.wday .where { font-family: var(--display); font-weight: 450; font-size: 21px; line-height: 1.15; }
+.wday p { margin: 0; color: #CFC6B4; font-size: 14px; }
+.wday .flag { font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; background: #E46F4F; color: #160b07; justify-self: start; }
+.wday .flag.alt { background: #1B3240; color: #CFC6B4; }
+.wday ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; color: #CFC6B4; }
+
+/* ---------- book timeline ---------- */
+.timeline { display: grid; gap: 0; border-left: 2px solid var(--line); margin-left: 8px; }
+.tl { position: relative; padding: 0 0 18px 22px; display: grid; gap: 6px; }
+.tl::before { content: ""; position: absolute; left: -7px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--gold); }
+.tl.past::before { border-color: var(--muted); background: var(--muted); }
+.tl.soon::before { background: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 25%, transparent); }
+.tl .when { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.tl .date { font: 500 13px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--gold); }
+.tl.past .date { color: var(--muted); }
+.tl .count { font: 500 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.tl h4 { margin: 0; font-size: 16px; font-weight: 600; }
+.tl p { margin: 0; color: var(--soft); font-size: 14px; max-width: 70ch; }
+.tl .links { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13.5px; align-items: center; }
+.know { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 12px; }
+.know .card h4 { font-family: var(--display); font-weight: 450; font-size: 17px; }
+.know ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; color: var(--soft); }
+
+footer.made { border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--muted); font-size: 13px; display: grid; gap: 8px; }
+footer.made .nums { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+footer.made .nums b { font: 500 18px/1 var(--mono); color: var(--text); display: block; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } .map .leg.draw { stroke-dashoffset: 0; } }
+</style>
+
+<div id="introLayer" aria-label="Intro">
+__INTRO_STAGE__
+  <div class="enter"><button class="pill gold" id="enterGuide" type="button">Open the guide</button></div>
+</div>
+
+<header class="wrap top">
+  <div>
+    <div class="eyebrow" id="hEyebrow"></div>
+    <h1 id="hTitle"></h1>
+    <div class="sub" id="hSub"></div>
+  </div>
+  <div class="board" id="board" aria-live="off"></div>
+</header>
+
+<div class="controls" id="controls">
+  <div class="wrap">
+    <div class="seg" role="group" aria-label="Trip shape" id="shapeSeg"></div>
+    <button class="btn more-btn" id="moreBtn" type="button" aria-expanded="false">Trip settings</button>
+    <label class="sel opt"><span class="ctl-label">Tickets</span><select id="selTickets"></select></label>
+    <label class="sel opt"><span class="ctl-label">Budget</span><select id="selBudget"></select></label>
+    <label class="sel opt"><span class="ctl-label">From</span><select id="selOrigin"></select></label>
+    <label class="sel opt" id="datesWrap"><span class="ctl-label">Dates</span><select id="selDates"></select></label>
+    <nav class="tabs-top" role="tablist" aria-label="Sections" id="tabsTop"></nav>
+  </div>
+</div>
+
+<main class="wrap" id="main"></main>
+<nav class="tabbar" role="tablist" aria-label="Sections" id="tabbar"></nav>
+<div id="popHost"></div>
+
+<script type="application/json" id="guide-data">__DATA__</script>
+<script>
+(function () {
+  'use strict'
+  const G = JSON.parse(document.getElementById('guide-data').textContent)
+  const $ = (id) => document.getElementById(id)
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+  const F = G.F
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const store = { get(k) { try { return localStorage.getItem('rc27:' + k) } catch (e) { return null } }, set(k, v) { try { localStorage.setItem('rc27:' + k, v) } catch (e) {} } }
+  const ss = { get(k) { try { return sessionStorage.getItem('rc27:' + k) } catch (e) { return null } }, set(k, v) { try { sessionStorage.setItem('rc27:' + k, v) } catch (e) {} } }
+
+  /* ---------- state ---------- */
+  const PREVIEW = G.meta.mode === 'preview'
+  const TABS = PREVIEW ? [['plan', 'Plan'], ['inside', 'Full guide']] : [['plan', 'Plan'], ['days', 'Days'], ['golf', 'Golf'], ['watch', 'Watch'], ['book', 'Book']]
+  const ICONS = {
+    plan: '<path d="M4 6l5-2 6 2 5-2v14l-5 2-6-2-5 2z M9 4v14 M15 6v14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+    days: '<rect x="4" y="5" width="16" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 10h16 M9 3v4 M15 3v4" stroke="currentColor" stroke-width="1.6"/>',
+    golf: '<path d="M8 21V3l9 4-9 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><ellipse cx="9" cy="21" rx="6" ry="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+    watch: '<rect x="3" y="5" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 21h8 M12 17v4" stroke="currentColor" stroke-width="1.6"/>',
+    inside: '<path d="M6 10V7a6 6 0 0 1 12 0v3 M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+    book: '<path d="M5 4h11l3 3v13H5z M9 11h6 M9 15h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+  }
+  const hashTok = (location.hash || '').replace('#', '')
+  const S = {
+    shape: G.preset.shape, tickets: G.preset.tickets, budget: G.preset.budget, origin: G.preset.origin, dates: G.preset.dates,
+    tab: 'plan', cat: {}, pin: null, sim: { golf: 3, see: 2, move: 3, city: 2 },
+  }
+  for (const k of ['shape', 'tickets', 'budget', 'origin', 'dates', 'tab']) { const v = store.get(k); if (v) S[k] = v }
+  const sh = /^shape-([abc])$/.exec(hashTok); if (sh) S.shape = sh[1].toUpperCase()
+  if (TABS.some(([id]) => id === hashTok)) S.tab = hashTok
+  if (!G.shapes.some((s) => s.id === S.shape)) S.shape = G.preset.shape
+  const shape = () => G.shapes.find((s) => s.id === S.shape)
+
+  /* ---------- facts: every line can show the check status of the finding behind it ---------- */
+  const STATUS = { confirmed: 'Checked', corrected: 'Corrected', unconfirmed: 'Not confirmed', unchecked: 'Not re-checked', pending: 'Being checked' }
+  function chips(ids) {
+    return (ids || []).filter((id) => F[id]).map((id) => `<button type="button" class="src ${F[id].s}" data-f="${esc(id)}" aria-label="Source: ${esc(STATUS[F[id].s] || '')}">${esc(STATUS[F[id].s] || 'Source')}</button>`).join('')
+  }
+  function openFact(id) {
+    const f = F[id]; if (!f) return
+    const links = (f.src || []).slice(0, 3).map((s) => `<a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t || hostOf(s.u))}</a>`).join(' · ')
+    pop(`<div class="statusline ${f.s}">${esc(STATUS[f.s] || '')}${f.d ? ' · re-check by ' + esc(fmtDate(f.d)) : ''}</div>
+      ${f.n ? `<h4>${esc(f.n)}</h4>` : ''}<p>${esc(f.c)}</p>
+      ${f.why && f.s !== 'confirmed' ? `<p class="small">${f.s === 'corrected' ? 'What the fact-check changed: ' : 'Why it is flagged: '}${esc(f.why)}</p>` : ''}
+      ${links ? `<p class="small">Sources: ${links}</p>` : ''}`)
+  }
+  function pop(html) {
+    const host = $('popHost'); host.innerHTML = `<div class="pop" role="dialog" aria-modal="false"><button class="x" type="button" aria-label="Close">×</button>${html}</div>`
+    const el = host.firstChild; const x = el.querySelector('.x'); x.focus()
+    x.addEventListener('click', () => { host.innerHTML = '' })
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('popHost').innerHTML = '' })
+  document.addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (b) { e.preventDefault(); openFact(b.dataset.f) } })
+  const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch (e) { return 'source' } }
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  function fmtDate(iso, withDow) { const d = new Date(iso + 'T12:00:00'); return (withDow ? DOW[d.getDay()] + ' ' : '') + d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear() }
+  const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()) }
+  const daysTo = (iso) => Math.round((new Date(iso + 'T00:00:00') - today()) / 86400000)
+
+  /* ---------- marks (private copy only): shared across every phone in the group ---------- */
+  const marks = new Map(); let db = null; let me = null; const markFns = new Set()
+  async function initMarks() {
+    if (G.meta.mode !== 'private' || !window.claude || !window.claude.use) return
+    try {
+      db = await window.claude.use('db')
+      try { const u = await window.claude.use('user'); me = u ? await u.id() : null } catch (e) { me = null } /* an opaque id, never a name */
+      db.collection('marks').onSnapshot((snap) => { marks.clear(); for (const d of snap.docs || []) marks.set(d.id, d.data ? d.data() : d); markFns.forEach((fn) => fn()) })
+    } catch (e) { db = null }
+  }
+  async function setMark(id, patch) {
+    const cur = Object.assign({}, marks.get(id) || {}, patch, { by: me, at: new Date().toISOString() })
+    marks.set(id, cur); markFns.forEach((fn) => fn())
+    if (!db) return false
+    try { await db.doc('marks/' + id).set(cur); return true } catch (e) { return false }
+  }
+  function markButtons(id, opts) {
+    if (G.meta.mode !== 'private') return ''
+    return `<div class="marks" data-mark="${esc(id)}">${opts.map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="false">${l}</button>`).join('')}</div>`
+  }
+  function paintMarks(root) {
+    root.querySelectorAll('[data-mark]').forEach((w) => { const m = marks.get(w.dataset.mark) || {}; w.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(m.status === b.dataset.v))) })
+  }
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-mark] button'); if (!b) return
+    const id = b.closest('[data-mark]').dataset.mark; const m = marks.get(id) || {}
+    setMark(id, { status: m.status === b.dataset.v ? null : b.dataset.v })
+  })
+  markFns.add(() => paintMarks(document))
+
+  /* ---------- header, scoreboard, controls ---------- */
+  $('hEyebrow').textContent = G.meta.eyebrow; $('hTitle').textContent = G.meta.title; $('hSub').textContent = G.meta.sub
+  function paintBoard() {
+    const n = daysTo(G.meta.matchDay)
+    const cells = n > 0 ? [[String(Math.floor(n / 7)).padStart(2, '0'), 'Weeks'], [String(n % 7), 'Days']] : [['0', 'Days']]
+    $('board').innerHTML = cells.map(([v, l]) => `<div class="cell"><div class="num">${v}</div><div class="lab">${l}</div></div>`).join('') + `<div class="cap">${n > 0 ? 'to the first match day' : 'Match week'}</div>`
+  }
+  paintBoard()
+  function fillSelect(el, list, val) { el.innerHTML = list.map((o) => `<option value="${esc(o.id)}"${o.id === val ? ' selected' : ''}>${esc(o.label)}</option>`).join('') }
+  if (PREVIEW) { for (const id of ['selTickets', 'selBudget', 'selDates']) $(id).closest('label').classList.add('hidden') }
+  fillSelect($('selTickets'), G.toggles.tickets, S.tickets)
+  fillSelect($('selBudget'), G.toggles.budget, S.budget)
+  fillSelect($('selOrigin'), G.toggles.origin, S.origin)
+  if (G.meta.mode === 'private') fillSelect($('selDates'), G.toggles.dates, S.dates); else $('datesWrap').classList.add('hidden')
+  for (const [k, el] of [['tickets', 'selTickets'], ['budget', 'selBudget'], ['origin', 'selOrigin'], ['dates', 'selDates']]) $(el).addEventListener('change', (e) => { S[k] = e.target.value; store.set(k, S[k]); render() })
+  $('moreBtn').addEventListener('click', () => { const c = $('controls'); const o = !c.classList.contains('open'); c.classList.toggle('open', o); $('moreBtn').setAttribute('aria-expanded', String(o)) })
+  function paintShapeSeg() {
+    $('shapeSeg').innerHTML = G.shapes.map((s) => `<button type="button" data-shape="${s.id}" aria-pressed="${s.id === S.shape}"><b>${s.id}</b>${esc(s.short)}</button>`).join('')
+  }
+  document.addEventListener('click', (e) => { const b = e.target.closest('[data-shape]'); if (!b) return; setShape(b.dataset.shape) })
+  function setShape(id) { if (id === S.shape) return; S.shape = id; store.set('shape', id); try { history.replaceState(null, '', '#shape-' + id.toLowerCase()) } catch (e) {} render(true) }
+  for (const host of ['tabsTop', 'tabbar']) $(host).innerHTML = TABS.map(([id, l]) => `<button type="button" role="tab" data-tab="${id}" aria-selected="${id === S.tab}">${host === 'tabbar' ? `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id]}</svg>` : ''}${l}</button>`).join('')
+  document.addEventListener('click', (e) => { const b = e.target.closest('[data-tab]'); if (!b) return; S.tab = b.dataset.tab; store.set('tab', S.tab); try { history.replaceState(null, '', '#' + S.tab) } catch (e) {} paintTabs(); window.scrollTo({ top: $('controls').offsetTop - 2, behavior: reduce ? 'auto' : 'smooth' }) })
+  function paintTabs() {
+    document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === S.tab)))
+    document.querySelectorAll('section.tab').forEach((s) => { s.hidden = s.id !== 'tab-' + S.tab })
+  }
+
+  /* ---------- helpers bound to toggles ---------- */
+  const pick = (v) => (v && typeof v === 'object' && !Array.isArray(v) && (v.byTickets || v.byOrigin || v.byBudget)) ? (v.byTickets ? v.byTickets[S.tickets] ?? v.byTickets.default : v.byOrigin ? v.byOrigin[S.origin] ?? v.byOrigin.default : v.byBudget[S.budget] ?? v.byBudget.default) : v
+  const lines = (arr) => (arr || []).map(pick).filter(Boolean)
+  const applies = (x) => (!x.tickets || x.tickets.includes(S.tickets)) && (!x.shapes || x.shapes.includes(S.shape)) && (!x.origin || x.origin.includes(S.origin)) && (!x.mode || x.mode === G.meta.mode) && (!x.dates || x.dates.includes(S.dates))
+
+  /* ================= PLAN ================= */
+  function renderPlan() {
+    const cur = shape()
+    const cards = G.shapes.map((s) => `<button type="button" class="shape" data-shape="${s.id}" aria-pressed="${s.id === S.shape}">
+      <div class="tag"><span class="letter">${s.id}</span><h3>${esc(s.label)}</h3></div>
+      <div class="best">Best for ${esc(s.bestFor)}</div>
+      <p>${esc(s.blurb)}</p>
+      <div class="nights">${s.nights.map(([t, n]) => `<span class="chip">${esc(t)} · ${n}</span>`).join('')}</div>
+      <div class="stats">
+        <div class="stat"><div class="v">${s.metrics.moves}</div><div class="k">Moves</div></div>
+        <div class="stat"><div class="v">${s.metrics.transit[0]}–${s.metrics.transit[1]}h</div><div class="k">Transit</div></div>
+        <div class="stat"><div class="v">${esc(s.metrics.matchDay)}</div><div class="k">Match day</div></div>
+      </div></button>`).join('')
+    const flights = (G.flights[S.origin] || G.flights.any)
+    return `<section class="tab" id="tab-plan">
+      <div class="block"><div class="eyebrow">Three ways to run the week</div><h2 class="sec">Pick a shape. The whole guide rebuilds around it.</h2>
+        <p class="lede">${esc(G.copy.planLede)}</p><div class="shapes">${cards}</div></div>
+      ${renderSim()}
+      <div class="block"><div class="eyebrow">The route</div><h2 class="sec">${esc(cur.label)}, on the real rail lines</h2>
+        <div class="mapbox"><div><div class="map" id="map"></div>
+          <div class="legend" style="margin-top:10px"><span><i></i>Train</span><span><i class="bus"></i>Bus</span><span><i class="shuttle"></i>Ryder Cup shuttle</span></div></div>
+          <div class="pinlist" id="pinlist" aria-label="Places on the map"></div></div></div>
+      <div class="block"><div class="eyebrow">Getting to Ireland</div><h2 class="sec">${esc(flights.title)}</h2>
+        <div class="cards">${flights.items.filter(applies).map(factCard).join('')}</div></div>
+    </section>`
+  }
+  function factCard(x) {
+    return `<div class="card"><h4>${esc(x.title)}</h4>${lines(x.lines).map((l) => `<p>${esc(l.t || l)}${chips(l.ids)}</p>`).join('')}${x.link ? `<div class="links"><a href="${esc(x.link.u)}" target="_blank" rel="noopener">${esc(x.link.t)}</a></div>` : ''}</div>`
+  }
+
+  /* ---------- simulator: open scoring over each shape's published metrics ---------- */
+  const SIM = G.sim
+  function scores() {
+    const w = S.sim
+    return G.shapes.map((s) => {
+      const m = s.metrics.sim
+      const parts = { golf: w.golf * m.golf, see: w.see * m.see, move: w.move * m.calm, city: w.city * m.city }
+      const total = Object.values(parts).reduce((a, b) => a + b, 0)
+      const max = (w.golf + w.see + w.move + w.city) || 1
+      return { s, parts, score: Math.round((total / max) * 100) }
+    }).sort((a, b) => b.score - a.score)
+  }
+  function renderSim() {
+    const sl = SIM.sliders.map((x) => `<div class="slider"><label for="sim-${x.id}">${esc(x.label)} <span id="simv-${x.id}">${esc(x.levels[S.sim[x.id]])}</span></label>
+      <input type="range" min="0" max="4" step="1" id="sim-${x.id}" value="${S.sim[x.id]}" aria-describedby="simv-${x.id}"></div>`).join('')
+    const rows = G.shapes.map((s) => `<tr><td><b>${s.id}</b></td>${SIM.sliders.map((x) => `<td>${s.metrics.sim[x.key].toFixed(2)}</td>`).join('')}</tr>`).join('')
+    return `<div class="block"><div class="eyebrow">Trade-off simulator</div><h2 class="sec">What matters most to your group?</h2>
+      <div class="sim"><div style="display:grid;gap:14px">${sl}</div>
+      <div style="display:grid;gap:14px;align-content:start"><div class="bars" id="simBars"></div><div class="why" id="simWhy"></div>
+        <div><button class="btn gold" type="button" id="simUse">Use this shape</button></div>
+        <details class="how"><summary>How this is scored</summary><p class="small">${esc(SIM.how)}</p>
+        <div style="overflow-x:auto"><table><thead><tr><th>Shape</th>${SIM.sliders.map((x) => `<th>${esc(x.short)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></details></div></div></div>`
+  }
+  function paintSim() {
+    const sc = scores()
+    $('simBars').innerHTML = sc.map((r) => `<div class="bar"><span class="l">${r.s.id}</span><div class="track"><div class="fill" style="width:${r.score}%"></div></div><span class="n">${r.score}</span></div>`).join('')
+    const top = sc[0]; const lead = Object.entries(top.parts).sort((a, b) => b[1] - a[1])[0][0]
+    $('simWhy').innerHTML = `<b>${top.s.id}: ${esc(top.s.label)}.</b> ${esc(top.s.metrics.simWhy[lead] || top.s.blurb)}`
+    $('simUse').textContent = top.s.id === S.shape ? 'This is your shape' : 'Use shape ' + top.s.id
+    $('simUse').onclick = () => setShape(top.s.id)
+  }
+  function bindSim() {
+    for (const x of SIM.sliders) {
+      const el = $('sim-' + x.id); if (!el) continue
+      el.addEventListener('input', () => { S.sim[x.id] = +el.value; $('simv-' + x.id).textContent = x.levels[S.sim[x.id]]; paintSim() })
+    }
+    paintSim()
+  }
+
+  /* ---------- map ---------- */
+  function renderMap(animate) {
+    const M = G.map; const cur = shape(); const box = $('map'); if (!box) return
+    const onLegs = new Set(cur.legs)
+    const want = new Set(cur.pins)
+    const pts = M.pins.filter((p) => want.has(p.id))
+    let x0 = Math.min(...pts.map((p) => p.x)), x1 = Math.max(...pts.map((p) => p.x)), y0 = Math.min(...pts.map((p) => p.y)), y1 = Math.max(...pts.map((p) => p.y))
+    const pad = 70; x0 -= pad; y0 -= pad; x1 += pad + 90; y1 += pad
+    let w = x1 - x0, h = y1 - y0; if (w > h) { y0 -= (w - h) / 2; h = w } else { x0 -= (h - w) / 2; w = h }
+    const legs = Object.entries(M.legs).map(([id, l]) => `<path class="leg ${l.style === 'shuttle' ? 'shuttle' : l.mode}${onLegs.has(id) ? '' : ' off'}" data-leg="${id}" d="${l.d}"/>`).join('')
+    /* labels: place each one right of its pin, or left when it would leave the frame, and step it down past
+     * any label already placed (dense pins round Dublin and Limerick otherwise print on top of each other) */
+    const fs = Math.max(19, w / 34); const placed = []
+    /* the venue and the bases always get a label, nudged a little if they must; everything else is labelled
+     * only where it fits beside its own pin, and is named in the list beside the map either way */
+    const PRI = { venue: 0, base: 1, airport: 3, golf: 4, town: 2, sight: 5, fanzone: 2 }
+    for (const p of pts) { const r = (p.kind === 'venue' ? 11 : p.kind === 'base' ? 9 : 7) * fs / 19; placed.push([p.x - r, p.y - r, p.x + r, p.y + r]) }
+    const lab = pts.slice().sort((a, b) => (PRI[a.kind] ?? 9) - (PRI[b.kind] ?? 9)).map((p) => {
+      const must = p.kind === 'venue' || p.kind === 'base'
+      const txt = p.short || p.label; const tw = txt.length * fs * 0.52
+      const hit = (b) => placed.some((q) => !(b[2] < q[0] || b[0] > q[2] || b[3] < q[1] || b[1] > q[3]))
+      const at = (left, dy) => { const ly = p.y + dy; return left ? [p.x - 16 - tw, ly - fs * 0.8, p.x - 16, ly + fs * 0.2] : [p.x + 16, ly - fs * 0.8, p.x + 16 + tw, ly + fs * 0.2] }
+      const tries = [[false, fs * 0.32], [true, fs * 0.32], [false, -fs * 0.5], [true, -fs * 0.5], [false, fs * 1.1], [true, fs * 1.1]]
+      if (must) tries.push([false, fs * 1.9], [true, fs * 1.9], [false, -fs * 1.3], [true, -fs * 1.3])
+      for (const [left, dy] of tries) {
+        const b = at(left, dy)
+        if (b[0] < x0 + 4 || b[2] > x0 + w - 4) continue
+        if (!hit(b)) { placed.push(b); return [p.id, { left, dy, show: true }] }
+      }
+      if (must) { const b = at(false, fs * 0.32); placed.push(b); return [p.id, { left: false, dy: fs * 0.32, show: true }] }
+      return [p.id, { left: false, dy: 0, show: false }]
+    })
+    const L2 = Object.fromEntries(lab)
+    const pins = pts.map((p) => { const l = L2[p.id]; return `<g class="pin ${p.kind}${S.pin === p.id ? ' sel' : ''}" data-pin="${p.id}" transform="translate(${p.x} ${p.y})" tabindex="0" role="button" aria-label="${esc(p.label)}">
+      <circle class="hit" r="26"/><circle class="dot" r="${(p.kind === 'venue' ? 11 : p.kind === 'base' ? 9 : 7) * fs / 19}"/>
+      ${l.show ? `<text x="${l.left ? -16 : 16}" y="${l.dy.toFixed(1)}" text-anchor="${l.left ? 'end' : 'start'}" style="font-size:${fs.toFixed(0)}px">${esc(p.short || p.label)}</text>` : ''}</g>` }).join('')
+    box.innerHTML = `<svg viewBox="${x0.toFixed(0)} ${y0.toFixed(0)} ${w.toFixed(0)} ${h.toFixed(0)}" role="img" aria-label="Map of the ${esc(cur.label)} route">
+      <path class="land" d="${M.land}"/><path class="net" d="${M.network}"/>${legs}${pins}</svg>`
+    if (animate && !reduce) box.querySelectorAll('.leg.rail:not(.off)').forEach((p) => { const L = p.getTotalLength(); p.style.setProperty('--len', L); p.style.strokeDasharray = L; p.classList.add('draw') })
+    const list = cur.pins.map((id) => M.pins.find((p) => p.id === id)).filter(Boolean)
+    $('pinlist').innerHTML = list.map((p) => { const info = G.pinInfo[p.id] || {}; return `<button type="button" class="pinrow" data-pin="${p.id}" aria-pressed="${S.pin === p.id}"><span class="sw" style="background:${swatch(p.kind)}"></span><span><b>${esc(p.label)}</b><span class="small">${esc(pick(info.line) || KIND[p.kind] || '')}</span></span></button>` }).join('')
+  }
+  const KIND = { venue: 'The venue', base: 'A base', golf: 'Golf course', town: 'Town', sight: 'Sight', airport: 'Airport', fanzone: 'Fan zone town' }
+  const swatch = (k) => ({ venue: 'var(--shuttle)', base: 'var(--gold)', golf: '#F3EEE2', airport: '#9FB7C4' }[k] || 'var(--bus)')
+  document.addEventListener('click', (e) => {
+    const g = e.target.closest('[data-pin]'); if (!g) return
+    S.pin = g.dataset.pin; const p = G.map.pins.find((x) => x.id === S.pin); const info = G.pinInfo[S.pin] || {}
+    renderMap(false)
+    pop(`<div class="eyebrow">${esc(KIND[p.kind] || '')}</div><h4>${esc(p.label)}</h4>${info.line ? `<p>${esc(pick(info.line))}${chips(info.ids)}</p>` : ''}
+      ${info.golf ? `<p><button class="btn" type="button" data-tab="golf">Open the course card</button></p>` : ''}
+      <p class="small">Placed from ${esc(p.source.replace(/\s*\(.*\)$/, ''))}.</p>`)
+  })
+  document.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('g[data-pin]')) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent('click', { bubbles: true })) } })
+
+  /* ================= DAYS ================= */
+  function renderDays() {
+    const cur = shape(); const days = cur.days[S.dates] || cur.days[Object.keys(cur.days)[0]]
+    const cards = days.map((d, i) => {
+      const legs = lines(pick(d.legs))
+      const plan = lines(pick(d.plan)).filter((p) => !p.tickets || p.tickets.includes(S.tickets))
+      return `<article class="yard${d.match ? ' match' : ''}">
+        <div class="yhead"><div><div class="yno">Day ${i + 1} · ${esc(fmtDate(d.date, true))}</div><h3>${esc(pick(d.title))}</h3></div><div class="base">${esc(d.sleep ? 'Sleep: ' + d.sleep : '')}</div></div>
+        ${legs.length ? `<div class="ledger">${legs.map((l) => `<div class="row"><span class="m">${esc(l.m)}</span><span class="t">${esc(l.t)}${chips(l.ids)}</span><span class="d">${esc(l.d || '')}</span></div>`).join('')}</div>` : ''}
+        ${plan.length ? `<ul class="plan">${plan.map((p) => `<li class="${p.watch ? 'watch' : ''}"><span>${esc(p.t)}${chips(p.ids)}</span></li>`).join('')}</ul>` : ''}
+        ${d.note ? `<div class="note">${esc(pick(d.note).t || pick(d.note))}${chips(pick(d.note).ids)}</div>` : ''}
+      </article>`
+    }).join('')
+    const bases = cur.bases.map((bid) => renderBase(bid)).join('')
+    return `<section class="tab" id="tab-days"><div class="block"><div class="eyebrow">Shape ${cur.id} · ${esc(G.toggles.dates.find((x) => x.id === S.dates)?.label || '')}</div>
+      <h2 class="sec">Day by day</h2><p class="lede">${esc(G.copy.daysLede)}</p><div class="days">${cards}</div></div>${bases}</section>`
+  }
+  const CAT_LABEL = { eat: 'Eat', drink: 'Pubs and music', watch: 'Watch the golf', see: 'See and do' }
+  function renderBase(bid) {
+    const B = G.bases[bid]; if (!B) return ''
+    const stay = (B.stay || []).filter((x) => !x.budget || x.budget.includes(S.budget))
+    const cats = Object.keys(CAT_LABEL).filter((c) => (B.places[c] || []).length)
+    const cur = S.cat[bid] && cats.includes(S.cat[bid]) ? S.cat[bid] : cats[0]
+    const list = (B.places[cur] || [])
+    return `<div class="block" id="base-${bid}"><div class="basehead"><div><div class="eyebrow">Where you sleep</div><h3>${esc(B.name)}</h3></div></div>
+      ${B.callout ? `<div class="callout">${lines(B.callout).map((l) => `<p>${esc(l.t || l)}${chips(l.ids)}</p>`).join('')}</div>` : ''}
+      <div class="stayband">${stay.map((x) => `<div class="card"><h4>${esc(x.title)}</h4>${lines(x.lines).map((l) => `<p>${esc(l.t || l)}${chips(l.ids)}</p>`).join('')}</div>`).join('')}</div>
+      ${cats.length ? `<div class="filters" role="group" aria-label="Categories in ${esc(B.name)}">${cats.map((c) => `<button type="button" data-cat="${bid}:${c}" aria-pressed="${c === cur}">${CAT_LABEL[c]} <span class="small">${B.places[c].length}</span></button>`).join('')}</div>
+      <div class="cards">${list.map(placeCard).join('')}</div>` : ''}</div>`
+  }
+  function placeCard(p) {
+    const maps = p.q ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.q)}` : null
+    return `<div class="card"><div class="meta"><span class="chip">${esc(p.town || '')}</span>${chips([p.id])}</div><h4>${esc(p.name)}</h4><p>${esc(p.claim)}</p>
+      ${p.rows && p.rows.length ? `<div class="rows">${p.rows.map(([k, v]) => `<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join('')}</div>` : ''}
+      <div class="links">${p.site ? `<a href="${esc(p.site)}" target="_blank" rel="noopener">Official site</a>` : ''}${maps ? `<a href="${maps}" target="_blank" rel="noopener">Maps</a>` : ''}</div>
+      ${markButtons(p.id, [['did', 'We did this'], ['skip', 'Skipped']])}</div>`
+  }
+  document.addEventListener('click', (e) => { const b = e.target.closest('[data-cat]'); if (!b) return; const [bid, c] = b.dataset.cat.split(':'); S.cat[bid] = c; const el = $('base-' + bid); el.outerHTML = renderBase(bid); paintMarks(document) })
+
+  /* ================= GOLF ================= */
+  function renderGolf() {
+    const cur = shape(); const fit = new Set(cur.golf)
+    const list = [...G.golf].sort((a, b) => (fit.has(b.id) - fit.has(a.id)) || (cur.golf.indexOf(a.id) - cur.golf.indexOf(b.id)))
+    const cards = list.map((c, i) => {
+      const tr = c.transit[S.shape]
+      return `<article class="yard" id="golf-${c.id}"><div class="yhead"><div><div class="yno">Card ${String(i + 1).padStart(2, '0')} · ${esc(c.region)}</div><h3>${esc(c.name)}</h3></div>
+        <span class="fit${fit.has(c.id) ? '' : ' no'}">${fit.has(c.id) ? 'Fits shape ' + cur.id : 'Off route'}</span></div>
+        <dl class="facts">${c.facts.map((f) => `<dt>${esc(f.k)}</dt><dd>${esc(f.t)}${chips(f.ids)}</dd>`).join('')}
+        ${tr ? `<dt>Getting there</dt><dd>${esc(tr.t)}${chips(tr.ids)}</dd>` : ''}</dl>
+        ${c.note ? `<div class="note">${esc(c.note.t)}${chips(c.note.ids)}</div>` : ''}
+        <div class="links" style="margin-top:10px;display:flex;gap:14px;flex-wrap:wrap;font-size:14px">${c.book ? `<a href="${esc(c.book)}" target="_blank" rel="noopener">Book on the club's site</a>` : ''}</div>
+        ${markButtons('golf-' + c.id, [['want', 'Shortlist'], ['booked', 'Booked']])}</article>`
+    }).join('')
+    return `<section class="tab" id="tab-golf"><div class="block"><div class="eyebrow">Play a round</div><h2 class="sec">Links golf, by train and bus</h2>
+      <p class="lede">${esc(G.copy.golfLede)}</p>${G.golfCallout ? `<div class="callout">${lines(G.golfCallout).map((l) => `<p>${esc(l.t)}${chips(l.ids)}</p>`).join('')}</div>` : ''}<div class="golf">${cards}</div></div></section>`
+  }
+
+  /* ================= WATCH ================= */
+  function renderWatch() {
+    const W = G.watch; const cur = shape()
+    const day = (d) => { const v = (W.days[d].byShape && W.days[d].byShape[S.shape]) || W.days[d]; const y0 = v.byTickets ? (v.byTickets[S.tickets] || v.byTickets.default) : v; const y = { ...y0, where: typeof y0.where === 'object' ? (y0.where[S.dates] || y0.where.default) : y0.where }
+      return `<div class="wday"><div><div class="dname">${d.toUpperCase()}</div><div class="ddate">${esc(W.days[d].date)}</div></div>
+        <span class="flag${y.ticket ? '' : ' alt'}">${esc(y.flag)}</span><div class="where">${esc(y.where)}</div>
+        <ul>${(y.lines || []).map((l) => `<li>${esc(l.t)}${chips(l.ids)}</li>`).join('')}</ul></div>` }
+    return `<section class="tab" id="tab-watch"><div class="block"><div class="eyebrow">Match days · shape ${cur.id}</div><h2 class="sec">Friday, Saturday, Sunday</h2>
+      <p class="lede">${esc(G.copy.watchLede)}</p><div class="wboard dark">${['fri', 'sat', 'sun'].map(day).join('')}</div></div>
+      <div class="block"><div class="eyebrow">Match day at Adare</div><h2 class="sec">${esc(W.match.title)}</h2><div class="cards">${W.match.items.filter(applies).map(factCard).join('')}</div></div>
+      <div class="block"><div class="eyebrow">Watching without a ticket</div><h2 class="sec">${esc(W.tv.title)}</h2><div class="cards">${W.tv.items.filter(applies).map(factCard).join('')}</div></div></section>`
+  }
+
+  /* ================= BOOK ================= */
+  function renderBook() {
+    const items = G.book.filter(applies).map((b) => ({ ...b, n: b.date ? daysTo(b.date) : null })).sort((a, b) => (a.date || '9999').localeCompare(b.date || '9999'))
+    const tl = items.map((b) => {
+      const past = b.n != null && b.n < 0; const soon = b.n != null && b.n >= 0 && b.n <= 45
+      const count = b.n == null ? 'Date not yet published' : past ? 'Passed' : b.n === 0 ? 'Today' : `In ${b.n} day${b.n === 1 ? '' : 's'}`
+      return `<div class="tl${past ? ' past' : ''}${soon ? ' soon' : ''}"><div class="when"><span class="date">${b.date ? esc(fmtDate(b.date, true)) : 'TBC'}</span><span class="count">${esc(b.kind)} · ${count}</span></div>
+        <h4>${esc(b.title)}</h4><p>${esc(pick(b.text).t || pick(b.text))}${chips(b.ids)}</p>
+        <div class="links">${(b.links || []).map((l) => `<a href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}</a>`).join('')}${markButtons('book-' + b.id, [['booked', 'Done']])}</div></div>`
+    }).join('')
+    const know = G.know.filter(applies).map((k) => `<div class="card"><h4>${esc(k.title)}</h4><ul>${lines(k.lines).map((l) => `<li>${esc(l.t)}${chips(l.ids)}</li>`).join('')}</ul></div>`).join('')
+    return `<section class="tab" id="tab-book"><div class="block"><div class="eyebrow">Book these · shape ${S.shape}</div><h2 class="sec">Every booking, in the order it opens or closes</h2>
+      <p class="lede">${esc(G.copy.bookLede)}</p><div class="timeline">${tl}</div></div>
+      <div class="block"><div class="eyebrow">Before you go</div><h2 class="sec">Entry, money, phones and pubs</h2><div class="know">${know}</div></div></section>`
+  }
+
+  /* ---------- render ---------- */
+  function render(animateMap) {
+    paintShapeSeg()
+    const keepTab = S.tab
+    $('main').innerHTML = PREVIEW ? renderPlan() + renderInside() + renderMade() : renderPlan() + renderDays() + renderGolf() + renderWatch() + renderBook() + renderMade()
+    S.tab = keepTab; paintTabs(); bindSim(); renderMap(animateMap); paintMarks(document)
+  }
+  function renderInside() {
+    const I = G.inside
+    const items = [['Day by day', `Every day for each shape and both date options, with train and bus legs, times and where you sleep (${Object.values(I.days).join(', ')} days by shape)`],
+      ['Places near every base', `${I.places} researched places to eat, drink, watch the golf and see, each fact-checked`],
+      ['Golf course cards', `${I.golf} courses with fees, visitor days, refund rules and how to reach each by train and bus`],
+      ['Match days', 'Friday, Saturday and Sunday for every ticket situation: getting into Adare, fan parks, Sky Sports pubs and pub hours'],
+      ['The booking timeline', `${I.book} release dates and deadlines in order, from flight sales to refund cutoffs`],
+      ['Before you go', `${I.know} briefings on entry, money, phones, the law and car hire`]]
+    return `<section class="tab" id="tab-inside"><div class="block"><div class="eyebrow">The full guide</div><h2 class="sec">Everything the plan above stands on</h2>
+      <p class="lede">The full guide turns the shape you pick into the whole week, and every line in it carries the result of its fact-check.</p>
+      <div class="know">${items.map(([t, d]) => `<div class="card"><h4>${esc(t)}</h4><p>${esc(d)}</p></div>`).join('')}</div>
+      <div class="callout" style="display:grid;gap:10px;justify-items:start"><p>${esc(I.cta.lede)}</p><a class="btn gold" href="${esc(I.cta.u)}" target="_blank" rel="noopener">${esc(I.cta.t)}</a></div></div></section>`
+  }
+  function renderMade() {
+    const m = G.made
+    return `<footer class="made"><div class="eyebrow">How this guide was made</div>
+      <div class="nums"><span><b>${m.findings}</b>findings</span><span><b>${m.checked}</b>fact-checked</span><span><b>${m.sources}</b>sources</span><span><b>${m.passes}</b>research passes</span></div>
+      <p>${esc(G.copy.made)}</p><p>Built ${esc(fmtDate(G.builtOn))}. Every line carries the result of its fact-check: tap it to see the source.</p>
+      <p><button class="btn" type="button" id="replayIntro">Play the intro again</button></p></footer>`
+  }
+  document.addEventListener('click', (e) => { if (e.target.id === 'replayIntro') showIntro(true) })
+  render(false)
+  initMarks()
+
+  /* ---------- intro ---------- */
+  const layer = $('introLayer')
+  function hideIntro() { layer.classList.add('gone'); ss.set('introSeen', '1'); try { window.__intro && window.__intro.stop && window.__intro.stop() } catch (e) {} setTimeout(() => renderMap(true), 300) }
+  function showIntro(force) {
+    if (force) { location.hash = ''; ss.set('introSeen', ''); location.reload(); return }
+  }
+  $('enterGuide').addEventListener('click', hideIntro)
+  const stage = $('stage')
+  if (stage) {
+    stage.addEventListener('intro:titled', () => layer.classList.add('titled'))
+    const sk = $('skip'); if (sk) sk.addEventListener('click', () => { if (layer.classList.contains('titled')) hideIntro() })
+  }
+  if (ss.get('introSeen') === '1' || !G.meta.intro) hideIntro()
+  else setTimeout(() => layer.classList.add('titled'), 12000) /* never trap a reader behind a slow GPU */
+})()
+</script>
+<script>window.__INTRO_CONFIG = __INTRO_CONFIG__</script>
+<script type="text/plain" id="introSrc">
+__INTRO_JS__
+</script>
+<script type="module">
+/* the 3D intro loads only when it will actually play: never behind a skipped or already-seen intro */
+let seen = null; try { seen = sessionStorage.getItem('rc27:introSeen') } catch (e) {}
+const layer = document.getElementById('introLayer')
+if (seen !== '1' && layer && !layer.classList.contains('gone')) {
+  const src = document.getElementById('introSrc').textContent
+  import(URL.createObjectURL(new Blob([src], { type: 'text/javascript' }))).catch(() => layer.classList.add('titled'))
+}
+</script>
