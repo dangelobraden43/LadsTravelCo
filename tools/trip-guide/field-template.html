@@ -1,0 +1,483 @@
+<title>__TITLE__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Field guide for a golf event week. One visual world on purpose: dusk on the links, carried on from the
+ * intro. Cream yardage cards for days and courses; scoreboard numerals for dates and countdowns.
+ * Layout from the Oct 17 research: one scroll, a short "On this page" bar, nothing behind settings. */
+:root {
+  --bg: #0E1A22; --bg2: #102029; --panel: #142630; --panel2: #1B3240; --line: rgba(237, 228, 211, .13);
+  --text: #EDE4D3; --soft: #CFC6B4; --muted: #98A6A6; --gold: #E0A75E; --gold-ink: #1A140B;
+  --fair: #2F4A3A; --fair2: #3E6149; --sea: #1F3D4C;
+  --paper: #F3EEE2; --paper2: #E9E2D2; --ink: #1F2A24; --ink-soft: #4E5A52; --rule: #C9BFA9; --flag: #B5452F;
+  --rail: #E0A75E; --bus: #CDBB98; --shuttle: #E46F4F; --warn: #E3B35B; --ok: #8CC19A;
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --cream: var(--text);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(64px + env(safe-area-inset-top, 0px)); }
+html, body { background: var(--bg); color: var(--text); }
+body { font-family: var(--sans); font-size: 15.5px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+a { color: var(--gold); text-underline-offset: 2px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 500 11px/1.3 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+h1, h2, h3, h4 { text-wrap: balance; margin: 0; }
+h2.chap { font-family: var(--display); font-weight: 400; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; }
+h3.sub { font-family: var(--display); font-weight: 450; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.15; }
+.lede { color: var(--soft); max-width: 66ch; margin: 8px 0 0; }
+.small { font-size: 13px; color: var(--muted); }
+.check { font-size: 12.5px; color: var(--warn); white-space: nowrap; }
+section.chapter { padding-block: 44px 8px; display: grid; gap: 22px; border-top: 1px solid var(--line); }
+section.chapter:first-of-type { border-top: 0; }
+
+/* ---------- intro ---------- */
+#introLayer { position: fixed; inset: 0; z-index: 50; background: #0b1218; display: grid; place-items: center; padding: env(safe-area-inset-top, 0px) max(12px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(12px, env(safe-area-inset-left, 0px)); transition: opacity .7s ease, visibility .7s; }
+#introLayer.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+#introLayer .stage { width: min(1180px, 100%); }
+#introLayer .enter { position: absolute; left: 50%; bottom: max(22px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); opacity: 0; transition: opacity .6s ease; }
+#introLayer.titled .enter { opacity: 1; }
+.pill { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; border-radius: 999px; padding: 13px 18px; min-height: 44px; cursor: pointer; border: 1px solid #E0A75E; background: #E0A75E; color: #1A140B; }
+
+/* ---------- hero ---------- */
+header.hero { padding-block: 34px 26px; display: grid; gap: 18px; }
+.hero h1 { font-family: var(--display); font-style: italic; font-weight: 330; font-size: clamp(44px, 8vw, 84px); line-height: .95; letter-spacing: -.01em; }
+.hero .sub { color: var(--soft); font-size: 16px; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+@media (max-width: 760px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.fact { background: #0A141A; padding: 14px 14px 12px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.fact .k { font: 500 9.5px/1.2 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8FA0A0; }
+.fact .v { font: 500 22px/1.15 var(--mono); color: #F3C987; font-variant-numeric: tabular-nums; }
+.fact .v.t { font: 500 15px/1.35 var(--sans); color: var(--text); }
+.fact a { color: inherit; text-decoration: none; }
+.fact .s { font-size: 12.5px; color: var(--soft); }
+
+/* ---------- on this page ---------- */
+nav.otp { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+nav.otp .wrap { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+nav.otp .wrap::-webkit-scrollbar { display: none; }
+nav.otp a { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 48px; padding: 0 12px; font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; }
+nav.otp a.on { color: var(--text); border-bottom-color: var(--gold); }
+nav.otp .lab { font: 500 9.5px/1 var(--mono); letter-spacing: .16em; color: var(--muted); align-self: center; padding-right: 6px; white-space: nowrap; }
+@media (max-width: 560px) { nav.otp .lab { display: none; } nav.otp a { padding: 0 9px; letter-spacing: .06em; } }
+
+/* ---------- comparison ---------- */
+.compare { display: grid; gap: 10px; }
+.crow { display: grid; grid-template-columns: 52px minmax(0, 1.4fr) minmax(0, 1.3fr) 90px 110px minmax(0, 1.6fr); gap: 14px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: var(--text); }
+.crow:hover { border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); }
+.crow.head { background: none; border: 0; padding-block: 0; font: 500 9.5px/1.2 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.crow .L { font: 500 28px/1 var(--mono); color: var(--gold); }
+.crow .nm { font-family: var(--display); font-size: 19px; line-height: 1.2; }
+.crow .num { font: 500 15px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+.crow .bf { font-size: 14px; color: var(--soft); }
+.crow .tag { display: inline-block; margin-top: 4px; font: 500 10px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--gold-ink); background: var(--gold); border-radius: 999px; padding: 4px 8px; }
+.nights { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { font: 500 11px/1.35 var(--mono); letter-spacing: .04em; padding: 5px 9px; border-radius: 14px; background: var(--panel2); color: var(--soft); border: 1px solid var(--line); text-decoration: none; max-width: 100%; overflow-wrap: anywhere; }
+a.chip:hover { border-color: var(--gold); color: var(--text); }
+.mlab { display: none; }
+@media (max-width: 860px) {
+  .crow { grid-template-columns: 40px minmax(0, 1fr) auto; grid-template-areas: "L nm nm" "L ni ni" "L mv md" "L bf bf"; gap: 6px 12px; }
+  .crow.head { display: none; }
+  .crow .L { grid-area: L; align-self: start; } .crow .nmw { grid-area: nm; } .crow .ni { grid-area: ni; } .crow .mv { grid-area: mv; } .crow .md { grid-area: md; text-align: right; } .crow .bfw { grid-area: bf; }
+  .mlab { display: inline; font: 500 9.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }
+}
+
+/* ---------- plan chapters ---------- */
+.plan { display: grid; gap: 16px; padding-top: 18px; }
+.plan + .plan { border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 30px; }
+.phead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 18px 28px; align-items: start; }
+@media (max-width: 820px) { .phead { grid-template-columns: minmax(0, 1fr); } }
+.phead .L { font: 500 15px/1 var(--mono); color: var(--gold); letter-spacing: .14em; }
+.phead p { margin: 8px 0 0; color: var(--soft); max-width: 62ch; }
+.bs { display: grid; gap: 4px; margin-top: 10px; font-size: 14px; }
+.bs b { font: 500 10px/1.6 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-right: 6px; }
+.minimap { background: var(--sea); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; max-width: 100%; }
+.minimap svg { display: block; width: 100%; height: 100%; }
+.land { fill: color-mix(in srgb, var(--fair) 80%, var(--bg)); stroke: color-mix(in srgb, var(--text) 22%, transparent); stroke-width: 1.2; }
+.net { fill: none; stroke: color-mix(in srgb, var(--text) 16%, transparent); stroke-width: 1.4; }
+.leg { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.leg.ferry { stroke: #9FC3D6; stroke-width: 3.5; stroke-dasharray: 12 8; }
+.leg.rail { stroke: var(--rail); stroke-width: 5; } .leg.bus { stroke: var(--bus); stroke-width: 3.5; stroke-dasharray: 2 10; } .leg.shuttle { stroke: var(--shuttle); stroke-width: 4.5; stroke-dasharray: 10 7; }
+.pdot { stroke: #0E1A22; stroke-width: 2.5; }
+.ptext { font: 500 22px var(--sans); fill: var(--text); paint-order: stroke; stroke: color-mix(in srgb, var(--fair) 85%, var(--bg)); stroke-width: 6px; }
+
+.daylist { display: grid; gap: 12px; }
+.yard { background: var(--paper); color: var(--ink); border-radius: 6px; padding: 16px 18px 14px; box-shadow: 0 1px 0 rgba(0, 0, 0, .18), 0 10px 24px -18px rgba(0, 0, 0, .6); display: grid; gap: 8px; }
+.yard a { color: #8A4A16; }
+.yard .top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; align-items: baseline; border-bottom: 1.5px solid var(--ink); padding-bottom: 8px; }
+.yard .when { font: 500 11px/1.2 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--flag); }
+.yard .bed { font: 500 11px/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.yard .bed a { color: var(--ink); text-decoration-color: var(--rule); }
+.yard h4 { font-family: var(--display); font-weight: 500; font-size: 20px; line-height: 1.2; color: var(--ink); width: 100%; }
+.ledger { display: grid; }
+.ledger .row { display: grid; grid-template-columns: 62px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px dashed var(--rule); font-size: 14.5px; }
+.ledger .row:last-child { border-bottom: 0; }
+.ledger .m { font: 500 10px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.ledger .d { font: 500 12.5px/1.3 var(--mono); white-space: nowrap; }
+.yard ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; font-size: 14.5px; }
+.yard li::marker { color: var(--flag); }
+.yard .check { color: #8A5A0E; }
+.yard.match { outline: 2px solid var(--flag); outline-offset: -6px; }
+.yard .alt { font-size: 14px; background: var(--paper2); border-left: 3px solid var(--flag); padding: 8px 10px; border-radius: 0 4px 4px 0; }
+.yard .alt b { font: 500 10px/1.5 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--flag); margin-right: 6px; }
+details.other { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+details.other > summary { cursor: pointer; padding: 14px 16px; min-height: 48px; font-weight: 500; list-style-position: inside; }
+details.other[open] > summary { border-bottom: 1px solid var(--line); }
+details.other .inner { padding: 14px 16px; display: grid; gap: 8px; }
+.mini { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 4px 14px; font-size: 14px; }
+.mini .dt { font: 500 11px/1.6 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+
+/* ---------- match days ---------- */
+.board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #0A141A; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+@media (max-width: 860px) { .board { grid-template-columns: minmax(0, 1fr); } }
+.bday { padding: 18px; border-right: 1px solid rgba(237, 228, 211, .1); display: grid; gap: 12px; align-content: start; }
+.bday:last-child { border-right: 0; }
+@media (max-width: 860px) { .bday { border-right: 0; border-bottom: 1px solid rgba(237, 228, 211, .1); } }
+.bday .dn { font: 500 32px/1 var(--mono); color: #F3C987; }
+.bday .dd { font: 500 10px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8FA0A0; margin-top: 4px; }
+.case { display: grid; gap: 6px; }
+.case .flag { font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; justify-self: start; }
+.case .flag.t { background: var(--shuttle); color: #160b07; } .case .flag.n { background: var(--panel2); color: var(--soft); }
+.case .where { font-family: var(--display); font-size: 19px; line-height: 1.2; }
+.case ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; font-size: 14px; color: var(--soft); }
+.byplan { display: grid; gap: 4px; font-size: 13.5px; color: var(--soft); }
+.byplan b { font: 500 11px/1 var(--mono); color: var(--gold); margin-right: 6px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.card h4 { font-size: 15.5px; font-weight: 600; }
+.card p { margin: 0; color: var(--soft); font-size: 14.5px; }
+.card ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; color: var(--soft); }
+
+/* ---------- towns ---------- */
+.tindex { display: grid; gap: 10px; }
+.tgroup { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tgroup .cty { font: 500 10px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); min-width: 92px; }
+.town { display: grid; gap: 14px; padding-top: 18px; }
+.town + .town { border-top: 1px dashed var(--line); margin-top: 10px; padding-top: 28px; }
+.thead { display: grid; grid-template-columns: minmax(0, 1fr) 160px; gap: 14px; align-items: start; }
+.thead .loc { aspect-ratio: 1 / 1; max-width: 100%; background: var(--sea); border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.thead .loc svg { width: 100%; height: 100%; display: block; }
+@media (max-width: 560px) { .thead { grid-template-columns: minmax(0, 1fr) 124px; } }
+.onplans { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.callout { background: color-mix(in srgb, var(--shuttle) 10%, var(--panel)); border: 1px solid color-mix(in srgb, var(--shuttle) 35%, var(--line)); border-radius: 12px; padding: 12px 14px; display: grid; gap: 6px; font-size: 14.5px; }
+.callout p { margin: 0; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 26px; }
+@media (max-width: 760px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.list h5 { margin: 0 0 6px; font: 500 11px/1.3 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.list ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.list li { border-bottom: 1px solid var(--line); }
+.list details > summary { cursor: pointer; list-style: none; padding: 10px 0; min-height: 44px; display: grid; gap: 2px; }
+.list details > summary::-webkit-details-marker { display: none; }
+.list .pn { font-weight: 600; display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+.list .pl { font-size: 14px; color: var(--soft); }
+.list .walked { font: 500 9.5px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--gold-ink); background: var(--gold); padding: 3px 6px; border-radius: 999px; }
+.list .more { padding: 0 0 12px; display: grid; gap: 6px; font-size: 14px; color: var(--soft); }
+.list .more .links { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+
+/* ---------- golf ---------- */
+.golf { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 14px; }
+.yard dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 14px; }
+.yard dt { font: 500 10px/1.7 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.yard dd { margin: 0; min-width: 0; }
+
+/* ---------- book by ---------- */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.steps li { counter-increment: s; border-bottom: 1px solid var(--line); }
+.steps details > summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 12px 0; min-height: 52px; }
+.steps details > summary::-webkit-details-marker { display: none; }
+.steps .no::before { content: counter(s); font: 500 15px/1 var(--mono); color: var(--gold); }
+.steps .ttl { font-weight: 600; }
+.steps .dt { font: 500 12.5px/1.3 var(--mono); color: var(--gold); text-align: right; white-space: nowrap; }
+.steps .cd { display: block; font: 500 10px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.steps li.past .dt, .steps li.past .no::before { color: var(--muted); }
+.steps li.soon .cd { color: var(--gold); }
+.steps .body { padding: 0 0 14px 48px; display: grid; gap: 6px; font-size: 14.5px; color: var(--soft); }
+.marks { display: flex; gap: 6px; }
+.marks button { cursor: pointer; font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; padding: 9px 12px; min-height: 40px; border: 1px solid var(--line); background: var(--panel2); color: var(--soft); }
+.marks button[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+.tiers { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tiers th, .tiers td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tiers th { font: 500 10px/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.scroll { overflow-x: auto; }
+
+/* sources drawer per chapter */
+details.src { border: 1px solid var(--line); border-radius: 10px; background: var(--bg2); }
+details.src > summary { cursor: pointer; padding: 12px 14px; min-height: 44px; font: 500 11px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+details.src ol { margin: 0; padding: 4px 14px 14px 34px; display: grid; gap: 10px; font-size: 13.5px; color: var(--soft); }
+details.src .st { font: 500 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+details.src .st.confirmed { color: var(--ok); } details.src .st.corrected { color: var(--gold); } details.src .st.other { color: var(--warn); }
+
+footer.made { border-top: 1px solid var(--line); margin-top: 40px; padding-block: 24px 50px; color: var(--muted); font-size: 13px; display: grid; gap: 8px; }
+footer.made .nums { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+footer.made .nums b { font: 500 18px/1 var(--mono); color: var(--text); display: block; }
+.btn { cursor: pointer; border-radius: 999px; padding: 11px 16px; min-height: 44px; font: 500 13px/1 var(--sans); background: var(--panel2); border: 1px solid var(--line); color: var(--text); text-decoration: none; display: inline-flex; align-items: center; }
+.btn.gold { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } html { scroll-behavior: auto; } }
+</style>
+
+<div id="introLayer" aria-label="Intro">
+__INTRO_STAGE__
+  <div class="enter"><button class="pill" id="enterGuide" type="button">Open the guide</button></div>
+</div>
+
+<header class="wrap hero" id="top">
+  <div><div class="eyebrow" id="hEyebrow"></div><h1 id="hTitle"></h1><div class="sub" id="hSub"></div></div>
+  <div class="facts" id="facts"></div>
+</header>
+<nav class="otp" aria-label="On this page"><div class="wrap" id="otp"></div></nav>
+<main class="wrap" id="main"></main>
+
+<script type="application/json" id="guide-data">__DATA__</script>
+<script>
+(function () {
+  'use strict'
+  const G = JSON.parse(document.getElementById('guide-data').textContent)
+  const $ = (id) => document.getElementById(id)
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+  const PRIVATE = G.mode === 'private'; const PREVIEW = G.mode === 'preview'
+  const ss = { get(k) { try { return sessionStorage.getItem('rc27:' + k) } catch (e) { return null } }, set(k, v) { try { sessionStorage.setItem('rc27:' + k, v) } catch (e) {} } }
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const dt = (iso, dow = true) => { const d = new Date(iso + 'T12:00:00'); return (dow ? DOW[d.getDay()] + ' ' : '') + d.getDate() + ' ' + MON[d.getMonth()] + (d.getFullYear() !== 2027 ? ' ' + d.getFullYear() : '') }
+  const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()) }
+  const daysTo = (iso) => Math.round((new Date(iso + 'T00:00:00') - today()) / 86400000)
+  const townName = Object.fromEntries(G.towns.map((t) => [t.id, t.name]))
+  /* a line of copy; a line resting on an unconfirmed fact says so, quietly */
+  const L = (l) => !l ? '' : esc(l.t) + (l.weak ? ' <span class="check">· check before booking</span>' : '')
+
+  /* ---------- hero ---------- */
+  $('hEyebrow').textContent = G.meta.eyebrow; $('hTitle').textContent = G.meta.title; $('hSub').textContent = G.meta.sub
+  const nextStep = G.book.filter((b) => b.date && daysTo(b.date) >= 0).sort((a, b) => a.date.localeCompare(b.date))[0]
+  const n = daysTo(G.meta.matchDay)
+  $('facts').innerHTML = [
+    `<div class="fact"><div class="k">Match days</div><div class="v">Fri 17–Sun 19</div><div class="s">September 2027 · Adare Manor</div></div>`,
+    `<div class="fact"><div class="k">First match day in</div><div class="v">${n > 0 ? n + ' days' : 'This week'}</div><div class="s">${n > 0 ? Math.floor(n / 7) + ' weeks, ' + (n % 7) + ' days' : ''}</div></div>`,
+    nextStep ? `<div class="fact"><div class="k">Next booking step</div><div class="v t"><a href="#book">${esc(nextStep.title)}</a></div><div class="s">${esc(dt(nextStep.date))} · ${daysTo(nextStep.date) === 0 ? 'today' : 'in ' + daysTo(nextStep.date) + ' days'}</div></div>` : '',
+    `<div class="fact"><div class="k">Money</div><div class="v t">€ first, $ alongside</div><div class="s">€1 = $${G.money.USD} (ECB, ${esc(dt(G.money.date))}). Pay in euro.</div></div>`,
+  ].join('')
+
+  /* ---------- on this page ---------- */
+  const CH = PREVIEW ? [['plans', 'Plans'], ['inside', 'Full guide']] : [['plans', 'Plans'], ['match', 'Match days'], ['towns', 'Towns'], ['golf', 'Golf'], ['book', 'Book by'], ['before', 'Before you go']]
+  $('otp').innerHTML = '<span class="lab">On this page</span>' + CH.map(([id, l]) => `<a href="#${id}" data-ch="${id}">${l}</a>`).join('')
+
+  /* ---------- maps ---------- */
+  const M = G.map
+  function svgMap(pinIds, legIds, opts = {}) {
+    const pts = M.pins.filter((p) => pinIds.includes(p.id))
+    if (!pts.length) return ''
+    let x0 = Math.min(...pts.map((p) => p.x)), x1 = Math.max(...pts.map((p) => p.x)), y0 = Math.min(...pts.map((p) => p.y)), y1 = Math.max(...pts.map((p) => p.y))
+    const pad = opts.pad ?? 80; x0 -= pad; x1 += pad; y0 -= pad; y1 += pad
+    const ar = opts.ar || 4 / 3; let w = x1 - x0, h = y1 - y0
+    if (w / h < ar) { const nw = h * ar; x0 -= (nw - w) / 2; w = nw } else { const nh = w / ar; y0 -= (nh - h) / 2; h = nh }
+    const fs = Math.max(20, w / (opts.big ? 9 : 26))
+    const legs = (legIds || []).map((id) => M.legs[id] && `<path class="leg ${M.legs[id].style || M.legs[id].mode}" d="${M.legs[id].d}"/>`).filter(Boolean).join('')
+    const labelled = new Set(opts.label || pts.filter((p) => p.kind === 'base' || p.kind === 'venue').map((p) => p.id))
+    const dots = pts.map((p) => {
+      const col = p.kind === 'venue' ? 'var(--shuttle)' : p.kind === 'base' ? 'var(--gold)' : p.kind === 'golf' ? '#F3EEE2' : p.kind === 'airport' ? '#9FB7C4' : 'var(--bus)'
+      const r = (opts.big ? (p.id === opts.big ? 16 : 6) : p.kind === 'venue' ? 12 : p.kind === 'base' ? 10 : 7) * fs / 22
+      return `<g transform="translate(${p.x} ${p.y})"><circle class="pdot" r="${r.toFixed(1)}" fill="${col}"/>${labelled.has(p.id) ? `<text class="ptext" x="${(r + 6).toFixed(1)}" y="${(fs * .34).toFixed(1)}" style="font-size:${fs.toFixed(0)}px">${esc(p.short)}</text>` : ''}</g>`
+    }).join('')
+    return `<svg viewBox="${x0.toFixed(0)} ${y0.toFixed(0)} ${w.toFixed(0)} ${h.toFixed(0)}" role="img" aria-label="${esc(opts.aria || 'Map')}"><path class="land" d="${M.land}"/><path class="net" d="${M.network}"/>${legs}${dots}</svg>`
+  }
+
+  /* ---------- plans ---------- */
+  function renderPlans() {
+    const rows = G.plans.map((p) => `<a class="crow" href="#plan-${p.id}">
+      <span class="L">${p.id}</span>
+      <span class="nmw"><span class="nm">${esc(p.label)}</span>${p.pick ? '<br><span class="tag">Our pick if unsure</span>' : ''}</span>
+      <span class="ni"><span class="nights">${p.nights.map(([t, k]) => `<span class="chip">${esc(t)} ×${k}</span>`).join('')}</span></span>
+      <span class="mv num"><span class="mlab">Moves</span>${p.metrics.moves}</span>
+      <span class="md num"><span class="mlab">Transit</span>${p.metrics.transit[0]}–${p.metrics.transit[1]} h</span>
+      <span class="bfw bf">${esc(p.bestFor)}</span></a>`).join('')
+    const chapters = G.plans.map(renderPlan).join('')
+    return `<section class="chapter" id="plans"><div><div class="eyebrow">${G.plans.length} ways to run the week</div><h2 class="chap">Pick a plan</h2>
+      <p class="lede">${esc(G.copy.planLede)}</p></div>
+      <div class="compare"><div class="crow head"><span></span><span>Plan</span><span>Where you sleep</span><span>Moves</span><span>On trains and buses</span><span>Best for</span></div>${rows}</div>
+      ${chapters}${PREVIEW ? '' : sources('plans')}</section>`
+  }
+  function dayCard(d, plan) {
+    const bed = d.sleep ? (d.town ? `Sleep: <a href="#town-${d.town}">${esc(d.sleep)}</a>` : 'Sleep: ' + esc(d.sleep)) : 'Fly home'
+    const legs = d.legs.length ? `<div class="ledger">${d.legs.map((l) => `<div class="row"><span class="m">${esc(l.m)}</span><span>${esc(l.t)}${l.weak ? ' <span class="check">· check</span>' : ''}</span><span class="d">${esc(l.d || '')}</span></div>`).join('')}</div>` : ''
+    const plan_ = d.plan.length ? `<ul>${d.plan.map((x) => `<li>${L(x)}</li>`).join('')}</ul>` : ''
+    const noT = d.match && d.noTicket && d.noTicket.length ? `<div class="alt"><b>No Friday ticket?</b>${d.noTicket.map((x) => L(x)).join(' ')}</div>` : ''
+    const matchLink = d.match ? `<div class="small" style="color:var(--ink-soft)">Everything about getting in, the TV rights and pub hours: <a href="#match">Match days</a>.</div>` : ''
+    return `<article class="yard${d.match ? ' match' : ''}"><div class="top"><span class="when">${esc(dt(d.date))}</span><span class="bed">${bed}</span><h4>${esc(d.title)}</h4></div>${legs}${plan_}${d.note ? `<div class="small" style="color:var(--ink-soft)">${L(d.note)}</div>` : ''}${noT}${matchLink}</article>`
+  }
+  function renderPlan(p) {
+    const golfNames = (p.golf || []).map((g) => G.golf.find((c) => c.id === g)).filter(Boolean)
+    const alt = p.altDays && p.altDays.length ? `<details class="other"><summary>Flying out Mon 13 and home Mon 20 instead? The whole week for those dates</summary><div class="inner">${p.altDays.map((d) => `<div class="mini"><span class="dt">${esc(dt(d.date))}</span><span><b>${esc(d.title)}</b>${d.sleep ? ' · sleep ' + (d.town ? `<a href="#town-${d.town}">${esc(d.sleep)}</a>` : esc(d.sleep)) : ''}</span></div>`).join('')}</div></details>` : ''
+    return `<div class="plan" id="plan-${p.id}"><div class="phead"><div>
+      <div class="L">Plan ${p.id}${p.pick ? ' · our pick if unsure' : ''}</div><h3 class="sub">${esc(p.label)}</h3><p>${esc(p.blurb)}</p>
+      <div class="bs"><div><b>Best for</b>${esc(p.bestFor)}</div>${p.skipIf ? `<div><b>Skip if</b>${esc(p.skipIf)}</div>` : ''}</div>
+      <div class="onplans">${p.sleeps.map((t) => `<a class="chip" href="#town-${t}">Sleep: ${esc(townName[t] || t)}</a>`).join('')}${p.visits.filter((t) => townName[t] && !p.sleeps.includes(t)).map((t) => `<a class="chip" href="#town-${t}">Day trip: ${esc(townName[t])}</a>`).join('')}${golfNames.length && !PREVIEW ? golfNames.slice(0, 3).map((c) => `<a class="chip" href="#golf-${c.id}">⛳ ${esc(c.name.split(',')[0])}</a>`).join('') : ''}</div></div>
+      <div class="minimap">${svgMap(p.pins, p.legs, { aria: 'Route of plan ' + p.id })}</div></div>
+      <div class="daylist">${p.days.map((d) => dayCard(d, p)).join('')}</div>${PREVIEW ? '' : alt}</div>`
+  }
+
+  /* ---------- match days ---------- */
+  function caseBlock(c, ticket) {
+    if (!c) return ''
+    return `<div class="case"><span class="flag ${ticket ? 't' : 'n'}">${ticket ? 'With a ticket' : 'Without a ticket'}</span><div class="where">${esc(typeof c.where === 'object' ? c.where.default || Object.values(c.where)[0] : c.where)}</div><ul>${(c.lines || []).map((l) => `<li>${L(l)}</li>`).join('')}</ul></div>`
+  }
+  function renderMatch() {
+    const W = G.match
+    const fri = W.fri.byTickets
+    const day = (key, name, date, body) => `<div class="bday"><div><div class="dn">${name}</div><div class="dd">${date}</div></div>${body}</div>`
+    const perPlan = (d) => {
+      const bs = W[d].byShape
+      const tick = bs.A.byTickets.multi
+      const rows = G.plans.map((p) => { const c = bs[p.id] && bs[p.id].byTickets.default; return c ? `<div><b>${p.id}</b>${esc(typeof c.where === 'object' ? c.where.default : c.where)}</div>` : '' }).join('')
+      const main = bs[G.plans[0].id].byTickets.default
+      return caseBlock(tick, true) + `<div class="case"><span class="flag n">Without a ticket</span><div class="byplan">${rows}</div><ul>${(main.lines || []).map((l) => `<li>${L(l)}</li>`).join('')}</ul></div>`
+    }
+    return `<section class="chapter" id="match"><div><div class="eyebrow">Friday, Saturday, Sunday</div><h2 class="chap">Match days</h2><p class="lede">${esc(G.copy.watchLede)}</p></div>
+      <div class="board">${day('fri', 'FRI', 'Friday 17 September', caseBlock(fri.default, true) + caseBlock(fri.none, false))}${day('sat', 'SAT', 'Saturday 18 September', perPlan('sat'))}${day('sun', 'SUN', 'Sunday 19 September', perPlan('sun'))}</div>
+      <h3 class="sub">Getting in at Adare</h3><div class="cards">${W.getIn.map((x) => `<div class="card"><h4>${esc(x.title)}</h4>${x.lines.map((l) => `<p>${L(l)}</p>`).join('')}</div>`).join('')}</div>
+      <h3 class="sub">Watching without a ticket</h3><div class="cards">${W.tv.map((x) => `<div class="card"><h4>${esc(x.title)}</h4>${x.lines.map((l) => `<p>${L(l)}</p>`).join('')}</div>`).join('')}</div>
+      ${sources('match')}</section>`
+  }
+
+  /* ---------- towns ---------- */
+  const CATS = [['watch', 'Watch the golf'], ['drink', 'Pubs and music'], ['eat', 'Eat'], ['see', 'See and do']]
+  const TOWNPIN = { limerick: 'limerick', adare: 'adare', ennis: 'ennis', lahinch: 'lahinch', cliffs: 'cliffs', galway: 'galway', west: 'galway', killarney: 'killarney', ringofkerry: 'killarney', northkerry: 'tralee', dingle: 'dingle', dublin: 'dublin', daytrips: 'limerick' }
+  function placeItem(p) {
+    const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.q)}`
+    const first = (p.text.match(/^.*?[.!?](\s|$)/) || [p.text])[0]
+    return `<li><details><summary><span class="pn">${esc(p.name)}${p.walked ? '<span class="walked">Walked</span>' : ''}${p.weak ? '<span class="check">check before you go</span>' : ''}</span><span class="pl">${esc(first.trim())}</span></summary>
+      <div class="more">${p.text.length > first.length + 2 ? `<div>${esc(p.text)}</div>` : ''}${(p.rows || []).map(([k, v]) => `<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join('')}
+      <div class="links">${p.site ? `<a href="${esc(p.site)}" target="_blank" rel="noopener">Official site</a>` : ''}<a href="${maps}" target="_blank" rel="noopener">Maps</a></div>
+      ${PRIVATE ? markButtons('pl-' + p.id, [['did', 'We did this'], ['want', 'Want to']]) : ''}</div></details></li>`
+  }
+  function renderTowns() {
+    const onPlans = (tid) => G.plans.filter((p) => p.sleeps.includes(tid)).map((p) => p.id)
+    const tripPlans = (tid) => G.plans.filter((p) => !p.sleeps.includes(tid) && p.visits.includes(tid)).map((p) => p.id)
+    const counties = {}; for (const t of G.towns) (counties[t.county] = counties[t.county] || []).push(t)
+    const index = Object.entries(counties).map(([c, ts]) => `<div class="tgroup"><span class="cty">${esc(c)}</span>${ts.map((t) => `<a class="chip" href="#town-${t.id}">${esc(t.name)}</a>`).join('')}</div>`).join('')
+    const blocks = G.towns.map((t) => {
+      const pin = TOWNPIN[t.id]; const pp = onPlans(t.id)
+      const lists = CATS.filter(([c]) => t.places[c].length).map(([c, l]) => `<div class="list"><h5>${l}</h5><ul>${t.places[c].map(placeItem).join('')}</ul></div>`).join('')
+      return `<div class="town" id="town-${t.id}"><div class="thead"><div><div class="eyebrow">${esc(t.county)}</div><h3 class="sub">${esc(t.name)}</h3>
+        <div class="onplans">${pp.length ? `<a class="chip" href="#plan-${pp[0]}">You sleep here on plan ${pp.join(', ')}</a>` : ''}${tripPlans(t.id).length ? `<a class="chip" href="#plan-${tripPlans(t.id)[0]}">Day trip on plan ${tripPlans(t.id).join(', ')}</a>` : ''}${!pp.length && !tripPlans(t.id).length ? '<span class="chip">Optional day trip</span>' : ''}</div></div>
+        <div class="loc">${pin ? svgMap([pin, 'dublin', 'limerick', 'galway'].filter((v, i, a) => a.indexOf(v) === i), [], { pad: 300, ar: 1, label: [], big: pin, aria: t.name + ' on the map of Ireland' }) : ''}</div></div>
+        ${t.notes.length ? `<div class="callout">${t.notes.map((l) => `<p>${L(l)}</p>`).join('')}</div>` : ''}
+        ${t.stay.length ? `<div class="cards">${t.stay.map((s) => `<div class="card"><h4>Stay: ${esc(s.title)}</h4>${s.lines.map((l) => `<p>${L(l)}</p>`).join('')}</div>`).join('')}</div>` : ''}
+        <div class="cols">${lists}</div></div>`
+    }).join('')
+    return `<section class="chapter" id="towns"><div><div class="eyebrow">Where you sleep, and day trips</div><h2 class="chap">Towns</h2><p class="lede">${esc(G.copy.townsLede)}</p></div>
+      <div class="tindex">${index}</div>${blocks}</section>`
+  }
+
+  /* ---------- golf ---------- */
+  function renderGolf() {
+    const fitBy = (id) => G.plans.filter((p) => (p.golf || []).includes(id)).map((p) => p.id)
+    const cards = G.golf.map((c) => `<article class="yard" id="golf-${c.id}"><div class="top"><span class="when">${esc(c.region)}</span><span class="bed">${fitBy(c.id).length ? 'Fits plan ' + fitBy(c.id).join(', ') : 'Off every plan'}</span><h4>${esc(c.name)}</h4></div>
+      <dl>${c.facts.map((f) => `<dt>${esc(f.k)}</dt><dd>${L(f)}</dd>`).join('')}${Object.entries(c.transit).map(([k, v]) => v ? `<dt>From plan ${k}</dt><dd>${L(v)}</dd>` : '').join('')}</dl>
+      ${c.note ? `<div class="alt"><b>Note</b>${L(c.note)}</div>` : ''}${c.book ? `<div><a href="${esc(c.book)}" target="_blank" rel="noopener">The club's own site</a></div>` : ''}
+      ${PRIVATE ? markButtons('golf-' + c.id, [['want', 'Shortlist'], ['booked', 'Booked']]) : ''}</article>`).join('')
+    return `<section class="chapter" id="golf"><div><div class="eyebrow">Play a round</div><h2 class="chap">Golf</h2><p class="lede">${esc(G.copy.golfLede)}</p></div>
+      <div class="callout">${G.golfCallout.map((l) => `<p>${L(l)}</p>`).join('')}</div><div class="golf">${cards}</div>${sources('golf')}</section>`
+  }
+
+  /* ---------- book by ---------- */
+  function renderBook() {
+    const items = G.book.map((b) => ({ ...b, n: b.date ? daysTo(b.date) : null })).sort((a, b) => (a.date || '9999').localeCompare(b.date || '9999'))
+    const li = (b) => {
+      const past = b.n != null && b.n < 0; const soon = b.n != null && b.n >= 0 && b.n <= 45
+      const cd = b.n == null ? 'date not published yet' : past ? 'passed' : b.n === 0 ? 'today' : 'in ' + b.n + ' days'
+      const scope = [b.shapes && 'plan ' + b.shapes.join(', '), b.dates && (b.dates.includes('13-20') ? 'if you fly Mon 13' : 'if you fly Tue 14'), b.tickets && (b.tickets.includes('multi') && b.tickets.length === 1 ? 'if you hold more than one day' : b.tickets.includes('none') ? 'if you need a ticket' : 'ticket holders')].filter(Boolean).join(' · ')
+      return `<li class="${past ? 'past' : ''}${soon ? ' soon' : ''}"><details><summary><span class="no"></span><span><span class="ttl">${esc(b.title)}</span><span class="cd">${esc(b.kind)}${scope ? ' · ' + esc(scope) : ''}</span></span><span class="dt">${b.date ? esc(dt(b.date)) : 'TBC'}<span class="cd">${cd}</span></span></summary>
+        <div class="body"><div>${L(b.text)}</div>${(b.links || []).length ? `<div>${b.links.map((l) => `<a href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}</a>`).join(' · ')}</div>` : ''}${PRIVATE ? markButtons('bk-' + b.id, [['done', 'Done']]) : ''}</div></details></li>`
+    }
+    const up = items.filter((b) => b.n == null || b.n >= 0); const gone = items.filter((b) => b.n != null && b.n < 0)
+    return `<section class="chapter" id="book"><div><div class="eyebrow">In date order</div><h2 class="chap">Book by</h2><p class="lede">${esc(G.copy.bookLede)}</p></div>
+      <div><button class="btn" type="button" id="allSteps">Show all steps</button></div>
+      <ol class="steps">${up.map(li).join('')}</ol>${gone.length ? `<details class="other"><summary>Already passed (${gone.length})</summary><div class="inner"><ol class="steps">${gone.map(li).join('')}</ol></div></details>` : ''}${sources('book')}</section>`
+  }
+
+  /* ---------- before you go ---------- */
+  function renderBefore() {
+    const fl = Object.values(G.flights).map((f) => `<h3 class="sub">${esc(f.title)}</h3><div class="cards">${f.items.map((x) => `<div class="card"><h4>${esc(x.title)}</h4>${x.lines.map((l) => `<p>${L(l)}</p>`).join('')}</div>`).join('')}</div>`).join('')
+    const tiers = G.know.flatMap((k) => k.tiers)
+    const tierTable = tiers.length ? `<div class="scroll"><table class="tiers"><thead><tr><th>Value</th><th>Mid</th><th>Splurge</th></tr></thead><tbody>${tiers.map((t) => `<tr><td>${L(t.value)}</td><td>${L(t.mid)}</td><td>${L(t.splurge)}</td></tr>`).join('')}</tbody></table></div>` : ''
+    const know = G.know.map((k) => `<div class="card"><h4>${esc(k.title)}</h4><ul>${k.lines.filter(Boolean).map((l) => `<li>${L(l)}</li>`).join('')}</ul></div>`).join('')
+    return `<section class="chapter" id="before"><div><div class="eyebrow">Flights, money and the rules</div><h2 class="chap">Before you go</h2></div>${fl}
+      <h3 class="sub">Spending per day, excluding where you sleep</h3>${tierTable}<h3 class="sub">Essentials</h3><div class="cards">${know}</div>${sources('know')}</section>`
+  }
+
+  /* ---------- sources drawer ---------- */
+  function sources(key) {
+    const ids = (G.sections[key] || []).filter((i) => G.F[i]); if (!ids.length) return ''
+    const lab = (s) => s === 'confirmed' ? 'Checked' : s === 'corrected' ? 'Corrected by the fact-check' : 'Not yet confirmed'
+    return `<details class="src"><summary>Sources and checks for this chapter (${ids.length})</summary><ol>${ids.map((i) => { const f = G.F[i]; return `<li><span class="st ${f.s === 'confirmed' || f.s === 'corrected' ? f.s : 'other'}">${lab(f.s)}</span> ${esc(f.c)} ${f.src.map((s) => `<a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t || 'source')}</a>`).join(' · ')}</li>` }).join('')}</ol></details>`
+  }
+
+  /* ---------- preview: what the full guide holds ---------- */
+  function renderInside() {
+    const I = G.inside
+    return `<section class="chapter" id="inside"><div><div class="eyebrow">The full guide</div><h2 class="chap">Everything behind these plans</h2>
+      <p class="lede">Every day of every plan, ${I.towns} towns with ${I.places} places to eat, drink, watch the golf and see, ${I.golf} golf course cards, match-day logistics for every ticket situation, and ${I.book} booking dates in order.</p></div>
+      <div class="callout"><p>${esc(I.cta.lede)}</p><p><a class="btn gold" href="${esc(I.cta.u)}" target="_blank" rel="noopener">${esc(I.cta.t)}</a></p></div></section>`
+  }
+
+  /* ---------- marks (private copy): shared across the group's phones ---------- */
+  const marks = new Map(); let db = null; let me = null
+  function markButtons(id, opts) { return `<div class="marks" data-mark="${esc(id)}">${opts.map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="false">${l}</button>`).join('')}</div>` }
+  function paintMarks() { document.querySelectorAll('[data-mark]').forEach((w) => { const m = marks.get(w.dataset.mark) || {}; w.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(m.status === b.dataset.v))) }) }
+  async function initMarks() {
+    if (!PRIVATE || !window.claude || !window.claude.use) return
+    try {
+      db = await window.claude.use('db')
+      try { const u = await window.claude.use('user'); me = u ? await u.id() : null } catch (e) { me = null }
+      if (db) db.collection('marks').onSnapshot((snap) => { marks.clear(); for (const d of snap.docs || []) marks.set(d.id, d.data ? d.data() : d); paintMarks() })
+    } catch (e) { db = null }
+  }
+  document.addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-mark] button'); if (!b) return
+    e.preventDefault()
+    const id = b.closest('[data-mark]').dataset.mark; const m = marks.get(id) || {}
+    const cur = { ...m, status: m.status === b.dataset.v ? null : b.dataset.v, by: me, at: new Date().toISOString() }
+    marks.set(id, cur); paintMarks()
+    if (db) { try { await db.doc('marks/' + id.replace(/[^A-Za-z0-9_\-.~:@+]/g, '_')).set(cur) } catch (err) {} }
+  })
+
+  /* ---------- render ---------- */
+  try {
+    $('main').innerHTML = PREVIEW ? renderPlans() + renderInside() : renderPlans() + renderMatch() + renderTowns() + renderGolf() + renderBook() + renderBefore() +
+      `<footer class="made"><div class="eyebrow">How this guide was made</div><div class="nums"><span><b>${G.made.findings}</b>findings</span><span><b>${G.made.checked}</b>fact-checked</span><span><b>${G.made.sources}</b>sources</span></div><p>${esc(G.copy.made)}</p><p>Built ${esc(dt(G.builtOn))}.</p></footer>`
+  } catch (err) {
+    $('main').innerHTML = `<p style="padding:40px 0">This guide could not draw itself: ${esc(err.message)}</p>`
+  }
+  const allBtn = $('allSteps'); if (allBtn) allBtn.addEventListener('click', () => { const open = allBtn.textContent.startsWith('Show'); document.querySelectorAll('#book .steps details').forEach((d) => { d.open = open }); allBtn.textContent = open ? 'Hide all steps' : 'Show all steps' })
+  initMarks()
+
+  /* scroll-spy for the chapter bar */
+  const links = [...document.querySelectorAll('nav.otp a')]
+  const secs = links.map((a) => document.getElementById(a.dataset.ch)).filter(Boolean)
+  const spy = () => { const y = window.scrollY + 90; let cur = secs[0]; for (const s of secs) if (s.offsetTop <= y) cur = s; links.forEach((a) => a.classList.toggle('on', cur && a.dataset.ch === cur.id)) }
+  window.addEventListener('scroll', spy, { passive: true }); spy()
+
+  /* ---------- intro ---------- */
+  const layer = $('introLayer'); const stage = $('stage')
+  function hideIntro() { layer.classList.add('gone'); ss.set('introSeen', '1'); try { window.__intro && window.__intro.stop && window.__intro.stop() } catch (e) {} }
+  $('enterGuide').addEventListener('click', hideIntro)
+  if (stage) { stage.addEventListener('intro:titled', () => layer.classList.add('titled')); const sk = $('skip'); if (sk) sk.addEventListener('click', hideIntro) }
+  if (ss.get('introSeen') === '1' || !G.meta.intro) hideIntro()
+  else {
+    setTimeout(() => { if (!layer.classList.contains('gone') && !(stage && stage.classList.contains('ready'))) hideIntro() }, 4000)
+    setTimeout(() => layer.classList.add('titled'), 12000)
+  }
+})()
+</script>
+<script>
+window.__INTRO_CONFIG = __INTRO_CONFIG__
+window.__INTRO_SKIP = document.getElementById('introLayer').classList.contains('gone')
+</script>
+<script type="module">
+__INTRO_JS__
+</script>

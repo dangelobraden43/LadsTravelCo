@@ -676,22 +676,21 @@ __INTRO_STAGE__
   const stage = $('stage')
   if (stage) {
     stage.addEventListener('intro:titled', () => layer.classList.add('titled'))
-    const sk = $('skip'); if (sk) sk.addEventListener('click', () => { if (layer.classList.contains('titled')) hideIntro() })
+    const sk = $('skip'); if (sk) sk.addEventListener('click', hideIntro)
   }
   if (ss.get('introSeen') === '1' || !G.meta.intro) hideIntro()
-  else setTimeout(() => layer.classList.add('titled'), 12000) /* never trap a reader behind a slow GPU */
+  else {
+    /* never trap a reader: if the 3D scene has not drawn a frame in 4 s (blocked, no WebGL, slow device), open the guide */
+    setTimeout(() => { if (!layer.classList.contains('gone') && !(stage && stage.classList.contains('ready'))) hideIntro() }, 4000)
+    setTimeout(() => layer.classList.add('titled'), 12000)
+  }
 })()
 </script>
-<script>window.__INTRO_CONFIG = __INTRO_CONFIG__</script>
-<script type="text/plain" id="introSrc">
-__INTRO_JS__
+<script>
+window.__INTRO_CONFIG = __INTRO_CONFIG__
+/* the intro renders only when it will be seen (the artifact viewer refuses blob: modules, so the guard lives in the module itself) */
+window.__INTRO_SKIP = document.getElementById('introLayer').classList.contains('gone')
 </script>
 <script type="module">
-/* the 3D intro loads only when it will actually play: never behind a skipped or already-seen intro */
-let seen = null; try { seen = sessionStorage.getItem('rc27:introSeen') } catch (e) {}
-const layer = document.getElementById('introLayer')
-if (seen !== '1' && layer && !layer.classList.contains('gone')) {
-  const src = document.getElementById('introSrc').textContent
-  import(URL.createObjectURL(new Blob([src], { type: 'text/javascript' }))).catch(() => layer.classList.add('titled'))
-}
+__INTRO_JS__
 </script>

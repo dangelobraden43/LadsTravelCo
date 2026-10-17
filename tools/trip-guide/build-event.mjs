@@ -117,7 +117,10 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const G = buildEvent(data, plan, map, mode)
   const tpl = readFileSync(path.join(here, 'event-template.html'), 'utf8')
   const stage = readFileSync(path.join(here, '../golf-intro/stage.html'), 'utf8')
-  const introJs = readFileSync(path.join(here, '../golf-intro/first-tee.js'), 'utf8')
+  /* imports stay at module top; everything after them runs only when the intro will be seen */
+  const introSrc = readFileSync(path.join(here, '../golf-intro/first-tee.js'), 'utf8').split('\n')
+  const lastImport = introSrc.reduce((n, l, i) => (/^import /.test(l) ? i : n), -1)
+  const introJs = [...introSrc.slice(0, lastImport + 1), 'if (!window.__INTRO_SKIP) {', ...introSrc.slice(lastImport + 1), '}'].join('\n')
   const json = JSON.stringify(G).replace(/</g, '\\u003c')
   const html = tpl.replace('__TITLE__', mode === 'preview' ? `${plan.meta.title} 2027 Preview` : `${plan.meta.title} 2027 Guide`).replace('__INTRO_STAGE__', () => stage)
     .replace('__INTRO_CONFIG__', () => JSON.stringify(plan.meta.introConfig)).replace('__INTRO_JS__', () => introJs)
