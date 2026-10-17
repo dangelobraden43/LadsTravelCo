@@ -1,1 +1,1 @@
-- [Flight source lessons](reference_flight_sources.md) — aeroroutes/ratepunk/Wikipedia airport pages fetch clean; article-year trap; event-week fare traps; 12-call budget split
+- [Flight source lessons](reference_flight_sources.md) — clean/blocked sources, off-season "no nonstop" trap, sales-window arithmetic, event-week fare traps, budget splits

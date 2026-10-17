@@ -1,1 +1,1 @@
-- [Source behaviour](reference_source_behaviour.md) — which sites block or mislead, how to spend a call budget, small-town food sources, NPS/WV park status pages, validator gotchas
+- [Source behaviour](reference_source_behaviour.md) — which sites block or mislead, call budgets, small-town food sources, NPS/WV/OH park pages, road-trip fetch list, validator gotchas, Irish golf club pages and golf traps

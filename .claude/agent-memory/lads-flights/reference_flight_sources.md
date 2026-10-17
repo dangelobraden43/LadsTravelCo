@@ -30,3 +30,12 @@ Learned on the European Christmas Markets run (2026-10-06, 12-call budget).
 - Schedules load about 11 months out (EWN quoting a sports-travel agent, Oct 2026). For events 12+ months away, say fares are not observable yet and give ordinary-year baselines labelled as such.
 - Validator scans notes too: write money as "AUD 1,151 to 2,171", never "AUD 1,151 (cheapest) to ..." or a lone figure.
 - Lead-time evidence disagrees (Google 32-73 days vs blogs saying 3-6 months); report both, see [[fare-intelligence-rule]].
+
+Ireland / Ryder Cup run (ryder-cup-2027, 2026-10-16, 25 calls counting fetches):
+- Read cleanly: cbp.gov preclearance page (all locations + hours), snnairportgroup.ie news releases (official Shannon routes, seats), dublinairport.com /flight-information/travelling-to-usa/usa-preclearance, wxyz.com route news, aeroroutes Aer Lingus filings. travelextra.ie slug URLs time out; the `?p=<id>` form fetched fine.
+- 404s: delta.com basic-economy fare-class page; dublinairport.com /at-the-airport/us-preclearance. Delta's agency page pro.delta.com came only as a snippet.
+- Off-season trap: in October, KAYAK says "no direct flights" for seasonal routes (DTW-DUB runs May-Oct). Never read an off-season aggregator as "no nonstop".
+- RatePunk mislabels connecting carriers (Turkish, JetBlue) as "direct" on DTW-DUB; use its monthly medians, not its carrier list.
+- Sales-window arithmetic: Delta/AA 331 days, United ~337 (some say 330); the RETURN date is the binding one for a round trip.
+- Internal framework logistics lines go stale (dublin.js said "DTW has no nonstop"; Delta launched it in 2025). Flag them to founders when found.
+- Airport capacity caps (Dublin) can block new routes for event years; search "<airport> passenger cap" for capped hubs.

@@ -104,4 +104,71 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
 - **Framework fix passes:** check the founder-voice copy elsewhere on the site against UNVERIFIABLE window
   fields (Dublin's "70% local" is quoted on /christmas-markets). Flag it to the founders; never rewrite it.
 
+- **Road-trip runs (gorge-ridge-drive 2026-10-15):** the toll/route core held up; the errors sat in stop
+  details. Seen: names an official page uses only as landmarks listed as its merchants (North Market's
+  Omega/Satori); "cannot reach it without the turnpike" inferred from the one exit a venue's site names;
+  a "sources conflict" trap that dissolved because the second page had since been updated (Seneca Rocks
+  office page, Apr 2026); "calls itself America's oldest" where the site says "oldest continually
+  operating"; a state-ranking stat mixing two study years (State Farm deer odds). Re-read both pages of
+  any claimed conflict before confirming the trap.
+- **Road-name equations and hours from one aggregator.** "County 23 (Paint Creek Road)" where AARoads names
+  Paint Creek Road CR 15; a chain's "6 am to 8 pm daily" from Franki while the brand locator lists two shops and
+  other listings say 5:30 am. Scout rankings ("earliest", "safest") ride along with these; strip them.
+- **Venue-list claims from Wikivoyage** read as current fact but carry 2022-2024 listing dates. Weaken to
+  "listed (updated YEAR)" unless a 2026 source shows the business trading.
+
+- **Shared place-name closures (Shenandoah 2026-10-15).** A "Patocka's Gastropub closes in Greene" report was
+  Greene, New York, cited as Greene County, Virginia. For any closure claim, confirm the street address or town in
+  the article itself before accepting it. Syndicated Yahoo local news is where this hides.
+- **Trip-day schedules beat venue praise.** Check whether a venue serves at all on the trip weekdays before
+  verifying its description: Three Blacksmiths (Wed-Sat only), Triple Crown BBQ (Fri-Sun only), Montpelier (Mon
+  closed), Monticello (Tuesdays closed on its calendar). Operator sites and current listings settle these in one call.
+- **Official pages contradict themselves.** NPS Shenandoah's hours table had Opening/Closing cells that read swapped
+  for the two visitor centers and a "closed for the season" note beside open dates. Report the contradiction rather
+  than pick a side; a "status" page last updated a year ago is not evidence a road is open.
+- **Seasons get extended.** An agent's "official site says polo ends mid-October" was now "through October" on the
+  same official page. Re-read season-end claims; they move.
+
+- **Agents in one run contradict each other on venue status** (New River Gorge 2026-10-15). Provenance
+  flagged a restaurant "currently closed" from Trip.com while the eat scout had read its own live site with
+  hours; nearbase then said "no weekend hours anywhere". **How to apply:** for every Open/Closed conflict,
+  fetch the venue's own site first; one fetch settled four findings. Also check later-wave files for news
+  (a fire) that refutes an earlier agent's "lunch stop".
+- **Closure detail attributed to the closures page but taken from a place record** ("Polls Plateau closed").
+  Ask a yes/no word-search fetch ("does 'Polls' appear?").
+- **`fixedPrice: true` on an operator's "starting at" price** (BridgeWalk, ACE zipline). Not an official fee;
+  weaken and drop the amount from proposedClaim.
+- **"No source after year X" claims fall to CVB event systems.** A brewery whose domain failed had 2026
+  event pages on the town's visitor-bureau calendar. A different business listed at the same street address in
+  the current directory is the tell that a venue moved or closed.
+- **Season-end claims for outfitters** often rest on an unread snippet; the cited blog index had no dates.
+  An operator's own director quoted in press ("Gauley marks the close of the season") outranks it.
+
+- **Same-name venue in the next town** (Shenandoah recheck): an official directory "Sal's Pizza" was the Crozet restaurant,
+  not the Stanardsville one in the claim. Check the address on the page before counting it as a second source.
+- **Lodging/press citations that name none of the venues.** A 2017 state-tourism article was cited for a Madison County
+  winery list. Re-sourcing the venues one by one is cheaper than leaving the finding unverifiable.
+- **"No schedule found" gaps go stale.** An operator site later showed a 2026 season (Endless Caverns, Mar 27-Nov 15).
+  Re-read the operator's home page before confirming an absence.
+
+- **Gap-fill passes (gorge-ridge-drive gaps, 2026-10-15):** scouts on a spent budget lean on undated TV pieces
+  and state-tourism listings. Two failure shapes: a WV Tourism restaurant listing still "open except winter" for a
+  place an OnlyInYourState editor's note says closed (Front Porch, Seneca Rocks); a "local TV report" that was
+  from 2016. Fetch the TV page once for its posted date. Also: "the only X found" claims (only fuel on US-33)
+  fall to one aggregator search; and the official site often settles listing conflicts in one fetch (Tony
+  Packo's, Secret Sandwich Society, Pies & Pints locations page). An agent's "likely closed" can be understated:
+  the NPS compendium said outright "closed on Mondays, Tuesdays".
+
+- **Event-transport capacity pinned to the wrong service (Ryder Cup 2027, 2026-10-16).** A tender's
+  "train-and-ride ~2,000/day" was attached to the Irish Rail shuttle train when it belonged to the Colbert
+  service, which inverted the fallback advice. For any capacity figure, ask the fetch which station/mode it
+  belongs to, and read two press reports of the same tender: they can disagree on mode (train vs bus).
+- **"Official sources disagree" traps** often turn out to be press vs press; re-read each official page.
+- **Old press dressed as current:** a 2024 radio piece (Ryanair capacity) and a Feb 2024 developer update
+  ("under construction in 2026") cited without dates. Always get the article date before confirming.
+- **Fare product renames:** Delta Basic Economy is now "Delta Main Basic"; agent seat-purchase rules
+  ("from 30 days out") were not on any page. Check product names like brand names.
+- **Booking-window findings are time-critical:** recompute the day arithmetic and flag any opening date
+  within a week of the run in the reason.
+
 Related: [[source-access-notes]]

@@ -1,2 +1,2 @@
-- [Source lessons](source-lessons.md) — resort lodging pages; snippets can't make ranges; CoStar/STR for event fill; AU STR rule sources; Spain INE ADR API
-- [Run strategy](stay-run-strategy.md) — 12 calls = ~5 cities snippet-grade; tournament call split; tourism boards over searches; district-level bans
+- [Source lessons](source-lessons.md) — resort lodging pages; snippets can't make ranges; CoStar/STR for event fill; AU + Ireland STR sources; Spain INE ADR API; event FAQ/transport pages
+- [Run strategy](stay-run-strategy.md) — 12 calls = ~5 cities snippet-grade; tournament + single-venue mega-event call splits; tourism boards over searches

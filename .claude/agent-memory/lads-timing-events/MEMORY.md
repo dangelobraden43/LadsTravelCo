@@ -1,2 +1,2 @@
 - [Source lessons](source-lessons.md) — empty NPS pages, stale-year bureau pages, search-date traps, OPM holidays, ski, eclipse, AEMET, fixtures, Australia gov, USNO sun/moon + USGS river APIs, concessioner sites, foliage model, WV parks
-- [Event season sources](event-season-sources.md) — fetch-first tactic; market/festival sites; operator-quit trap; Spain eclipse-trio year mix-up; Ireland sources, folklore-elsewhere trap
+- [Event season sources](event-season-sources.md) — fetch-first tactic; market/festival sites; operator-quit trap; Spain eclipse-trio year mix-up; Ireland sources (TFI events pages, Met Éireann), mega-event displacement trap, folklore-elsewhere trap

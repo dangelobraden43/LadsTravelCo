@@ -43,4 +43,8 @@ Durable source lessons for the getting-around lane (first learned on Pictured Ro
 - WV: `transportation.wv.gov/article/...` press releases fetch cleanly with exact ramp closures and detour times; `turnpike.wv.gov/toll-rates` names plazas but no mileposts. Search the state DOT for "<exit> 2026 traffic pattern" before trusting any route: a closed exit ramp near the base changed every return leg.
 - nps.gov-scoped searches for cell service or gas return planning documents, not visitor info; NPS rarely publishes either. Spend those calls elsewhere and record gaps.
 
+- **Ireland (ryder-cup-2027, 2026-10-16):** `bustimes.org/services/<route-slug>` fetches cleanly for Irish bus AND rail (e.g. `rail-limerick-galway`, `rail-dublin-tralee`, `14-limerick-kerry-airport-killarney`) with NTA GTFS data dated the day before: the best source for times, first/last trains. Tables flatten, so some pages (rail-dublin-limerick) come back garbled; pair with Ryder-Cup/TFI or rome2rio. buseireann.ie route pages fetch but the times sit in a PDF. irishrail.ie news pages fetch but carry no date. Event transport: the organiser page (rydercup.com/attend/transport) plus the TFI `/events/<slug>/` page, and local press for NTA tender details (Limerick Post read cleanly).
+- **Two-topic queries joined by ";" return only the FIRST topic** (5 of 5 tries on the Ireland run). One topic per search.
+- The validator bans the word "insurance" even for rental excess; write "rental excess / damage-waiver" in claims, notes and gaps.
+
 See [[feedback-lane-overlap]] if written later: closures and winter roads are often already covered by provenance and timing agents; reference their ids rather than re-spending calls.

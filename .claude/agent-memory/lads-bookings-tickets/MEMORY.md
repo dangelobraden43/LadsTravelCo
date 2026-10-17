@@ -1,3 +1,3 @@
 - [Ski pass and resort booking sources](reference_ski_pass_sources.md) — Indy/Ikon pages that fetch, epicpass.com queue, Vail Pre-Arrival pages, Viator for ski regions
-- [Event booking sources](reference_event_booking_sources.md) — shared WebSearch cap + fetch-first fallback; eclipse/ferry pages that fetch (spainsolareclipse, tripprof, proteccioncivil) or 403 (balearia)
+- [Event booking sources](reference_event_booking_sources.md) — shared WebSearch cap + fetch-first; eclipse/ferry and Ryder Cup/Ireland pages that fetch or block; Viator title/URL mismatch
 - [Booking sources and Viator matching](reference_booking_sources.md) — NPS concessioner/CUA pages, operator FAQs, Recreation.gov conflicts, WV state rafting licences, Gauley season end, VA attraction sites that 403/redirect, Viator mis-resolves
