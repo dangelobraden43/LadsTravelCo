@@ -1,2 +1,2 @@
-- [Entry source lessons](source-lessons.md) — travel.state.gov, Home Affairs AU, usembassy 403 on fetch; ETIAS portal JS-only; budget order for basics
+- [Entry source lessons](source-lessons.md) — state.gov/usembassy 403; ETIAS portal JS-only; Ireland/UK live URLs + ETA traps; budget order
 - [Gibraltar border regime](gibraltar-border-regime.md) — pre-15 July 2026 Gibraltar/La Linea guidance is obsolete; check source dates

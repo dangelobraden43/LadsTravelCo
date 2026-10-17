@@ -1,1 +1,1 @@
-- [Source behaviour](reference_source_behaviour.md) — which sites block or mislead, call budgets, small-town food sources, NPS/WV/OH park pages, road-trip fetch list, validator gotchas, Irish golf club pages and golf traps
+- [Source behaviour](reference_source_behaviour.md) — which sites block or mislead, call budgets, small-town food sources, NPS/WV/OH park pages, road-trip fetch list, validator gotchas, Irish golf club pages and golf traps, Limerick and Kerry sights sources, Irish bus timetables, no-shell validation fallback, Kerry pub/TV-rights sources

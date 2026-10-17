@@ -142,4 +142,62 @@ metadata:
   use tii.ie toll notices), ndls.ie (403; rsa.ie via search), travelextra.ie article timed out once, limerickleader 403.
   Budget: 168 findings for 90 calls let ~80% get a real verdict by grouping on the official pages.
 
+- **Top-up pass (Ryder Cup, 2026-10-17).** WebSearch has a SESSION-WIDE cap (200, shared by every agent in the
+  session); a top-up run right after a big run hit it at call ~37. WebFetch kept working. Do fetches of cited pages
+  first and save searches for replacements. Blocked: fodors.com and cdn.fodors.com 403, tipperarylive.ie 403,
+  viator.com tour pages 403, expedia.com 429, united.com route page timed out, travelextra.ie timed out twice,
+  rydercup.com 2016 news page 404, hostelworld.com/blog/?p= short links 404 (slug pages such as
+  /blog/best-hostels-in-galway/ work), golfmonthly.com /all/ pages return a membership shell. Fetch cleanly:
+  kayak.com/flight-routes/... (typical range, 12-month average, cheapest month), corkairport.com news releases,
+  irishrail.ie how-to pages, dublinairport.com preclearance and security FAQs, bustimes.org rail and bus pages,
+  nationaltransport.ie news, clarechampion.ie (shows date), golfbreaks.com tours, greatblasketisland.net.
+
+- **Co. Clare (2026-10-17).** Fetch cleanly: cliffsofmoher.ie book-online (2027 rates, hours, time bands), coastal-walk
+  and getting-here pages; doolinferry.com and /aran-islands-ferry-sailing-times/ (doolinferry.getanchor.io returns
+  530); doolincave.ie home (hours not readable; /opening-times/ 404); aillweeburrenexperience.ie; lahinchsurfschool.com
+  and /surf-lessons/; nationalparks.ie/burren/ (burrennationalpark.ie 301s there); bunrattycastle.ie; loveloophead.com
+  (loophead.ie 301s); matchmakerireland.com/info/faq; discoverireland.ie; clare.fm news; clarechampion.ie (dates shown);
+  vaughans.ie (Liscannor), vaughanspub.ie (Kilfenora), gusoconnorsdoolin.com, mcdermott-s-pub.com, homesteadcottage.com;
+  guide.michelin.com; theirishroadtrip.com guides (show "Last Updated"); en.wikivoyage.org Clare towns. Fail: burren.ie
+  403, afloat.ie 403, comhaltas.ie event pages 410, mcgannspubdoolin.com refused, roadsidetavern.ie empty,
+  burrenbrewery.com no DNS. With WebSearch exhausted, 49 fetches gave all 52 findings a real verdict.
+
+- **Kerry (2026-10-17, WebSearch pool exhausted, fetch only).** Fetch cleanly: heritageireland.ie (Ross Castle, Sceilg
+  Mhichil with permit-holder list, Blasket Centre), nationalparks.ie/killarney (killarneynationalpark.ie 301s here; posts
+  closure notices), muckross-house.ie/plan-your-visit (fee table), derostours.com, gapofdunloetours.com, paddywagontours.com,
+  kerrymuseum.ie, discoverireland.ie listing and car-free guide pages, ireland.com guides (show update date),
+  dingle-peninsula.ie, listowel.ie bar listings, theirishroadtrip.com (shows updated date), roseoftralee.ie, air.ie,
+  balls.ie, bustimes.org 14/272, skelligislands.com (2026 page despite "-old" slug), sportcal.com, advanced-television.com,
+  irishexaminer.com, killarneyadvertiser.ie (its ?s= search works, relative dates only), roadtrips.com, mcmunns.com,
+  arbutuskillarney.com, traleebaywetlands.org, outoftheblue.ie, killarneybikerental.rezgo.com.
+  Fail: dishcult.com 403, canbe.tourdesk.ie 403, citizensinformation.ie 403, kerrycliffs.ie and .com DNS, kirbysbrogueinn.com
+  DNS, discoverireland.ie/kerry/sean-og-s 404. Budget: 81 findings for 49 fetches gave 72 a real verdict.
+
+- **When WebSearch is exhausted, Google News RSS works through WebFetch** (Dublin bookend, 2026-10-17):
+  `https://news.google.com/rss/search?q=<terms>&hl=en-IE&gl=IE&ceid=IE:en` (add `when:1y` to the query to limit by date)
+  returns about 40-50 dated headlines per call. It settled brand status (a closure, an old sale, current trading) in one call each.
+  403s: museum.ie (all paths), citizensinformation.ie (licensing pages). brazenhead.com news page carries no session
+  times. Fetch cleanly: tcd.ie old-library FAQ, visittrinity.ie blog, culturenight.ie, avivastadium.ie/events (first page),
+  TFI event pages, hoganstand.com, rugby.com.au news, copperfacejacks.ie (hours), bustimes.org stops, theislandgolfclub.com,
+  theroyaldublingolfclub.com, portmarnockgolfclub.ie, hotelscombined.co.uk, bisnow.com, sdcc.ie, enterprise.gov.ie, ogier.com.
+
+- **Limerick city pass (2026-10-17, fetch only).** Fetch cleanly: kingjohnscastle.ie, thomondpark.ie/museum-tours,
+  heritageireland.ie place pages, flyingboatmuseum.com/plan-your-visit, loughgur.com/faq, cliffsofmoher.ie opening-hours
+  and book-online (slot prices, peak hours), bunrattycastle.ie/plan-your-visit, paddywagontours.com tour pages,
+  milkmarketlimerick.ie, dolans.ie, courts.ie licence guide, irishtimes.com (non-paywalled), ul.ie, clare.fm,
+  adarevillage.com (Limerick Leader mirrors), limerick.ie listing and node pages, discoverireland.ie, wanderlog.com,
+  guide.michelin.com/en/limerick/adare/restaurant/the-oak-room. Fail: huntmuseum.com 403 (theirishroadtrip.com has
+  hours and fees), travelextra.ie timed out again (third run), limerick.ie/greenway news 403, limerickraces.ie fixtures
+  are an image only, a guessed Michelin slug 404s. limerick.ie listings are undated (footer copyright only).
+
+- **Transit pass (Ryder Cup, 2026-10-17, WebSearch pool exhausted, fetch only).** 403: citizensinformation.ie (all
+  paths), gov.ie publications pages, irishstatutebook.ie. irishimmigration.ie travel-path page returns title only.
+  404: about.leapcard.ie/tfi-young-adult-card. Fetch cleanly: bustimes.org (bus pages pair times; rail pages flatten),
+  irishrail.ie fares-info and students pages, rydercup.com attend pages, TFI event/news/fares/taxi pages, NTA
+  consultations, irishexaminer arid- articles (show date), irishtimes business, numbeo city pages, ECB graph, revenue.ie
+  customs and VAT-rate pages, gov.uk/eta and news, home-affairs.ec.europa.eu news, CDC traveler pages, comreg.ie news,
+  esbnetworks.ie, garda.ie Crimecall pages, Chase and Capital One card pages, dealspoints.com, awardtravelfinder.com,
+  aircanada.com Aeroplan news, hilton.com/en/locations, snnairportgroup.ie, interrail.com, timeout.com, dublinexpress.ie.
+  Budget: 109 findings for 70 fetches gave ~85% a real verdict by grouping on bustimes, Numbeo and issuer pages.
+
 Related: [[verification-patterns]]

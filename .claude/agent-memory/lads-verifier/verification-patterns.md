@@ -171,4 +171,57 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
 - **Booking-window findings are time-critical:** recompute the day arithmetic and flag any opening date
   within a week of the run in the reason.
 
+- **Top-up pass lessons (Ryder Cup, 2026-10-17).** "Book early" traps miss the sale horizon: Irish Rail's own
+  page says online tickets open only 90 days ahead, which changes the advice. For any advance-booking claim, look
+  for a maximum booking window too. Golf "value" labels go stale as fees rise: directories (1golf, where2golf
+  updated 2023) lag a dated 2026 magazine fee by 2-3x (Dooks). "Page showed no date" can be wrong; a re-read found
+  2022 on the Clare Champion piece. Area claims ("Eyre Square is the nightlife hub") get flipped by the same guide,
+  which put nightlife on Quay Street. A "from" fare band can sit below the route page's typical range; prefer the
+  typical range.
+
+- **Clare scout pass (Ryder Cup Clare, 2026-10-17).** Scouts skip the venue's own site and cite Michelin/aggregator
+  hours: Homestead Cottage's own page dropped the Wednesday that Michelin listed. Fetch the venue's site first for
+  hours. Official pages contradict themselves on season ends (Burren NP shuttle "end of August" and "end of
+  September" on one page), which flips a "not running in September" trap. Old press read as current: a Feb 2022
+  Clare Champion plan written in the present tense; a 2022 ferry sale dated "2023" by a blog. A "famous for" line
+  can be history: the venue's own site now calls the Kilfenora barn a wedding venue. Policies the scout quotes ("No
+  Wave, No Pay") may be absent from both the home and product pages.
+
+- **Kerry leg (Ryder Cup, 2026-10-17).** Brand status for small restaurants: fetch the venue's own domain
+  first. Two "guide favourites" had lapsed domains (one parked for sale, one 301 to an unrelated US shop) while
+  aggregator lists still carried them; a venue site with a 2023 copyright and 2016-18 news is "unconfirmed", not
+  "trading". "Named rail feed" claims: the official page can name a town in its intro but leave it out of the
+  timetable table (Tralee). "Nearest Kerry town to Ballybunion" type claims can be wrong on their face (Ballybunion
+  is itself a town). Award-winner lists: re-read the article; one name (Mulcahy's) came from a different snippet.
+  Guide quotes soften on re-read ("worth it if you have a designated driver" became "only works with one").
+
+- **Dated hotel-blog listicles carry closed venues (Dublin bookend, 2026-10-17).** A Clayton Hotels guide "posted
+  22.1.26" listed The Living Room, which had closed on 6 Jan 2025. A guide's date is not proof that each venue is trading.
+  Run a news-feed check for "<venue> closure" on every venue where that guide is the only recent source.
+- **"Reported for sale" can be years old.** The Copper Face Jacks sale was March 2019 and was withdrawn in Nov 2019. Get the
+  date of the sale report and look for later trading news before refuting.
+- **Quotes attributed to the paper instead of the person quoted.** "The Irish Times reported it was effectively shelved"
+  was actually a councillor quoted in the piece. Check who says it.
+- **"Last warm-up" and "one of the few" superlatives** appear when the sources only say "a warm-up" or list the venue once.
+- **"Closed, treat any guide that lists it as open with suspicion"** can miss a relocated exhibit (the Dead Zoo Lab at Collins
+  Barracks). Look for a temporary home before confirming.
+
+- **City-base pass (Ryder Cup Limerick, 2026-10-17).** Cross-check one part against another in the same run: the
+  eat part listed Sean Collins & Sons as a pub-food option while the drink part had it closed since 2024 (a Jan 2026
+  guide still listed it). Grep every venue named in a closure trap across all files. Other shapes: a council
+  listing whose opening hours cover only Fri-Sun read as "drinks only midweek" (it may be shut); a press quote
+  ("details coming soon") attached to a topic the article never mentions; a museum's official hours changed since
+  the snippet (Foynes 10-17, not 09:30-18:00); "the one venue with trad every night" when a rival's own page also
+  says every night; a concession price presented as the low end of an adult range; a derived per-bedroom figure
+  written as "reported".
+
+- **Transit/entry pass (Ryder Cup transit, 2026-10-17).** Government fees move between the press release and the live
+  page: GOV.UK's Nov 2025 news said ETA GBP 16, the live gov.uk/eta page said GBP 20. Always read the live service page
+  for a fee, not the launch release. Quoted guidance lines ("cannot transit airside to Ireland") were not in the PDF
+  cited; read the PDF via the saved-path fallback and search it. Off-peak rail notes on Irish Rail fare charts list the
+  routes they cover (Portlaoise, Cork-Tralee), not every route on the chart. Agents re-carry wording an earlier
+  verifier already corrected (Delta "Basic Economy" 30-day seat rule): grep the head-start lads-verifier.json first.
+  Travel-card comparisons: check the agent's own sources for issuers it left out (DealsPoints named Wells Fargo).
+  Event products sell out between runs (The Green, Ticket+): re-read the product page for "sold out".
+
 Related: [[source-access-notes]]

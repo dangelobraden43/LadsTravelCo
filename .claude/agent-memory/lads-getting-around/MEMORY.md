@@ -1,1 +1,1 @@
-- [Transport sources](reference_transport_sources.md) — NPS/airport/toll fetch tricks; seat61; Spain DGT/Adif; ferry drift; OSRM (reads high, no exclude=toll) + Valhalla matrix URLs; toll bypasses; WV DOT ramp closures; shared search pool, fetch-only fallback; AU airport-rail fees; Ireland bustimes.org GTFS pages; one topic per search
+- [Transport sources](reference_transport_sources.md) — NPS/airport/toll fetch tricks; seat61; Spain DGT/Adif; OSRM/Valhalla URLs; shared search pool (fetch first); Ireland bustimes + Irish Rail fare charts; no Bash, so no validator run

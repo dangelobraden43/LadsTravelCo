@@ -30,4 +30,6 @@ metadata:
 - **State parks (WV):** wvstateparks.com park pages carry no seasonal ops (empty "Park Conditions"). Tram/attraction status lives in local TV press (digital-release.wvnstv.com fetches clean).
 - **Founder trip-plan inputs assert events that may not exist this year** (a "Fall Festival this Saturday" with no 2026 listing). Check every event in an input file for a current-year listing.
 - **Tivoli trap, waterfall edition:** "Sandstone Falls" returns Michigan's Ottawa NF site before WV's. Same name, different park; confirm the park in every result.
+- **The session-wide WebSearch cap is shared by every agent** (200/session, Oct 17 2026) and can run out before your own budget does. Spend searches on the highest-value unknowns first; WebFetch still works after the cap, so keep fetch-able official URLs for last. Record refused searches as `could-not-look`.
+- **This agent may have no Bash tool**, so `validate.mjs` cannot be run by hand; the SubagentStop hook validates. Self-check for currency amounts, "free", and first-person phrases with Grep before finishing.
 - Budget note: 12 calls covers ~4 windows + events + closures only if fetches are spent on official pages; school breaks and weather normals got squeezed out. Plan one call each up front.

@@ -28,6 +28,17 @@ limit (200 shared by every agent) was already exhausted and only WebFetch worked
 - `aa.com` partner award chart: HTTP 403.
 - Guessing points-blog URLs wastes calls (upgradedpoints Iberia chart guess was 404).
 
+**Added on the ryder-cup-2027-transit run (2026-10-17):**
+- Read cleanly: `creditcards.chase.com/travel-credit-cards/aer-lingus` (fee, bonus, companion
+  ticket rule); `hilton.com/en/locations/ireland/` (whole-country hotel list, towns only
+  partly tied); Air Canada Aeroplan chart-change notices under
+  `aircanada.com/ca/en/ado/home/aeroplan/news/...` (changed values only, no unchanged ones);
+  `dealspoints.com/redeem-aer-lingus-avios/` (full Avios zone chart + peak calendar, aggregator).
+- Fail: `aerlingus.com/aerclub/avios/` returns a CAPTCHA page; `ihg.com/destinations/...` 403.
+- This agent has no Bash tool, so `validate.mjs` cannot be run from inside the agent. Check
+  the file by hand against `tools/research/validate.mjs` (claim <= 600 chars, two hosts per
+  range, no currency amount without fixedPrice + official source) and say so in the report.
+
 **How to apply:** start card work with the Chase and Capital One pages (one fetch each
 covers a whole currency). Budget a search for Amex fees and for award charts. Card terms
 (fee, bonus spend) pass the validator as `fixedPrice: true` with an official source; never

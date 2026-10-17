@@ -13,6 +13,14 @@ metadata:
 - Pattern trap worth checking in any country that shut 3G: handsets that cannot reach the emergency number get refused service on local SIMs (Australia, ACMA rules). Regulator site (acma.gov.au equivalent) is the source.
 - CIA World Factbook "travel facts" PDFs surface in search and give plug type, voltage, currency and emergency number per territory in one hit: cheap way to cover the basics.
 
+**Ireland / UK (learned 2026-10-17):**
+- irishimmigration.ie `/coming-to-visit-ireland/visit-or-holiday-in-ireland/` is 404 and its FAQ page truncates on fetch. Live path: `/coming-to-visit-ireland/visit-ireland-travel-path/`. Citizens Information (citizensinformation.ie) is the reliable state fallback.
+- revenue.ie old `/customs/travel/arriving-in-ireland/...` is 404. Current: `/en/customs/individuals/info-travelling-duty-free/from-outside-eu/allowances.aspx` (fetches cleanly). CDC `wwwnc.cdc.gov/travel/destinations/traveler/none/<country>` fetches cleanly.
+- Plugs/voltage: esbnetworks.ie + citizensinformation product-safety page. comreg.ie covers eSIM, roaming and 3G retirement.
+- Recurring UK traps for any Ireland run: UK ETA airside-transit exemption does NOT cover connections to Ireland/CTA, and Northern Ireland day trips need an ETA despite no border checks.
+- Every web call (search AND fetch) counts toward the budget. Guessed URLs that 404 waste it: search with allowed_domains first to get the live URL.
+- This agent may have no shell: if `node validate.mjs` cannot run, check by hand against tools/research/validate.mjs (money regex, distinct hosts, banned words) and say so.
+
 **Budget lesson:** with 12 calls, a big regime change (a border treaty, ETIAS state) can eat the budget and leave plugs/112/CDC/customs as gaps. Spend the first 2-3 calls on one batched search for the basics (Factbook travel facts + CDC destination page) before chasing the headline change.
 
 **Recurring traps:** State Department pages disagree on Schengen passport validity (3 months beyond departure vs 6 months at entry) — record both, advise 6. ETIAS dates slip; always give a re-check `datedUntil`, never forecast mandatory status. See [[gibraltar-border-regime]].
