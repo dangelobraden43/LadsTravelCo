@@ -1,6 +1,6 @@
 ---
 name: flight-source-lessons
-description: Which flight/fare sources fetched cleanly, which were snippet-only, and recurring traps in schedule and fare research for Midwest-to-Europe routes
+description: Which flight/fare sources fetched cleanly, which were snippet-only, and recurring traps in schedule and fare research (Midwest-Europe, Spain eclipse, Australia event runs)
 metadata:
   type: reference
 ---
@@ -21,4 +21,21 @@ Learned on the European Christmas Markets run (2026-10-06, 12-call budget).
 - Article year: infer from schedule-season dates (IATA winter = last Sunday Oct; summer = last Sunday Mar). A "stops Oct 25, resumes Mar 29" article was 2025-26, not 2026-27.
 - MSP loses KLM and Icelandair in winter; check every winter run.
 - Budget tip: 3 searches on hub nonstops, 1 aeroroutes fetch, 2-3 on fares/lead time, 1 basic economy, 1 airport-name traps. Leaves smaller origins (MKE/GRR/IND/CLE/CMH) uncovered at 12 calls; ask for more or search them first if the brief stresses them.
+- Origin-neutral event runs (eclipse-2027-spain, 2026-10-12): Wikipedia airport pages (en.wikipedia.org/wiki/<Airport>) fetch cleanly and give distance to centre, rail station, Aena passenger counts and a full airlines/destinations table in one call; pair each with a second host (tourspain.es B2B connectivity page is an official, readable 2026 route round-up for Spain). Gibraltar Airport schedule only came via snippets.
+- Event demand: Euronews (es.euronews.com) carries airline booking-surge statements; they include promo lead-in fares that are point prices, leave them out.
+- FareCompare route pages give "cheapest month" labels from ordinary years; useful only as a trap for event weeks, never as a fare band.
+- Read the earlier agents' JSON first: path/edge-of-path facts and arrival-day traffic were already sourced; cite their read sources with a "not re-read here" note rather than spending calls.
+- Australia event run (rugby-world-cup-2027, 2026-10-12): Wikipedia pages for Sydney, Perth and Townsville airports fetched cleanly with terminal layouts (Perth's Qantas T3/T4 vs T1/T2 split is a recurring trap). Two Wikipedia pages are ONE host for the validator's two-source rule; pair each route claim with aeroroutes, aerocorner, airportroutes or an airline release. Small airports (Newcastle NTL) came only via snippets.
+- Fare searches phrased "London to Sydney" returned only AUD, Sydney-origin pages; for a GBP band search a UK-domain site (skyscanner.net, kayak.co.uk) by name.
+- Schedules load about 11 months out (EWN quoting a sports-travel agent, Oct 2026). For events 12+ months away, say fares are not observable yet and give ordinary-year baselines labelled as such.
+- Validator scans notes too: write money as "AUD 1,151 to 2,171", never "AUD 1,151 (cheapest) to ..." or a lone figure.
 - Lead-time evidence disagrees (Google 32-73 days vs blogs saying 3-6 months); report both, see [[fare-intelligence-rule]].
+
+Ireland / Ryder Cup run (ryder-cup-2027, 2026-10-16, 25 calls counting fetches):
+- Read cleanly: cbp.gov preclearance page (all locations + hours), snnairportgroup.ie news releases (official Shannon routes, seats), dublinairport.com /flight-information/travelling-to-usa/usa-preclearance, wxyz.com route news, aeroroutes Aer Lingus filings. travelextra.ie slug URLs time out; the `?p=<id>` form fetched fine.
+- 404s: delta.com basic-economy fare-class page; dublinairport.com /at-the-airport/us-preclearance. Delta's agency page pro.delta.com came only as a snippet.
+- Off-season trap: in October, KAYAK says "no direct flights" for seasonal routes (DTW-DUB runs May-Oct). Never read an off-season aggregator as "no nonstop".
+- RatePunk mislabels connecting carriers (Turkish, JetBlue) as "direct" on DTW-DUB; use its monthly medians, not its carrier list.
+- Sales-window arithmetic: Delta/AA 331 days, United ~337 (some say 330); the RETURN date is the binding one for a round trip.
+- Internal framework logistics lines go stale (dublin.js said "DTW has no nonstop"; Delta launched it in 2025). Flag them to founders when found.
+- Airport capacity caps (Dublin) can block new routes for event years; search "<airport> passenger cap" for capped hubs.

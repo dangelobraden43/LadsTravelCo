@@ -1,2 +1,2 @@
-- [Source lessons](source-lessons.md) — resort off-site lodging pages for distances; snippets can't make price ranges; STR articles are often stale
-- [Run strategy](stay-run-strategy.md) — 12 calls = ~5 cities snippet-grade; fetch tourism boards over searches; STR sources; district-level bans
+- [Source lessons](source-lessons.md) — resort lodging pages; CoStar/STR for event fill; AU + Ireland STR sources (2026 law changes); AirDNA/AirROI for group-apartment ADR; WebFetch may be denied; shared search pool
+- [Run strategy](stay-run-strategy.md) — 12 calls = ~5 cities snippet-grade; tournament, mega-event, regional and single-city (Galway) splits; may lack shell for validator

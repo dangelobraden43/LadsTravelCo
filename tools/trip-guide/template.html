@@ -1,0 +1,783 @@
+<title>__TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@500;700;800;900&family=Overpass+Mono:wght@500;600&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: a road atlas you scroll. Elevation profile of the whole drive as the opener, then
+   Book, Days (Today opens itself during the trip), the route map, each region with its own map
+   and cards nearest-first, the road, hikes, notes, and how the guide was made. */
+:root {
+  --paper: #edf0ea; --card: #f8f9f5; --land: #e2e7df; --ink: #1a2520; --muted: #55625a; --rule: #cdd4cb;
+  --steel: #a8481f; --ridge: #2f5876; --water: #3f7aa3; --sign: #1d5a3a; --sign-ink: #ffffff;
+  --ok: #2c6a43; --warn: #8e5f0c; --chip: #e1e6de;
+  --c-eat: #b4532a; --c-coffee: #7a5233; --c-drink: #8a3f6b; --c-see: #2f5876; --c-views: #1d6b5a; --c-outdoors: #4d7a2a;
+  --l1: #a8481f; --l2: #2f5876; --l3: #1d6b45;
+  --display: "Overpass", "Highway Gothic", "Arial Narrow", system-ui, sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Overpass Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #101613; --card: #171f1b; --land: #1d2621; --ink: #e2e7df; --muted: #9aa69e; --rule: #2a342e;
+  --steel: #e27b4e; --ridge: #8db2cf; --water: #6aa6d1; --sign: #1f6b45; --sign-ink: #ffffff;
+  --ok: #7cc495; --warn: #e2b55c; --chip: #222b26;
+  --c-eat: #e27b4e; --c-coffee: #c99a6e; --c-drink: #d37fb0; --c-see: #8db2cf; --c-views: #6fc4ad; --c-outdoors: #9ccc6a;
+  --l1: #e27b4e; --l2: #8db2cf; --l3: #7cc495; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --paper: #101613; --card: #171f1b; --land: #1d2621; --ink: #e2e7df; --muted: #9aa69e; --rule: #2a342e;
+  --steel: #e27b4e; --ridge: #8db2cf; --water: #6aa6d1; --sign: #1f6b45; --sign-ink: #ffffff;
+  --ok: #7cc495; --warn: #e2b55c; --chip: #222b26;
+  --c-eat: #e27b4e; --c-coffee: #c99a6e; --c-drink: #d37fb0; --c-see: #8db2cf; --c-views: #6fc4ad; --c-outdoors: #9ccc6a;
+  --l1: #e27b4e; --l2: #8db2cf; --l3: #7cc495; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.55 var(--body); margin: 0; }
+.wrap { max-width: 900px; margin: 0 auto; padding-inline: 16px; padding-block: 0 64px; }
+a { color: var(--ridge); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.1; margin: 0; }
+h2 { font-size: clamp(1.5rem, 5vw, 1.9rem); font-weight: 900; letter-spacing: -0.01em; }
+h3 { font-size: 1.1rem; font-weight: 800; }
+p { margin: 0; }
+.eyebrow { font: 700 0.74rem/1.2 var(--display); letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+
+/* hero */
+.hero { padding-block: 26px 14px; display: grid; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 8px; font: 800 0.78rem/1 var(--display); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.brand i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid currentColor; display: inline-grid; place-items: center; font-style: normal; font-size: 0.6rem; }
+.hero h1 { font-size: clamp(2.3rem, 9vw, 4rem); font-weight: 900; letter-spacing: -0.025em; }
+.hero h1 .amp { color: var(--steel); }
+.hero .lede { color: var(--muted); max-width: 62ch; }
+.profile { display: grid; gap: 6px; }
+.profile svg { width: 100%; height: auto; display: block; overflow: visible; }
+.profile .cap { font: 600 0.8rem/1.4 var(--mono); color: var(--muted); }
+.today { background: var(--ink); color: var(--paper); border-radius: 6px; padding: 12px 14px; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; justify-content: space-between; text-decoration: none; }
+.today strong { font: 800 1.05rem/1.2 var(--display); }
+.today span { font: 600 0.82rem/1.3 var(--mono); opacity: 0.8; }
+.bases { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; }
+.base { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 4px; min-width: 0; }
+.base .when { font: 600 0.8rem/1.2 var(--mono); color: var(--steel); }
+.base .addr { color: var(--muted); font-size: 0.9rem; }
+
+/* tabs */
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); margin-inline: -16px; padding-inline: 16px; }
+nav.tabs ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+nav.tabs ul::-webkit-scrollbar { display: none; }
+nav.tabs a { display: block; padding: 13px 10px 10px; font: 800 0.84rem/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 3px solid transparent; }
+nav.tabs a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--steel); }
+section.block { padding-block: 36px 6px; display: grid; gap: 16px; scroll-margin-top: 52px; }
+.intro { color: var(--muted); max-width: 66ch; }
+
+/* chips */
+.sign { display: inline-flex; align-items: center; gap: 4px; background: var(--sign); color: var(--sign-ink); border-radius: 4px; padding: 2px 7px 1px; font: 600 0.78rem/1.4 var(--mono); white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35); }
+.tag { display: inline-block; background: var(--chip); color: var(--muted); border-radius: 3px; padding: 2px 6px 1px; font: 700 0.72rem/1.4 var(--display); letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
+.st { font: 800 0.7rem/1.4 var(--display); letter-spacing: 0.07em; text-transform: uppercase; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
+.st::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.st.confirmed { color: var(--ok); } .st.corrected { color: var(--ridge); } .st.unconfirmed, .st.pending { color: var(--warn); } .st.searched { color: var(--muted); }
+
+/* book */
+.book { display: grid; gap: 10px; }
+.bk { background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--steel); border-radius: 6px; padding: 12px 14px; display: grid; gap: 7px; min-width: 0; }
+.bk.soft { border-left-color: var(--rule); }
+.bk .top { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; justify-content: space-between; }
+.bk .due { font: 600 0.82rem/1.35 var(--mono); color: var(--steel); }
+.bk .fee { font: 600 0.82rem/1.35 var(--mono); color: var(--muted); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { display: inline-flex; align-items: center; min-height: 42px; padding: 8px 14px; border-radius: 5px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); font: 800 0.84rem/1 var(--display); letter-spacing: 0.03em; text-decoration: none; cursor: pointer; }
+.btn.primary { background: var(--steel); border-color: var(--steel); color: #fff; }
+.phone { font: 600 0.84rem/1 var(--mono); color: var(--muted); user-select: all; }
+
+/* days */
+.days { display: grid; gap: 10px; }
+details.day { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; }
+details.day > summary { list-style: none; cursor: pointer; padding: 14px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; }
+details.day > summary::-webkit-details-marker { display: none; }
+details.day > summary::after { content: "+"; font: 800 1.3rem/1 var(--display); color: var(--muted); grid-row: 1 / span 2; grid-column: 2; align-self: center; }
+details.day[open] > summary::after { content: "\2212"; }
+details.day.is-today { border-color: var(--steel); box-shadow: inset 4px 0 0 var(--steel); }
+.day .sun { font: 600 0.78rem/1.35 var(--mono); color: var(--muted); grid-column: 1; }
+.day .body { padding: 0 14px 16px; display: grid; gap: 12px; }
+.ledger { display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 5px; background: var(--paper); }
+.opt .via { color: var(--muted); font-size: 0.88rem; grid-column: 1 / -1; }
+.bar { height: 6px; border-radius: 3px; background: var(--chip); grid-column: 1 / -1; position: relative; overflow: hidden; }
+.bar b { position: absolute; inset: 0 auto 0 0; background: var(--steel); border-radius: 3px; }
+.bar s { position: absolute; inset: 0 auto 0 0; background: var(--steel); opacity: 0.35; border-radius: 3px; text-decoration: none; }
+.slot { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 10px; }
+.slot .t { font: 600 0.82rem/1.65 var(--mono); color: var(--steel); }
+.slot .alt { color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
+
+/* maps */
+.mapbox { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 10px; display: grid; gap: 10px; }
+.mapbox svg { width: 100%; height: auto; display: block; max-height: 78vh; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend button { min-height: 36px; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); font: 700 0.78rem/1.1 var(--display); cursor: pointer; text-align: left; }
+.legend button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.legend .sw { width: 18px; height: 4px; border-radius: 2px; flex: none; }
+.legend .sw.dash { background-image: linear-gradient(90deg, currentColor 60%, transparent 60%) !important; background-size: 6px 4px; }
+.pinpanel:empty { display: none; }
+svg .state { fill: var(--land); stroke: var(--rule); stroke-width: 1.2; }
+svg .route { fill: none; stroke-linecap: round; stroke-linejoin: round; transition: opacity 0.2s; }
+svg .river { fill: none; stroke: var(--water); stroke-linecap: round; opacity: 0.8; }
+svg .scenic { fill: none; stroke: var(--ink); stroke-linecap: round; opacity: 0.7; }
+svg .rt-faint { fill: none; stroke: var(--muted); opacity: 0.35; }
+svg .town circle { fill: var(--ink); }
+svg text { font-family: var(--display); fill: var(--ink); paint-order: stroke; stroke: var(--card); stroke-linejoin: round; }
+svg .base-mark { fill: var(--steel); stroke: var(--card); stroke-width: 3; }
+svg .pin { cursor: pointer; }
+svg .pin .hit { fill: transparent; }
+svg .pin.dim { opacity: 0.12; pointer-events: none; }
+svg .pin.on .core { stroke: var(--ink); stroke-width: 3; }
+
+/* cards */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chipbtn { min-height: 38px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--card); color: var(--ink); font: 700 0.8rem/1 var(--display); letter-spacing: 0.03em; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.chipbtn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.search { flex: 1 1 200px; min-width: 0; min-height: 40px; border: 1px solid var(--rule); border-radius: 6px; padding: 8px 10px; background: var(--card); color: var(--ink); font: 400 0.95rem var(--body); }
+.count { font: 600 0.78rem var(--mono); color: var(--muted); }
+.cards { display: grid; gap: 10px; }
+@media (min-width: 780px) { .cards { grid-template-columns: 1fr 1fr; } }
+.card { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 8px; align-content: start; min-width: 0; scroll-margin-top: 70px; }
+.card.flash { box-shadow: 0 0 0 2px var(--steel); }
+.card .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.card h3 { font-size: 1.05rem; display: flex; gap: 8px; align-items: center; }
+.card .claim { font-size: 0.94rem; }
+.card dl { margin: 0; display: grid; gap: 4px; font-size: 0.88rem; }
+.card dl div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px; }
+.card dt { font: 800 0.7rem/1.6 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.card dd { margin: 0; }
+.card details { font-size: 0.86rem; color: var(--muted); }
+.card summary { cursor: pointer; font: 800 0.74rem/2 var(--display); letter-spacing: 0.05em; text-transform: uppercase; }
+.card .srcs { margin: 4px 0 0; padding-left: 18px; }
+.card .why { margin-top: 6px; border-left: 2px solid var(--ridge); padding-left: 8px; }
+.links { display: flex; flex-wrap: wrap; gap: 4px 16px; font: 800 0.82rem/1.8 var(--display); letter-spacing: 0.02em; }
+.mark { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-top: 1px dashed var(--rule); padding-top: 8px; }
+.mark button { min-height: 36px; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); font: 800 0.76rem/1 var(--display); cursor: pointer; }
+.mark button[aria-pressed="true"].did { background: var(--ok); border-color: var(--ok); color: #fff; }
+.mark button[aria-pressed="true"].skip { background: var(--muted); border-color: var(--muted); color: var(--paper); }
+.mark input { flex: 1 1 150px; min-width: 0; min-height: 36px; border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; background: var(--paper); color: var(--ink); font: 400 0.86rem var(--body); }
+.mark .saved { font: 600 0.72rem var(--mono); color: var(--muted); }
+.sub { display: grid; gap: 10px; }
+.sub > h3 { border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+.more { justify-self: start; }
+.empty { color: var(--muted); font-style: italic; }
+
+/* hikes */
+.tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--card); }
+table { border-collapse: collapse; width: 100%; min-width: 660px; font-size: 0.88rem; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 800 0.7rem/1.2 var(--display); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--paper); }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.diff { display: inline-block; min-width: 10px; }
+
+/* know */
+.know { display: grid; gap: 8px; }
+.know .k { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; display: grid; gap: 5px; }
+.know .k.trap { border-left: 4px solid var(--warn); }
+
+/* made */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.tile { border-top: 3px solid var(--ink); padding-top: 8px; display: grid; gap: 2px; }
+.tile .n { font: 900 2rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.tile .l { font: 700 0.76rem/1.3 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.steps { display: grid; gap: 10px; counter-reset: s; }
+@media (min-width: 780px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.step { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 4px; }
+.step h3::before { counter-increment: s; content: counter(s) "  "; color: var(--steel); font-family: var(--mono); }
+.catches { display: grid; gap: 8px; }
+@media (min-width: 780px) { .catches { grid-template-columns: 1fr 1fr; } }
+.catch { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; display: grid; gap: 4px; }
+footer { color: var(--muted); font-size: 0.84rem; border-top: 1px solid var(--rule); margin-top: 44px; padding-top: 14px; display: grid; gap: 6px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } .profile .line { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: draw 2.2s ease-out 0.2s forwards; } @keyframes draw { to { stroke-dashoffset: 0; } } }
+
+/* light, cross-sections, history, ask */
+:root { --sky-top: #c9d9e3; --sky-bottom: #eef2ec; --terrain: #2c3b33; --terrain-edge: #1a2520; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --sky-top: #0b1620; --sky-bottom: #1b2a2a; --terrain: #3b4f45; --terrain-edge: #8fa79a; } }
+:root[data-theme="dark"] { --sky-top: #0b1620; --sky-bottom: #1b2a2a; --terrain: #3b4f45; --terrain-edge: #8fa79a; }
+.st.unchecked { color: var(--muted); }
+.light { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 6px; }
+@media (max-width: 520px) { .light { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.light .lt { background: var(--paper); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; display: grid; gap: 1px; min-width: 0; }
+.light .lt strong { font-size: 0.95rem; }
+.light .live { grid-column: 1 / -1; color: var(--steel); font-weight: 600; font-size: 0.86rem; }
+.xsec { margin: 0; display: grid; gap: 6px; }
+.xsec svg { width: 100%; height: auto; display: block; border-radius: 6px; }
+.xsec .cap { font: 600 0.78rem/1.45 var(--mono); color: var(--muted); }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.timeline li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; border-left: 2px solid var(--rule); padding-left: 10px; }
+.timeline .yr { font-weight: 600; color: var(--steel); font-size: 0.9rem; }
+.timeline p { font-size: 0.92rem; margin-top: 2px; }
+.askbox { display: grid; gap: 8px; }
+.askbox textarea { width: 100%; min-height: 64px; resize: vertical; border: 1px solid var(--rule); border-radius: 6px; padding: 10px; background: var(--card); color: var(--ink); font: 400 1rem/1.4 var(--body); }
+.chat { display: grid; gap: 10px; }
+.msg { border-radius: 8px; padding: 10px 12px; max-width: 92%; white-space: pre-wrap; }
+.msg.user { justify-self: end; background: var(--ink); color: var(--paper); }
+.msg.ai { justify-self: start; background: var(--card); border: 1px solid var(--rule); }
+.prep { display: grid; gap: 8px; }
+.prep-row { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; align-items: start; background: var(--card); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; cursor: pointer; }
+.prep-row input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--ok); }
+.prep-row p { font-size: 0.88rem; margin-top: 2px; }
+.prep-row .due { display: inline-block; margin-top: 4px; font-size: 0.76rem; color: var(--steel); }
+.prep-row:has(input:checked) strong { text-decoration: line-through; color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <header class="hero" id="top"></header>
+  <nav class="tabs" aria-label="Sections"><ul id="tabs"></ul></nav>
+  <main id="main"></main>
+  <footer id="foot"></footer>
+</div>
+
+<script type="application/json" id="guide-data">__DATA__</script>
+<script>
+(function () {
+  'use strict'
+  const G = JSON.parse(document.getElementById('guide-data').textContent)
+  const P = G.plan; const M = G.map
+  const $ = (s, el = document) => el.querySelector(s)
+  const NS = 'http://www.w3.org/2000/svg'
+  const h = (tag, attrs = {}, ...kids) => {
+    const el = document.createElement(tag)
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v == null || v === false) continue
+      if (k === 'class') el.className = v
+      else if (k === 'text') el.textContent = v
+      else if (k === 'style') el.setAttribute('style', v)
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v)
+      else el.setAttribute(k, v === true ? '' : v)
+    }
+    for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : document.createTextNode(String(kid)))
+    return el
+  }
+  const s = (tag, attrs = {}, ...kids) => {
+    const el = document.createElementNS(NS, tag)
+    for (const [k, v] of Object.entries(attrs || {})) if (v != null) { if (k === 'text') el.textContent = v; else if (k.startsWith('on')) el.addEventListener(k.slice(2), v); else el.setAttribute(k, v) }
+    for (const kid of kids.flat()) if (kid) el.append(kid)
+    return el
+  }
+  const STATUS = { confirmed: 'Fact-checked', corrected: 'Corrected', unconfirmed: 'Call ahead', unchecked: 'Not re-checked', pending: 'Being checked', searched: 'Searched' }
+  const statusEl = (st) => h('span', { class: 'st ' + st, text: STATUS[st] || st })
+  const driveEl = (m) => (m ? h('span', { class: 'sign', title: 'Drive from the house', text: '→ ' + m }) : null)
+  const CATCOL = { eat: 'var(--c-eat)', coffee: 'var(--c-coffee)', drink: 'var(--c-drink)', see: 'var(--c-see)', views: 'var(--c-views)', outdoors: 'var(--c-outdoors)' }
+  const LEGCOL = { leg1: 'var(--l1)', leg2: 'var(--l2)', leg3: 'var(--l3)' }
+  const fmt = (n) => Number(n).toLocaleString('en-US')
+  /* SVG text and pins are sized in screen pixels, whatever the drawing's own width */
+  const VIEW = Math.max(280, Math.min(document.querySelector('.wrap').clientWidth - 22, 880))
+  const U = (W, px) => +(px * W / VIEW).toFixed(1)
+  const mapsUrl = (it) => {
+    if (it.geo && !it.geo.summit) return 'https://www.google.com/maps/search/?api=1&query=' + it.geo.lat + ',' + it.geo.lng
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([it.name, it.areaLabel || '', it.state || ''].filter(Boolean).join(', '))
+  }
+  const todayIso = (() => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') })()
+  const todayDay = (P.days || []).find((d) => d.iso === todayIso) || null
+  const tripStarted = P.days && P.days.length && todayIso >= P.days[0].iso
+
+  /* ---------- shared checklist ---------- */
+  const marks = new Map(); let db = null; let me = null; const markListeners = new Set()
+  async function initStore() {
+    if (!window.claude || !window.claude.use) return
+    try {
+      db = await window.claude.use('db')
+      const user = await window.claude.use('user')
+      if (user && user.id) me = await user.id()
+      if (!db) return
+      db.collection('marks').onSnapshot((snap) => {
+        marks.clear()
+        for (const d of snap.docs || []) marks.set(d.id, d.data ? d.data() : d)
+        markListeners.forEach((fn) => fn())
+      })
+    } catch (e) { db = null }
+  }
+  async function saveMark(id, patch) {
+    const cur = Object.assign({}, marks.get(id) || {}, patch, { by: me || null, at: new Date().toISOString() })
+    marks.set(id, cur); markListeners.forEach((fn) => fn())
+    if (!db) return false
+    try { await db.doc('marks/' + id).set(cur); return true } catch (e) { return false }
+  }
+  function markRow(it) {
+    const did = h('button', { class: 'did', 'aria-pressed': 'false', type: 'button', text: 'We did this' })
+    const skip = h('button', { class: 'skip', 'aria-pressed': 'false', type: 'button', text: 'Skipped' })
+    const note = h('input', { type: 'text', id: 'note-' + it.id, placeholder: 'One line, if it earned one', 'aria-label': 'Note for ' + (it.name || 'this place'), maxlength: '240' })
+    const saved = h('span', { class: 'saved', 'aria-live': 'polite' })
+    const paint = () => {
+      const m = marks.get(it.id) || {}
+      did.setAttribute('aria-pressed', String(m.status === 'did')); skip.setAttribute('aria-pressed', String(m.status === 'skip'))
+      if (document.activeElement !== note) note.value = m.note || ''
+    }
+    const say = (ok, what) => { saved.textContent = ok ? what : (db ? 'Not saved, try again' : 'Saved on this phone only') }
+    did.addEventListener('click', async () => { const m = marks.get(it.id) || {}; say(await saveMark(it.id, { status: m.status === 'did' ? null : 'did' }), 'Saved') })
+    skip.addEventListener('click', async () => { const m = marks.get(it.id) || {}; say(await saveMark(it.id, { status: m.status === 'skip' ? null : 'skip' }), 'Saved') })
+    note.addEventListener('change', async () => say(await saveMark(it.id, { note: note.value.trim() }), 'Note saved'))
+    markListeners.add(paint); paint()
+    return h('div', { class: 'mark' }, did, skip, note, saved)
+  }
+
+  /* ---------- cards ---------- */
+  function card(it) {
+    const links = h('div', { class: 'links' })
+    if (it.site) links.append(h('a', { href: it.site, target: '_blank', rel: 'noopener', text: 'Website' }))
+    links.append(h('a', { href: mapsUrl(it), target: '_blank', rel: 'noopener', text: 'Directions' }))
+    const det = h('details', {}, h('summary', { text: 'Sources' + (it.why ? ' and the fact-check' : '') }))
+    if (it.why) det.append(h('div', { class: 'why', text: (it.status === 'corrected' ? 'What changed: ' : 'Why it is flagged: ') + it.why }))
+    if (it.sources && it.sources.length) det.append(h('ol', { class: 'srcs' }, it.sources.map((x) => h('li', {}, h('a', { href: x.url, target: '_blank', rel: 'noopener', text: x.title || x.url })))))
+    const allRows = (it.rows || []).concat((it.history || []).slice(0, 2).map((t) => ['History', t]))
+    const rows = allRows.length ? h('dl', {}, allRows.map(([k, v]) => h('div', {}, h('dt', { text: k }), h('dd', { text: v })))) : null
+    return h('article', { class: 'card', id: 'i-' + it.id },
+      h('div', { class: 'row' }, it.areaLabel ? h('span', { class: 'tag', text: it.areaLabel }) : null, driveEl(it.drive), statusEl(it.status)),
+      h('h3', {}, h('span', { class: 'dot', style: 'background:' + (CATCOL[it.cat] || 'var(--muted)') }), it.name || 'Note'),
+      h('p', { class: 'claim', text: it.claim }), rows, links, det, it.markable ? markRow(it) : null)
+  }
+  const cardIndex = new Map()
+  function filterable(container, items, opts = {}) {
+    let cat = 'all'; let q = ''; let limit = opts.limit || 24
+    const bar = h('div', { class: 'filters' })
+    const btns = [['all', 'All']].concat(P.cats).map(([k, label]) => {
+      const n = k === 'all' ? items.length : items.filter((i) => i.cat === k).length
+      if (k !== 'all' && !n) return null
+      const b = h('button', { class: 'chipbtn', type: 'button', 'aria-pressed': String(k === cat) }, k === 'all' ? null : h('span', { class: 'dot', style: 'background:' + CATCOL[k] }), label + ' ' + n)
+      b.addEventListener('click', () => { cat = k; limit = opts.limit || 24; btns.forEach((x) => x && x.setAttribute('aria-pressed', String(x === b))); paint() })
+      return b
+    })
+    btns.forEach((b) => b && bar.append(b))
+    const input = h('input', { class: 'search', type: 'search', id: 'q-' + opts.id, placeholder: 'Search by name or town', 'aria-label': 'Search ' + (opts.label || 'places') })
+    input.addEventListener('input', () => { q = input.value.trim().toLowerCase(); paint() })
+    bar.append(input)
+    const count = h('div', { class: 'count' }); const list = h('div', { class: 'cards' })
+    const more = h('button', { class: 'btn more', type: 'button', text: 'Show more' })
+    more.addEventListener('click', () => { limit += 24; paint() })
+    container.append(bar, count, list, more)
+    function paint() {
+      const shown = items.filter((i) => (cat === 'all' || i.cat === cat) && (!q || (i.name + ' ' + (i.areaLabel || '') + ' ' + i.claim).toLowerCase().includes(q)))
+      list.replaceChildren(...shown.slice(0, limit).map(card))
+      count.textContent = shown.length + (shown.length === 1 ? ' place' : ' places') + (opts.order || ', nearest first')
+      more.hidden = shown.length <= limit
+      if (!shown.length) list.append(h('p', { class: 'empty', text: 'Nothing matches. Clear the search or pick another group.' }))
+    }
+    const api = { reveal(id) { const it = items.find((i) => i.id === id); if (!it) return false; cat = 'all'; q = ''; input.value = ''; btns.forEach((x) => x && x.setAttribute('aria-pressed', String(x === btns[0]))); const idx = items.filter(() => true).indexOf(it); limit = Math.max(limit, idx + 1); paint(); return true } }
+    for (const it of items) cardIndex.set(it.id, api)
+    paint(); return api
+  }
+  function revealCard(id) {
+    const api = cardIndex.get(id); if (!api || !api.reveal(id)) return
+    const el = document.getElementById('i-' + id); if (!el) return
+    el.scrollIntoView({ block: 'center' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600)
+  }
+
+  /* ---------- maps ---------- */
+  function projector(bbox, width) {
+    const [S, W, N, E] = bbox; const k = Math.cos(((S + N) / 2) * Math.PI / 180); const sx = width / ((E - W) * k)
+    return (lat, lng) => [(lng - W) * k * sx, (N - lat) * sx]
+  }
+  function tripMap() {
+    const T = M.trip; const svg = s('svg', { viewBox: `0 0 ${T.width} ${T.height}`, role: 'img', 'aria-label': 'Map of every toll-free route on the trip' })
+    for (const d of Object.values(T.states)) svg.append(s('path', { class: 'state', d }))
+    const routeEls = {}
+    const ids = Object.keys(T.routes).sort((a, b) => T.routes[a].main - T.routes[b].main)
+    for (const id of ids) { const r = T.routes[id]; const el = s('path', { class: 'route', d: r.d, stroke: LEGCOL[r.leg], 'stroke-width': U(T.width, r.main ? 3 : 2), 'stroke-dasharray': r.main ? null : U(T.width, 5) + ' ' + U(T.width, 4), opacity: r.main ? 1 : 0.75 }); routeEls[id] = el; svg.append(el) }
+    for (const t of T.towns) svg.append(s('g', { class: 'town' }, s('circle', { cx: t.xy[0], cy: t.xy[1], r: U(T.width, 3) }), s('text', { x: t.xy[0] + U(T.width, 6), y: t.xy[1] + U(T.width, 4), 'font-size': U(T.width, 12), 'stroke-width': U(T.width, 3), 'font-weight': 700, text: t.name.split(',')[0] })))
+    for (const b of T.bases) svg.append(s('g', {}, s('circle', { class: 'base-mark', cx: b.xy[0], cy: b.xy[1], r: U(T.width, 6) }), s('text', { x: b.xy[0] + U(T.width, 9), y: b.xy[1] - U(T.width, 6), 'font-size': U(T.width, 13), 'stroke-width': U(T.width, 3), 'font-weight': 900, text: b.short })))
+    const legend = h('div', { class: 'legend' })
+    let focus = null
+    for (const id of Object.keys(T.routes)) {
+      const r = T.routes[id]
+      const b = h('button', { type: 'button', 'aria-pressed': 'false' }, h('span', { class: 'sw' + (r.main ? '' : ' dash'), style: `background:${LEGCOL[r.leg]};color:${LEGCOL[r.leg]}` }), `${r.label} · ${fmt(r.mi)} mi`)
+      b.addEventListener('click', () => {
+        focus = focus === id ? null : id
+        for (const [rid, el] of Object.entries(routeEls)) el.setAttribute('opacity', !focus ? (T.routes[rid].main ? 1 : 0.75) : rid === focus ? 1 : 0.12)
+        legend.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b && focus === id)))
+      })
+      legend.append(b)
+    }
+    return h('div', { class: 'mapbox' }, svg, legend, h('p', { class: 'count', text: 'Solid lines are the shortest toll-free option for each day; dashed lines are the alternatives. Tap a route to isolate it. Distances are routed on real roads.' }))
+  }
+  function regionMap(region, items, hikes) {
+    const R = M.regions.find((r) => r.id === region); if (!R) return null
+    const proj = projector(R.bbox, R.width)
+    const svg = s('svg', { viewBox: `0 0 ${R.width} ${R.height}`, role: 'img', 'aria-label': 'Map of places near ' + region })
+    svg.append(s('rect', { x: 0, y: 0, width: R.width, height: R.height, fill: 'var(--land)' }))
+    for (const l of R.lines) svg.append(s('path', { class: l.kind === 'river' ? 'river' : l.kind === 'scenic' ? 'scenic' : 'rt-faint', d: l.d, 'stroke-width': U(R.width, l.kind === 'river' ? 2.6 : 1.8), 'stroke-dasharray': l.kind === 'scenic' ? U(R.width, 1.5) + ' ' + U(R.width, 3.5) : null }))
+    const inBox = (xy) => xy[0] >= 6 && xy[0] <= R.width - 6 && xy[1] >= 6 && xy[1] <= R.height - 6
+    for (const t of R.towns) if (inBox(t.xy)) svg.append(s('g', { class: 'town' }, s('circle', { cx: t.xy[0], cy: t.xy[1], r: U(R.width, 3) }), s('text', { x: t.xy[0] + U(R.width, 6), y: t.xy[1] + U(R.width, 4), 'font-size': U(R.width, 12), 'stroke-width': U(R.width, 3), 'font-weight': 700, text: t.name })))
+    const panel = h('div', { class: 'pinpanel' })
+    const pins = []
+    const pinFor = (it, shape) => {
+      const xy = proj(it.geo.lat, it.geo.lng); if (!inBox(xy)) return null
+      const col = shape === 'trail' ? 'var(--ink)' : CATCOL[it.cat] || 'var(--muted)'
+      const q = U(R.width, 7); const core = shape === 'trail' ? s('path', { class: 'core', d: `M${xy[0]} ${xy[1] - q * 1.15}L${xy[0] + q} ${xy[1] + q * 0.75}L${xy[0] - q} ${xy[1] + q * 0.75}Z`, fill: col, stroke: 'var(--card)', 'stroke-width': U(R.width, 1.5) }) : s('circle', { class: 'core', cx: xy[0], cy: xy[1], r: U(R.width, 6), fill: col, stroke: 'var(--card)', 'stroke-width': U(R.width, 1.5) })
+      const g = s('g', { class: 'pin', tabindex: '0', role: 'button', 'aria-label': it.name }, s('circle', { class: 'hit', cx: xy[0], cy: xy[1], r: U(R.width, 14) }), core, s('title', { text: it.name }))
+      const open = () => {
+        pins.forEach((p) => p.g.classList.remove('on')); g.classList.add('on')
+        if (shape === 'trail') panel.replaceChildren(h('div', { class: 'card' }, h('div', { class: 'row' }, h('span', { class: 'tag', text: 'Trail' }), driveEl(it.drive), statusEl(it.status)), h('h3', { text: it.name }), h('p', { class: 'claim', text: it.claim }), h('div', { class: 'links' }, h('a', { href: '#hikes', text: 'All hikes' }))))
+        else panel.replaceChildren(card(it))
+      }
+      g.addEventListener('click', open); g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open() } })
+      pins.push({ g, it, shape }); return g
+    }
+    for (const k of hikes.filter((x) => x.geo)) { const g = pinFor(k, 'trail'); if (g) svg.append(g) }
+    for (const it of items.filter((x) => x.geo)) { const g = pinFor(it, 'place'); if (g) svg.append(g) }
+    for (const b of R.bases) if (inBox(b.xy)) svg.append(s('g', {}, s('circle', { class: 'base-mark', cx: b.xy[0], cy: b.xy[1], r: U(R.width, 8) }), s('text', { x: b.xy[0] + U(R.width, 11), y: b.xy[1] + U(R.width, 5), 'font-size': U(R.width, 14), 'stroke-width': U(R.width, 3), 'font-weight': 900, text: b.short })))
+    const legend = h('div', { class: 'legend' })
+    let only = null
+    const cats = P.cats.filter(([k]) => pins.some((p) => p.shape === 'place' && p.it.cat === k)).concat(pins.some((p) => p.shape === 'trail') ? [['trail', 'Trailheads']] : [])
+    for (const [k, label] of cats) {
+      const b = h('button', { type: 'button', 'aria-pressed': 'false' }, h('span', { class: 'dot', style: 'background:' + (k === 'trail' ? 'var(--ink)' : CATCOL[k]) }), label)
+      b.addEventListener('click', () => { only = only === k ? null : k; pins.forEach((p) => p.g.classList.toggle('dim', !!only && (p.shape === 'trail' ? 'trail' : p.it.cat) !== only)); legend.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b && only === k))) })
+      legend.append(b)
+    }
+    return h('div', { class: 'mapbox' }, svg, legend, h('p', { class: 'count', text: `${pins.length} mapped from official records. Tap a pin for its card. Places without an authoritative coordinate are in the list below, not on the map.` }), panel)
+  }
+
+  /* ---------- light: sunrise, golden hour, dusk, computed on the device ---------- */
+  const SUN = (() => {
+    const rad = Math.PI / 180; const dayMs = 864e5; const J1970 = 2440588; const J2000 = 2451545; const e = rad * 23.4397; const J0 = 0.0009
+    const toDays = (d) => d.valueOf() / dayMs - 0.5 + J1970 - J2000
+    const fromJ = (j) => new Date((j + 0.5 - J1970) * dayMs)
+    const M_ = (d) => rad * (357.5291 + 0.98560028 * d)
+    const L_ = (M) => M + rad * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M)) + rad * 102.9372 + Math.PI
+    const dec = (L) => Math.asin(Math.sin(e) * Math.sin(L))
+    return function times(date, lat, lng) {
+      const lw = rad * -lng; const phi = rad * lat; const d = toDays(date)
+      const n = Math.round(d - J0 - lw / (2 * Math.PI)); const ds = J0 + lw / (2 * Math.PI) + n
+      const M = M_(ds); const L = L_(M); const de = dec(L)
+      const transit = (a) => J2000 + a + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L)
+      const noon = transit(ds)
+      const at = (hDeg) => {
+        const w = Math.acos((Math.sin(hDeg * rad) - Math.sin(phi) * Math.sin(de)) / (Math.cos(phi) * Math.cos(de)))
+        const set = transit(J0 + (w + lw) / (2 * Math.PI) + n)
+        return [fromJ(noon - (set - noon)), fromJ(set)]
+      }
+      const [rise, set] = at(-0.833); const [dawn, dusk] = at(-6); const [gEnd, gStart] = at(6)
+      return { dawn, rise, gEnd, gStart, set, dusk }
+    }
+  })()
+  const clock = (d) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })
+  function lightPanel(day) {
+    const b = M && M.trip && M.trip.bases.find((x) => x.id === day.base); if (!b) return null
+    const t = SUN(new Date(day.iso + 'T12:00:00-04:00'), b.lat, b.lng)
+    const cell = (label, d, hint) => h('div', { class: 'lt' }, h('span', { class: 'eyebrow', text: label }), h('strong', { class: 'num', text: clock(d) }), hint ? h('span', { class: 'count', text: hint }) : null)
+    const box = h('div', { class: 'light', 'aria-label': 'Light at ' + b.name },
+      cell('First light', t.dawn), cell('Sunrise', t.rise), cell('Golden hour', t.gStart, 'until sunset'), cell('Sunset', t.set), cell('Dark', t.dusk))
+    if (todayDay && todayDay.iso === day.iso) {
+      const live = h('p', { class: 'live num' })
+      const tick = () => {
+        const now = new Date(); const fmtDur = (ms) => { const m = Math.round(ms / 60000); return (m >= 60 ? Math.floor(m / 60) + ' h ' : '') + (m % 60) + ' min' }
+        live.textContent = now < t.rise ? 'Sunrise in ' + fmtDur(t.rise - now) : now < t.gStart ? 'Golden hour in ' + fmtDur(t.gStart - now) + ', sunset in ' + fmtDur(t.set - now) : now < t.set ? 'Sunset in ' + fmtDur(t.set - now) : now < t.dusk ? 'Dark in ' + fmtDur(t.dusk - now) : 'After dark: watch for deer on the drive back'
+      }
+      tick(); setInterval(tick, 30000); box.append(live)
+    }
+    return h('div', {}, h('div', { class: 'eyebrow', text: 'Light at ' + b.name.toLowerCase().replace(/^the /, 'the ') + ' (computed for this date)' }), box)
+  }
+
+  /* ---------- cross-sections cut from real terrain ---------- */
+  function crossSection(id) {
+    const S = M && M.sections && M.sections[id]; const spec = (P.sectionArt || {})[id]; if (!S || !spec) return null
+    const W = 1000; const ex = S.exaggeration || 1; const ms = S.profile.map((p) => p[1]); const lo = Math.min(...ms); const hi = Math.max(...ms)
+    const kx = W / (S.km * 1000); const ky = kx * ex
+    const top = U(W, 46); const Hh = (hi - lo) * ky + top + U(W, 26)
+    const X = (km) => km * 1000 * kx; const Y = (m) => top + (hi - m) * ky
+    const elevAt = (km) => { const p = S.profile; for (let i = 1; i < p.length; i++) if (p[i][0] >= km) { const t = (km - p[i - 1][0]) / (p[i][0] - p[i - 1][0]); return p[i - 1][1] + t * (p[i][1] - p[i - 1][1]) } return p[p.length - 1][1] }
+    const line = S.profile.map((p, i) => (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1)).join('')
+    const gid = 'sky-' + id
+    const svg = s('svg', { viewBox: `0 0 ${W} ${Hh.toFixed(0)}`, role: 'img', 'aria-label': spec.alt },
+      s('defs', {}, s('linearGradient', { id: gid, x1: 0, y1: 0, x2: 0, y2: 1 }, s('stop', { offset: '0', 'stop-color': 'var(--sky-top)' }), s('stop', { offset: '1', 'stop-color': 'var(--sky-bottom)' }))),
+      s('rect', { x: 0, y: 0, width: W, height: Hh, fill: `url(#${gid})` }),
+      s('path', { d: line + `L${W} ${Hh}L0 ${Hh}Z`, fill: 'var(--terrain)' }),
+      s('path', { d: line, fill: 'none', stroke: 'var(--terrain-edge)', 'stroke-width': U(W, 1.4) }))
+    for (const m of S.marks) {
+      const x = X(m.km); const y = Y(elevAt(m.km))
+      if (m.kind === 'bridge' && spec.bridge) {
+        const halfDeck = spec.bridge.deckM / 2 / 1000; const halfArch = spec.bridge.archM / 2 / 1000
+        const deckY = Y(Math.max(elevAt(m.km - halfDeck), elevAt(m.km + halfDeck)))
+        const springY = Y(Math.max(elevAt(m.km - halfArch), elevAt(m.km + halfArch)))
+        const ax0 = X(m.km - halfArch); const ax1 = X(m.km + halfArch); const apexY = deckY + U(W, 3)
+        const arch = `M${ax0} ${springY}Q${x} ${apexY - (springY - apexY)} ${ax1} ${springY}`
+        svg.append(s('path', { d: arch, fill: 'none', stroke: 'var(--steel)', 'stroke-width': U(W, 2.6) }))
+        const nStruts = 14
+        for (let i = 1; i < nStruts; i++) {
+          const t = i / nStruts; const sx = ax0 + (ax1 - ax0) * t; const sy = (1 - t) * (1 - t) * springY + 2 * (1 - t) * t * (apexY - (springY - apexY)) + t * t * springY
+          svg.append(s('line', { x1: sx, x2: sx, y1: deckY, y2: sy, stroke: 'var(--steel)', 'stroke-width': U(W, 0.9), opacity: 0.8 }))
+        }
+        svg.append(s('line', { x1: X(m.km - halfDeck), x2: X(m.km + halfDeck), y1: deckY, y2: deckY, stroke: 'var(--steel)', 'stroke-width': U(W, 2.4) }))
+        svg.append(s('text', { x: X(m.km + halfDeck) - U(W, 4), y: deckY - U(W, 8), 'text-anchor': 'end', 'font-size': U(W, 12), 'font-weight': 800, 'stroke-width': U(W, 3), stroke: 'var(--sky-bottom)', text: m.name }))
+        continue
+      }
+      if (m.kind === 'river') {
+        svg.append(s('circle', { cx: x, cy: y, r: U(W, 3.5), fill: 'var(--water)' }))
+        svg.append(s('text', { x: x + U(W, 6), y: y + U(W, 16), 'font-size': U(W, 12), 'font-weight': 800, 'stroke-width': U(W, 3), stroke: 'var(--terrain)', fill: 'var(--water)', text: m.name }))
+        continue
+      }
+      const labY = m.kind === 'valley' ? y + U(W, 18) : y - U(W, 12)
+      if (m.kind !== 'valley') svg.append(s('line', { x1: x, x2: x, y1: y - U(W, 2), y2: labY + U(W, 3), stroke: 'var(--ink)', 'stroke-width': U(W, 1) }))
+      svg.append(s('text', { x, y: labY, 'text-anchor': 'middle', 'font-size': U(W, 12), 'font-weight': 800, 'stroke-width': U(W, 3), stroke: m.kind === 'valley' ? 'var(--terrain)' : 'var(--sky-bottom)', fill: m.kind === 'valley' ? 'var(--paper)' : 'var(--ink)', text: m.name }))
+    }
+    const reliefFt = Math.round(((hi - lo) * 3.28084) / 10) * 10
+    const cap = spec.caption.replace('{relief}', fmt(reliefFt)).replace('{km}', S.km.toFixed(1)).replace('{mi}', (S.km * 0.621371).toFixed(1)) + (ex > 1 ? ` Height drawn ×${ex}.` : ' Drawn to scale, height and width alike.')
+    return h('figure', { class: 'xsec' }, svg, h('figcaption', { class: 'cap', text: cap }))
+  }
+
+  /* ---------- history timeline ---------- */
+  function storyBlock(section, title) {
+    const st = (G.stories || []).filter((x) => x.section === section && x.status !== 'unconfirmed')
+    if (!st.length) return null
+    const det = h('details', { class: 'day story' }, h('summary', {}, h('div', {}, h('div', { class: 'eyebrow', text: st.length + ' stories, oldest first' }), h('h3', { text: title }))))
+    det.append(h('div', { class: 'body' }, h('ol', { class: 'timeline' }, st.map((x) => h('li', {},
+      h('span', { class: 'yr num', text: x.year || '' }),
+      h('div', {}, x.name ? h('strong', { text: x.name }) : null, h('p', { text: x.claim }), h('div', { class: 'row' }, statusEl(x.status), x.link ? h('a', { href: x.link, target: '_blank', rel: 'noopener', class: 'count', text: 'Source' }) : null)))))))
+    return det
+  }
+
+  /* ---------- ask the guide: Claude answers from this page's checked research only ---------- */
+  function askSection(sec) {
+    const out = h('div', { class: 'chat', 'aria-live': 'polite' })
+    const input = h('textarea', { id: 'ask-input', rows: '2', placeholder: 'We’re at Grandview at 3 pm. What’s close and worth it before sunset?', 'aria-label': 'Ask the guide' })
+    const send = h('button', { class: 'btn primary', type: 'button', text: 'Ask' })
+    const stop = h('button', { class: 'btn', type: 'button', text: 'Stop', hidden: true })
+    const note = h('p', { class: 'count' })
+    const chips = h('div', { class: 'filters' }, (P.askExamples || []).map((q) => h('button', { class: 'chipbtn', type: 'button', text: q, onclick: () => { input.value = q; go() } })))
+    sec.append(chips, h('div', { class: 'askbox' }, input, h('div', { class: 'btns' }, send, stop)), note, out)
+    let sample = null; let ctl = null; const turns = []
+    note.textContent = 'Connecting to Claude…'
+    ;(async () => {
+      try { sample = window.claude && window.claude.use ? await window.claude.use('sample') : null } catch (e) { sample = null }
+      if (!sample) { note.textContent = 'Ask works when this guide is open in Claude. Everything else on the page works anywhere.'; send.disabled = true; chips.hidden = true }
+      else note.textContent = 'Answers come only from this guide’s fact-checked research. Each question uses a little of your Claude usage.'
+    })()
+    const words = (q) => String(q || '').toLowerCase().split(/[^a-z0-9']+/).filter((w) => w.length > 2)
+    const score = (txt, ws) => ws.reduce((n, w) => n + (txt.includes(w) ? 1 : 0), 0)
+    const brief = (i) => ({ name: i.name, region: i.section, area: i.areaLabel, driveFromHouse: i.drive, category: i.cat, status: STATUS[i.status], what: i.claim, details: Object.fromEntries((i.rows || []).map(([k, v]) => [k, v])), history: i.history || undefined, website: i.site || undefined })
+    const tools = [
+      { name: 'search_places', description: 'Search the guide’s places (food, coffee, drink, sights, views, falls). Returns up to 8 matches with drive time from the house, fact-check status and details. Use region gorge, ridge or road, or any.', inputSchema: { type: 'object', properties: { query: { type: 'string' }, region: { type: 'string', enum: ['gorge', 'ridge', 'road', 'any'] }, category: { type: 'string', enum: ['eat', 'coffee', 'drink', 'see', 'views', 'outdoors', 'any'] } }, required: ['query'] },
+        execute: (a) => { const ws = words(a.query); const reg = String(a.region || 'any'); const cat = String(a.category || 'any'); return G.items.filter((i) => (reg === 'any' || i.section === reg) && (cat === 'any' || i.cat === cat)).map((i) => [score((i.name + ' ' + (i.areaLabel || '') + ' ' + i.claim + ' ' + JSON.stringify(i.rows)).toLowerCase(), ws), i]).filter(([n]) => n > 0 || !ws.length).sort((x, y) => y[0] - x[0]).slice(0, 8).map(([, i]) => brief(i)) } },
+      { name: 'get_day_plan', description: 'The suggested plan for one trip day (2026-10-23 to 2026-10-27): drives with toll-free route options, timed suggestions and sunrise/sunset.', inputSchema: { type: 'object', properties: { date: { type: 'string', description: 'YYYY-MM-DD' } }, required: ['date'] },
+        execute: (a) => { const d = (P.days || []).find((x) => x.iso === String(a.date)); if (!d) throw new Error('No plan for that date; trip days are 2026-10-23 to 2026-10-27'); return { date: d.date, title: d.title, sun: d.sun, legs: d.legs, slots: d.slots } } },
+      { name: 'find_hikes', description: 'Trails in the guide with miles, gain, difficulty, hours, drive time from the house and status. Filter by region and max miles.', inputSchema: { type: 'object', properties: { region: { type: 'string', enum: ['gorge', 'ridge', 'any'] }, max_miles: { type: 'number' }, query: { type: 'string' } } },
+        execute: (a) => { const ws = words(a.query); return (G.hikes || []).filter((k) => (!a.region || a.region === 'any' || k.section === a.region) && (!a.max_miles || parseFloat(String(k.miles).split('–').pop()) <= Number(a.max_miles)) && (!ws.length || score((k.name + ' ' + k.claim).toLowerCase(), ws) > 0)).slice(0, 12).map((k) => ({ name: k.name, region: k.section, miles: k.miles, gainFt: k.gain, difficulty: k.difficulty, hours: k.hours, trailhead: k.where, driveFromHouse: k.drive, status: STATUS[k.status], note: k.claim })) } },
+      { name: 'get_notes', description: 'Closures, seasonal hours, fees, traps and history notes for a region, filtered by a query.', inputSchema: { type: 'object', properties: { region: { type: 'string', enum: ['gorge', 'ridge', 'road'] }, query: { type: 'string' } }, required: ['region'] },
+        execute: (a) => { const ws = words(a.query); const pick = (arr) => arr.map((k) => [score(k.claim.toLowerCase(), ws), k]).filter(([n]) => n > 0 || !ws.length).sort((x, y) => y[0] - x[0]).slice(0, 8).map(([, k]) => ({ kind: k.kind || 'history', name: k.name, text: k.claim, status: STATUS[k.status] })); return { notes: pick((G.know || []).filter((k) => k.group === a.region)), history: pick((G.stories || []).filter((k) => k.section === a.region)) } } },
+      { name: 'get_bookings', description: 'Everything to book or confirm, with official links, deadlines and official fees.', execute: () => P.book },
+    ]
+    const RULES = [
+      'You are the built-in assistant of a private road-trip guide for two travellers. Trip: Fri Oct 23 to Tue Oct 27, 2026. They sleep at a river house on New River Road near Hinton, WV (Oct 23 and 24) and at Triquetra Farm, 815 Foothills Rd, Stanardsville, VA (Oct 25 and 26), drive their own car and avoid every toll road.',
+      'Today is ' + new Date().toLocaleString('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' Eastern.',
+      'Answer ONLY from what the tools return. Look things up before answering. Never invent hours, prices, distances or places. If the guide does not cover it, say so plainly.',
+      'Status meanings: "Fact-checked" and "Corrected" are verified; "Call ahead" means a source could not confirm it; "Not re-checked" means it was not verified. Tell them to call ahead for anything not verified, especially hours.',
+      'Drive times are from the house they are staying at that night. Be brief and practical: a short answer, then at most 4 options as a list with drive time and why. Plain words, no emoji, no marketing tone.',
+    ].join('\n')
+    function bubble(role, text) { const b = h('div', { class: 'msg ' + role }, h('p', { text })); out.append(b); return b }
+    async function go() {
+      const q = input.value.trim(); if (!q || !sample) return
+      input.value = ''; bubble('user', q)
+      const b = bubble('ai', 'Thinking…'); const p = b.querySelector('p')
+      turns.push({ role: 'user', content: q })
+      ctl = new AbortController(); send.disabled = true; stop.hidden = false
+      try {
+        const { text } = await sample([{ role: 'user', content: RULES + '\n\nFirst question follows.' }, { role: 'assistant', content: 'Understood. I will look things up in the guide and answer only from it.' }, ...turns], {
+          tools, signal: ctl.signal, modelTier: 'default', onText: ({ text: t }) => { p.textContent = t },
+        })
+        p.textContent = text; turns.push({ role: 'assistant', content: text })
+      } catch (e) {
+        turns.pop()
+        p.textContent = e && e.text ? e.text : ''
+        const why = { not_granted: 'Ask needs your permission to use Claude. Allow it and try again.', rate_limited: 'Too many questions at once. Wait a moment, then ask again.', cancelled: 'Stopped.' }[e && e.code] || 'That did not go through. Try again in a moment.'
+        b.append(h('p', { class: 'count', text: why }))
+      } finally { send.disabled = false; stop.hidden = true }
+    }
+    send.addEventListener('click', go); stop.addEventListener('click', () => ctl && ctl.abort())
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); go() } })
+  }
+
+  /* ---------- hero ---------- */
+  const hero = $('#top')
+  hero.append(h('div', { class: 'brand' }, h('i', { text: 'L' }), 'The Lads Travel Co. · Trip guide'))
+  hero.append(h('div', { class: 'eyebrow', text: P.eyebrow }), h('h1', {}, ...P.titleParts.map((t, i) => (i % 2 ? h('span', { class: 'amp', text: t }) : t))), h('p', { class: 'lede', text: P.lede }))
+  if (M && M.profile && M.profile.length) {
+    const pts = M.profile; const maxKm = pts[pts.length - 1][0]; const ms = pts.map((p) => p[1]); const lo = Math.min(...ms); const hi = Math.max(...ms)
+    const W = 1000; const H = Math.round(W * (VIEW < 600 ? 0.42 : 0.2)); const F = (px) => U(W, px); const x = (km) => (km / maxKm) * W; const y = (m) => H - 12 - ((m - lo) / (hi - lo)) * (H - 40)
+    const line = pts.map((p, i) => (i ? 'L' : 'M') + x(p[0]).toFixed(1) + ' ' + y(p[1]).toFixed(1)).join('')
+    const svg = s('svg', { viewBox: `0 ${-F(18)} ${W} ${H + F(40)}`, role: 'img', 'aria-label': 'Elevation along the whole drive' })
+    svg.append(s('path', { d: line + `L${W} ${H}L0 ${H}Z`, fill: 'var(--land)' }))
+    const path = s('path', { class: 'line', d: line, fill: 'none', stroke: 'var(--ink)', 'stroke-width': F(1.6), 'stroke-linejoin': 'round' })
+    svg.append(path)
+    let acc = 0; const legKm = M.profileLegs.map((l) => { const a = acc; acc += l.mi / 0.621371; return [a, acc, l] })
+    const scale = maxKm / acc
+    const dayNames = ['Fri', 'Sun', 'Tue']
+    legKm.forEach(([a, b], i) => {
+      svg.append(s('text', { x: x(a * scale) + F(3), y: H + F(15), 'font-size': F(11), 'stroke-width': F(3), 'font-weight': 800, fill: 'var(--muted)', text: dayNames[i] + ' · ' + fmt(M.profileLegs[i].mi) + ' mi' }))
+      if (i) svg.append(s('line', { x1: x(a * scale), x2: x(a * scale), y1: 0, y2: H, stroke: 'var(--rule)', 'stroke-width': 1.5 }))
+    })
+    const baseKm = [legKm[0][1] * scale, legKm[1][1] * scale]
+    ;[['River house', baseKm[0]], ['The farm', baseKm[1]]].forEach(([label, km]) => {
+      const p = pts.reduce((best, q) => (Math.abs(q[0] - km) < Math.abs(best[0] - km) ? q : best))
+      svg.append(s('circle', { cx: x(p[0]), cy: y(p[1]), r: F(4.5), fill: 'var(--steel)', stroke: 'var(--paper)', 'stroke-width': F(2) }), s('text', { x: x(p[0]) + F(6), y: y(p[1]) - F(8), 'font-size': F(11.5), 'stroke-width': F(3), 'font-weight': 800, text: label }))
+    })
+    const top = pts.reduce((a, b) => (b[1] > a[1] ? b : a))
+    svg.append(s('text', { x: Math.min(x(top[0]) + F(6), W - F(60)), y: y(top[1]) + F(4), 'font-size': F(11), 'stroke-width': F(3), 'font-weight': 700, fill: 'var(--muted)', text: fmt(Math.round(top[1] * 3.28084)) + ' ft' }))
+    const totalMi = M.profileLegs.reduce((a, l) => a + l.mi, 0)
+    hero.append(h('figure', { class: 'profile', style: 'margin:0' }, svg, h('figcaption', { class: 'cap', text: `The whole drive by elevation: ${fmt(totalMi)} miles of road from ${fmt(Math.round(lo * 3.28084))} to ${fmt(Math.round(hi * 3.28084))} ft, on the shortest toll-free option each day.` })))
+    requestAnimationFrame(() => { try { path.style.setProperty('--len', path.getTotalLength()) } catch (e) {} })
+  }
+  if (todayDay) hero.append(h('a', { class: 'today', href: '#day-' + todayDay.iso }, h('strong', { text: 'Today: ' + todayDay.title }), h('span', { text: todayDay.sun || '' })))
+  hero.append(h('div', { class: 'bases' }, P.bases.map((b) => h('div', { class: 'base' }, h('div', { class: 'when', text: b.when }), h('h3', { text: b.name }), h('div', { class: 'addr', text: b.address }), b.note ? h('div', { class: 'addr', text: b.note }) : null))))
+
+  /* ---------- sections ---------- */
+  const main = $('#main'); const tabs = $('#tabs'); const sections = []
+  function addSection(id, title, intro) {
+    const sec = h('section', { class: 'block', id }, h('h2', { text: title }), intro ? h('p', { class: 'intro', text: intro }) : null)
+    main.append(sec); sections.push([id, P.tabs[id] || title]); return sec
+  }
+
+  if (P.book && P.book.length) {
+    const sec = addSection('book', 'Book these', P.bookIntro)
+    sec.append(h('div', { class: 'book' }, P.book.map((b) => h('div', { class: 'bk' + (b.soft ? ' soft' : '') },
+      h('div', { class: 'top' }, h('h3', { text: b.name }), b.due ? h('span', { class: 'due', text: b.due }) : null),
+      b.fee ? h('div', { class: 'fee', text: b.fee }) : null, h('p', { text: b.text }),
+      h('div', { class: 'btns' }, (b.links || []).map((l, i) => h('a', { class: 'btn' + (i === 0 ? ' primary' : ''), href: l.url, target: '_blank', rel: 'noopener', text: l.label })), b.phone ? h('span', { class: 'phone', text: b.phone }) : null)))))
+  }
+
+  /* before you leave: a shared prep checklist (db collection prep) */
+  if (P.prep && P.prep.length) {
+    const sec = addSection('prep', 'Before you leave', P.prepIntro)
+    const done = new Map(); const rowsEls = []
+    const listEl = h('div', { class: 'prep' })
+    const counter = h('p', { class: 'count' })
+    for (const it of P.prep) {
+      const cb = h('input', { type: 'checkbox', id: 'prep-' + it.id })
+      const row = h('label', { class: 'prep-row', for: 'prep-' + it.id }, cb, h('div', {}, h('strong', { text: it.text }), it.why ? h('p', { class: 'muted', text: it.why }) : null, it.when ? h('span', { class: 'due num', text: it.when }) : null))
+      cb.addEventListener('change', async () => {
+        done.set(it.id, cb.checked); paintPrep()
+        if (prepDb) { try { await prepDb.doc('prep/' + it.id).set({ done: cb.checked, by: me || null, at: new Date().toISOString() }) } catch (e) {} }
+      })
+      rowsEls.push([it.id, cb]); listEl.append(row)
+    }
+    const paintPrep = () => { let n = 0; for (const [id, cb] of rowsEls) { cb.checked = !!done.get(id); if (cb.checked) n++ } counter.textContent = n + ' of ' + rowsEls.length + ' done' + (prepDb ? ', shared between both phones' : '') }
+    let prepDb = null
+    ;(async () => { try { prepDb = window.claude && window.claude.use ? await window.claude.use('db') : null; if (prepDb) prepDb.collection('prep').onSnapshot((snap) => { for (const d of snap.docs || []) { const v = d.data ? d.data() : d; done.set(d.id, !!v.done) } paintPrep() }) } catch (e) { prepDb = null } paintPrep() })()
+    sec.append(counter, listEl); paintPrep()
+  }
+
+  if (P.days && P.days.length) {
+    const sec = addSection('days', 'Day by day', P.daysIntro)
+    const wrap = h('div', { class: 'days' })
+    const longest = Math.max(...P.days.flatMap((d) => (d.legs || []).flatMap((l) => l.options.map((o) => parseFloat(String(o.time).split(/[–-]/).pop()) || 0))))
+    P.days.forEach((d, i) => {
+      const isToday = todayDay && todayDay.iso === d.iso
+      const det = h('details', { class: 'day' + (isToday ? ' is-today' : ''), id: 'day-' + d.iso, open: isToday || (!tripStarted && i === 0) ? true : null },
+        h('summary', {}, h('div', {}, h('div', { class: 'eyebrow', text: d.date + (isToday ? ' · Today' : '') }), h('h3', { text: d.title })), h('span', { class: 'sun', text: d.sun || '' })))
+      const body = h('div', { class: 'body' })
+      const lp = lightPanel(d); if (lp) body.append(lp)
+      for (const leg of d.legs || []) {
+        body.append(h('div', { class: 'ledger' }, h('div', { class: 'eyebrow', text: leg.label }), leg.options.map((o) => {
+          const parts = String(o.time).replace(/[^\d.–½¼ -]/g, '').replace('½', '.5').replace('¼', '.25').split(/[–-]/).map(parseFloat).filter((n) => !isNaN(n))
+          const isMin = /min/.test(o.time)
+          const lo2 = (parts[0] || 0) / (isMin ? 60 : 1); const hi2 = (parts[1] || parts[0] || 0) / (isMin ? 60 : 1)
+          return h('div', { class: 'opt' }, h('strong', { text: o.name }), h('span', { class: 'sign', text: o.time }),
+            h('div', { class: 'bar', title: 'Hours behind the wheel' }, h('s', { style: `width:${Math.min(100, (hi2 / longest) * 100)}%` }), h('b', { style: `width:${Math.min(100, (lo2 / longest) * 100)}%` })),
+            h('span', { class: 'via', text: o.via }))
+        })))
+      }
+      for (const sl of d.slots || []) body.append(h('div', { class: 'slot' }, h('span', { class: 't', text: sl.t || '' }), h('div', {}, h('p', { text: sl.text }), sl.alt ? h('p', { class: 'alt', text: sl.alt }) : null)))
+      det.append(body); wrap.append(det)
+    })
+    sec.append(wrap)
+  }
+
+  { const sec = addSection('ask', 'Ask the guide', P.askIntro); askSection(sec) }
+
+  if (M && M.trip) { const sec = addSection('route', 'The route', P.routeIntro); sec.append(tripMap()) }
+
+  for (const r of P.regions) {
+    const items = G.items.filter((i) => i.section === r.id)
+    const sec = addSection(r.id, r.title, r.intro)
+    const rm = M ? regionMap(r.id, items, (G.hikes || []).filter((k) => k.section === r.id)) : null
+    const cs = crossSection(r.id); if (cs) sec.insertBefore(cs, sec.children[1] || null)
+    if (rm) sec.append(rm)
+    const sb = storyBlock(r.id, r.storyTitle || 'The story'); if (sb) sec.append(sb)
+    const near = items.filter((i) => i.near)
+    if (near.length) { const sub = h('div', { class: 'sub' }, h('h3', { text: r.nearTitle })); sec.append(sub); filterable(sub, near, { id: r.id + '-near', limit: 12, label: r.nearTitle }) }
+    const sub = h('div', { class: 'sub' }, h('h3', { text: r.restTitle })); sec.append(sub)
+    filterable(sub, items.filter((i) => !i.near), { id: r.id, label: r.restTitle })
+  }
+
+  if (P.road) {
+    const sec = addSection('road', P.road.title, P.road.intro)
+    const rsb = storyBlock('road', 'Roadside history'); if (rsb) sec.append(rsb)
+    for (const leg of P.road.legs) {
+      const items = G.items.filter((i) => i.section === 'road' && i.leg === leg.id)
+      const sub = h('div', { class: 'sub' }, h('h3', {}, h('span', { class: 'dot', style: 'background:' + LEGCOL[leg.id] }), ' ' + leg.title), leg.text ? h('p', { class: 'intro', text: leg.text }) : null)
+      sec.append(sub)
+      if (items.length) filterable(sub, items, { id: 'road-' + leg.id, label: leg.title, order: ', in driving order' })
+    }
+  }
+
+  const hikes = G.hikes || []
+  if (hikes.length) {
+    const sec = addSection('hikes', 'Every hike', P.hikesIntro)
+    let park = 'all'
+    const bar = h('div', { class: 'filters' })
+    const bs = [['all', 'Both parks']].concat(P.regions.map((r) => [r.id, r.short])).map(([k, l]) => { const b = h('button', { class: 'chipbtn', type: 'button', 'aria-pressed': String(k === park), text: l }); b.addEventListener('click', () => { park = k; bs.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); paint() }); return b })
+    bar.append(...bs)
+    const tb = h('tbody')
+    sec.append(bar, h('div', { class: 'tablewrap' }, h('table', {}, h('thead', {}, h('tr', {}, ['Trail', 'Miles', 'Gain ft', 'Difficulty', 'Hours', 'From the house', 'Status'].map((t) => h('th', { scope: 'col', text: t })))), tb)))
+    function paint() {
+      tb.replaceChildren(...hikes.filter((k) => park === 'all' || k.section === park).map((k) => h('tr', {},
+        h('td', {}, h('strong', { text: k.name }), k.where ? h('div', { class: 'count', text: k.where }) : null, k.closed ? h('div', { class: 'st unconfirmed', text: k.closed }) : null),
+        h('td', { class: 'n', text: k.miles || '—' }), h('td', { class: 'n', text: k.gain || '—' }), h('td', { text: k.difficulty || '—' }), h('td', { class: 'n', text: k.hours || '—' }),
+        h('td', {}, k.drive ? driveEl(k.drive) : h('span', { class: 'count', text: '—' })), h('td', {}, statusEl(k.status)))))
+    }
+    paint()
+  }
+
+  if (G.know && G.know.length) {
+    const sec = addSection('know', 'Know before you go', P.knowIntro)
+    for (const grp of P.knowGroups) {
+      const ks = G.know.filter((k) => k.group === grp.id); if (!ks.length) continue
+      const traps = ks.filter((k) => k.kind === 'trap'); const rest = ks.filter((k) => k.kind !== 'trap')
+      const det = h('details', { class: 'day', open: grp.id === P.knowGroups[0].id ? true : null }, h('summary', {}, h('div', {}, h('div', { class: 'eyebrow', text: `${traps.length} to watch out for · ${rest.length} facts` }), h('h3', { text: grp.title }))))
+      det.append(h('div', { class: 'body' }, h('div', { class: 'know' }, traps.concat(rest).map((k) => h('div', { class: 'k' + (k.kind === 'trap' ? ' trap' : '') },
+        h('div', { class: 'row' }, k.kind === 'trap' ? h('span', { class: 'tag', text: 'Watch out' }) : null, statusEl(k.status)), h('p', { text: k.claim }),
+        k.link ? h('a', { href: k.link, target: '_blank', rel: 'noopener', class: 'count', text: 'Source' }) : null)))))
+      sec.append(det)
+    }
+  }
+
+  /* trip log: fills itself from the shared marks */
+  {
+    const sec = addSection('log', 'Trip log', P.logIntro || 'Everything either of you has marked, newest first. It fills in as you tap “We did this” or “Skipped” on any card.')
+    const list = h('div', { class: 'know' })
+    const empty = h('p', { class: 'empty', text: 'Nothing marked yet.' })
+    const byIdAll = new Map(G.items.map((i) => [i.id, i]))
+    sec.append(empty, list)
+    const paintLog = () => {
+      const rows = [...marks.entries()].filter(([, m]) => m && (m.status || m.note)).sort((a, b) => String(b[1].at || '').localeCompare(String(a[1].at || '')))
+      empty.hidden = rows.length > 0
+      list.replaceChildren(...rows.map(([id, m]) => { const it = byIdAll.get(id); return h('div', { class: 'k' },
+        h('div', { class: 'row' }, h('span', { class: 'tag', text: m.status === 'did' ? 'Did it' : m.status === 'skip' ? 'Skipped' : 'Note' }), it && it.areaLabel ? h('span', { class: 'count', text: it.areaLabel }) : null, m.at ? h('span', { class: 'count', text: new Date(m.at).toLocaleString('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit' }) }) : null),
+        h('p', {}, h('strong', { text: it ? it.name : id })), m.note ? h('p', { class: 'muted', text: '“' + m.note + '”' }) : null) }))
+    }
+    markListeners.add(paintLog); paintLog()
+  }
+
+  if (G.made) {
+    const D = G.made; const v = D.verdicts || {}
+    const sec = addSection('made', 'How this guide was made', P.madeIntro)
+    const tile = (n, l) => h('div', { class: 'tile' }, h('div', { class: 'n', text: fmt(n) }), h('div', { class: 'l', text: l }))
+    sec.append(h('div', { class: 'tiles' }, tile(D.findings, 'Findings researched'), tile(D.sources, 'Sources cited'), tile(D.specialists, 'Specialist agents'), tile((v.confirmed || 0) + (v.weakened || 0), 'Fact-checked so far'), tile(v.weakened || 0, 'Corrected'), tile(v.refuted || 0, 'Thrown out')))
+    sec.append(h('div', { class: 'steps' }, (P.madeSteps || []).map((st) => h('div', { class: 'step' }, h('h3', { text: st.title }), h('p', { class: 'muted', text: st.text })))))
+    if (D.catches && D.catches.length) {
+      sec.append(h('h3', { text: 'What the research caught' }))
+      sec.append(h('div', { class: 'catches' }, D.catches.map((c) => h('div', { class: 'catch' }, h('div', { class: 'row' }, statusEl(c.status)), h('h3', { text: c.title }), h('p', { class: 'muted', text: c.text }), c.link ? h('a', { href: c.link, target: '_blank', rel: 'noopener', class: 'count', text: 'Source' }) : null))))
+    }
+    sec.append(h('p', { class: 'count', text: `${fmt(D.checked)} of ${fmt(D.findings)} findings fact-checked when this page was built.` }))
+  }
+
+  for (const [id, label] of sections) tabs.append(h('li', {}, h('a', { href: '#' + id, text: label })))
+  const tabLinks = [...tabs.querySelectorAll('a')]
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) tabLinks.forEach((a) => { const on = a.getAttribute('href') === '#' + e.target.id; a.setAttribute('aria-current', String(on)); if (on) a.scrollIntoView({ inline: 'nearest', block: 'nearest' }) }) }), { rootMargin: '-45% 0px -50% 0px' })
+  sections.forEach(([id]) => io.observe(document.getElementById(id)))
+  $('#foot').append(h('div', { class: 'brand' }, h('i', { text: 'L' }), 'The Lads Travel Co.'), ...P.footer.map((t) => h('p', { text: t })), h('p', { class: 'num', text: 'Built ' + G.builtOn + '. ' + G.counts }))
+  initStore()
+})()
+</script>

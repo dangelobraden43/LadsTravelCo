@@ -1,1 +1,1 @@
-- [Source behaviour](reference_source_behaviour.md) — which sites block or mislead, how to spend a 12-call budget, validator gotchas
+- [Source behaviour](reference_source_behaviour.md) — which sites block or mislead, call budgets, small-town food sources, NPS/WV/OH park pages, road-trip fetch list, validator gotchas, Irish golf/sights/pub/bus sources, Galway food and Aran/Connemara sights sources, search-only fallback when WebFetch is refused

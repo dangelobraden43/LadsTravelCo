@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, writeFileSync, utimesSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { findLatestOutput, outputNameFor, decide, agentFrom, hookOutput, currentRunDir, outputFor } from './hook-validate.mjs'
+import { findLatestOutput, outputNameFor, decide, agentFrom, hookOutput, currentRunDir, outputFor, outputFromTranscript } from './hook-validate.mjs'
 
 /* Review #3: the stop hook must check THIS run, never an older run's file. */
 function runsTree() {
@@ -98,4 +98,32 @@ test('decide: invalid output on the retry releases and records INVALID (no infin
 test('decide: no file blocks once, then releases with INVALID', () => {
   assert.equal(decide({ file: null, errors: [], stopHookActive: false }).exit, 2)
   assert.equal(decide({ file: null, errors: [], stopHookActive: true }).exit, 0)
+})
+
+/* Oct 14: overlapping runs. The agent's own transcript names its run. */
+test('outputFromTranscript: the run named in the transcript wins over a newer RUN.json', () => {
+  const { root, mkRun } = runsTree()
+  const mine = mkRun('eclipse-2027-spain', '2026-10-12T15-35', 60_000, ['lads-flights.json'])
+  mkRun('dublin', '2026-10-12T15-39', 1_000)
+  const t = 'Your run directory is internal/research/eclipse-2027-spain/2026-10-12T15-35/. Write it.'
+  const o = outputFromTranscript(t, root, 'lads-flights')
+  assert.equal(o.runDir, mine)
+  assert.equal(o.file, path.join(mine, 'lads-flights.json'))
+})
+test('outputFromTranscript: a named part file is checked, and missing when unwritten', () => {
+  const { root, mkRun } = runsTree()
+  const d = mkRun('new-river-gorge', '2026-10-14T10-00', 1_000, ['lads-destination-scout.eat.json'])
+  const t = 'Write internal\\research\\new-river-gorge\\2026-10-14T10-00\\lads-destination-scout.do.json'
+  const o = outputFromTranscript(t, root, 'lads-destination-scout')
+  assert.equal(o.file, null)
+  assert.equal(o.expected, path.join(d, 'lads-destination-scout.do.json'))
+  const t2 = 'Write internal/research/new-river-gorge/2026-10-14T10-00/lads-destination-scout.eat.json'
+  assert.equal(outputFromTranscript(t2, root, 'lads-destination-scout').file, path.join(d, 'lads-destination-scout.eat.json'))
+})
+test('outputFromTranscript: another agent\'s part file is ignored; no run named gives null', () => {
+  const { root, mkRun } = runsTree()
+  const d = mkRun('x', '2026-10-14T10-00', 1_000)
+  const t = 'internal/research/x/2026-10-14T10-00/lads-flights.json'
+  assert.equal(outputFromTranscript(t, root, 'lads-verifier').expected, path.join(d, 'lads-verifier.json'))
+  assert.equal(outputFromTranscript('nothing here', root, 'lads-flights'), null)
 })

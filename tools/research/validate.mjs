@@ -27,7 +27,8 @@ const ISO = /^\d{4}-\d{2}-\d{2}$/
 
 const BANNED = [
   { re: /\binsurance\b/i, why: 'insurance is never mentioned in any form' },
-  { re: /\b(we|i) (loved|love|recommend|suggest|think|found|prefer|enjoyed)\b/i, why: 'first-person voice: only the founders speak for the Lads' },
+  /* "I Prefer" is Preferred Hotels' loyalty programme, not a voice (Oct 14). */
+  { re: /\b(we|i) (loved|love|recommend|suggest|think|found|prefer(?! (?:hotel|rewards|programme|program|points|at \d|1:|2:))|enjoyed)\b/i, why: 'first-person voice: only the founders speak for the Lads' },
   { re: /\bour (pick|favou?rite|take|recommendation|rating|verdict)\b/i, why: 'first-person voice: only the founders speak for the Lads' },
   { re: /\bthe lads (say|recommend|loved|love|rate|think)\b/i, why: 'speaks for the Lads: only the founders do that' },
   { re: /\b(donat(e|ion|ions)|charity|charitable|fundrais\w*)\b/i, why: 'charity content never appears' },
@@ -206,7 +207,8 @@ export function validateFile(filePath, { today = localToday() } = {}) {
   let doc
   try { doc = JSON.parse(raw) } catch (e) { return [`not valid JSON: ${e.message}`] }
   if (doc && doc.agent === 'lads-verifier') return validateVerdictFile(doc, { today })
-  const agent = path.basename(filePath, '.json')
+  /* A run may split one agent across parts: lads-destination-scout.eat.json (Oct 14). */
+  const agent = path.basename(filePath, '.json').split('.')[0]
   return validateFindingsFile(doc, { today, agent })
 }
 

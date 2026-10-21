@@ -1,0 +1,2 @@
+- [Source behaviour](reference_source_behaviour.md) — pages that fetch (Chase, Capital One, Hilton, Aeroplan) vs fail (Amex, aa.com, aerlingus.com, ihg.com); no Bash
+- [Run lessons](feedback_run_lessons.md) — card side-by-side shape, bonus re-check dates, transfer-path trap, carrying other agents' sources

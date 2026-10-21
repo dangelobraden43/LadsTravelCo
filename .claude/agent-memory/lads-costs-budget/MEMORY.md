@@ -1,1 +1,1 @@
-- [Source behaviour for costs research](source_behaviour.md) — which price sources fetch, which 403/404, budget tactics, ski-ticket source traps
+- [Source behaviour for costs research](source_behaviour.md) — which price sources fetch, which 403/404, budget tactics, ski-ticket traps, AU sources; search pool is session-wide
