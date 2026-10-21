@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: October 12, 2026 (/deals shipped after a rebuild; 2027 slate; park guides designed)
+## Last Updated: October 21, 2026 (trip-guide tooling; Ryder Cup 2027 guide rebuilt after rejection; Gorge trip week)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -278,6 +278,63 @@ own branch** (see Parallel Agent Workflow at the foot of this file), never in th
 shared checkout someone else is serving localhost from.
 
 ---
+
+## 🟢 OCTOBER 14–21, 2026 — TRIP GUIDES, THE RYDER CUP 2027 GUIDE, AND A REJECTED FIRST BUILD
+
+Branches `feature/gorge-ridge-trip` (Oct 14–15) and `feature/ryder-cup-2027` (Oct 16–21, cut from it).
+This record rides with their merge to `main`; read `git log` for the merge hash.
+
+1. **`/trip-guide`, `/runs`, `/resource-frameworks` skills + the trip-guide tooling** (`tools/trip-guide/`):
+   `build-data.mjs` (findings + verdicts → guide data; refuted dropped, weakened use `proposedClaim`),
+   `build-guide.mjs` + `template.html` (the phone guide: Book, Days, regions by drive time, Road, Hikes,
+   Know, shared marks, Ask the guide, trip log, prep checklist), `build-map.mjs` (US roads by OSRM).
+   ✅ **The stop hook now validates the agent's own run, read from its transcript** (`022555c`), so
+   parallel runs no longer write false `.MISSING.txt` notes (the Oct 6/12 collision is fixed).
+   Rules from Brady, Oct 14: no traveller names on a guide; booking links at the top; every region run
+   gets a near-the-stay scout.
+2. **The Gorge & the Ridge (Oct 23–27):** https://claude.ai/artifact/KUFfiFjKzZe8yDquu8TSov . Runs
+   `internal/research/{new-river-gorge,shenandoah,gorge-ridge-drive}/2026-10-14T16-51/`, plus a trip-week
+   conditions refresh `gorge-ridge-week/2026-10-21T10-00/` feeding a "This week" Know group.
+   ℹ️ `validate.mjs` now flags every Oct 14 file "generatedOn must be today": that is the date rule, not
+   bad data. Use `runs.mjs`, which judges a run by its own day.
+3. **Ryder Cup 2027 (flagship guide + sellable product).** Spec
+   `docs/superpowers/specs/2026-10-16-ryder-cup-2027-design.md`. Research: head start
+   `ryder-cup-2027/2026-10-16T15-49/` plus final lap `ryder-cup-2027-{limerick,clare,kerry,dublin,transit}/2026-10-17T10-30/`
+   and `ryder-cup-2027-galway/2026-10-17T12-10/` (about 690 findings, verifier and recheck files in each).
+   - **Private group guide:** https://claude.ai/artifact/5sqh1ffrAEC2VaKMYAR6sR (db marks; Brady shares it
+     with the group as "Can interact"). **Public preview:** https://claude.ai/artifact/NdzYAwg8FK2EVJ1qLcQvqA .
+   - **3D golf intro "First Tee"** (dusk default, ruled Oct 16): `tools/golf-intro/` (module + stage),
+     prototype https://claude.ai/artifact/6rykXMrX6xiqNJ4XRP3aVn . Reusable for every golf event.
+   - Built by `tools/trip-guide/build-field.mjs` + `field-template.html` from the hand layer
+     `internal/trip-guides/ryder-cup-2027/plan.mjs` (four plans A-D, towns, golf, match days, book-by)
+     and `build-map-ie.mjs` (Ireland outline from Natural Earth, real Irish Rail track from OSM by graph
+     path, pins by Wikidata QID or exact OSM name). Money: `tools/trip-guide/money.mjs` (€ first, $
+     alongside at the ECB reference rate, stated with its date; £ converted and labelled).
+4. ⛔ **THE FIRST BUILD WAS REJECTED, and the reasons are now rules.** Brady, Oct 17: *"falls short in
+   almost every regard… you dont even present the correct currency you only show spots for random
+   cities and the toggeles are very limiting and makes it hard to access any information or see any
+   sort of clear plan."* It was a tabbed app where five settings gated all content, it priced Dublin
+   hotels in GBP, grouped places by research batch, and left out Galway and a Cliffs of Moher day.
+   - **Never gate content behind settings.** Show every plan as a complete, readable option; compare
+     them in one card; a labelled default ("our pick if unsure") is allowed. Evidence and three layout
+     concepts: `internal/research/market/2026-10-17-guide-ux.md` (NN/g, GOV.UK, Baymard).
+   - **Places live under the real town they are in**, written once and linked from every plan.
+   - **Prices for a foreign trip read € first with $ alongside** at a stated, dated rate.
+   - **No fact-check chip on every line** (the Peru presentation rule): sources live in a drawer per
+     chapter, and a line resting on an unconfirmed fact says "check before booking".
+   - **Test under the artifact viewer's CSP before handing over a link.** The first build never opened:
+     the 3D intro was loaded as a `blob:` module, which the viewer refuses, and the overlay hid the way
+     in. Local Playwright did not apply the CSP, so it passed. The scratchpad `csptest.mjs` pattern
+     (serve the page with the viewer's script allowlist) is now part of verification, plus a 4-second
+     fallback that opens the guide if the intro cannot draw.
+   - **A headless research session must be allowed WebFetch.** The Galway run was granted search but
+     not fetch, so its first verification rested on snippets; a recheck read the real pages.
+5. **Claude Console (asked Oct 19).** Decision for now: keep research in Claude Code. Use an API key +
+   the Agent SDK (which loads `.claude/agents`, skills and hooks as they are) for anything customers
+   reach through the site, and pilot one scheduled SDK job (the Nov 2 `/deals` refresh) to measure
+   real cost per run for the December capacity review. Managed Agents cannot import our agents or
+   hooks, is beta, and keeps session history server-side. Watch: an `ANTHROPIC_API_KEY` in the
+   environment silently moves headless runs to API billing (`/status` shows which is active).
 
 ## 🟢 OCTOBER 12, 2026 — `/deals` SHIPPED, THE 2027 SLATE, PARK GUIDES DESIGNED
 
@@ -1349,7 +1406,7 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | Oct 12: the `feature/deals` merge (`/deals`, Oct 12 rulings, brand-status rule, park-guide spec) rides with this record — read `git log` for the merge hash and check Vercel READY by SHA at the next `/morning`. Oct 6's merge was verified READY on Oct 12 (`e74b902`). |
+| `main` | Oct 21: the `feature/ryder-cup-2027` merge (which carries `feature/gorge-ridge-trip`) rides with the Oct 14–21 record. Read `git log` for the hash and check Vercel READY by SHA at the next `/morning`. Oct 12 `/deals` merge before it. |
 | Working tree | clean at merge |
 | Pending `/ship` | **Nothing.** |
 | Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
@@ -1364,6 +1421,8 @@ Works** homepage section · the homepage agent count derived (**13**, was a type
 **✅ Also on production from before:** every displayed count derived · the launch
 date stated once · `/local` with the Live Pulse · "When to Go" on every framework ·
 `/peru` indexed · founder schema v2 + two-layer card · `/join` · the affiliate gate.
+
+🚩 **ADDED Oct 21 (ahead of the Oct 12 list):** (a) the Gorge & Ridge trip Oct 23–27: afterwards read the guide's marks back and feed walked places into the park guides; (b) Ryder Cup: Delta/American round trips open Sun Oct 25; collect the group's feedback on the guide; the public `/ryder-cup-2027` route waits for Brady's approval of the preview; (c) Console pilot: the Nov 2 `/deals` refresh as an Agent SDK job with cost measured.
 
 🚩 **NEXT SESSION'S QUEUE — RESET Oct 12 (supersedes the lists below where they differ).**
 Shipped Oct 12: `/deals`. Shipped Oct 6: `/plan-your-trip`, `/christmas-markets`.
