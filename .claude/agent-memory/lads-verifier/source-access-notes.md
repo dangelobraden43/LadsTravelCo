@@ -219,4 +219,11 @@ metadata:
   pages, aniarrestaurant.ie, USNO API. Google News RSS with OR'd venue names settles brand status for 5-6 venues per call;
   unnamed "Galway restaurant closing" headlines cannot be tied to a venue without the article.
 
+- **Trip-week conditions (gorge-ridge-week, 2026-10-21, fetch only, 29 calls for 29 findings).** Recreation.gov alert
+  banners DO read: `recreation.gov/api/communication/external/alert?location_id=<facilityId>&location_type=Ticket%20Facility`
+  returns alert text with its date window. Fetch cleanly: api.weather.gov gridpoint forecasts (generatedAt, elevation),
+  forecast.weather.gov AFD product.php, USNO rstt/oneday and moon/phases, waterservices.usgs.gov iv and stat (rdb),
+  transportation.wv.gov news and articles, wvdnr.gov/hunting/hunting-seasons (no county lists), dwr.virginia.gov deer
+  regs, wvforestry.com home, code.wvlegislature.gov/<chapter-article-section>/, morethanjustparks.com foliage trackers.
+
 Related: [[verification-patterns]]

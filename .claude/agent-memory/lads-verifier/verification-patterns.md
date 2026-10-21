@@ -242,4 +242,12 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   **How to apply:** in a recheck, read dated timetable data (bustimes shows the NTA data date and range) before
   trusting any time, and read the venue's own domain for every brand-status line.
 
+- **Trip-week conditions pass (2026-10-21).** Forecast data was exact; errors sat in what agents derived from it:
+  a "4 to 6 degrees cooler" gap that the two grids show as 3 to 4 (recompute every derived difference), a short-range
+  AFD aviation fog remark stretched to the week, and "plan says X" discrepancies already fixed in the plan file (grep
+  the plan before confirming). Burn rules: an agency's "burning prohibited 7 am to 5 pm" became "a fire pit is legal
+  only 5 pm to 7 am", but state code (WV 20-3-5(b)(1)) exempts small attended warmth/cooking fires; read the statute
+  for exemptions. Hunting summaries: "firearm seasons don't start until X" can be wrong when selected-county gun
+  seasons run earlier on the same page; a deer-only page cannot carry "only bowhunters this week".
+
 Related: [[source-access-notes]]
