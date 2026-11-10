@@ -20,5 +20,19 @@ metadata:
 - **Search can be exhausted before you start** (session-wide cap shared by all agents).
   Record award prices and devaluations as `could-not-look`, never fill from memory.
   Absence of a devaluation found is not evidence of none.
+- **Award prices go stale after each chart change and old numbers keep circulating.** Find
+  the programme's last change date first, then accept only figures dated after it; when an
+  undated page disagrees with two dated ones, keep it out of the range and name it in notes.
+  **Why:** Nov 2026, the same search returned pre- and post-change Qantas and Atmos prices.
+- **For a dated event, work out when award calendars open.** Days-before-departure counts
+  per programme (a tracker table) plus the event dates give real calendar dates; show the
+  arithmetic in `notes`. It is often the most time-sensitive finding in the file.
+- **A fee or bonus with no official read stays out of the finding.** The validator only
+  lets a single amount through with `fixedPrice` plus an official source, so a press-only
+  Amex fee is a gap, not a number in `value`. Say so in the claim and in the report.
+- **Label the audience when the brief is origin-neutral.** US cards and US-origin award
+  prices are written "for US-based travellers", with other origins recorded as a gap.
+- **Check claim length by counting each sentence.** Card rows run long; several drafts sat
+  within 10 characters of the 600 limit.
 
 Related: [[rewards-source-behaviour]]
