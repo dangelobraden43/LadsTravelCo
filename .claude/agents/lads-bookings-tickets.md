@@ -2,7 +2,7 @@
 name: lads-bookings-tickets
 description: Researches what must be booked ahead and how far - timed entry, permits, reservations, official sale channels - and matches validated places to the correct Viator product without name-search guessing.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: opus
+model: fable
 effort: high
 memory: project
 color: orange

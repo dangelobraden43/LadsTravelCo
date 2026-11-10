@@ -2,7 +2,7 @@
 name: lads-costs-budget
 description: Researches what a trip costs on the ground - daily budget ranges by tier, price levels, tipping, cash versus card, FX and ATM traps, tourist taxes. Ranges only, always sourced.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: opus
+model: fable
 effort: high
 memory: project
 color: yellow
