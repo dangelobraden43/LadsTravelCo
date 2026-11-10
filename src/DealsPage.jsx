@@ -28,6 +28,7 @@ import {
   GROUPS,
   SALES,
   CHECKED_ON,
+  LIVE_CHECKED_ON,
 } from './data/holidayDeals.js'
 import './DealsPage.css'
 
@@ -431,8 +432,9 @@ export default function DealsPage() {
           <div className="dl-wrap">
             <p>
               No brand pays to be on this page, and none of these links earn us anything. Every fact
-              was checked against the brand’s own page or a named source on {fmtLong(CHECKED_ON)}.
-              Sales drop off this page when they end.
+              was checked against the brand’s own page or a named source: this year’s sales on{' '}
+              {fmtLong(LIVE_CHECKED_ON)}, last year’s on {fmtLong(CHECKED_ON)}. Sales drop off this
+              page when they end.
             </p>
           </div>
         </section>

@@ -250,4 +250,31 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   for exemptions. Hunting summaries: "firearm seasons don't start until X" can be wrong when selected-county gun
   seasons run earlier on the same page; a deer-only page cannot carry "only bowhunters this week".
 
+- **Dated re-check of a live page (markets, 2026-11-10).** "MATCHES" findings read from official pages held almost
+  without exception; the faults sat at the edges. Shapes: an inference added to a true date ("the only option open
+  after X"); an official page giving two first-day times (text vs calendar row), so ask the fetch for both; a site
+  footer copyright company read as the operator when the city permit names another firm (report both, name neither
+  on a page); a claim bundling a read official page with unread press details (confirm only the read half via
+  proposedClaim). Also diff the live data file's OTHER lines against each confirmed change: a newly confirmed closed
+  day broke a route line ("all four open Nov 20 to Dec 24") and a city-guide line that no finding mentioned.
+- **Security incidents and breaking news.** Read two independent outlets plus the city's own portal before any
+  verdict. Casualty counts differ by hour and by whether the suspect is counted, and a headline can change while the
+  URL slug keeps the early wording: quote each figure with outlet, date and who is cited, and carry no motive beyond
+  what an official is quoted saying. Then look for the city's dated notice on what changes for visitors (barriers,
+  closures, mourning dates); that, not the incident, is the traveller-facing fact.
+
+- **Sale and promo refreshes (holiday deals, 2026-11-10).** A sale's headline ceiling moves between the launch
+  release and the live page (trade press and the brand page disagreed; the page's own promo link carried a dated
+  variant code). Treat it as "reported two ways" with each figure tied to its source and read date, never a swap.
+  "Black Friday 2026 will kick off on <date>" on a brand page is the calendar date, not proof of when sale fares
+  open; agents read it as a booking start. A UK agency's book-by date was carried as the end date of the US offer:
+  check the market of every second source. Brand pages for live sales often print NO dated terms at all (only a
+  title year and an unrelated card offer's end date): say so rather than borrow a date. A parent's package arm
+  can have a live sale while the flight page says "coming" (airline vs holidays brand). Agents' brand-status
+  lines rest on one search ("merger?") and miss distress news: run a dated news-feed query per at-risk brand
+  for restructuring, creditors, bankruptcy and takeover, and report "operating, under watch" with the dates.
+  Agents' notes can understate their own source ("stay dates not given" when the article gives them).
+- **proposedClaim cannot carry "up to $X".** The range check needs a digit before "to", so a single headline
+  amount fails; write "the ceiling printed on the page" or a true two-figure range ("$A to $B").
+
 Related: [[source-access-notes]]

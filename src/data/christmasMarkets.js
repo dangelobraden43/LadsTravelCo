@@ -18,7 +18,7 @@
  * dates and every hour below can change when organisers publish final plans.
  */
 
-export const CHECKED_ON = '2026-10-06'
+export const CHECKED_ON = '2026-11-10'
 
 /* tags: classic (the big famous squares), small (small towns and villages),
  * family (rides, rinks or a park). "Open after Christmas" is computed from end. */
@@ -44,7 +44,7 @@ export const MARKETS = [
     start: '2026-11-13',
     end: '2026-12-26',
     tags: ['classic', 'family'],
-    note: 'The city’s most popular market, in front of City Hall: more than 100 stalls, open daily 10:00–22:00 (18:30 on Christmas Eve), with an ice rink beside it until Jan 6.',
+    note: 'The city’s most popular market, in front of City Hall, open daily 10:00–22:00 (18:30 on Christmas Eve), with an ice rink beside it until Jan 6.',
     src: [
       'https://www.christkindlmarkt.at/',
       'https://www.timeout.com/europe/things-to-do/best-christmas-markets-in-europe',
@@ -58,7 +58,7 @@ export const MARKETS = [
     start: '2026-11-13',
     end: '2026-12-23',
     tags: [],
-    note: 'Spread through the narrow lanes of the 7th district rather than one square, beside the MuseumsQuartier.',
+    note: 'Spread through the narrow lanes of the 7th district rather than one square, beside the MuseumsQuartier. Opens at 14:00 on weekdays.',
     src: ['https://www.spittelberg.at/'],
   },
   {
@@ -117,6 +117,42 @@ export const MARKETS = [
     src: ['https://www.christkindlmarkt.co.at/'],
   },
   {
+    id: 'zurich-polarzauber',
+    city: 'Zurich',
+    country: 'Switzerland',
+    name: 'Polarzauber, main station',
+    start: '2026-11-19',
+    end: '2026-12-24',
+    tags: [],
+    note: 'Indoors, in the hall of Zurich’s main station, so it works in any weather. 11:00–16:00 on Christmas Eve.',
+    src: ['https://www.polarzauber.ch/'],
+  },
+  {
+    id: 'zurich-bellevue',
+    city: 'Zurich',
+    country: 'Switzerland',
+    name: 'Bellevue Noël, Sechseläutenplatz',
+    start: '2026-11-19',
+    end: '2026-12-23',
+    tags: [],
+    note: 'New for 2026 on the square by the opera house, where the Wienachtsdorf used to stand. Monday to Saturday 11:00–22:00, Sunday 11:00–20:00.',
+    src: [
+      'https://www.bellevuenoel.ch/',
+      'https://www.zuerich.com/en/visit/shopping/bellevue-noel',
+    ],
+  },
+  {
+    id: 'rothenburg',
+    city: 'Rothenburg ob der Tauber',
+    country: 'Germany',
+    name: 'Reiterlesmarkt',
+    start: '2026-11-20',
+    end: '2026-12-23',
+    tags: ['small'],
+    note: 'Inside the walled medieval town. Sunday to Thursday 11:00–19:00, Friday and Saturday 11:00–20:00. Closed on Sunday Nov 22 (Totensonntag).',
+    src: ['https://www.rothenburg-tourismus.de/reiterlesmarkt'],
+  },
+  {
     id: 'munich',
     city: 'Munich',
     country: 'Germany',
@@ -124,7 +160,7 @@ export const MARKETS = [
     start: '2026-11-20',
     end: '2026-12-24',
     tags: ['classic'],
-    note: 'New for 2026: it opens on the Friday before Totensonntag, so guides using the old rule give a late date. Includes the Kripperlmarkt for nativity figures by the Alter Peter church. Closes 14:00 on Christmas Eve.',
+    note: 'New for 2026: it opens on the Friday before Totensonntag, so guides using the old rule give a late date. Includes the Kripperlmarkt for nativity figures by the Alter Peter church. Stalls are closed on Sunday Nov 22 (Totensonntag). Closes 14:00 on Christmas Eve.',
     src: ['https://www.muenchen.de/christkindlmarkt', 'https://www.christkindlmarkt-muenchen.de/'],
   },
   {
@@ -136,7 +172,7 @@ export const MARKETS = [
     end: '2026-12-23',
     tags: [],
     note: 'Between the Carolingian cathedral and the medieval town hall, known for Aachener Printen, a hard spiced gingerbread. Time Out ranked it 12th in Europe for 2025.',
-    src: ['https://www.timeout.com/europe/things-to-do/best-christmas-markets-in-europe'],
+    src: ['https://www.aachenweihnachtsmarkt.de/'],
   },
   {
     id: 'montreux',
@@ -146,7 +182,7 @@ export const MARKETS = [
     start: '2026-11-20',
     end: '2026-12-24',
     tags: ['small'],
-    note: 'Along the quays of Lake Geneva rather than a town square. Stalls stay open until 21:00–22:00 most evenings; 11:00–17:00 on Christmas Eve.',
+    note: 'Along the quays of Lake Geneva rather than a town square. Stalls stay open until 21:00–22:00 most evenings (20:00 on Sundays); 11:00–17:00 on Christmas Eve.',
     src: ['https://www.montreuxnoel.com/en/'],
   },
   {
@@ -155,9 +191,9 @@ export const MARKETS = [
     country: 'Belgium',
     name: 'Winter Glow, the Markt',
     start: '2026-11-20',
-    end: '2027-02-14',
+    end: '2027-01-31',
     tags: ['small'],
-    note: 'The market sits inside the city’s wider Winter Glow season, which runs to Feb 14. The tourism site does not publish separate dates for the stalls.',
+    note: 'The market sits inside the city’s wider Winter Glow season, which runs to Jan 31. The tourism site does not publish separate dates for the stalls.',
     src: ['https://www.visitbruges.be/en/winter-glow'],
   },
   {
@@ -205,10 +241,10 @@ export const MARKETS = [
     country: 'France',
     name: 'Christkindelsmärik',
     start: '2026-11-27',
-    end: null,
+    end: '2026-12-24',
     tags: ['classic'],
-    note: 'Opening confirmed for Friday Nov 27, across about eight old-town squares. The city has not published the 2026 closing date or hours yet.',
-    src: ['https://noel.strasbourg.eu/'],
+    note: 'Across about eight old-town squares. Daily 11:30–21:00 (from 14:00 on opening day, Nov 27; to 22:00 on Dec 11, 12, 18 and 19). It closes at 18:00 on Christmas Eve and no chalet reopens before New Year.',
+    src: ['https://noel.strasbourg.eu/foire-aux-questions'],
   },
   {
     id: 'riquewihr',
@@ -240,8 +276,8 @@ export const MARKETS = [
     start: '2026-11-27',
     end: '2027-01-03',
     tags: ['classic'],
-    note: 'About 238 chalets across eight sites, plus a sound and light show on the Grand-Place. Daily 12:00–22:00; 18:00 on Dec 24, Dec 31 and Jan 3.',
-    src: ['https://www.plaisirsdhiver.be/en/practical-info'],
+    note: 'About 238 chalets across the city centre, plus a sound and light show on the Grand-Place. Daily 12:00–22:00; 18:00 on Dec 24, Dec 31 and Jan 3.',
+    src: ['https://winterpret.be/en/practical-information'],
   },
   {
     id: 'prague-old',
@@ -262,7 +298,7 @@ export const MARKETS = [
     start: '2026-11-28',
     end: '2027-01-06',
     tags: [],
-    note: 'Same organiser as Old Town Square. The square is about 750 m long, so the stalls are spread out.',
+    note: 'The square is about 750 m long, so the stalls are spread out.',
     src: ['https://prague.eu/cs/akce/vanocni-trhy-vaclavske-namesti/'],
   },
   {
@@ -347,7 +383,7 @@ export const CITIES = [
     known:
       'The city-run market fills Marienplatz, with a Christmas pyramid on the Rindermarkt and the Kripperlmarkt for nativity figures, which the city calls probably the largest of its kind in Germany.',
     beyond:
-      'Many Bavarian state museums, including the Alte Pinakothek and Museum Brandhorst, drop to a token charge on Sundays, and the market spans five Sundays.',
+      'Many Bavarian state museums, including the Alte Pinakothek and Museum Brandhorst, drop to a token charge on Sundays, and the market season covers five Sundays (the stalls are closed on the first, Nov 22).',
     trap: 'Munich moved its opening rule for 2026. Guides using the old pattern give a start date a week late.',
     stay: 'Near Marienplatz to walk in. The S8 from the airport stops there, in roughly 40–45 minutes.',
     drinks:
@@ -388,7 +424,7 @@ export const CITIES = [
       'Strasbourg’s market spreads across about eight squares of the river-ringed old centre. Colmar is six small markets through half-timbered streets and Little Venice.',
     beyond:
       'Strasbourg’s one-day museums pass pays for itself from about three museums. The village markets of Riquewihr and Kaysersberg are the reason to hire a car for a day.',
-    trap: 'Strasbourg is busiest Wednesday afternoons, Friday evenings and weekends, and quietest on Monday and Tuesday mornings. Cars are banned from the old centre in market hours, so park at the edge and take the tram. Riquewihr and Kaysersberg close on Dec 20.',
+    trap: 'Strasbourg is busiest Wednesday afternoons, Friday evenings and weekends, and quietest on Mondays, Tuesdays and in the mornings. Cars are banned from the old centre in market hours, so park at the edge and take the tram. Riquewihr and Kaysersberg close on Dec 20.',
     stay: 'The Grande Île books out early in market season. Kehl, across the Rhine in Germany, is the overflow base on tram line D.',
     drinks: 'No verified 2025–26 drink prices for Alsace yet.',
     src: [
@@ -440,14 +476,14 @@ export const CITIES = [
     photo: null,
     lede: 'A capital-sized market and a medieval old town, both open into January.',
     known:
-      'Brussels Winter Wonders spreads about 238 chalets over eight sites, with a sound and light show on the Grand-Place. Bruges sets its stalls on the Markt inside a winter season that runs to mid-February.',
+      'Brussels Winter Wonders spreads about 238 chalets over the city centre, with a sound and light show on the Grand-Place. Bruges sets its stalls on the Markt inside a winter season that runs to the end of January.',
     beyond:
       'In Bruges: crystal ornaments, hand-knitted woollens and jenever tastings, with mussels and Flemish stew nearby.',
     trap: 'In Brussels the light show is on the Grand-Place but the chalets are elsewhere, around the Bourse, De Brouckère, Sainte-Catherine and the Vismet.',
     stay: 'Central Brussels near the chalet sites; Bruges’ old town for the market.',
     drinks: 'No verified 2025–26 market prices for Belgium yet.',
     src: [
-      'https://www.plaisirsdhiver.be/',
+      'https://winterpret.be/en',
       'https://www.visitbruges.be/en/winter-glow',
       'https://www.timeout.com/europe/things-to-do/best-christmas-markets-in-europe',
     ],
@@ -466,7 +502,8 @@ export const ROUTES = [
       'Salzburg → Vienna: about 2h20–2h25, two Railjets an hour',
       'Vienna → Budapest: about 2h30–2h40 (optional fourth stop)',
     ],
-    window: 'All four are open Nov 20 – Dec 24.',
+    window:
+      'All four are open Nov 20 – Dec 24, except that Munich’s stalls are closed on Sunday Nov 22.',
     tip: 'Fly into Munich and home from Vienna (or the reverse) and you never backtrack.',
     src: [
       'https://www.seat61.com/trains-and-routes/munich-to-salzburg-by-train.htm',
@@ -506,7 +543,7 @@ export const WHEN = [
   {
     k: 'Best window',
     title: 'Weekdays, opening week to Dec 18',
-    body: 'Every major market is open and weekday mornings are the quietest. Strasbourg’s own guidance names Monday and Tuesday mornings.',
+    body: 'Every major market is open and weekday mornings are the quietest. Strasbourg’s own guidance names Mondays, Tuesdays and mornings.',
     src: 'https://noel.strasbourg.eu/en/frequently-asked-questions',
   },
   {
@@ -518,7 +555,7 @@ export const WHEN = [
   {
     k: 'The trap',
     title: 'Christmas week itself',
-    body: 'Cologne and Basel close Dec 23; Nuremberg and Munich at 14:00 on Christmas Eve. None reopen. Poland made Christmas Eve a statutory day off in 2025, so expect its markets to be closed or limited that day.',
+    body: 'Cologne and Basel close Dec 23; Nuremberg and Munich at 14:00 on Christmas Eve, and Strasbourg at 18:00. None reopen. Poland made Christmas Eve a statutory day off in 2025, so expect its markets to be closed or limited that day.',
     src: 'https://www.koelnerweihnachtsmarkt.com/',
   },
   {

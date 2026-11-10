@@ -226,4 +226,29 @@ metadata:
   transportation.wv.gov news and articles, wvdnr.gov/hunting/hunting-seasons (no county lists), dwr.virginia.gov deer
   regs, wvforestry.com home, code.wvlegislature.gov/<chapter-article-section>/, morethanjustparks.com foliage trackers.
 
+- **Markets re-check (2026-11-10, 40 calls for 33 findings, all but one read).** dresden.de is STILL 503 on every
+  path (PDF, press releases, striezelmarkt subdomain): three runs in five weeks, so do not spend more than one call
+  there. visit-dresden-elbland.de (Dresden Marketing GmbH) fetches but prints the season with no year.
+  plaisirsdhiver.be/en/practical-info is 404; Brussels Winter Wonders now lives on winterpret.be/en (same organiser).
+  Fetch cleanly: visitbruges.be, noel.strasbourg.eu/foire-aux-questions (French FAQ carries the current year first),
+  muenchen.de/christkindlmarkt, aachenweihnachtsmarkt.de, rothenburg-tourismus.de, polarzauber.ch, bellevuenoel.ch,
+  zuerich.com, nau.ch (dated), wien.info markets overview (one fetch settles four Vienna markets with hours),
+  wien.orf.at stories (dated to the minute), tivoli.dk/en/jul (dates, no hours), montreuxnoel.com/en,
+  adventzagreb.hr, prague.eu/cs event pages. Breaking news in Poland: notesfrompoland.com, tvn24.pl and krakow.pl
+  (home page plus `komunikat` notices, which show published and updated dates) all fetch cleanly.
+
+- **Travel sale pages (holiday deals, 2026-11-10, 40 calls for 32 findings).** Fetch cleanly: royalcaribbean.com and
+  celebritycruises.com /cruise-deals/black-friday (headline only; dated terms sit behind a separate link),
+  virginvoyages.com/cruise-deals, hostelworld.com/deals/black-friday (the add-to-calendar link encodes dates the
+  text does not print), gadventures.com travel-deals pages (full terms), contiki.com/en-us, intrepidtravel.com/us,
+  greyhound.com sale pages (full terms with year), interrail.com promo-terms-conditions (every promotion, dated),
+  amtrak.com deals-discounts and /promotions/deals, hilton.com/en/offers, booking.com/deals pages,
+  aircanada.com special-offers, allegiantair.com, jetbluevacations.com, finnair.com market pages, southwest.com/deals
+  (fare listings only), news.flyfrontier.com, news.delta.com releases, travelmarketreport.com (dated round-ups),
+  rolcruise.co.uk, shopback.com.au blog. marriott.com/offers.mi truncates. 403: easyjet.com (all paths; a
+  domain-restricted WebSearch returns usable summaries of its pages), cruise.blog, hostelz.com.
+- **Google News RSS for brand status:** always add `when:30d` (without it the feed returns headlines back to 2015).
+  One brand with a big story (a takeover) fills the whole feed and hides the others: split OR'd brand lists into
+  small groups, and give an at-risk brand its own `when:10d` query.
+
 Related: [[verification-patterns]]

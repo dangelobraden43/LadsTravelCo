@@ -11,6 +11,8 @@
  * and the date checker are computed in src/utils/deals.js, never typed. */
 
 export const CHECKED_ON = '2026-10-12'
+/* The 2026 entries are re-read on every refresh; last year's sales are settled history. */
+export const LIVE_CHECKED_ON = '2026-11-10'
 
 export const EDITION = {
   year: 2026,
@@ -49,7 +51,9 @@ const S = {
   onthesnow: 'https://www.onthesnow.com/news/a/619177/buyer-s-guide-to-the-epic-pass',
   hostelworld: 'https://www.hostelworld.com/deals/black-friday/',
   hostelworld2025: 'https://www.hostelz.com/articles/hostelworld-black-friday-deals-update',
-  virginVoyages: 'https://www.virginvoyages.com/cruise-deals/black-friday',
+  virginVoyages: 'https://www.virginvoyages.com/cruise-deals',
+  celebrity2026: 'https://www.celebritycruises.com/cruise-deals/black-friday',
+  g2026: 'https://www.gadventures.com/travel-deals/black-friday-sale/',
   contiki:
     'https://eglobaltravelmedia.com.au/2025/11/04/black-friday-bonanza-contikis-jaw-dropping-2026-travel-sale-unveiled',
   virginAustralia:
@@ -63,6 +67,7 @@ const S = {
   booking: 'https://siviaggia.it/notizie/booking-promozione-black-friday-2025/565692/',
 }
 const C = CHECKED_ON
+const L = LIVE_CHECKED_ON
 
 /* "What are you planning?" — the part of the page a reader acts on. */
 export const PLANS = [
@@ -217,7 +222,7 @@ export const GROUPS = [
  * Previous editions render as last year's pattern. Dates are ISO. Blackouts: single dates
  * or [start, end]. */
 export const SALES = [
-  // ---- announced for 2026 (as of Oct 12) ----
+  // ---- announced for 2026 (as of Nov 10) ----
   {
     id: 'royal-caribbean-2026',
     brand: 'Royal Caribbean',
@@ -228,11 +233,11 @@ export const SALES = [
     bookStart: null,
     bookBy: null,
     fineprint: [
-      'The headline is “up to $850 off”, with bigger savings on pricier cabins.',
-      'No end date is on the page, and Royal Caribbean says terms change “sometimes day to day”.',
+      'The headline on its own page is “up to $950 off”, plus up to $150 to spend on board. Trade press reports the same sale as “up to $1,000 off”.',
+      'No end date is on the page, and Royal Caribbean says terms change “year to year, and even day to day during the Thanksgiving season”.',
     ],
     src: S.rc,
-    checkedOn: C,
+    checkedOn: L,
   },
   {
     id: 'hostelworld-2026',
@@ -240,12 +245,12 @@ export const SALES = [
     group: 'stay',
     region: 'world',
     year: 2026,
-    summary: 'Hostel sale starts November 20',
-    bookStart: '2026-11-20',
+    summary: 'Hostel sale starts November 13',
+    bookStart: '2026-11-13',
     bookBy: null,
     fineprint: ['Terms aren’t out yet. Last year it was 5% to 55% off selected hostels.'],
     src: S.hostelworld,
-    checkedOn: C,
+    checkedOn: L,
   },
   {
     id: 'virgin-voyages-2026',
@@ -253,15 +258,45 @@ export const SALES = [
     group: 'cruise',
     region: 'world',
     year: 2026,
-    summary: '“70% off” the second sailor, ending before Black Friday',
+    summary: '“80% off” the second sailor, ending before Black Friday',
     bookStart: null,
-    bookBy: '2026-11-02',
+    bookBy: '2026-11-19',
     fineprint: [
-      'Across two people that works out to 35% off each person’s fare.',
-      'Covers voyages from September 2026 to October 2028.',
+      'Across two people that works out to 40% off each person’s fare.',
+      'Sold as a “Black Friday Preview”. Covers voyages from November 2026 to October 2028.',
     ],
     src: S.virginVoyages,
-    checkedOn: C,
+    checkedOn: L,
+  },
+  {
+    id: 'g-adventures-2026',
+    brand: 'G Adventures',
+    group: 'ground',
+    region: 'world',
+    year: 2026,
+    summary: 'Up to 30% off small-group trips, on sale now',
+    bookStart: '2026-10-29',
+    bookBy: '2026-12-04',
+    fineprint: [
+      'The bigger discounts are on departures before the end of April 2027. May to August 2027 departures get 10%, on select trips.',
+    ],
+    src: S.g2026,
+    checkedOn: L,
+  },
+  {
+    id: 'celebrity-2026',
+    brand: 'Celebrity Cruises',
+    group: 'cruise',
+    region: 'world',
+    year: 2026,
+    summary: 'Early preview is live: 75% off the second guest',
+    bookStart: null,
+    bookBy: null,
+    fineprint: [
+      'The page gives no end date and no deposit terms. Last year the best deal needed a non-refundable deposit, so check before you pay.',
+    ],
+    src: S.celebrity2026,
+    checkedOn: L,
   },
 
   // ---- 2025, U.S. airlines ----
