@@ -1,0 +1,269 @@
+/* /outdoors/parks — The Parks Map.
+ *
+ * The map is the page: a full-bleed 3D relief of the lower 48 under a dusk sky, with a
+ * light on every national park, and a typeset index underneath that reaches every park
+ * (including the ones off the canvas: Alaska, Hawaii, American Samoa, the Virgin Islands).
+ *
+ * PREVIEW: noindex and out of the sitemap until Brady approves the design.
+ * Honesty: everything here is the Park Service's own record, labelled as theirs. No Lads
+ * voice, no walked claims. Entrance fees are government-set official fees, shown exactly
+ * with their source and check date (ruled Oct 12, 2026). Dusk palette: /outdoors only.
+ */
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { Link } from 'react-router-dom'
+import { Nav } from './App'
+import Footer from './Footer'
+import { PARKS, PARKS_SOURCE } from './data/nationalParks'
+import ParksMap, { inCanvas, shortName } from './ParksMap'
+import './ParksMapPage.css'
+
+const STATE_NAMES = {
+  AK: 'Alaska',
+  AR: 'Arkansas',
+  AS: 'American Samoa',
+  AZ: 'Arizona',
+  CA: 'California',
+  CO: 'Colorado',
+  FL: 'Florida',
+  HI: 'Hawaii',
+  ID: 'Idaho',
+  IN: 'Indiana',
+  KY: 'Kentucky',
+  ME: 'Maine',
+  MI: 'Michigan',
+  MN: 'Minnesota',
+  MO: 'Missouri',
+  MT: 'Montana',
+  NC: 'North Carolina',
+  ND: 'North Dakota',
+  NM: 'New Mexico',
+  NV: 'Nevada',
+  OH: 'Ohio',
+  OR: 'Oregon',
+  SC: 'South Carolina',
+  SD: 'South Dakota',
+  TN: 'Tennessee',
+  TX: 'Texas',
+  UT: 'Utah',
+  VA: 'Virginia',
+  VI: 'U.S. Virgin Islands',
+  WA: 'Washington',
+  WV: 'West Virginia',
+  WY: 'Wyoming',
+}
+const stateList = (p) => p.states.map((s) => STATE_NAMES[s] || s).join(', ')
+
+const checked = new Date(PARKS_SOURCE.checkedOn + 'T12:00:00').toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+})
+
+function fee(f) {
+  return {
+    what:
+      f.title.replace(/^Entrance\s*-\s*/i, '').replace(/^Entrance Fee\s*-?\s*/i, '') || 'Entrance',
+    cost: f.cost === 0 ? 'No fee' : `$${Number.isInteger(f.cost) ? f.cost : f.cost.toFixed(2)}`,
+  }
+}
+
+/* The Park Service lists activities alphabetically, shop and bookstore included. Show the
+ * ones a traveller plans around, in this order, and only if the Service lists them. */
+const PLAN_AROUND = [
+  'Hiking',
+  'Backcountry Hiking',
+  'Camping',
+  'Wildlife Watching',
+  'Climbing',
+  'Caving',
+  'Canyoneering',
+  'Paddling',
+  'Whitewater Rafting',
+  'Snorkeling',
+  'SCUBA Diving',
+  'Boating',
+  'Fishing',
+  'Swimming',
+  'Skiing',
+  'Snowshoeing',
+  'Stargazing',
+  'Scenic Driving',
+  'Biking',
+  'Horse Trekking',
+  'Guided Tours',
+]
+const thingsToDo = (park) => PLAN_AROUND.filter((a) => park.activities.includes(a)).slice(0, 6)
+
+function ParkCard({ park, onClose }) {
+  const ref = useRef(null)
+  useEffect(() => {
+    if (ref.current) ref.current.scrollTop = 0
+  }, [park.code])
+  const fees = park.entranceFees.slice(0, 4).map(fee)
+  return (
+    <aside className="pk-card" ref={ref} aria-live="polite" aria-label={park.name}>
+      <button type="button" className="pk-card-close" onClick={onClose}>
+        Whole map
+      </button>
+      <h2 className="pk-card-title">{shortName(park)}</h2>
+      <p className="pk-card-where">{stateList(park)}</p>
+      {park.npsDescription && (
+        <>
+          <p className="pk-card-body">{park.npsDescription}</p>
+          <p className="pk-card-credit">Description from the National Park Service</p>
+        </>
+      )}
+      {fees.length > 0 && (
+        <table className="pk-fees">
+          <caption>Entrance fees</caption>
+          <tbody>
+            {fees.map((f) => (
+              <tr key={f.what}>
+                <th scope="row">{f.what}</th>
+                <td>{f.cost}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {thingsToDo(park).length > 0 && (
+        <p className="pk-card-do">
+          <span>Things to do there include </span>
+          {thingsToDo(park).join(', ').toLowerCase()}.
+        </p>
+      )}
+      <div className="pk-card-actions">
+        <a className="pk-btn" href={park.url} target="_blank" rel="noopener noreferrer">
+          Open the official park page
+        </a>
+        <Link className="pk-btn pk-btn--quiet" to="/plan-your-trip">
+          Plan a trip around it
+        </Link>
+      </div>
+      {fees.length > 0 && <p className="pk-card-credit">Official fees, checked {checked}</p>}
+    </aside>
+  )
+}
+
+export default function ParksMapPage() {
+  const [selected, setSelected] = useState(null)
+  const [query, setQuery] = useState('')
+  const stageRef = useRef(null)
+  const park = PARKS.find((p) => p.code === selected) || null
+
+  useEffect(() => {
+    const esc = (e) => e.key === 'Escape' && setSelected(null)
+    window.addEventListener('keydown', esc)
+    return () => window.removeEventListener('keydown', esc)
+  }, [])
+
+  const groups = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    const hit = (p) =>
+      !q || p.name.toLowerCase().includes(q) || stateList(p).toLowerCase().includes(q)
+    return [
+      ['The lower 48', PARKS.filter((p) => inCanvas(p) && hit(p))],
+      ['Alaska, Hawaii and the islands', PARKS.filter((p) => !inCanvas(p) && hit(p))],
+    ]
+  }, [query])
+
+  const chooseFromIndex = (code) => {
+    setSelected(code)
+    if (stageRef.current) stageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  return (
+    <div className="pk-page">
+      <Helmet>
+        <title>The Parks Map: every U.S. national park on real terrain | The Lads Travel Co.</title>
+        <meta
+          name="description"
+          content="A 3D relief map of every U.S. national park, built from the National Park Service's own records: where each park is, what it is known for and what it charges at the gate."
+        />
+        <link rel="canonical" href="https://ladstravel.com/outdoors/parks" />
+        <meta name="robots" content="noindex" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&display=swap"
+        />
+      </Helmet>
+      <Nav scrolled={true} />
+
+      <section
+        className={`pk-stage${park ? ' has-park' : ''}`}
+        ref={stageRef}
+        aria-label="The parks map"
+      >
+        <div className="pk-sky" aria-hidden="true" />
+        <ParksMap parks={PARKS} selected={selected} onSelect={setSelected} />
+        <header className="pk-title">
+          <h1>
+            The
+            <br />
+            Parks Map
+          </h1>
+          <p>Every national park in the United States, on real terrain. Pick a light.</p>
+        </header>
+        {park && <ParkCard park={park} onClose={() => setSelected(null)} />}
+      </section>
+
+      <section className="pk-index" aria-label="Index of national parks">
+        <div className="pk-index-head">
+          <h2>Find a park</h2>
+          <label>
+            <span className="pk-sr">Search parks by name or state</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Park or state"
+            />
+          </label>
+        </div>
+        {groups.map(([title, list]) =>
+          list.length === 0 ? null : (
+            <div key={title} className="pk-index-group">
+              <h3>{title}</h3>
+              <ul>
+                {list.map((p) => (
+                  <li key={p.code}>
+                    <button
+                      type="button"
+                      className={p.code === selected ? 'is-active' : undefined}
+                      aria-pressed={p.code === selected}
+                      onClick={() => chooseFromIndex(p.code)}
+                    >
+                      <span className="pk-index-name">{shortName(p)}</span>
+                      <span className="pk-index-dots" aria-hidden="true" />
+                      <span className="pk-index-state">{p.states.join(' ')}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        )}
+        {groups.every(([, l]) => l.length === 0) && (
+          <p className="pk-note">No park matches that search.</p>
+        )}
+      </section>
+
+      <section className="pk-sources" aria-label="Sources">
+        <p>
+          Park names, locations, descriptions, activities and entrance fees are the{' '}
+          <a href={PARKS_SOURCE.url} target="_blank" rel="noopener noreferrer">
+            National Park Service
+          </a>
+          &rsquo;s own records, read on {checked}. The terrain is measured elevation from the open
+          Terrarium tiles (USGS, SRTM and others), with lakes and borders from Natural Earth.
+          Heights are exaggerated so mountains read at this scale.
+        </p>
+      </section>
+
+      <Footer />
+    </div>
+  )
+}

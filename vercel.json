@@ -17,6 +17,7 @@
   "rewrites": [
     { "source": "/global", "destination": "/" },
     { "source": "/outdoors", "destination": "/" },
+    { "source": "/outdoors/parks", "destination": "/" },
     { "source": "/bucket-list", "destination": "/" },
     { "source": "/local", "destination": "/" },
     { "source": "/privacy", "destination": "/" },
