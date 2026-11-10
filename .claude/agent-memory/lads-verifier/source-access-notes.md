@@ -251,4 +251,18 @@ metadata:
   One brand with a big story (a takeover) fills the whole feed and hides the others: split OR'd brand lists into
   small groups, and give an at-risk brand its own `when:10d` query.
 
+- **Event organisers (calendar-2027, 2026-11-10, 60 calls for 66 findings).** Refused outright ("unable to fetch"):
+  letour.fr, liesa.globo.com. Empty render: ncaa.com, wsiairport.com.au (wimbledon.com and fifa.com schedule pages too,
+  per the researcher). 403: business.vic.gov.au, golfdigest.com, help.ticketmaster.com.au. Timeout:
+  agencyconnect.qantas.com (masters.com for the researcher, three times). cyclingweekly.com returns the headline only.
+  Fetch cleanly: icc-cricket.com media releases, world.rugby news, rydercup.com, panamsports.org, inside.fifa.com/en/news,
+  glastonburyfestivals.co.uk, labiennale.org, oktoberfest.de/en, stpatricksfestival.ie, nsw.gov.au event listings,
+  opernball.at, festival.cz/en/news (dated items), icelandairwaves.is, formula1.com/en/racing/<year>, lta.org.uk,
+  ausopen.com (banner only), melbournepark.com.au, liepaja2027.lv event pages, sofistadium.com news, nps.gov/grsm,
+  elperuano.pe, edinburgh.gov.uk news, en.thairath.co.th, diariodorio.com, sevillasecreta.co, andaluciainforma.es,
+  staffnews.in, ajc.com, wrdw.com, golf.com, clickondetroit.com (AP and WDIV), wxyz.com (no date shown),
+  thestar.com.my (Reuters with dateline), justwomenssports.com, airwaysmag.com, aerocorner.com.
+  Workarounds: Wikipedia race pages cite the ASO route article and press kit when letour.fr refuses; a WebSearch
+  restricted to business.vic.gov.au and fairwork.gov.au returns a usable summary of the holiday lists (snippet level).
+
 Related: [[verification-patterns]]

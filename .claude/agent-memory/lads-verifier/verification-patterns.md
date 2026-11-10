@@ -277,4 +277,21 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
 - **proposedClaim cannot carry "up to $X".** The range check needs a digit before "to", so a single headline
   amount fails; write "the ceiling printed on the page" or a true two-figure range ("$A to $B").
 
+- **Dated-event calendars (calendar-2027, 2026-11-10).** Findings read on an organiser's page held every time (15 of 15
+  sampled); the faults sat in press-sourced rows and in what the claim left out. Shapes: a cited "second source" that
+  prints no date at all (Golf.com for the Masters: only the application window), so ask every cited page "does it print
+  the event date?" before counting it; an article published on opening day cited for something "that happened" the day
+  after (an airline's first arrival: it was a schedule); an organiser and its venue operator giving different first days
+  (ausopen.com banner vs Melbourne Park), and an official page with two statuses for one ballot (LTA): report both,
+  never pick; a multi-day opening whose first day is in other towns (Liepaja's Friday events are in Kuldiga), which only
+  the event detail page shows; a "play starts in <city>" line inferred from the venue list when the release names the
+  phase but not the ground; "week of <date>" labels with no weekdays on an NPS timeline (propose "late April", not a day).
+  Recompute every weekday from 1 January and Easter by formula first: it costs no calls and all 66 were right.
+- **A fetch can garble a Wikipedia stage table** (dates returned as 1 to 9 Aug, equal to the stage numbers, against the
+  infobox's 30 Jul to 7 Aug). Ask for the infobox dates too and treat a date column that mirrors the row numbers as an artefact.
+- **Budget on a "read it yourself" brief:** 45 of 60 calls went on ten press-only rows and five conflicts, leaving 26 of 66
+  findings unopened. Before fetching a second press page, check its search snippet shows the date; three reads returned
+  no date (WRDW, Golf.com, a truncated Cycling Weekly). Venue and host-committee pages (SoFi Stadium for the Super Bowl)
+  carry dates when the league page will not render.
+
 Related: [[source-access-notes]]
