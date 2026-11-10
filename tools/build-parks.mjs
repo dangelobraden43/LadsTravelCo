@@ -25,9 +25,9 @@ const TODAY = new Date().toISOString().slice(0, 10)
 const KEY = process.env.NPS_API_KEY || 'DEMO_KEY'
 
 const BOUNDS = { west: -125.5, east: -66.0, south: 24.0, north: 50.0 }
-const COLS = 384
-const ROWS = 176
-const ZOOM = 5
+const COLS = 720
+const ROWS = 330
+const ZOOM = 6
 const MAX_M = 4400 // Mount Whitney is 4,421 m; the grid averages below that
 
 async function getJson(url) {
@@ -135,13 +135,20 @@ async function buildRelief() {
   )
   if (!us || lakes.length < 5) throw new Error('Natural Earth layers incomplete')
 
+  const dLat = (BOUNDS.north - BOUNDS.south) / (ROWS - 1)
+  const dLng = (BOUNDS.east - BOUNDS.west) / (COLS - 1)
   const height = new Uint8Array(COLS * ROWS)
   const kind = new Uint8Array(COLS * ROWS) // 0 water, 1 United States, 2 neighbouring land
   for (let r = 0; r < ROWS; r++) {
     const lat = BOUNDS.north - (r / (ROWS - 1)) * (BOUNDS.north - BOUNDS.south)
     for (let c = 0; c < COLS; c++) {
       const lng = BOUNDS.west + (c / (COLS - 1)) * (BOUNDS.east - BOUNDS.west)
-      const m = await elevation(lat, lng)
+      // 3x3 box average inside the cell: the tiles are finer than the grid
+      let m = 0
+      for (const dy of [-0.33, 0, 0.33]) {
+        for (const dx of [-0.33, 0, 0.33]) m += await elevation(lat + dy * dLat, lng + dx * dLng)
+      }
+      m /= 9
       const i = r * COLS + c
       if (m <= 0 || lakes.some((l) => inFeature(l, lng, lat))) continue
       height[i] = Math.max(1, Math.min(255, Math.round((m / MAX_M) * 255)))
@@ -173,24 +180,35 @@ fs.writeFileSync(
     )}\n\nexport const PARKS = ${JSON.stringify(parks, null, 2)}\n`,
 )
 
+// The grid ships as one small PNG (red = height, green = kind) so it is fetched once and
+// cached, not parsed as JavaScript. usRelief.js keeps only what the projection needs.
+const png = new PNG({ width: COLS, height: ROWS })
+for (let i = 0; i < COLS * ROWS; i++) {
+  png.data[i * 4] = relief.height[i]
+  png.data[i * 4 + 1] = relief.kind[i] * 100
+  png.data[i * 4 + 2] = 0
+  png.data[i * 4 + 3] = 255
+}
+fs.mkdirSync(path.join(ROOT, 'public/outdoors'), { recursive: true })
+fs.writeFileSync(path.join(ROOT, 'public/outdoors/us-relief.png'), PNG.sync.write(png))
+
 fs.writeFileSync(
   path.join(ROOT, 'src/data/usRelief.js'),
   header(
-    'A real elevation grid of the lower 48. Elevation: Terrarium tiles (AWS open data).\n * Lakes and the national outline: Natural Earth 1:50m. height is 0-255 over 0-maxMetres;\n * kind is 0 water, 1 United States, 2 neighbouring land. Both are base64 Uint8 rows, north first.',
+    [
+      'The frame of the lower-48 elevation grid. The grid itself is public/outdoors/us-relief.png:',
+      ' * red is height (0-255 over 0-maxMetres), green is kind (0 water, 100 United States,',
+      ' * 200 neighbouring land), rows north first. Elevation: Terrarium tiles (AWS open data).',
+      ' * Lakes and the national outline: Natural Earth 1:50m.',
+    ].join(String.fromCharCode(10)),
   ) +
-    `\nexport const RELIEF = ${JSON.stringify(
-      {
-        bounds: BOUNDS,
-        cols: COLS,
-        rows: ROWS,
-        maxMetres: MAX_M,
-        checkedOn: TODAY,
-        height: Buffer.from(relief.height).toString('base64'),
-        kind: Buffer.from(relief.kind).toString('base64'),
-      },
+    `
+export const RELIEF = ${JSON.stringify(
+      { bounds: BOUNDS, cols: COLS, rows: ROWS, maxMetres: MAX_M, checkedOn: TODAY, src: '/outdoors/us-relief.png' },
       null,
       2,
-    )}\n`,
+    )}
+`,
 )
 
 const inBox = parks.filter(

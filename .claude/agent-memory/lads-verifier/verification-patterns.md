@@ -293,5 +293,21 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   findings unopened. Before fetching a second press page, check its search snippet shows the date; three reads returned
   no date (WRDW, Golf.com, a truncated Cycling Weekly). Venue and host-committee pages (SoFi Stadium for the Super Bowl)
   carry dates when the league page will not render.
+- **Second pass on a dated calendar (calendar-2027 pass 2, 2026-11-10).** "Not yet announced" and "no ticket
+  information" findings are the ones that were wrong, not the dated ones. Shapes: the researcher read last year's
+  date notice and never opened the organiser's homepage, which carried "registration for next year is open" with
+  the date in the linked news item (a marathon); the researcher read a years-old dates announcement and reported
+  "no ticket information", while the organiser's newest news item had opened ticket sales two months earlier (an
+  art exhibition). **How to apply:** for every "not yet announced" or "no tickets yet" finding, fetch the
+  organiser's homepage and its newest news item, not the page the researcher cited. Other shapes: an article dated
+  the day before an event cited for the event having ended; a "styled as the official site" trap where the agency
+  page was describing the government site as official; an inference sentence riding on true dates ("the Pope is
+  expected to attend", "a trip has to sit in that span"); "tickets are on sale" where the page shows Buy links plus
+  a waitlist. Organisers often give an opening date only as a countdown ("365 days to the opening" in a dated news
+  item): compute it and say it is computed. A tourism board's event overview can lift a whole "secondary only"
+  list in one fetch.
+- **Refuted vs weakened when the verifier finds the real date.** If a "not yet announced" finding is wrong, mark it
+  refuted (its value field has null dates that must not render) and put the correct row, with where it was read,
+  in the reason and in the handback so the orchestrator can add a finding.
 
 Related: [[source-access-notes]]

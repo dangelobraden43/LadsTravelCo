@@ -149,6 +149,7 @@ function ParkCard({ park, onClose }) {
 export default function ParksMapPage() {
   const [selected, setSelected] = useState(null)
   const [query, setQuery] = useState('')
+  const [daylight, setDaylight] = useState(false)
   const stageRef = useRef(null)
   const park = PARKS.find((p) => p.code === selected) || null
 
@@ -193,12 +194,16 @@ export default function ParksMapPage() {
       <Nav scrolled={true} />
 
       <section
-        className={`pk-stage${park ? ' has-park' : ''}`}
+        className={`pk-stage${park ? ' has-park' : ''}${daylight ? ' is-day' : ''}`}
         ref={stageRef}
         aria-label="The parks map"
       >
-        <div className="pk-sky" aria-hidden="true" />
-        <ParksMap parks={PARKS} selected={selected} onSelect={setSelected} />
+        <ParksMap
+          parks={PARKS}
+          selected={selected}
+          onSelect={setSelected}
+          onDaylight={setDaylight}
+        />
         <header className="pk-title">
           <h1>
             The

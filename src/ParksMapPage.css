@@ -36,27 +36,99 @@
   scroll-margin-top: 0;
   isolation: isolate;
 }
-.pk-sky {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  /* last light in the west: night overhead, an ember glow low on the left, dark ground below */
-  background:
-    radial-gradient(
-      120% 70% at 8% 62%,
-      rgba(240, 172, 92, 0.95) 0%,
-      rgba(201, 122, 73, 0.6) 22%,
-      rgba(110, 78, 84, 0.32) 45%,
-      transparent 70%
-    ),
-    linear-gradient(180deg, #0a121d 0%, #13243a 34%, #1c2c3c 58%, #131d1c 82%, var(--dusk) 100%);
-}
 .parksmap {
   position: absolute;
   inset: 0;
 }
 .parksmap canvas {
   touch-action: pan-y;
+}
+/* the stage hands over to the page: the sky's last band fades into the page colour */
+.pk-stage::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(15, 23, 20, 0), var(--dusk));
+  pointer-events: none;
+}
+
+/* the sun: one slider, afternoon to night */
+.parksmap-sun {
+  position: absolute;
+  z-index: 2;
+  left: clamp(20px, 5vw, 76px);
+  bottom: 44px;
+  display: grid;
+  grid-template-columns: auto;
+  gap: 6px;
+  width: min(300px, calc(100vw - 40px));
+  color: #f4ead4;
+}
+.parksmap-sun-name {
+  font-size: 0.86rem;
+  color: rgba(244, 234, 212, 0.78);
+}
+.parksmap-sun-now {
+  font-family: var(--poster);
+  font-weight: 800;
+  font-size: 1.7rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.parksmap-sun input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: grab;
+}
+.parksmap-sun input:active {
+  cursor: grabbing;
+}
+.parksmap-sun input::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #cfe3f1 0%, #f2b45a 45%, #b5633c 68%, #24344e 100%);
+}
+.parksmap-sun input::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #cfe3f1 0%, #f2b45a 45%, #b5633c 68%, #24344e 100%);
+}
+.parksmap-sun input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -12px;
+  border-radius: 50%;
+  border: 0;
+  background: radial-gradient(circle, #fff6df 0 38%, #f2b45a 40% 100%);
+  box-shadow:
+    0 0 0 5px rgba(242, 180, 90, 0.22),
+    0 0 22px rgba(242, 180, 90, 0.7);
+}
+.parksmap-sun input::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 0;
+  background: radial-gradient(circle, #fff6df 0 38%, #f2b45a 40% 100%);
+  box-shadow:
+    0 0 0 5px rgba(242, 180, 90, 0.22),
+    0 0 22px rgba(242, 180, 90, 0.7);
+}
+.pk-stage.is-day .parksmap-sun,
+.pk-stage.is-day .pk-title h1 {
+  color: #14261d;
+}
+.pk-stage.is-day .parksmap-sun-name,
+.pk-stage.is-day .pk-title p {
+  color: rgba(20, 38, 29, 0.82);
+  text-shadow: none;
 }
 .parksmap.is-hovering {
   cursor: pointer;
@@ -101,6 +173,7 @@
   text-transform: uppercase;
   margin: 0 0 1.1rem;
   color: #f4ead4;
+  transition: color 0.4s;
 }
 .pk-title p {
   margin: 0;
@@ -370,11 +443,17 @@
     max-height: none;
     overflow: visible;
   }
-  .pk-sky,
   .parksmap {
     height: 92svh;
     min-height: 560px;
     bottom: auto;
+  }
+  .pk-stage::after {
+    top: calc(max(92svh, 560px) - 120px);
+    bottom: auto;
+  }
+  .parksmap-sun {
+    bottom: 28px;
   }
   .pk-stage::before {
     /* reserves the map's height so the card can sit under it in normal flow */

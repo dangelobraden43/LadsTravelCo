@@ -264,5 +264,16 @@ metadata:
   thestar.com.my (Reuters with dateline), justwomenssports.com, airwaysmag.com, aerocorner.com.
   Workarounds: Wikipedia race pages cite the ASO route article and press kit when letour.fr refuses; a WebSearch
   restricted to business.vic.gov.au and fairwork.gov.au returns a usable summary of the holiday lists (snippet level).
+- **Event organisers, pass 2 (calendar-2027, 2026-11-10, 55 calls for 34 findings, every one a real verdict).**
+  Timeouts on every try: masters.com (five across two passes) and fairwork.gov.au public-holiday pages (three, two
+  URLs). 403: classic.austlii.edu.au, mercadoeeventos.com.br. No date on the page: documentasixteen.com (countdown
+  only), drivechipandputt.com, melbcuptravelexperiences.com, expobelgrade2027.org/en home (its dated news items
+  do fetch). Fetch cleanly: astronomia.ign.es, documenta.de/en and its /en/news items (dated), skulptur-projekte.de/en,
+  evora2027.com/en/news, carnevale.venezia.it/en, keukenhof.nl/en, kentuckyderby.com, edfringe.com, laityfamilylife.va,
+  usccb.org news, orangewarsawfestival.pl (dated news), eska.pl, wienerphilharmoniker.at, htu.at, wien.info
+  /de/.../ball-uebersicht-340222 (prints the season's ball dates), visiticeland.com, visitvalencia.com, latomatina.info,
+  emufec.gob.pe, infobae.com, vozpopuli.com, n-kishou.com, jewishfestival.pl, maratonwarszawski.com (news slugs are
+  the lowercased headline), nps.gov, USNO rstt API, tupi.fm, thegolfnewsnet.com (future Masters dates, dated),
+  en.le360.ma, vrc.com.au (season pages only). One fetch per organiser in batches of six to nine was the right shape.
 
 Related: [[verification-patterns]]
