@@ -583,39 +583,48 @@
 /* ---------- phones ---------- */
 @media (max-width: 760px) {
   .pk-stage {
+    /* tall enough that the model fits between the title and the controls */
+    --pk-map-h: max(80svh, 640px);
     height: auto;
     min-height: 0;
     max-height: none;
     overflow: visible;
   }
   .parksmap {
-    height: 80svh;
-    min-height: 520px;
+    height: var(--pk-map-h);
     bottom: auto;
   }
   .pk-stage::before {
     /* reserves the map's height so the card can sit under it in normal flow */
     content: '';
     display: block;
-    height: 80svh;
-    min-height: 520px;
+    height: var(--pk-map-h);
   }
   .pk-stage::after {
-    top: calc(max(80svh, 520px) - 120px);
+    top: calc(var(--pk-map-h) - 120px);
     bottom: auto;
   }
   .pk-title {
-    top: 92px;
+    top: 88px;
+    right: 20px;
+  }
+  .pk-title h1 {
+    font-size: clamp(2.5rem, 11.5vw, 3.1rem);
+    margin-bottom: 0.85rem;
+  }
+  .pk-title p {
+    font-size: 0.98rem;
+    line-height: 1.5;
   }
   .pk-stage.has-park .pk-title {
     opacity: 1;
   }
   .parksmap-sun {
-    top: calc(max(80svh, 520px) - 76px);
+    top: calc(var(--pk-map-h) - 76px);
     bottom: auto;
   }
   .pk-regions {
-    top: calc(max(80svh, 520px) - 132px);
+    top: calc(var(--pk-map-h) - 132px);
     bottom: auto;
   }
   .pk-regions button {
