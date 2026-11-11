@@ -149,7 +149,6 @@ function ParkCard({ park, onClose }) {
 export default function ParksMapPage() {
   const [selected, setSelected] = useState(null)
   const [query, setQuery] = useState('')
-  const [daylight, setDaylight] = useState(false)
   const [hinted, setHinted] = useState(null)
   const stageRef = useRef(null)
   const park = PARKS.find((p) => p.code === selected) || null
@@ -189,20 +188,17 @@ export default function ParksMapPage() {
       <Nav scrolled={true} />
 
       <section
-        className={`pk-stage${park ? ' has-park' : ''}${daylight ? ' is-day' : ''}`}
+        className={`pk-stage${park ? ' has-park' : ''}`}
         ref={stageRef}
         aria-label="The parks map"
       >
-        <ParksMap
-          parks={PARKS}
-          selected={selected}
-          onSelect={setSelected}
-          onDaylight={setDaylight}
-          hinted={hinted}
-        />
+        <ParksMap parks={PARKS} selected={selected} onSelect={setSelected} hinted={hinted} />
         <header className="pk-title">
-          <h1>The Parks Map</h1>
-          <p>Every national park in the United States, standing on real terrain.</p>
+          <h1>Find your national park.</h1>
+          <p>
+            Every U.S. national park is on this map. Pick a marker to see what the park is known for
+            and what it costs at the gate.
+          </p>
         </header>
         {park && <ParkCard park={park} onClose={() => setSelected(null)} />}
       </section>
@@ -259,8 +255,10 @@ export default function ParksMapPage() {
             National Park Service
           </a>
           &rsquo;s own records, read on {checked}. The terrain is measured elevation from the open
-          Terrarium tiles (USGS, SRTM and others), with lakes and borders from Natural Earth.
-          Heights are exaggerated so mountains read at this scale.
+          Terrarium tiles (USGS, SRTM and others), with lakes and borders from Natural Earth. State
+          lines are from Natural Earth too. The model is stylised: heights are exaggerated so
+          mountains read at this scale, and snow is drawn above a set line that drops toward the
+          north. It is not a snow report.
         </p>
       </section>
 

@@ -104,7 +104,7 @@
 }
 .pk-title p {
   margin: 0;
-  max-width: 21rem;
+  max-width: 23rem;
   font-size: 1.05rem;
   line-height: 1.55;
   color: rgba(244, 234, 212, 0.86);
@@ -114,14 +114,6 @@
   opacity: 0;
   transition: opacity 0.35s;
 }
-.pk-stage.is-day .pk-title h1 {
-  color: #14261d;
-}
-.pk-stage.is-day .pk-title p {
-  color: rgba(20, 38, 29, 0.84);
-  text-shadow: none;
-}
-
 /* the sun: just the bar. Left is afternoon, right is night. */
 .parksmap-sun {
   position: absolute;
@@ -429,19 +421,19 @@
     overflow: visible;
   }
   .parksmap {
-    height: 92svh;
-    min-height: 560px;
+    height: 80svh;
+    min-height: 520px;
     bottom: auto;
   }
   .pk-stage::before {
     /* reserves the map's height so the card can sit under it in normal flow */
     content: '';
     display: block;
-    height: 92svh;
-    min-height: 560px;
+    height: 80svh;
+    min-height: 520px;
   }
   .pk-stage::after {
-    top: calc(max(92svh, 560px) - 120px);
+    top: calc(max(80svh, 520px) - 120px);
     bottom: auto;
   }
   .pk-title {

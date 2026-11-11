@@ -211,6 +211,46 @@ export const RELIEF = ${JSON.stringify(
 `,
 )
 
+/* ---------- 3. state lines ---------- */
+// Natural Earth 1:50m internal state boundaries, clipped to the canvas, as plain polylines.
+// Long straight borders are densified so a line can follow the ground it is draped on.
+{
+  const NE = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/'
+  const gj = await getJson(NE + 'ne_50m_admin_1_states_provinces_lines.geojson')
+  const inside = ([lng, lat]) =>
+    lng > BOUNDS.west && lng < BOUNDS.east && lat > BOUNDS.south && lat < BOUNDS.north
+  const lines = []
+  for (const f of gj.features) {
+    const p = f.properties
+    if ((p.adm0_a3 || p.ADM0_A3) !== 'USA') continue
+    const parts = f.geometry.type === 'LineString' ? [f.geometry.coordinates] : f.geometry.coordinates
+    for (const part of parts) {
+      let run = []
+      for (let i = 0; i < part.length; i++) {
+        const pt = part[i]
+        if (!inside(pt)) {
+          if (run.length > 1) lines.push(run)
+          run = []
+          continue
+        }
+        if (run.length) {
+          const [x0, y0] = part[i - 1]
+          const steps = Math.ceil(Math.hypot(pt[0] - x0, pt[1] - y0) / 0.2)
+          for (let s = 1; s < steps; s++) {
+            run.push([x0 + ((pt[0] - x0) * s) / steps, y0 + ((pt[1] - y0) * s) / steps])
+          }
+        }
+        run.push(pt)
+      }
+      if (run.length > 1) lines.push(run)
+    }
+  }
+  if (lines.length < 20) throw new Error('state lines look incomplete')
+  const rounded = lines.map((l) => l.map(([x, y]) => [Math.round(x * 100) / 100, Math.round(y * 100) / 100]))
+  fs.writeFileSync(path.join(ROOT, 'public/outdoors/us-states.json'), JSON.stringify(rounded))
+  console.log(`state lines: ${rounded.length} runs, ${rounded.reduce((n, l) => n + l.length, 0)} points`)
+}
+
 const inBox = parks.filter(
   (p) => p.lng > BOUNDS.west && p.lng < BOUNDS.east && p.lat > BOUNDS.south && p.lat < BOUNDS.north,
 )
