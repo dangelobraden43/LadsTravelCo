@@ -48,11 +48,41 @@
   cursor: pointer;
 }
 .parksmap--flat {
-  display: grid;
-  place-items: end center;
-  padding: 0 24px 80px;
+  background: var(--dusk);
+}
+.parksmap--flat img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 50%;
+}
+.parksmap--flat p {
+  position: absolute;
+  z-index: 2;
+  left: clamp(20px, 5vw, 76px);
+  bottom: 24px;
+  max-width: 26rem;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(13, 20, 18, 0.82);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 0.9rem;
+  line-height: 1.5;
   color: var(--stone-2);
-  text-align: center;
+}
+.parksmap--flat button {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ember);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 /* the stage hands over to the page: the sky's last band fades into the page colour */
 .pk-stage::after {
@@ -201,7 +231,7 @@
   position: absolute;
   z-index: 2;
   left: clamp(20px, 5vw, 76px);
-  bottom: 96px;
+  bottom: 104px;
   display: inline-flex;
   padding: 4px;
   gap: 2px;

@@ -378,10 +378,8 @@ const SLAB_VERT =
 const SLAB_FRAG =
   'uniform vec3 uColor;\nvarying float vLand;\nvoid main() {\n  if (vLand < 0.5) discard;\n  gl_FragColor = vec4(uColor, 1.0);\n}'
 const STRATA = [
-  [-0.16, '#2A2018'],
-  [-0.32, '#211912'],
-  [-0.48, '#18120D'],
-  [-0.64, '#100C09'],
+  [-0.3, '#231A13'],
+  [-0.6, '#120D0A'],
 ]
 function Slab({ frame, relief }) {
   const geometry = useTerrain(frame, relief, 2)
@@ -940,7 +938,12 @@ function Model({ frame, parks, selected, hover, hinted, still, coarse, onHover, 
 function canWebGL() {
   try {
     const c = document.createElement('canvas')
-    return !!(c.getContext('webgl2') || c.getContext('webgl'))
+    const gl = c.getContext('webgl2') || c.getContext('webgl')
+    if (!gl) return false
+    // hand the probe's context straight back: browsers cap how many a tab may hold
+    const lose = gl.getExtension('WEBGL_lose_context')
+    if (lose) lose.loseContext()
+    return true
   } catch {
     return false
   }
@@ -951,7 +954,8 @@ const DUSK = 0.6
 export default function ParksMap({ parks, region, selected, onSelect, hinted }) {
   const frame = FRAMES[region] || FRAMES.lower48
   const [hover, setHover] = useState(null)
-  const [ok] = useState(canWebGL)
+  const [ok, setOk] = useState(canWebGL)
+  const [attempt, setAttempt] = useState(0)
   const still = useMemo(
     () =>
       typeof window !== 'undefined' &&
@@ -989,16 +993,40 @@ export default function ParksMap({ parks, region, selected, onSelect, hinted }) 
 
   if (!ok) {
     return (
-      <div className="parksmap parksmap--flat" role="note">
-        This device can&rsquo;t draw the 3D map. Every park is in the index below.
+      <div className="parksmap parksmap--flat">
+        <img
+          src={`/outdoors/poster-${frame.id}.jpg`}
+          alt={`Relief model of ${frame.label} with a marker on every national park there`}
+        />
+        <p role="status">
+          This browser couldn&rsquo;t start the 3D map, so this is a still picture of it. Every park
+          is in the index below.{' '}
+          <button
+            type="button"
+            onClick={() => {
+              setAttempt((n) => n + 1)
+              setOk(canWebGL())
+            }}
+          >
+            Try the 3D map again
+          </button>
+        </p>
       </div>
     )
   }
   return (
     <div className={`parksmap${hover ? ' is-hovering' : ''}`}>
       <Canvas
+        key={attempt}
         shadows="soft"
-        dpr={[1, coarse ? 1.5 : 1.75]}
+        dpr={[1, 1.5]}
+        onCreated={({ gl }) => {
+          // if the browser takes the graphics context away, fall back to the still picture
+          gl.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault()
+            setOk(false)
+          })
+        }}
         camera={{ fov: 32, near: 1, far: 1200, position: [0, 90, 82] }}
         gl={{ antialias: true, powerPreference: 'high-performance' }}
         aria-label={`Relief model of ${frame.label} with a marker on every national park there. The index below the map reaches every park.`}
@@ -1020,7 +1048,13 @@ export default function ParksMap({ parks, region, selected, onSelect, hinted }) 
         />
         {!coarse && (
           <EffectComposer multisampling={4}>
-            <N8AO aoRadius={1.4} intensity={1.5} distanceFalloff={1.2} quality="medium" />
+            <N8AO
+              aoRadius={1.4}
+              intensity={1.5}
+              distanceFalloff={1.2}
+              quality="performance"
+              halfRes
+            />
             <TiltShift2 blur={0.04} />
             <Vignette offset={0.3} darkness={0.55} />
             <Noise opacity={0.03} />
