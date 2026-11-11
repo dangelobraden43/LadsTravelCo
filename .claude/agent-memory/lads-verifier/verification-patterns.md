@@ -310,4 +310,19 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   refuted (its value field has null dates that must not render) and put the correct row, with where it was read,
   in the reason and in the handback so the orchestrator can add a finding.
 
+- **Event-ticket runs re-verified a month later (Rugby World Cup, 2026-11-10).** An official page's "every match
+  is available" line can belong to the hospitality block, not the standard sale: ask the fetch which block or
+  heading each sentence sits under. New official seller classes appear between waves (a second list of
+  "official hospitality agents" was announced six days before the verify): fetch the organiser's newest news
+  ids before confirming any "sold only by" or "only official if on list X" claim. Infrastructure opens between
+  research and verify (a second city airport broke "one airport per host city"). A hotel-data release's
+  year-on-year percentages were pinned to the wrong city; ask which market each figure belongs to. A same-day
+  agent read of a seller landing page missed a third product tier. "Guides disagree on which venue" was one
+  site at two dates (old tenant closed, new one moved in): search "<venue> closed" before keeping the trap.
+  Route tables list a city without saying nonstop (a JFK flight ran via Auckland). Card "lowest fee with a
+  route to X" lines miss a no-fee card in the agent's own list. Award ranges: the low end came from an undated
+  chart aggregator and the "conflicting" figure was another cabin's price; the airline's own chart settled both.
+- **proposedClaim cannot carry "under AUD 100" or a set fare** either; write the pair as a range or point to
+  "the rate printed on the page".
+
 Related: [[source-access-notes]]

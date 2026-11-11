@@ -276,4 +276,25 @@ metadata:
   the lowercased headline), nps.gov, USNO rstt API, tupi.fm, thegolfnewsnet.com (future Masters dates, dated),
   en.le360.ma, vrc.com.au (season pages only). One fetch per organiser in batches of six to nine was the right shape.
 
+- **Australia / Rugby World Cup (2026-11-10, 99 calls for 207 findings, 169 real verdicts).** Official airline
+  award charts that fail on fetch (alaskaair.com chart page truncates, qantas.com tables time out) DO answer a
+  WebSearch restricted with `allowed_domains` to the airline's own domain: the summary quotes the chart rows
+  and units. Same trick for health.gov.au and acma.gov.au (fetch timeouts), immi.homeaffairs.gov.au,
+  travel.state.gov, au.usembassy.gov, agriculture.gov.au and transportnsw.info concession pages. aa.com 403.
+  Fetch cleanly: rugbyworldcup.com tickets and news pages, world.rugby news, experiences.rugbyworldcup.com
+  (hospitality-packages prints every 'from' price; travel-packages loads prices after a date picker; FAQ pages
+  fine), scottishrugby.org, stadiums.qld.gov.au, rugby.com.au, transportnsw.info adult-opal-fares,
+  translink.com.au fares-and-zones, transperth.wa.gov.au fares, sydneyoperahouse.com tour pages, gocity.com,
+  ngv.vic.gov.au, australian.museum, mona.net.au/visit, planning.nsw.gov.au STRA page, sro.vic.gov.au,
+  wa.gov.au STRA FAQ, rba.gov.au, australia.com key facts, nsw.gov.au daylight-saving, climatestotravel.com,
+  numbeo, nomadicmatt, pointhacks.com.au, upgradedpoints, awardwallet, frequentmiler (?p= links work),
+  thepointsguy, awardfares, thriftytraveler, chase/capitalone/citi/bilt card pages (Chase's partner list is not
+  in the fetched text), ihgplc.com, ewn.co.za, airwaysmag.com. Fail: the ticketing site rwc2027.rugbyworldcup.com
+  (401), str.com (403), optusstadium.com.au (403), inqld.com.au (403), world.rugby/media-zone article ids
+  (land on a generic page). Old transportnsw.info/events/<year>/<month>/<slug> pages redirect to the current
+  events listing, which at least shows the venue names in use today. Long Wikipedia airport pages need
+  `offset` (the airline tables start around character 60,000 to 100,000); a Wikipedia fixture read disagreed
+  with a state stadium operator by a day on two matches, so prefer the operator. Wikidata SPARQL with P625,
+  P31 and P576 for 11 QIDs returned every row in one fetch.
+
 Related: [[verification-patterns]]

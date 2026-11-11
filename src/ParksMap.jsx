@@ -142,7 +142,18 @@ function useTerrain(relief, step) {
         pos[i * 3 + 1] = isLand ? t * RISE : 0
         pos[i * 3 + 2] = ((r * step) / (rows - 1)) * D - D / 2
         elev[i] = isLand ? t : 0
-        land[i] = isLand ? 1 : 0
+        let sum = 0
+        let n = 0
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            const rr = r * step + dr
+            const cc = c * step + dc
+            if (rr < 0 || cc < 0 || rr >= rows || cc >= cols) continue
+            sum += relief.land[rr * cols + cc]
+            n++
+          }
+        }
+        land[i] = sum / n // a 3x3 mean, so the shader's cut at 0.5 runs smoothly between cells
       }
     }
     const idx = new Uint32Array((nc - 1) * (nr - 1) * 6)
@@ -154,7 +165,7 @@ function useTerrain(relief, step) {
         const d = a + nc
         const e = d + 1
         // Only the United States is drawn: the country is a cut-out standing in the sky.
-        if (land[a] + land[b] + land[d] + land[e] === 0) continue
+        if (land[a] + land[b] + land[d] + land[e] < 0.01) continue
         idx[k++] = a
         idx[k++] = d
         idx[k++] = b
@@ -281,7 +292,7 @@ const KEYS = [
     low: hex('#B5633C'),
     glow: 1,
     glowY: 0.64,
-    stars: 0.25,
+    stars: 0,
     dark: 0.8,
   },
   {
@@ -338,14 +349,14 @@ const STARS = (() => {
   let seed = 7
   const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646
   for (let i = 0; i < 260; i++)
-    out.push([rnd(), rnd() * 0.6, 0.4 + rnd() * 0.9, 0.35 + rnd() * 0.65])
+    out.push([rnd(), rnd() * 0.62, 0.5 + rnd() * 0.9, 0.3 + rnd() * 0.7])
   return out
 })()
 
 function makeSkyTexture() {
   const c = document.createElement('canvas')
-  c.width = 512
-  c.height = 512
+  c.width = 1024
+  c.height = 1024
   const t = new THREE.CanvasTexture(c)
   t.colorSpace = THREE.SRGBColorSpace
   return t
@@ -360,32 +371,32 @@ function Sky({ atmo }) {
     const g = c.getContext('2d')
     const css = (col) => `#${col.getHexString()}`
     const ground = atmo.mid.clone().lerp(new THREE.Color('#0F1714'), 0.55 + atmo.dark * 0.45)
-    const grad = g.createLinearGradient(0, 0, 0, 512)
+    const grad = g.createLinearGradient(0, 0, 0, 1024)
     grad.addColorStop(0, css(atmo.top))
     grad.addColorStop(0.42, css(atmo.mid))
     grad.addColorStop(0.62, css(atmo.low))
     grad.addColorStop(0.8, css(ground))
     grad.addColorStop(1, '#0F1714')
     g.fillStyle = grad
-    g.fillRect(0, 0, 512, 512)
+    g.fillRect(0, 0, 1024, 1024)
     if (atmo.stars > 0.01) {
       for (const [x, y, r, a] of STARS) {
         g.fillStyle = `rgba(232,238,255,${(a * atmo.stars).toFixed(3)})`
         g.beginPath()
-        g.arc(x * 512, y * 512, r, 0, Math.PI * 2)
+        g.arc(x * 1024, y * 1024, r, 0, Math.PI * 2)
         g.fill()
       }
     }
     if (atmo.glow > 0.01) {
       // the west is on the left of the map, so that is where the light goes down
-      const cy = atmo.glowY * 512
-      const rg = g.createRadialGradient(56, cy, 0, 56, cy, 420)
+      const cy = atmo.glowY * 1024
+      const rg = g.createRadialGradient(112, cy, 0, 112, cy, 840)
       rg.addColorStop(0, `rgba(255,214,150,${0.95 * atmo.glow})`)
       rg.addColorStop(0.16, `rgba(244,160,86,${0.7 * atmo.glow})`)
       rg.addColorStop(0.42, `rgba(170,96,84,${0.3 * atmo.glow})`)
       rg.addColorStop(1, 'rgba(120,80,90,0)')
       g.fillStyle = rg
-      g.fillRect(0, 0, 512, 512)
+      g.fillRect(0, 0, 1024, 1024)
     }
     live.current.needsUpdate = true
   }, [atmo])
@@ -545,10 +556,10 @@ function homeView(camera, size) {
   const half = Math.tan((camera.fov * Math.PI) / 360)
   const aspect = size.width / size.height
   const wide = aspect > 1.25
-  const share = wide ? 0.7 : 0.96 // how much of the width the country may take
+  const share = wide ? 0.6 : 0.96 // how much of the width the country may take
   const dist = Math.max(W / (2 * half * aspect * share), (D * 1.45) / (2 * half))
   const visibleW = 2 * half * aspect * dist
-  return { dist, x: wide ? -visibleW * 0.13 : 0, z: -dist * (wide ? 0.07 : 0.2) }
+  return { dist, x: wide ? -visibleW * 0.17 : 0, z: -dist * (wide ? 0.07 : 0.03) }
 }
 
 function Rig({ focus, still, coarse, groundAt }) {
@@ -564,8 +575,11 @@ function Rig({ focus, still, coarse, groundAt }) {
     const w = want.current
     if (focus) {
       const [x, z] = project(focus.lat, focus.lng)
-      w.target.set(x, groundAt(focus.lat, focus.lng), z)
       w.offset.set(0, 22, 22)
+      // on a wide screen the park card covers the right side, so the park sits left of centre
+      const aspect = size.width / size.height
+      const visibleW = 2 * Math.tan((camera.fov * Math.PI) / 360) * aspect * w.offset.length()
+      w.target.set(x + (aspect > 1.25 ? visibleW * 0.16 : 0), groundAt(focus.lat, focus.lng), z)
     } else {
       const home = homeView(camera, size)
       w.target.set(home.x, 0, home.z)
@@ -789,7 +803,7 @@ export default function ParksMap({ parks, selected, onSelect, onDaylight }) {
               intensity={0.9}
               radius={0.7}
             />
-            <TiltShift2 blur={0.1} />
+            <TiltShift2 blur={0.045} />
             <Vignette offset={0.28} darkness={0.5} />
             <Noise opacity={0.035} />
           </EffectComposer>
