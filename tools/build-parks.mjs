@@ -211,6 +211,45 @@ export const RELIEF = ${JSON.stringify(
 `,
 )
 
+/* ---------- 4. park boundaries ---------- */
+// The Park Service's own boundary polygons (Land Resources Division, the authoritative
+// tract and boundary service), looked up by unit code, never by name.
+{
+  const SERVICE =
+    'https://services1.arcgis.com/fBc8EJBxQRMcHlei/arcgis/rest/services/NPS_Land_Resources_Division_Boundary_and_Tract_Data_Service/FeatureServer/2/query'
+  // one roster record, two boundary units
+  const UNITS = { seki: ['SEQU', 'KICA'] }
+  const out = {}
+  const missing = []
+  for (const p of parks) {
+    // only parks on the lower-48 canvas are drawn, so only those are shipped
+    if (!(p.lng > BOUNDS.west && p.lng < BOUNDS.east && p.lat > BOUNDS.south && p.lat < BOUNDS.north)) continue
+    const codes = UNITS[p.code] || [p.code.toUpperCase()]
+    const rings = []
+    for (const code of codes) {
+      const q = new URLSearchParams({
+        where: `UNIT_CODE='${code}'`,
+        outFields: 'UNIT_CODE',
+        returnGeometry: 'true',
+        outSR: '4326',
+        maxAllowableOffset: '0.012',
+        f: 'json',
+      })
+      const j = await getJson(`${SERVICE}?${q}`)
+      for (const f of j.features || []) {
+        for (const ring of f.geometry?.rings || []) {
+          if (ring.length < 5) continue
+          rings.push(ring.map(([x, y]) => [Math.round(x * 1000) / 1000, Math.round(y * 1000) / 1000]))
+        }
+      }
+    }
+    if (rings.length) out[p.code] = rings
+    else missing.push(p.code)
+  }
+  fs.writeFileSync(path.join(ROOT, 'public/outdoors/park-bounds.json'), JSON.stringify(out))
+  console.log(`park boundaries: ${Object.keys(out).length} on the canvas` + (missing.length ? `, none for ${missing.join(', ')}` : ''))
+}
+
 /* ---------- 3. state lines ---------- */
 // Natural Earth 1:50m internal state boundaries, clipped to the canvas, as plain polylines.
 // Long straight borders are densified so a line can follow the ground it is draped on.

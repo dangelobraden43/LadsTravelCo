@@ -19,7 +19,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Html } from '@react-three/drei'
-import { EffectComposer, TiltShift2, Vignette, Noise } from '@react-three/postprocessing'
+import { EffectComposer, N8AO, TiltShift2, Vignette, Noise } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { RELIEF } from './data/usRelief'
 
@@ -142,6 +142,50 @@ function useStateLines(relief) {
     }
   }, [relief])
   return geometry
+}
+
+/* Each park's real outline, from the Park Service's boundary service, draped on the ground. */
+function useParkBounds(relief) {
+  const [layers, setLayers] = useState(null)
+  useEffect(() => {
+    if (!relief) return undefined
+    let live = true
+    window
+      .fetch('/outdoors/park-bounds.json')
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((byPark) => {
+        if (!live) return
+        const all = []
+        const byCode = {}
+        for (const [code, rings] of Object.entries(byPark)) {
+          const pos = []
+          for (const ring of rings) {
+            const [lng0, lat0] = ring[0]
+            if (!inCanvas({ lat: lat0, lng: lng0 })) continue
+            for (let i = 1; i < ring.length; i++) {
+              for (const [lng, lat] of [ring[i - 1], ring[i]]) {
+                const [x, z] = project(lat, lng)
+                pos.push(x, relief.groundAt(lat, lng) + 0.05, z)
+              }
+            }
+          }
+          if (!pos.length) continue
+          const g = new THREE.BufferGeometry()
+          g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3))
+          byCode[code] = g
+          all.push(...pos)
+        }
+        if (!all.length) return
+        const merged = new THREE.BufferGeometry()
+        merged.setAttribute('position', new THREE.BufferAttribute(new Float32Array(all), 3))
+        setLayers({ all: merged, byCode })
+      })
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [relief])
+  return layers
 }
 
 /* ---------- the ink ---------- */
@@ -267,7 +311,7 @@ const FRAG_INK = [
   'diffuseColor.rgb = mix(paper, col, laid);',
 ].join('\n')
 
-function Terrain({ relief, step, still, lines }) {
+function Terrain({ relief, step, still, lines, parkBounds, activeCode }) {
   const geometry = useTerrain(relief, step)
   const ramp = useRamp()
   const ref = useRef()
@@ -306,6 +350,22 @@ function Terrain({ relief, step, still, lines }) {
       {lines && (
         <lineSegments geometry={lines}>
           <lineBasicMaterial color="#F4EAD4" transparent opacity={0.17} depthWrite={false} />
+        </lineSegments>
+      )}
+      {parkBounds && (
+        <lineSegments geometry={parkBounds.all}>
+          <lineBasicMaterial
+            color="#F2B45A"
+            transparent
+            opacity={0.6}
+            depthWrite={false}
+            toneMapped={false}
+          />
+        </lineSegments>
+      )}
+      {parkBounds && activeCode && parkBounds.byCode[activeCode] && (
+        <lineSegments geometry={parkBounds.byCode[activeCode]} renderOrder={5}>
+          <lineBasicMaterial color="#FFE9BE" depthTest={false} toneMapped={false} />
         </lineSegments>
       )}
     </group>
@@ -378,7 +438,7 @@ const KEYS = [
     sunI: 2.5,
     hemiSky: hex('#8497B8'),
     hemiGround: hex('#0F1714'),
-    hemiI: 0.5,
+    hemiI: 0.62,
     table: hex('#121A18'),
     wash: 1,
     dark: 0.8,
@@ -836,6 +896,7 @@ const DUSK = 0.6
 export default function ParksMap({ parks, selected, onSelect, hinted }) {
   const relief = useRelief()
   const lines = useStateLines(relief)
+  const parkBounds = useParkBounds(relief)
   const [hover, setHover] = useState(null)
   const [ok] = useState(canWebGL)
   const still = useMemo(
@@ -896,7 +957,14 @@ export default function ParksMap({ parks, selected, onSelect, hinted }) {
         <SunLight atmo={atmo} coarse={coarse} />
         {relief && (
           <>
-            <Terrain relief={relief} step={coarse ? 2 : 1} still={still} lines={lines} />
+            <Terrain
+              relief={relief}
+              step={coarse ? 2 : 1}
+              still={still}
+              lines={lines}
+              parkBounds={parkBounds}
+              activeCode={selected || hover || hinted}
+            />
             {!coarse && <Slab relief={relief} />}
             <Markers
               parks={onMap}
@@ -917,6 +985,7 @@ export default function ParksMap({ parks, selected, onSelect, hinted }) {
         )}
         {!coarse && (
           <EffectComposer multisampling={4}>
+            <N8AO aoRadius={1.4} intensity={1.5} distanceFalloff={1.2} quality="medium" />
             <TiltShift2 blur={0.04} />
             <Vignette offset={0.3} darkness={0.55} />
             <Noise opacity={0.03} />
