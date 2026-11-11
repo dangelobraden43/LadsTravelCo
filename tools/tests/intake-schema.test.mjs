@@ -33,3 +33,15 @@ test('a companion needs only a name', () => {
   assert.equal(validateCompanion({ ...emptyCompanion(), name: 'Jordan' }).ok, true)
   assert.equal(validateCompanion(emptyCompanion()).ok, false)
 })
+
+test('trip length: nights are computed for fixed dates and labelled plainly', async () => {
+  const { nightsBetween, nightsLabel } = await import('../../src/intake/schema.js')
+  assert.equal(nightsBetween('2027-03-01', '2027-03-08'), 7)
+  assert.equal(nightsBetween('2027-03-08', '2027-03-01'), null)
+  assert.equal(nightsBetween('', '2027-03-01'), null)
+  assert.equal(nightsBetween('2027-03-13', '2027-03-15'), 2) // across a US clock change
+  assert.equal(nightsLabel(1), '1 night')
+  assert.equal(nightsLabel(7), '7 nights')
+  assert.equal(nightsLabel(0), 'Day trip')
+  assert.equal(nightsLabel(null), '')
+})

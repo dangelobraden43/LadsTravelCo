@@ -1,4 +1,4 @@
-import { normalizeIntake, validateIntake } from '../src/intake/schema.js'
+import { normalizeIntake, validateIntake, nightsBetween, nightsLabel } from '../src/intake/schema.js'
 import { hardLimits } from '../src/intake/limits.js'
 import { mintToken } from './_lib/token.js'
 import { checkSpam } from './_lib/spam.js'
@@ -15,7 +15,7 @@ function triage(d) {
     Email: d.email,
     Phone: d.phone,
     Destination: d.destMode === 'help' ? `Help choose: ${d.feels.join(', ')}` : d.dest,
-    Dates: d.dateMode === 'fixed' ? `${d.start} to ${d.end}` : `${d.length} in ${d.months.join('/')}`,
+    Dates: d.dateMode === 'fixed' ? `${d.start} to ${d.end} (${nightsLabel(nightsBetween(d.start, d.end))})` : `${d.length} in ${d.months.join('/')}`,
     Party: d.adults + d.kids,
     Budget: `${d.budget} ${d.budgetMode === 'day' ? 'per day' : 'per trip'} (${d.firm || 'firmness not given'})`,
     Occasion: d.occasion,
