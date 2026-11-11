@@ -29,6 +29,8 @@ const ASPECT =
 const D = W / ASPECT
 const RISE = 3.4 // world units at maxMetres: exaggerated so relief reads at continental scale
 const BANDS = 16 // ink layers; spaced so lowlands get as many as the high country
+/* 0 to 1: how far up the land the ink has been laid. One map per page, so one shared uniform. */
+const REVEAL = { value: 1 }
 
 export function inCanvas(park) {
   return (
@@ -194,6 +196,7 @@ function Terrain({ relief, step, still }) {
     m.onBeforeCompile = (shader) => {
       shader.uniforms.uRamp = { value: ramp }
       shader.uniforms.uBands = { value: BANDS }
+      shader.uniforms.uReveal = REVEAL
       shader.vertexShader = shader.vertexShader
         .replace(
           '#include <common>',
@@ -206,7 +209,7 @@ function Terrain({ relief, step, still }) {
       shader.fragmentShader = shader.fragmentShader
         .replace(
           '#include <common>',
-          '#include <common>\nuniform sampler2D uRamp;\nuniform float uBands;\nvarying float vElev;\nvarying float vLand;'
+          '#include <common>\nuniform sampler2D uRamp;\nuniform float uBands;\nuniform float uReveal;\nvarying float vElev;\nvarying float vLand;'
         )
         .replace(
           '#include <color_fragment>',
@@ -219,7 +222,9 @@ function Terrain({ relief, step, still }) {
             'float f = fract(e);',
             'float w = max(fwidth(e), 0.00001);',
             'float line = 1.0 - smoothstep(w * 0.6, w * 1.6, min(f, 1.0 - f));',
-            'diffuseColor.rgb = mix(ink, ink * 0.42, line * 0.5);',
+            'float laid = smoothstep(0.0, 0.07, uReveal * 1.12 - band);',
+            'vec3 paper = texture2D(uRamp, vec2(0.004, 0.5)).rgb;',
+            'diffuseColor.rgb = mix(paper, mix(ink, ink * 0.42, line * 0.5), laid);',
           ].join('\n')
         )
     }
@@ -230,6 +235,9 @@ function Terrain({ relief, step, still }) {
     if (t0.current === null) t0.current = clock.elapsedTime
     const p = Math.min(1, (clock.elapsedTime - t0.current) / 2.2)
     ref.current.scale.y = 0.02 + 0.98 * (1 - Math.pow(1 - p, 3)) // the land rises, once
+    // ...and the ink follows it up, lowlands first, summits last
+    const q = Math.min(1, Math.max(0, (clock.elapsedTime - t0.current - 0.5) / 2.8))
+    REVEAL.value = q * q * (3 - 2 * q)
   })
   return (
     <mesh
@@ -574,6 +582,7 @@ function Rig({ focus, still, coarse, groundAt }) {
   useEffect(() => {
     const w = want.current
     if (focus) {
+      w.slow = false
       const [x, z] = project(focus.lat, focus.lng)
       w.offset.set(0, 22, 22)
       // on a wide screen the park card covers the right side, so the park sits left of centre
@@ -587,17 +596,29 @@ function Rig({ focus, still, coarse, groundAt }) {
     }
     w.moving = true
   }, [focus, camera, size, groundAt])
-  useFrame(() => {
+  useFrame((_, dt) => {
     const c = controls.current
     if (!c) return
     const w = want.current
     if (w.moving) {
-      const k = still || w.first ? 1 : 0.065
+      if (w.first && !still && !focus) {
+        // open from high overhead, then settle to the home angle
+        const d = w.offset.length() * 1.3
+        c.target.copy(w.target)
+        camera.position.copy(w.target).add(new THREE.Vector3(0, 0.995, 0.1).multiplyScalar(d))
+        w.first = false
+        w.slow = true
+      }
+      // time-based, so a slow device takes the same seconds as a fast one
+      const k = still || w.first ? 1 : 1 - Math.exp(-Math.min(dt, 0.25) * (w.slow ? 1.3 : 4))
       w.first = false
       c.target.lerp(w.target, k)
       const goal = w.target.clone().add(w.offset)
       camera.position.lerp(goal, k)
-      if (camera.position.distanceTo(goal) < 0.05) w.moving = false
+      if (camera.position.distanceTo(goal) < 0.05) {
+        w.moving = false
+        w.slow = false
+      }
     }
     c.update()
   })
@@ -709,7 +730,7 @@ function canWebGL() {
 
 const DUSK = 0.66
 
-export default function ParksMap({ parks, selected, onSelect, onDaylight }) {
+export default function ParksMap({ parks, selected, onSelect, onDaylight, hinted }) {
   const relief = useRelief()
   const [hover, setHover] = useState(null)
   const [ok] = useState(canWebGL)
@@ -725,7 +746,8 @@ export default function ParksMap({ parks, selected, onSelect, onDaylight }) {
   )
   const [sun, setSun] = useState(still ? DUSK : 0.3)
   const touched = useRef(false)
-  const onMap = useMemo(() => parks.filter(inCanvas), [parks])
+  // night arrives from the east, so the lights come on east to west
+  const onMap = useMemo(() => parks.filter(inCanvas).sort((a, b) => b.lng - a.lng), [parks])
   const focus = onMap.find((p) => p.code === selected) || null
   const atmo = useMemo(() => atmosphere(sun), [sun])
 
@@ -779,7 +801,7 @@ export default function ParksMap({ parks, selected, onSelect, onDaylight }) {
             <Lights
               parks={onMap}
               selected={selected}
-              hover={hover}
+              hover={hover || hinted}
               still={still}
               dark={atmo.dark}
               groundAt={relief.groundAt}
@@ -810,7 +832,7 @@ export default function ParksMap({ parks, selected, onSelect, onDaylight }) {
         )}
       </Canvas>
       <label className="parksmap-sun">
-        <span className="parksmap-sun-name">Move the sun</span>
+        <span className="pk-sr">Time of day, from afternoon to night</span>
         <input
           type="range"
           min="0"
@@ -820,9 +842,6 @@ export default function ParksMap({ parks, selected, onSelect, onDaylight }) {
           onChange={moveSun}
           aria-valuetext={phaseName(sun)}
         />
-        <span className="parksmap-sun-now" aria-hidden="true">
-          {phaseName(sun)}
-        </span>
       </label>
     </div>
   )

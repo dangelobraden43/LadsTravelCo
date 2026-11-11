@@ -150,6 +150,7 @@ export default function ParksMapPage() {
   const [selected, setSelected] = useState(null)
   const [query, setQuery] = useState('')
   const [daylight, setDaylight] = useState(false)
+  const [hinted, setHinted] = useState(null)
   const stageRef = useRef(null)
   const park = PARKS.find((p) => p.code === selected) || null
 
@@ -184,12 +185,6 @@ export default function ParksMapPage() {
         />
         <link rel="canonical" href="https://ladstravel.com/outdoors/parks" />
         <meta name="robots" content="noindex" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&display=swap"
-        />
       </Helmet>
       <Nav scrolled={true} />
 
@@ -203,14 +198,11 @@ export default function ParksMapPage() {
           selected={selected}
           onSelect={setSelected}
           onDaylight={setDaylight}
+          hinted={hinted}
         />
         <header className="pk-title">
-          <h1>
-            The
-            <br />
-            Parks Map
-          </h1>
-          <p>Every national park in the United States, on real terrain. Pick a light.</p>
+          <h1>The Parks Map</h1>
+          <p>Every national park in the United States, standing on real terrain.</p>
         </header>
         {park && <ParkCard park={park} onClose={() => setSelected(null)} />}
       </section>
@@ -240,6 +232,10 @@ export default function ParksMapPage() {
                       className={p.code === selected ? 'is-active' : undefined}
                       aria-pressed={p.code === selected}
                       onClick={() => chooseFromIndex(p.code)}
+                      onPointerEnter={() => setHinted(p.code)}
+                      onPointerLeave={() => setHinted(null)}
+                      onFocus={() => setHinted(p.code)}
+                      onBlur={() => setHinted(null)}
                     >
                       <span className="pk-index-name">{shortName(p)}</span>
                       <span className="pk-index-dots" aria-hidden="true" />
