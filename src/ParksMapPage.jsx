@@ -256,9 +256,10 @@ export default function ParksMapPage() {
           </a>
           &rsquo;s own records, read on {checked}. The terrain is measured elevation from the open
           Terrarium tiles (USGS, SRTM and others), with lakes and borders from Natural Earth. State
-          lines are from Natural Earth too. The model is stylised: heights are exaggerated so
-          mountains read at this scale, and snow is drawn above a set line that drops toward the
-          north. It is not a snow report.
+          lines are from Natural Earth too, and each park outline is the Park Service&rsquo;s own
+          boundary record. The model is stylised: heights are exaggerated so mountains read at this
+          scale, and snow is drawn above a set line that drops toward the north. It is not a snow
+          report.
         </p>
       </section>
 
