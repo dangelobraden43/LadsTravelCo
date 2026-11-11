@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom'
 import { Nav } from './App'
 import Footer from './Footer'
 import { PARKS, PARKS_SOURCE } from './data/nationalParks'
-import { PARK_TRAILS, TRAILS_SOURCE, UNRANKED_PARKS } from './data/parkTrails'
+import { PARK_HIKES, HIKES_SOURCE } from './data/parkHikes'
 import ParksMap, { REGIONS, shortName } from './ParksMap'
 import './ParksMapPage.css'
 
@@ -96,21 +96,11 @@ const PLAN_AROUND = [
 ]
 const thingsToDo = (park) => PLAN_AROUND.filter((a) => park.activities.includes(a)).slice(0, 6)
 
-const trailsChecked = new Date(TRAILS_SOURCE.checkedOn + 'T12:00:00').toLocaleDateString('en-US', {
+const hikesChecked = new Date(HIKES_SOURCE.checkedOn + 'T12:00:00').toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
   year: 'numeric',
 })
-function trailFacts(t) {
-  return [
-    t.miles !== null && `${t.miles} mi`,
-    t.climbFeet !== null && `${t.climbFeet.toLocaleString('en-US')} ft climb`,
-    t.difficulty,
-    t.route,
-  ]
-    .filter(Boolean)
-    .join(', ')
-}
 
 function ParkCard({ park, onClose }) {
   const ref = useRef(null)
@@ -118,8 +108,7 @@ function ParkCard({ park, onClose }) {
     if (ref.current) ref.current.scrollTop = 0
   }, [park.code])
   const fees = park.entranceFees.slice(0, 4).map(fee)
-  const trails = PARK_TRAILS[park.code] || []
-  const ranked = !UNRANKED_PARKS.includes(park.code)
+  const hikes = PARK_HIKES[park.code] || []
   return (
     <aside className="pk-card" ref={ref} aria-live="polite" aria-label={park.name}>
       <button type="button" className="pk-card-close" onClick={onClose}>
@@ -133,29 +122,20 @@ function ParkCard({ park, onClose }) {
           <p className="pk-card-credit">Description from the National Park Service</p>
         </>
       )}
-      {trails.length > 0 && (
-        <section className="pk-trails" aria-label="Trails">
-          <h3>{ranked ? 'Most popular trails' : 'Trails in the park'}</h3>
+      {hikes.length > 0 && (
+        <section className="pk-trails" aria-label="Hikes the Park Service lists">
+          <h3>Hikes the Park Service lists</h3>
           <ol>
-            {trails.map((t) => (
-              <li key={t.id}>
-                <a href={t.url} target="_blank" rel="noopener noreferrer">
-                  {t.name}
+            {hikes.map((h) => (
+              <li key={h.id}>
+                <a href={h.url} target="_blank" rel="noopener noreferrer">
+                  {h.title}
                 </a>
-                <span>
-                  {trailFacts(t)}
-                  {t.closed && '. Listed as closed when checked'}
-                </span>
+                {h.duration && <span>{h.duration.toLowerCase()}</span>}
               </li>
             ))}
           </ol>
-          <p className="pk-card-credit">
-            {ranked ? 'Ranked by popularity on' : 'From'}{' '}
-            <a href={TRAILS_SOURCE.url} target="_blank" rel="noopener noreferrer">
-              AllTrails
-            </a>
-            , checked {trailsChecked}
-          </p>
+          <p className="pk-card-credit">From the National Park Service, checked {hikesChecked}</p>
         </section>
       )}
       {fees.length > 0 && (

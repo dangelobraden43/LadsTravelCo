@@ -26,7 +26,10 @@ import { PNG } from 'pngjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = path.join(ROOT, 'public/outdoors')
-const TODAY = new Date().toISOString().slice(0, 10)
+const now = new Date()
+const TODAY = [now.getFullYear(), now.getMonth() + 1, now.getDate()]
+  .map((n) => String(n).padStart(2, '0'))
+  .join('-') // the local date: toISOString() is UTC and reads a day ahead in the evening
 const KEY = process.env.NPS_API_KEY || 'DEMO_KEY'
 const NE = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/'
 
