@@ -718,14 +718,24 @@ function Markers({ frame, parks, selected, hover, still, groundAt }) {
 
 /* ---------- camera ---------- */
 const HOME_DIR = new THREE.Vector3(0, 0.74, 0.67).normalize()
-/** The home view. On a wide screen the model sits right of the title; on a tall one, under it. */
-function homeView(camera, size, frame) {
+/** The home view. On a wide screen the model sits right of the title; on a tall one it is
+ * fitted into the band between the title above it and the controls below it (`clear`, in
+ * pixels), so the page's text never lies across the north of the map. */
+function homeView(camera, size, frame, clear) {
   const half = Math.tan((camera.fov * Math.PI) / 360)
   const aspect = size.width / size.height
   const wide = aspect > 1.25
   const share = wide ? 0.6 : 0.96 // how much of the width the model may take
   // a region that is deep north to south (Alaska, Hawaii) needs more room top and bottom
   const deep = frame.D > 60
+  if (!wide && clear) {
+    const band = Math.max(120, size.height - clear.top - clear.bottom)
+    // what the model's depth and its highest ground cover on screen, seen from HOME_DIR
+    const tall = frame.D * HOME_DIR.y + RISE * HOME_DIR.z
+    const dist = Math.max(W / (2 * half * aspect * share), (tall * size.height) / (2 * half * band))
+    const centre = (clear.top + band / 2) / size.height - 0.5 // + is below the middle
+    return { dist, x: 0, z: (-centre * 2 * half * dist) / HOME_DIR.y }
+  }
   const dist = Math.max(
     W / (2 * half * aspect * share),
     (frame.D * (deep ? 1.62 : 1.45)) / (2 * half)
@@ -738,9 +748,22 @@ function homeView(camera, size, frame) {
   }
 }
 
+/* How much of the canvas the page's own text and controls cover, top and bottom. */
+function clearance(canvas) {
+  const stage = canvas.closest('.pk-stage')
+  const title = stage && stage.querySelector('.pk-title')
+  const regions = stage && stage.querySelector('.pk-regions')
+  if (!title || !regions) return null
+  const box = canvas.getBoundingClientRect()
+  return {
+    top: title.getBoundingClientRect().bottom - box.top + 14,
+    bottom: box.bottom - regions.getBoundingClientRect().top + 14,
+  }
+}
+
 function Rig({ frame, focus, still, coarse, groundAt }) {
   const controls = useRef()
-  const { camera, size } = useThree()
+  const { camera, size, gl } = useThree()
   const want = useRef({
     target: new THREE.Vector3(),
     offset: new THREE.Vector3(),
@@ -759,12 +782,12 @@ function Rig({ frame, focus, still, coarse, groundAt }) {
       const visibleW = 2 * Math.tan((camera.fov * Math.PI) / 360) * aspect * w.offset.length()
       w.target.set(x + (aspect > 1.25 ? visibleW * 0.16 : 0), groundAt(focus.lat, focus.lng), z)
     } else {
-      const home = homeView(camera, size, frame)
+      const home = homeView(camera, size, frame, clearance(gl.domElement))
       w.target.set(home.x, 0, home.z)
       w.offset.copy(HOME_DIR).multiplyScalar(home.dist)
     }
     w.moving = true
-  }, [frame, focus, camera, size, groundAt])
+  }, [frame, focus, camera, size, gl, groundAt])
   useFrame((_, dt) => {
     const c = controls.current
     if (!c) return
