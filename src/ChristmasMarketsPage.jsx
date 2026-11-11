@@ -245,7 +245,14 @@ function Finder() {
           </div>
         </div>
         <p className="xm-note">
-          The thin gold line is Christmas Day. Bruges’ season runs on to Feb 14.
+          The thin gold line is Christmas Day.
+          {/* derived, never typed: this line once said Feb 14 after the data had moved to Jan 31 */}
+          {MARKETS.filter((m) => m.end && Date.parse(m.end) > HI).map((m) => (
+            <span key={m.id}>
+              {' '}
+              {m.city}’s season runs on to {fmt(m.end)}.
+            </span>
+          ))}
         </p>
 
         {m && (

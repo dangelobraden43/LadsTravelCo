@@ -8,6 +8,7 @@
   "redirects": [
     { "source": "/explore", "destination": "/global", "permanent": true },
     { "source": "/adventure", "destination": "/outdoors", "permanent": true },
+    { "source": "/outdoors/parks", "destination": "/outdoors", "permanent": false },
     { "source": "/plan", "destination": "/", "permanent": true },
     { "source": "/story", "destination": "/", "permanent": true },
     { "source": "/good-news", "destination": "/local", "permanent": true },
@@ -17,7 +18,6 @@
   "rewrites": [
     { "source": "/global", "destination": "/" },
     { "source": "/outdoors", "destination": "/" },
-    { "source": "/outdoors/parks", "destination": "/" },
     { "source": "/bucket-list", "destination": "/" },
     { "source": "/local", "destination": "/" },
     { "source": "/privacy", "destination": "/" },

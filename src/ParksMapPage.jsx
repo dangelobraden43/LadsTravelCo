@@ -1,10 +1,11 @@
-/* /outdoors/parks — The Parks Map.
+/* /outdoors — Lads Outdoors is the Parks Map (since Nov 10 2026, Brady: "it can replace
+ * whatever other section to make a clean new page"). The old Ladder page is retired;
+ * the validated Salkantay trek is linked from the foot of this page to /peru.
  *
  * The map is the page: a full-bleed 3D relief of the lower 48 under a dusk sky, with a
  * light on every national park, and a typeset index underneath that reaches every park
  * (including the ones off the canvas: Alaska, Hawaii, American Samoa, the Virgin Islands).
  *
- * PREVIEW: noindex and out of the sitemap until Brady approves the design.
  * Honesty: everything here is the Park Service's own record, labelled as theirs. No Lads
  * voice, no walked claims. Entrance fees are government-set official fees, shown exactly
  * with their source and check date (ruled Oct 12, 2026). Dusk palette: /outdoors only.
@@ -205,13 +206,12 @@ export default function ParksMapPage() {
   return (
     <div className="pk-page">
       <Helmet>
-        <title>The Parks Map: every U.S. national park on real terrain | The Lads Travel Co.</title>
+        <title>Lads Outdoors: every U.S. national park on one map | The Lads Travel Co.</title>
         <meta
           name="description"
           content="A 3D relief map of every U.S. national park, built from the National Park Service's own records: where each park is, what it is known for and what it charges at the gate."
         />
-        <link rel="canonical" href="https://ladstravel.com/outdoors/parks" />
-        <meta name="robots" content="noindex" />
+        <link rel="canonical" href="https://ladstravel.com/outdoors" />
       </Helmet>
       <Nav scrolled={true} />
 
@@ -303,6 +303,18 @@ export default function ParksMapPage() {
         {groups.every(([, l]) => l.length === 0) && (
           <p className="pk-note">No park matches that search.</p>
         )}
+      </section>
+
+      <section className="pk-further" aria-label="Further afield">
+        <h2>Further afield</h2>
+        <p>
+          Salkantay to Machu Picchu: five days on the trail and a pass at roughly 4,600 m, walked by
+          Brady in May 2026. The route, the four ways in and what to book ahead are in the Peru
+          guide.
+        </p>
+        <Link className="pk-btn pk-btn--quiet" to="/peru">
+          Read the Peru guide
+        </Link>
       </section>
 
       <section className="pk-sources" aria-label="Sources">

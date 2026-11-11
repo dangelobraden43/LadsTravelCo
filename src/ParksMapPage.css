@@ -541,6 +541,29 @@
   border-color: var(--ember);
 }
 
+.pk-further {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 72px clamp(16px, 4vw, 40px) 0;
+}
+.pk-further h2 {
+  font-family: var(--pk-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.8rem;
+  color: var(--paper);
+}
+.pk-further p {
+  max-width: 58ch;
+  margin: 0 0 1.2rem;
+  line-height: 1.65;
+  color: var(--stone-2);
+}
+.pk-further .pk-btn {
+  display: inline-flex;
+}
 .pk-sources {
   max-width: 1240px;
   margin: 0 auto;

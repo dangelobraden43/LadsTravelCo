@@ -26,7 +26,6 @@ const JoinPage = lazy(() => import('./JoinPage'))
 const PlanYourTrip = lazy(() => import('./PlanYourTrip'))
 const ChristmasMarketsPage = lazy(() => import('./ChristmasMarketsPage'))
 const DealsPage = lazy(() => import('./DealsPage'))
-const OutdoorsPage = lazy(() => import('./OutdoorsPage'))
 const ParksMapPage = lazy(() => import('./ParksMapPage'))
 const BucketListPage = lazy(() => import('./BucketListPage'))
 const LocalPage = lazy(() => import('./LocalPage'))
@@ -109,8 +108,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/" element={<App />} />
             {/* Four-collection spine */}
             <Route path="/global" element={<ExplorePage />} />
-            <Route path="/outdoors" element={<OutdoorsPage />} />
-            <Route path="/outdoors/parks" element={<ParksMapPage />} />
+            <Route path="/outdoors" element={<ParksMapPage />} />
+            <Route path="/outdoors/parks" element={<Navigate to="/outdoors" replace />} />
             <Route path="/bucket-list" element={<BucketListPage />} />
             <Route path="/local" element={<LocalPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />

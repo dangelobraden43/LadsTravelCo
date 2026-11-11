@@ -46,7 +46,8 @@
  * anything, because there is nothing here to endorse yet.
  *
  * The validated prose Brady wrote after the trip lives in the SALKANTAY BLOCK
- * of `src/OutdoorsPage.jsx`: "Brady completed Salkantay to Machu Picchu in May
+ * of `src/OutdoorsPage.jsx` (retired Nov 10 2026; the file lives at commit 7ba8454):
+ * "Brady completed Salkantay to Machu Picchu in May
  * 2026. The route ran Lima to Huacachina, then five days on the Salkantay
  * trail: over the Salkantay Pass at roughly 4,600 m, past the glacial turquoise
  * of Humantay Lake, and down through cloud forest to Machu Picchu itself."
