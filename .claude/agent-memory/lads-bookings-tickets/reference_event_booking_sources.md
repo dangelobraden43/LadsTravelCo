@@ -28,6 +28,14 @@ metadata:
 - Viator search snippets can pair one product's title with another product's URL slug. Never trust a snippet title as identity.
 - Official package sellers publish only "from" prices: record as fixedPrice from the seller's own page, never invent a range.
 
+**Rugby World Cup / World Rugby events (Nov 2026 run)**
+- rugbyworldcup.com `/2027/en/tickets` and its news articles fetch cleanly. The ticketing site itself (`rwc2027.rugbyworldcup.com`) returns 401: match-by-match availability and price categories need a human browser, budget a gap.
+- experiences.rugbyworldcup.com fetches: `/hospitality-packages` lists every "from" price in one call; `/travel-packages/official-travel-agents` is the one-call list of licensed sellers by region; `/faq/ticketing/` carries the no-resale rule but its sale-status line was stale.
+- On an organiser's tickets page, check which channel an "every match available" sentence belongs to. It sat in the hospitality block, and an earlier agent had read it as standard-ticket availability.
+- Terms-and-conditions PDFs come back as binary and this machine cannot render PDFs (no pdftoppm): do not spend a call on one.
+- fairtrading.nsw.gov.au redirects twice to a generic nsw.gov.au page (two calls lost). For Australian resale law, search nsw.gov.au / consumer.vic.gov.au for the current page first.
+- sportcal.com articles fetch in full (ticketing-provider deals).
+
 **Pattern**
 - Event pages carry archived prior-event listings (2026 eclipse) beside empty current ones: check the year on every event item.
 - Press reports of hotels "pausing" bookings are usually unattributed inside the article; record as low-confidence booking-state with an end-of-year expiry.

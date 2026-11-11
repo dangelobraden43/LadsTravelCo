@@ -2,7 +2,7 @@
 name: lads-destination-scout
 description: Researches public consensus on each place and discovers places not yet on our lists - what it is, what people praise and criticise, the trap, when to go, who it suits. Use for any destination's eat, drink, see and do layer.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: opus
+model: fable
 effort: high
 memory: project
 color: green

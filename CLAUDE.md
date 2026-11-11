@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: October 21, 2026 (trip-guide tooling; Ryder Cup 2027 guide rebuilt after rejection; Gorge trip week)
+## Last Updated: November 10, 2026 (the Parks Map is /outdoors; /deals and markets refreshed; agents on Fable 5.2)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -278,6 +278,85 @@ own branch** (see Parallel Agent Workflow at the foot of this file), never in th
 shared checkout someone else is serving localhost from.
 
 ---
+
+## 🟢 NOVEMBER 10, 2026 — THE PARKS MAP IS /outdoors, PAGE REFRESHES, AGENTS ON FABLE
+
+Branch `feature/nov-refresh`, merged to `main` in the same push as this record. Read `git log` for the hash.
+Session opened after a 20-day gap (last ship Oct 21).
+
+1. **`/outdoors` IS NOW THE PARKS MAP** (`src/ParksMapPage.jsx`, `src/ParksMap.jsx`). Brady, Nov 10: *"it can
+   replace whatever other section to make a clean new page… a great foundation."* The old Ladder page
+   (`OutdoorsPage.jsx`) is retired and deleted; Salkantay is linked from the foot of the page to `/peru`.
+   `/outdoors/parks` (the preview path) redirects to `/outdoors`.
+   - A 3D relief model, **one region at a time**: Lower 48, Alaska, Hawaii (Maui + the Big Island). Brady was
+     worried about Alaska and Hawaii on phones, so nothing is inset: each region is its own full-width model.
+     The two single-island parks (American Samoa, Virgin Islands) are index-only.
+   - **Everything drawn is generated, never typed** — `node tools/build-parks.mjs`: the roster (63 records;
+     NPS lists Sequoia & Kings Canyon as one record, and **Chiricahua is a national park now**), names,
+     descriptions, activities and entrance fees from the Park Service data service; elevation from the open
+     Terrarium tiles; park outlines from the Park Service boundary service by unit code; state lines and
+     neighbours from Natural Earth. `node tools/build-park-hikes.mjs` builds the hikes on each card from the
+     Service's "things to do" records (53 of 63 parks have any).
+   - **Stylised, and the page says so:** heights exaggerated; snow drawn above a line that drops with
+     latitude ("It is not a snow report").
+   - One bar moves the light (afternoon → dusk → night). Markers are cream survey marks, ember when chosen.
+     The model sits on a dark drafting table with a contour pattern and casts a real shadow.
+   - **If a browser cannot start 3D** (it happened on Brady's own machine, low on memory with many preview
+     tabs open) the page shows a rendered still of the region (`public/outdoors/poster-<region>.jpg`) with
+     everything else working and a "Try the 3D map again" link. Posters are re-rendered by the scratchpad
+     `posters.mjs` pattern (headless, overlays hidden); **re-render them when the model's look changes.**
+   - ⛔ **Rules from Brady's five rounds of feedback:** no condensed poster font (uses the site's Fraunces);
+     the sun control is the bar only, no label text; no gold glow pins; headline says what to do ("Find your
+     national park."). Dusk palette stays exclusive to `/outdoors`. The Oct "no WebGL" line for `/outdoors`
+     is superseded: Brady asked for 3D.
+   - ⛔ **ALLTRAILS DATA MAY NOT BE PUBLISHED.** Its terms (updated Dec 17 2025, read Nov 10) license material
+     for personal non-commercial use, bar republishing without written consent, and require written permission
+     to link to anything but its home page. A top-three-trails list built from the connector was removed
+     before shipping. The connector is fine for private research; a public ranking needs a written licence.
+     Also learned: its "near a point" search drops a park's best-known trail (Old Rag); the bounded search
+     ranks properly; and seasonally closed trails fall out of its popularity ranking.
+   - Not built yet: the fly-in to each park's own terrain; trail lines (OpenStreetMap or park layers); region
+     and range names; a scroll-driven handoff. NPS `DEMO_KEY` allows ~10 requests an hour: get a personal key.
+
+2. **`/deals` and `/christmas-markets` refreshed from fact-checked research** (two agents + verifier each;
+   runs `holiday-deals-2026/2026-11-10T16-12/`, `european-christmas-markets/2026-11-10T16-13/`).
+   Deals: Hostelworld starts Nov 13 (was Nov 20); Virgin Voyages' expired offer replaced; Royal Caribbean
+   headline updated; G Adventures and Celebrity 2026 added; 2026 entries carry `LIVE_CHECKED_ON`. No airline
+   had published 2026 terms by Nov 10 (expect them Nov 20–Dec 1). Markets: Bruges ends Jan 31 (was Feb 14);
+   Strasbourg's closing date now published (Dec 24); Rothenburg and two Zurich markets added; Brussels
+   source moved to winterpret.be. 🚩 A typed "runs on to Feb 14" in the page caption outlived the data
+   change and was caught only by a text check before shipping; it is now derived. **A count is not the only
+   thing that drifts: any typed fact that restates the data does.**
+   Open for Brady: JetBlue's creditors hired restructuring advisers (it denies it will file, still flying) —
+   note on its `/deals` lines or not? Kraków stays off the markets page (a shooting on the Rynek, Nov 7; no
+   city statement on the market).
+   **Next checks:** `/deals` every 2–3 days from Nov 13 to Dec 5; markets hours as they open.
+
+3. **All 14 research agents run on Fable 5.2** (`model: fable`), per the Sept 29 "strongest model" ruling.
+
+4. **Intake:** fixed-date trips now show and send their length in nights (the quiz already required a
+   length band for flexible trips). `nightsBetween` in `src/intake/schema.js`, in the Airtable `Dates` line.
+
+5. **Research banked, nothing published** (`internal/research/`, gitignored):
+   - `calendar-2027/2026-11-10T16-40/` — 66 findings, two verifier passes: 48 confirmed, 17 weakened,
+     1 refuted (Warsaw Marathon IS dated: Sept 26 2027). Unresolved, never print as firm: Holi (Mar 22 or 23),
+     Australian Open start day, Feria de Abril week. Machu Picchu / Inca Trail 2027 sale not announced.
+     **The 2027 calendar page is not built.**
+   - `rugby-world-cup-2027/2026-10-12T15-35/` — complete with `PACKET.md` (124 confirmed, 45 weakened, 38
+     unverifiable). Founder items lead the packet: general-sale availability by match needs a browser.
+   - `eclipse-2027-spain` still has two files failing on a point price and no verifier pass.
+
+6. **Tooling lessons:**
+   - Headless WebGL renders about one frame a second: a scripted click right after a camera move misses, and
+     CSS animations freeze mid-way. Wait for positions to settle before judging a miss or a "missing" card.
+   - Generators must stamp the **local** date (`toISOString()` is UTC and read a day ahead in the evening).
+   - A background preview server was stopped by Claude Code when the machine ran low on memory; screenshots
+     now use a server that lives only for the script's run.
+   - Vercel builds a preview for every push to a branch: use those links for founder review.
+
+**Not done, carried forward:** the frameworks-through-the-pipeline upgrade; the connections and plugins
+audit beyond what was needed here; the image bundle block (`dist` is 43 MB against 8 MB); Gorge & Ridge
+marks → park guides.
 
 ## 🟢 OCTOBER 14–21, 2026 — TRIP GUIDES, THE RYDER CUP 2027 GUIDE, AND A REJECTED FIRST BUILD
 
@@ -1406,7 +1485,7 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | Oct 21: the `feature/ryder-cup-2027` merge (which carries `feature/gorge-ridge-trip`) rides with the Oct 14–21 record. Read `git log` for the hash and check Vercel READY by SHA at the next `/morning`. Oct 12 `/deals` merge before it. |
+| `main` | **Nov 10: the `feature/nov-refresh` merge rides with the Nov 10 record** (Parks Map as `/outdoors`, page refreshes). Read `git log` for the hash. Before it, Oct 21: the `feature/ryder-cup-2027` merge (which carries `feature/gorge-ridge-trip`) rides with the Oct 14–21 record. Read `git log` for the hash and check Vercel READY by SHA at the next `/morning`. Oct 12 `/deals` merge before it. |
 | Working tree | clean at merge |
 | Pending `/ship` | **Nothing.** |
 | Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
@@ -1421,6 +1500,8 @@ Works** homepage section · the homepage agent count derived (**13**, was a type
 **✅ Also on production from before:** every displayed count derived · the launch
 date stated once · `/local` with the Live Pulse · "When to Go" on every framework ·
 `/peru` indexed · founder schema v2 + two-layer card · `/join` · the affiliate gate.
+
+🚩 **ADDED Nov 10 (ahead of everything below):** (a) `/deals` checks every 2–3 days Nov 13 – Dec 5, airline terms expected Nov 20 – Dec 1; (b) Parks Map next phases: the fly-in pilot (New River Gorge, Shenandoah, one western park), trail lines, a personal NPS key; (c) build the 2027 calendar page from `calendar-2027` confirmed findings only; (d) Brady: the JetBlue note ruling; read the rugby packet.
 
 🚩 **ADDED Oct 21 (ahead of the Oct 12 list):** (a) the Gorge & Ridge trip Oct 23–27: afterwards read the guide's marks back and feed walked places into the park guides; (b) Ryder Cup: Delta/American round trips open Sun Oct 25; collect the group's feedback on the guide; the public `/ryder-cup-2027` route waits for Brady's approval of the preview; (c) Console pilot: the Nov 2 `/deals` refresh as an Agent SDK job with cost measured.
 
@@ -1613,7 +1694,7 @@ the research pipeline stands on its own without a Lads visit.
 | Collection | Path | Contains |
 |---|---|---|
 | **Lads Global** | `/global` | International frameworks (Dublin, Spain, Rome, Iceland, Prague, Vienna, Australia, Munich, Poland, Peru) |
-| **Lads Outdoors** | `/outdoors` | Treks/hikes — Ladder concept (Base Camp · Multi-Day · Expedition). Salkantay is the first validated trek. |
+| **Lads Outdoors** | `/outdoors` | **The Parks Map** (since Nov 10, 2026): every U.S. national park on a 3D relief model, from Park Service records. The Ladder page is retired; Salkantay links to `/peru`. |
 | **Lads Bucket List** | `/bucket-list` | Events/festivals/sports/holidays (Vivid Sydney, Oktoberfest, Ryder Cup '27, Christmas Markets). Calendar view planned. |
 | **Lads Local** | `/local` | The Midwest map (Good Brews · Good Views · Good News) + the `/michigan` framework. Engineered the same as international. |
 
@@ -1709,9 +1790,8 @@ Featured Work cards: cliffs (Dublin), sagrada (Spain), colosseum (Rome)
 /when summer: rockPoolSwim
 /when fall: munichMarienplatz
 /when winter: glendaloughCelticCrosses
-/outdoors hero + Rung 1: olympicDeerAboveClouds
-/outdoors Rung 2: mountainOverlook
-/outdoors Rung 3: hiking_7103980642848666692
+/outdoors: RETIRED Nov 10, 2026 — the page is the Parks Map and carries no photographs
+  (was: olympicDeerAboveClouds, mountainOverlook, hiking_7103980642848666692)
 /global header: montserrat
 /local Michigan: RETIRED Aug 28 — the card renders the traced Midwest map instead
   (a real Michigan photo is still wanted; none exists in `src/images-*.js`)
@@ -1731,7 +1811,7 @@ Hero: Vivid Opera House
 Data moment: Vivid Harbor Bridge drone
 /when spring: Schonbrunn pan · /when summer: Jaco beach sunset
 /when fall: Inside Colosseum · /when winter: Irish pub band
-/outdoors Rung 1: Olympic rope hike · Rung 2: Costa Rica ATV canopy
+/outdoors: RETIRED Nov 10, 2026 with the Ladder page (was: Olympic rope hike, Costa Rica ATV canopy)
 /lads founders: Scooter to Trevi · /lads secondary: Smoky Mountains hike
 
 (RiseLantern was Vegas-Zion-Rise hero — flagship deleted, video unused.)

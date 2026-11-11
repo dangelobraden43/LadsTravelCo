@@ -2,7 +2,7 @@
 name: lads-flights
 description: Researches getting there by air from the traveller's own origin (their home airport from the intake brief; US Midwest hubs only as a fallback) - which airports, routes, nonstop versus one-stop, fare bands with lead time, and fare traps. Use for any destination's Getting There section.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: opus
+model: fable
 effort: high
 memory: project
 color: blue

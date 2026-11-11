@@ -100,6 +100,20 @@ const TOKEN = /^[0-9a-f]{32}$/
 
 /* Caps on anything a stranger can send. Oct 6 review: an uncapped companion list
  * let one request fan out into thousands of Airtable writes. */
+/** Nights between two ISO dates, or null when either is missing or they are out of order.
+ * Trip length for a fixed-date trip is this number; for a flexible trip it is the band
+ * the traveller picks. Every intake carries one or the other. */
+export function nightsBetween(start, end) {
+  const iso = /^\d{4}-\d{2}-\d{2}$/
+  if (!iso.test(start || '') || !iso.test(end || '')) return null
+  const n = Math.round(
+    (Date.parse(end + 'T12:00:00Z') - Date.parse(start + 'T12:00:00Z')) / 86400000
+  )
+  return n >= 0 ? n : null
+}
+export const nightsLabel = (n) =>
+  n === null ? '' : n === 0 ? 'Day trip' : n === 1 ? '1 night' : n + ' nights'
+
 export const LIMITS = { text: 2000, item: 200, list: 20, companions: 12, json: 60000 }
 const TEXT_CAP = LIMITS.text
 

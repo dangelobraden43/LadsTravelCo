@@ -2,7 +2,7 @@
 name: lads-trip-architect
 description: Assembles verified research into a founder review packet - framework-ordered draft, trip versions by group and budget, a day grouping from stored coordinates, and blank founder slots. Never writes the Lads voice.
 tools: Read, Glob, Grep, Write
-model: opus
+model: fable
 effort: high
 memory: project
 color: pink

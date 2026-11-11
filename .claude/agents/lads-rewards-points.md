@@ -2,7 +2,7 @@
 name: lads-rewards-points
 description: Researches how to fund a trip with points and miles - programmes that serve the destination, award sweet spots, transfer partners, alliance routing, hotel-programme footprint. Facts only; never recommends applying for a product.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: opus
+model: fable
 effort: high
 memory: project
 color: yellow

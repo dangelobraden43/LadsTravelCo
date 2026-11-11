@@ -67,7 +67,7 @@ test('roster: every agent is wired to the contract, memory and both hooks', { sk
   for (const a of REAL) {
     assert.equal(path.basename(a.file, '.md'), a.name, `${a.name}: filename`)
     assert.ok(a.description.length > 40, `${a.name}: description`)
-    assert.ok(['sonnet', 'opus'].includes(a.model), `${a.name}: model`)
+    assert.ok(['sonnet', 'opus', 'fable'].includes(a.model), `${a.name}: model`)
     assert.ok(a.skills.includes('research-contract'), `${a.name}: preloads research-contract`)
     assert.equal(a.memory, 'project', `${a.name}: memory`)
     assert.ok(!a.tools.includes('Edit') && !a.tools.includes('Bash'), `${a.name}: no Edit/Bash`)

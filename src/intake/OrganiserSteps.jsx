@@ -3,6 +3,7 @@
  * (docs/superpowers/specs/2026-10-06-intake-prototype.html). */
 import * as O from './options.js'
 import { hardLimits } from './limits.js'
+import { nightsBetween, nightsLabel } from './schema.js'
 import { Chips, Seg, TilePair, Counter, Ranker, ListAdd, Typeahead } from './Controls.jsx'
 
 const INTEREST_NAMES = Object.keys(O.INTERESTS)
@@ -58,7 +59,10 @@ export const destCode = (s) => {
 
 export function BoardingPass({ s, mini }) {
   const when = s.dateMode === 'flex' ? s.months.join('/') || 'Any month' : s.start || '—'
-  const len = s.dateMode === 'flex' ? s.length || '—' : 'Fixed dates'
+  const len =
+    s.dateMode === 'flex'
+      ? s.length || '—'
+      : nightsLabel(nightsBetween(s.start, s.end)) || 'Fixed dates'
   return (
     <div className={`pyt-pass${mini ? ' is-mini' : ''}`}>
       <div className="pyt-pass-main">
@@ -260,6 +264,11 @@ export function StepTrip({ s, d }) {
               />
             </Q>
           </div>
+          {nightsBetween(s.start, s.end) !== null && (
+            <p className="pyt-hint" aria-live="polite">
+              Trip length: {nightsLabel(nightsBetween(s.start, s.end)).toLowerCase()}.
+            </p>
+          )}
           <Q label="Could they move a few days for a better price?">
             <Seg
               options={['Yes, a few days', 'No, fixed']}
@@ -819,7 +828,7 @@ export function StepReview({ s, onGoto, errors }) {
             .{' '}
             {s.dateMode === 'flex'
               ? `${s.length || 'Length not set'}${s.months.length ? ` in ${s.months.join(' or ')}` : ''}`
-              : `${s.start || '?'} to ${s.end || '?'}`}
+              : `${s.start || '?'} to ${s.end || '?'}${nightsBetween(s.start, s.end) !== null ? ` (${nightsLabel(nightsBetween(s.start, s.end)).toLowerCase()})` : ''}`}
             , flying from {s.airport || 'an airport not chosen yet'}.
             {s.occasion && ` Occasion: ${lower(s.occasion)}.`}
           </p>

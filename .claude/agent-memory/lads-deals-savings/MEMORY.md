@@ -1,1 +1,1 @@
-- [Source behaviour and budget lessons](reference_source-behaviour.md) — what fetches/403s, eurail merger, ski pass pages, shared session search cap, Andalusia museum pages, EU-only/Monday-closure traps
+- [Source behaviour and budget lessons](reference_source-behaviour.md) — what fetches/403s, holiday-sale brand URLs, TMR tracker, "up to $X" validator rule, ski pass pages, search cap, EU-only traps, airline deal-page fetch map + holiday-sale timing, city-pass seller pages (Go City break-even article, iVenture 403)

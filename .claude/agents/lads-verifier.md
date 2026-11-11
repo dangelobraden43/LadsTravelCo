@@ -2,7 +2,7 @@
 name: lads-verifier
 description: Adversarially fact-checks every finding from the other research agents - does the source exist, does it say this, is it current, is anything expired, priced as a point, or voiced as the Lads. Read-only judgement; writes verdicts only.
 tools: WebSearch, WebFetch, Read, Glob, Grep, Write
-model: opus
+model: fable
 effort: high
 memory: project
 color: red

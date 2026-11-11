@@ -1,0 +1,645 @@
+/* The Parks Map. Dusk Field Guide palette: EXCLUSIVE to /outdoors, never reused elsewhere.
+ * Type: the site's own Fraunces for display and Inter for everything read. No extra font. */
+.pk-page {
+  --dusk: #0f1714;
+  --dusk-panel: #16211c;
+  --glacier: #7fb4c9;
+  --stone: #e5dcc9;
+  --paper: #f4ead4;
+  --stone-2: rgba(229, 220, 201, 0.74);
+  --stone-3: rgba(229, 220, 201, 0.52);
+  --ember: #f2b45a;
+  --line: rgba(229, 220, 201, 0.16);
+  --pk-display: var(--editorial);
+  background: var(--dusk);
+  color: var(--stone);
+  min-height: 100vh;
+  font-family: var(--sans);
+}
+.pk-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+.pk-page :focus-visible {
+  outline: 2px solid var(--glacier);
+  outline-offset: 3px;
+}
+
+/* ---------- the stage: map, title, sun, card ---------- */
+.pk-stage {
+  position: relative;
+  height: 100svh;
+  min-height: 620px;
+  max-height: 1100px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.parksmap {
+  position: absolute;
+  inset: 0;
+}
+.parksmap canvas {
+  touch-action: pan-y;
+}
+.parksmap.is-hovering {
+  cursor: pointer;
+}
+.parksmap--flat {
+  background: var(--dusk);
+}
+.parksmap--flat img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 50%;
+}
+.parksmap--flat p {
+  position: absolute;
+  z-index: 2;
+  left: clamp(20px, 5vw, 76px);
+  bottom: 24px;
+  max-width: 26rem;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(13, 20, 18, 0.82);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--stone-2);
+}
+.parksmap--flat button {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ember);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+/* the stage hands over to the page: the sky's last band fades into the page colour */
+.pk-stage::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(15, 23, 20, 0), var(--dusk));
+  pointer-events: none;
+}
+.parksmap-label {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--pk-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: 0.005em;
+  color: #fff6e2;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.95),
+    0 0 16px rgba(0, 0, 0, 0.8);
+}
+.parksmap-label.is-active {
+  font-size: 1.45rem;
+}
+
+.pk-title {
+  position: absolute;
+  left: clamp(20px, 5vw, 76px);
+  top: clamp(100px, 15vh, 168px);
+  pointer-events: none;
+  max-width: 30rem;
+}
+.pk-title h1 {
+  font-family: var(--pk-display);
+  font-weight: 400;
+  font-size: clamp(3.1rem, 6.3vw, 5.9rem);
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+  margin: 0 0 1.25rem;
+  color: var(--paper);
+  transition: color 0.4s;
+  text-wrap: balance;
+}
+.pk-title h1 em {
+  font-style: italic;
+  font-weight: 400;
+}
+/* the headline arrives a line at a time, rising out of its own baseline */
+.pk-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.pk-line > span {
+  display: block;
+  animation: pk-line-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.pk-line:nth-child(2) > span {
+  animation-delay: 0.12s;
+}
+@keyframes pk-line-up {
+  from {
+    transform: translateY(105%);
+  }
+}
+.pk-title p {
+  animation: pk-fade 0.9s 0.45s ease-out both;
+}
+@keyframes pk-fade {
+  from {
+    opacity: 0;
+  }
+}
+.pk-title p {
+  margin: 0;
+  max-width: 23rem;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(244, 234, 212, 0.86);
+  text-shadow: 0 1px 12px rgba(11, 20, 32, 0.75);
+}
+.pk-stage.has-park .pk-title {
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+/* the sun: just the bar. Left is afternoon, right is night. */
+.parksmap-sun {
+  position: absolute;
+  z-index: 2;
+  left: clamp(20px, 5vw, 76px);
+  bottom: 40px;
+  width: min(280px, calc(100vw - 40px));
+  display: block;
+}
+.parksmap-sun input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: grab;
+}
+.parksmap-sun input:active {
+  cursor: grabbing;
+}
+.parksmap-sun input::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #cfe3f1 0%, #f2b45a 45%, #b5633c 68%, #2b3d5a 100%);
+}
+.parksmap-sun input::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #cfe3f1 0%, #f2b45a 45%, #b5633c 68%, #2b3d5a 100%);
+}
+.parksmap-sun input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -10.5px;
+  border-radius: 50%;
+  border: 0;
+  background: radial-gradient(circle, #fff6df 0 38%, #f2b45a 40% 100%);
+  box-shadow:
+    0 0 0 5px rgba(242, 180, 90, 0.2),
+    0 0 22px rgba(242, 180, 90, 0.7);
+}
+.parksmap-sun input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 0;
+  background: radial-gradient(circle, #fff6df 0 38%, #f2b45a 40% 100%);
+  box-shadow:
+    0 0 0 5px rgba(242, 180, 90, 0.2),
+    0 0 22px rgba(242, 180, 90, 0.7);
+}
+
+/* which map: one region at a time, each at full width */
+.pk-regions {
+  position: absolute;
+  z-index: 2;
+  left: clamp(20px, 5vw, 76px);
+  bottom: 104px;
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 999px;
+  background: rgba(13, 20, 18, 0.72);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.pk-regions button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--stone-2);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.pk-regions button:hover {
+  color: var(--paper);
+}
+.pk-regions button.is-on {
+  background: var(--paper);
+  color: #14261d;
+  font-weight: 600;
+}
+
+/* ---------- the park card ---------- */
+.pk-card {
+  position: absolute;
+  z-index: 30;
+  right: clamp(16px, 3vw, 44px);
+  top: 96px;
+  bottom: 28px;
+  width: min(420px, calc(100vw - 32px));
+  overflow-y: auto;
+  padding: 20px 28px 26px;
+  background: rgba(13, 20, 18, 0.88);
+  backdrop-filter: blur(14px) saturate(1.1);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  animation: pk-card-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@keyframes pk-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+.pk-card-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: -6px 0 10px -2px;
+  padding: 0 2px;
+  background: none;
+  border: 0;
+  color: var(--stone-2);
+  font: inherit;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+.pk-card-close::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-left: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+.pk-card-close:hover {
+  color: var(--paper);
+}
+.pk-card-title {
+  font-family: var(--pk-display);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 3.1vw, 2.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.45rem;
+  color: var(--paper);
+  text-wrap: balance;
+}
+.pk-card-where {
+  margin: 0 0 1.3rem;
+  font-size: 0.95rem;
+  color: var(--ember);
+}
+.pk-card-body {
+  margin: 0 0 0.5rem;
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: rgba(229, 220, 201, 0.9);
+}
+.pk-card-credit,
+.pk-note {
+  margin: 0 0 1.4rem;
+  font-size: 0.78rem;
+  color: var(--stone-3);
+}
+.pk-trails {
+  margin: 0 0 1.4rem;
+}
+.pk-trails h3 {
+  margin: 0 0 4px;
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--stone-2);
+}
+.pk-trails ol {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  counter-reset: trail;
+}
+.pk-trails li {
+  counter-increment: trail;
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  column-gap: 4px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.pk-trails li::before {
+  content: counter(trail);
+  grid-row: span 2;
+  font-family: var(--pk-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--ember);
+}
+.pk-trails li a {
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 0.97rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(244, 234, 212, 0.3);
+  text-underline-offset: 3px;
+}
+.pk-trails li a:hover {
+  text-decoration-color: var(--ember);
+}
+.pk-trails li span {
+  font-size: 0.86rem;
+  color: var(--stone-2);
+  font-variant-numeric: tabular-nums;
+}
+.pk-card-credit a {
+  color: inherit;
+}
+.pk-fees {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1.3rem;
+  font-size: 0.93rem;
+}
+.pk-fees caption {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--stone-2);
+  padding-bottom: 6px;
+}
+.pk-fees th,
+.pk-fees td {
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  font-weight: 400;
+  text-align: left;
+  vertical-align: top;
+}
+.pk-fees td {
+  text-align: right;
+  white-space: nowrap;
+  padding-left: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+}
+.pk-card-do {
+  margin: 0 0 1.5rem;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--stone-2);
+}
+.pk-card-actions {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.pk-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--ember);
+  color: #1a1408;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.pk-btn--quiet {
+  background: none;
+  color: var(--stone);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.pk-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* ---------- the index ---------- */
+.pk-index {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 80px clamp(16px, 4vw, 40px) 8px;
+}
+.pk-index-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+  margin-bottom: 8px;
+}
+.pk-index h2 {
+  font-family: var(--pk-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--paper);
+}
+.pk-index input {
+  min-height: 48px;
+  width: min(300px, 82vw);
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 1px solid var(--stone-3);
+  background: none;
+  color: var(--stone);
+  font: inherit;
+  font-size: 1.02rem;
+}
+.pk-index input::placeholder {
+  color: var(--stone-3);
+}
+.pk-index-group h3 {
+  font-family: var(--pk-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.25rem;
+  color: var(--ember);
+  margin: 40px 0 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.pk-index-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 3 280px;
+  column-gap: 48px;
+}
+.pk-index-group li {
+  break-inside: avoid;
+}
+.pk-index-group button {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 0;
+  background: none;
+  border: 0;
+  color: var(--stone);
+  font: inherit;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+}
+.pk-index-dots {
+  flex: 1;
+  min-width: 16px;
+  border-bottom: 1px dotted var(--stone-3);
+  transform: translateY(-4px);
+}
+.pk-index-state {
+  font-size: 0.84rem;
+  color: var(--stone-3);
+  font-variant-numeric: tabular-nums;
+}
+.pk-index-group button:hover .pk-index-name,
+.pk-index-group button.is-active .pk-index-name {
+  color: var(--ember);
+}
+.pk-index-group button:hover .pk-index-dots {
+  border-color: var(--ember);
+}
+
+.pk-further {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 72px clamp(16px, 4vw, 40px) 0;
+}
+.pk-further h2 {
+  font-family: var(--pk-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.8rem;
+  color: var(--paper);
+}
+.pk-further p {
+  max-width: 58ch;
+  margin: 0 0 1.2rem;
+  line-height: 1.65;
+  color: var(--stone-2);
+}
+.pk-further .pk-btn {
+  display: inline-flex;
+}
+.pk-sources {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px clamp(16px, 4vw, 40px) 88px;
+}
+.pk-sources p {
+  max-width: 68ch;
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--stone-3);
+}
+.pk-sources a {
+  color: var(--stone-2);
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 760px) {
+  .pk-stage {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+  .parksmap {
+    height: 80svh;
+    min-height: 520px;
+    bottom: auto;
+  }
+  .pk-stage::before {
+    /* reserves the map's height so the card can sit under it in normal flow */
+    content: '';
+    display: block;
+    height: 80svh;
+    min-height: 520px;
+  }
+  .pk-stage::after {
+    top: calc(max(80svh, 520px) - 120px);
+    bottom: auto;
+  }
+  .pk-title {
+    top: 92px;
+  }
+  .pk-stage.has-park .pk-title {
+    opacity: 1;
+  }
+  .parksmap-sun {
+    top: calc(max(80svh, 520px) - 76px);
+    bottom: auto;
+  }
+  .pk-regions {
+    top: calc(max(80svh, 520px) - 132px);
+    bottom: auto;
+  }
+  .pk-regions button {
+    min-height: 44px;
+  }
+  .pk-card {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: -96px 12px 0;
+    overflow: visible;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pk-card,
+  .pk-line > span,
+  .pk-title p {
+    animation: none;
+  }
+  .pk-regions button {
+    transition: none;
+  }
+  .pk-stage.has-park .pk-title,
+  .pk-title h1 {
+    transition: none;
+  }
+}

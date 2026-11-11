@@ -39,6 +39,29 @@ limit (200 shared by every agent) was already exhausted and only WebFetch worked
   the file by hand against `tools/research/validate.mjs` (claim <= 600 chars, two hosts per
   range, no currency amount without fixedPrice + official source) and say so in the report.
 
+**Added on the rugby-world-cup-2027 run (2026-11-10):**
+- Read cleanly, and good for award prices (all dated, points press): `upgradedpoints.com/news/qantas-new-award-charts-2025/`
+  (full Qantas zone tables, old and new), `pointhacks.com.au` guides (Qantas and Velocity,
+  state an "as of" month), `thepointsguy.com/travel/use-points-and-miles-travel-to-<city>/`
+  (one-way price per programme with taxes), `frequentmiler.com/?p=<id>` (search returns
+  these ids and they fetch), `awardwallet.com/blog/...` and `awardwallet.com/news/...`
+  (chart-change articles give old and new values), `awardfares.com/blog/ultimate-guide-to-award-release-dates/`
+  (days-before-departure table per programme), `thriftytraveler.com/news/points/...`.
+- Read cleanly, official: `bilt.com/card` (three cards, fees, issuer; names no partners),
+  `capitalone.com/credit-cards/venture/` (shows the bonus; the Venture X page shows only a
+  referral offer), `citi.com/credit-cards/citi-aadvantage-platinum-select-world-elite-mastercard`
+  (earn rates; fee amount and bonus blank), `hilton.com/en/locations/<country>/<city>/`
+  (hotel names; the country page lists only city links), `horwathhtl.com` chains reports
+  (properties and rooms per hotel group, national), `ihgplc.com` news releases.
+- `thepointsguy.com/credit-cards/credit-card-transfer-partners/` fetches but the table
+  flattens: ratios per programme survive, the bank each belongs to does not.
+- Fail: `qantas.com/.../classic-flight-reward-tables.html` times out (US and AU);
+  `alaskaair.com/atmosrewards/content/...` returns a title only; `nerdwallet.com` articles
+  return navigation only. The WebFetch `offset` parameter does NOT rescue Amex or Alaska:
+  the page text simply ends (Amex ~12,600 chars, earn rates and no-FX-fee only).
+- One programme per search query. Queries naming five programmes at once came back thin
+  and needed a second search.
+
 **How to apply:** start card work with the Chase and Capital One pages (one fetch each
 covers a whole currency). Budget a search for Amex fees and for award charts. Card terms
 (fee, bonus spend) pass the validator as `fixedPrice: true` with an official source; never

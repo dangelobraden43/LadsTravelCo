@@ -27,4 +27,17 @@ Lessons from the Vancouver pilot packet (run 2026-09-29T15-59).
 - **Agents self-flag inferences in their notes** (tags, "general knowledge", "drop if unsourced"). Withhold those parts even when the verifier only said "budget", and log them in a "Withheld by the architect" table.
 - **Researched mode means no rating slots.** Founder slots are include/cut, add/leave-out for discoveries, and "whether any Lads line belongs here", never a verdict.
 
+Lessons from the Rugby World Cup 2027 event packet (run 2026-10-12T15-35, assembled 2026-11-10).
+
+- **The caller's brief can override where unverifiable findings go.** This brief said leave them out of the draft and list them in an appendix as "not yet confirmed". Follow the brief; give each appendix row a subject without its figures, the verifier's reason, and what would confirm it. Carry the verifier's "do not publish" lines in bold.
+- **"Lead with the open items" still needs the Mode line first.** Title, `**Mode:** researched`, citation legend, then `## 0. Settle first`, then the header table as §1.
+- **A "confirmed" verdict often hides an unread part.** Read every confirmed `reason`. Three-way rule that worked: (1) part the agent read and the verifier just did not re-read: keep, cite as `[id · part unread]`, list in a table; (2) part neither read on a page (snippet-only, "not on that page", "rests on unread press"): withhold and log; (3) part the agent's notes call inference: withhold or label as agent reading.
+- **A confirmed finding can lean on an unverifiable one** (a transfer-partner row calling an airline "the official partner" when the partnership finding was unverifiable). Drop the borrowed descriptor and log it.
+- **Card rows: fees are an issuer's own price, not a government fee.** The verifier confirms them and flags `fixedPrice`. Body uses the relative fee tiers from the corrected comparison finding; exact fees and undated welcome offers go in the contract-flags table pending a founder ruling.
+- **Research and verification a month apart means stale-since-research facts** (a new airport opened, a second official seller list appeared). Put a "what changed between research and verification" table near the top and a STAGING ONLY table of dates that pass before publish.
+- **Event day grouping:** cluster only the venue coordinates into bases (single linkage, state the stable band, here about 20 to 100 km for one group per host city), then take days from fixture findings, not geometry. With no code tool, say the distances were worked by hand.
+- **Disputed fixture dates:** mark every line that uses the date "date disputed" and list which findings carry it.
+- **Never write the banned words even to say they are absent.** `validatePacket` scans every non-quote line for the coverage-product word, the giving words and first-person voice; RUN.json also bans the no-cost word. Grep the packet for them before handing back.
+- **Check run hygiene and report it:** id sequences with holes (no `fly-001`), `callsUsed` counted differently between agents, agent `generatedOn` dates later than RUN.json `today`.
+
 Related: [[research-contract]]

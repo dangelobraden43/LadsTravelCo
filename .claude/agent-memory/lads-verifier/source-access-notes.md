@@ -226,4 +226,75 @@ metadata:
   transportation.wv.gov news and articles, wvdnr.gov/hunting/hunting-seasons (no county lists), dwr.virginia.gov deer
   regs, wvforestry.com home, code.wvlegislature.gov/<chapter-article-section>/, morethanjustparks.com foliage trackers.
 
+- **Markets re-check (2026-11-10, 40 calls for 33 findings, all but one read).** dresden.de is STILL 503 on every
+  path (PDF, press releases, striezelmarkt subdomain): three runs in five weeks, so do not spend more than one call
+  there. visit-dresden-elbland.de (Dresden Marketing GmbH) fetches but prints the season with no year.
+  plaisirsdhiver.be/en/practical-info is 404; Brussels Winter Wonders now lives on winterpret.be/en (same organiser).
+  Fetch cleanly: visitbruges.be, noel.strasbourg.eu/foire-aux-questions (French FAQ carries the current year first),
+  muenchen.de/christkindlmarkt, aachenweihnachtsmarkt.de, rothenburg-tourismus.de, polarzauber.ch, bellevuenoel.ch,
+  zuerich.com, nau.ch (dated), wien.info markets overview (one fetch settles four Vienna markets with hours),
+  wien.orf.at stories (dated to the minute), tivoli.dk/en/jul (dates, no hours), montreuxnoel.com/en,
+  adventzagreb.hr, prague.eu/cs event pages. Breaking news in Poland: notesfrompoland.com, tvn24.pl and krakow.pl
+  (home page plus `komunikat` notices, which show published and updated dates) all fetch cleanly.
+
+- **Travel sale pages (holiday deals, 2026-11-10, 40 calls for 32 findings).** Fetch cleanly: royalcaribbean.com and
+  celebritycruises.com /cruise-deals/black-friday (headline only; dated terms sit behind a separate link),
+  virginvoyages.com/cruise-deals, hostelworld.com/deals/black-friday (the add-to-calendar link encodes dates the
+  text does not print), gadventures.com travel-deals pages (full terms), contiki.com/en-us, intrepidtravel.com/us,
+  greyhound.com sale pages (full terms with year), interrail.com promo-terms-conditions (every promotion, dated),
+  amtrak.com deals-discounts and /promotions/deals, hilton.com/en/offers, booking.com/deals pages,
+  aircanada.com special-offers, allegiantair.com, jetbluevacations.com, finnair.com market pages, southwest.com/deals
+  (fare listings only), news.flyfrontier.com, news.delta.com releases, travelmarketreport.com (dated round-ups),
+  rolcruise.co.uk, shopback.com.au blog. marriott.com/offers.mi truncates. 403: easyjet.com (all paths; a
+  domain-restricted WebSearch returns usable summaries of its pages), cruise.blog, hostelz.com.
+- **Google News RSS for brand status:** always add `when:30d` (without it the feed returns headlines back to 2015).
+  One brand with a big story (a takeover) fills the whole feed and hides the others: split OR'd brand lists into
+  small groups, and give an at-risk brand its own `when:10d` query.
+
+- **Event organisers (calendar-2027, 2026-11-10, 60 calls for 66 findings).** Refused outright ("unable to fetch"):
+  letour.fr, liesa.globo.com. Empty render: ncaa.com, wsiairport.com.au (wimbledon.com and fifa.com schedule pages too,
+  per the researcher). 403: business.vic.gov.au, golfdigest.com, help.ticketmaster.com.au. Timeout:
+  agencyconnect.qantas.com (masters.com for the researcher, three times). cyclingweekly.com returns the headline only.
+  Fetch cleanly: icc-cricket.com media releases, world.rugby news, rydercup.com, panamsports.org, inside.fifa.com/en/news,
+  glastonburyfestivals.co.uk, labiennale.org, oktoberfest.de/en, stpatricksfestival.ie, nsw.gov.au event listings,
+  opernball.at, festival.cz/en/news (dated items), icelandairwaves.is, formula1.com/en/racing/<year>, lta.org.uk,
+  ausopen.com (banner only), melbournepark.com.au, liepaja2027.lv event pages, sofistadium.com news, nps.gov/grsm,
+  elperuano.pe, edinburgh.gov.uk news, en.thairath.co.th, diariodorio.com, sevillasecreta.co, andaluciainforma.es,
+  staffnews.in, ajc.com, wrdw.com, golf.com, clickondetroit.com (AP and WDIV), wxyz.com (no date shown),
+  thestar.com.my (Reuters with dateline), justwomenssports.com, airwaysmag.com, aerocorner.com.
+  Workarounds: Wikipedia race pages cite the ASO route article and press kit when letour.fr refuses; a WebSearch
+  restricted to business.vic.gov.au and fairwork.gov.au returns a usable summary of the holiday lists (snippet level).
+- **Event organisers, pass 2 (calendar-2027, 2026-11-10, 55 calls for 34 findings, every one a real verdict).**
+  Timeouts on every try: masters.com (five across two passes) and fairwork.gov.au public-holiday pages (three, two
+  URLs). 403: classic.austlii.edu.au, mercadoeeventos.com.br. No date on the page: documentasixteen.com (countdown
+  only), drivechipandputt.com, melbcuptravelexperiences.com, expobelgrade2027.org/en home (its dated news items
+  do fetch). Fetch cleanly: astronomia.ign.es, documenta.de/en and its /en/news items (dated), skulptur-projekte.de/en,
+  evora2027.com/en/news, carnevale.venezia.it/en, keukenhof.nl/en, kentuckyderby.com, edfringe.com, laityfamilylife.va,
+  usccb.org news, orangewarsawfestival.pl (dated news), eska.pl, wienerphilharmoniker.at, htu.at, wien.info
+  /de/.../ball-uebersicht-340222 (prints the season's ball dates), visiticeland.com, visitvalencia.com, latomatina.info,
+  emufec.gob.pe, infobae.com, vozpopuli.com, n-kishou.com, jewishfestival.pl, maratonwarszawski.com (news slugs are
+  the lowercased headline), nps.gov, USNO rstt API, tupi.fm, thegolfnewsnet.com (future Masters dates, dated),
+  en.le360.ma, vrc.com.au (season pages only). One fetch per organiser in batches of six to nine was the right shape.
+
+- **Australia / Rugby World Cup (2026-11-10, 99 calls for 207 findings, 169 real verdicts).** Official airline
+  award charts that fail on fetch (alaskaair.com chart page truncates, qantas.com tables time out) DO answer a
+  WebSearch restricted with `allowed_domains` to the airline's own domain: the summary quotes the chart rows
+  and units. Same trick for health.gov.au and acma.gov.au (fetch timeouts), immi.homeaffairs.gov.au,
+  travel.state.gov, au.usembassy.gov, agriculture.gov.au and transportnsw.info concession pages. aa.com 403.
+  Fetch cleanly: rugbyworldcup.com tickets and news pages, world.rugby news, experiences.rugbyworldcup.com
+  (hospitality-packages prints every 'from' price; travel-packages loads prices after a date picker; FAQ pages
+  fine), scottishrugby.org, stadiums.qld.gov.au, rugby.com.au, transportnsw.info adult-opal-fares,
+  translink.com.au fares-and-zones, transperth.wa.gov.au fares, sydneyoperahouse.com tour pages, gocity.com,
+  ngv.vic.gov.au, australian.museum, mona.net.au/visit, planning.nsw.gov.au STRA page, sro.vic.gov.au,
+  wa.gov.au STRA FAQ, rba.gov.au, australia.com key facts, nsw.gov.au daylight-saving, climatestotravel.com,
+  numbeo, nomadicmatt, pointhacks.com.au, upgradedpoints, awardwallet, frequentmiler (?p= links work),
+  thepointsguy, awardfares, thriftytraveler, chase/capitalone/citi/bilt card pages (Chase's partner list is not
+  in the fetched text), ihgplc.com, ewn.co.za, airwaysmag.com. Fail: the ticketing site rwc2027.rugbyworldcup.com
+  (401), str.com (403), optusstadium.com.au (403), inqld.com.au (403), world.rugby/media-zone article ids
+  (land on a generic page). Old transportnsw.info/events/<year>/<month>/<slug> pages redirect to the current
+  events listing, which at least shows the venue names in use today. Long Wikipedia airport pages need
+  `offset` (the airline tables start around character 60,000 to 100,000); a Wikipedia fixture read disagreed
+  with a state stadium operator by a day on two matches, so prefer the operator. Wikidata SPARQL with P625,
+  P31 and P576 for 11 QIDs returned every row in one fetch.
+
 Related: [[verification-patterns]]

@@ -250,4 +250,79 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   for exemptions. Hunting summaries: "firearm seasons don't start until X" can be wrong when selected-county gun
   seasons run earlier on the same page; a deer-only page cannot carry "only bowhunters this week".
 
+- **Dated re-check of a live page (markets, 2026-11-10).** "MATCHES" findings read from official pages held almost
+  without exception; the faults sat at the edges. Shapes: an inference added to a true date ("the only option open
+  after X"); an official page giving two first-day times (text vs calendar row), so ask the fetch for both; a site
+  footer copyright company read as the operator when the city permit names another firm (report both, name neither
+  on a page); a claim bundling a read official page with unread press details (confirm only the read half via
+  proposedClaim). Also diff the live data file's OTHER lines against each confirmed change: a newly confirmed closed
+  day broke a route line ("all four open Nov 20 to Dec 24") and a city-guide line that no finding mentioned.
+- **Security incidents and breaking news.** Read two independent outlets plus the city's own portal before any
+  verdict. Casualty counts differ by hour and by whether the suspect is counted, and a headline can change while the
+  URL slug keeps the early wording: quote each figure with outlet, date and who is cited, and carry no motive beyond
+  what an official is quoted saying. Then look for the city's dated notice on what changes for visitors (barriers,
+  closures, mourning dates); that, not the incident, is the traveller-facing fact.
+
+- **Sale and promo refreshes (holiday deals, 2026-11-10).** A sale's headline ceiling moves between the launch
+  release and the live page (trade press and the brand page disagreed; the page's own promo link carried a dated
+  variant code). Treat it as "reported two ways" with each figure tied to its source and read date, never a swap.
+  "Black Friday 2026 will kick off on <date>" on a brand page is the calendar date, not proof of when sale fares
+  open; agents read it as a booking start. A UK agency's book-by date was carried as the end date of the US offer:
+  check the market of every second source. Brand pages for live sales often print NO dated terms at all (only a
+  title year and an unrelated card offer's end date): say so rather than borrow a date. A parent's package arm
+  can have a live sale while the flight page says "coming" (airline vs holidays brand). Agents' brand-status
+  lines rest on one search ("merger?") and miss distress news: run a dated news-feed query per at-risk brand
+  for restructuring, creditors, bankruptcy and takeover, and report "operating, under watch" with the dates.
+  Agents' notes can understate their own source ("stay dates not given" when the article gives them).
+- **proposedClaim cannot carry "up to $X".** The range check needs a digit before "to", so a single headline
+  amount fails; write "the ceiling printed on the page" or a true two-figure range ("$A to $B").
+
+- **Dated-event calendars (calendar-2027, 2026-11-10).** Findings read on an organiser's page held every time (15 of 15
+  sampled); the faults sat in press-sourced rows and in what the claim left out. Shapes: a cited "second source" that
+  prints no date at all (Golf.com for the Masters: only the application window), so ask every cited page "does it print
+  the event date?" before counting it; an article published on opening day cited for something "that happened" the day
+  after (an airline's first arrival: it was a schedule); an organiser and its venue operator giving different first days
+  (ausopen.com banner vs Melbourne Park), and an official page with two statuses for one ballot (LTA): report both,
+  never pick; a multi-day opening whose first day is in other towns (Liepaja's Friday events are in Kuldiga), which only
+  the event detail page shows; a "play starts in <city>" line inferred from the venue list when the release names the
+  phase but not the ground; "week of <date>" labels with no weekdays on an NPS timeline (propose "late April", not a day).
+  Recompute every weekday from 1 January and Easter by formula first: it costs no calls and all 66 were right.
+- **A fetch can garble a Wikipedia stage table** (dates returned as 1 to 9 Aug, equal to the stage numbers, against the
+  infobox's 30 Jul to 7 Aug). Ask for the infobox dates too and treat a date column that mirrors the row numbers as an artefact.
+- **Budget on a "read it yourself" brief:** 45 of 60 calls went on ten press-only rows and five conflicts, leaving 26 of 66
+  findings unopened. Before fetching a second press page, check its search snippet shows the date; three reads returned
+  no date (WRDW, Golf.com, a truncated Cycling Weekly). Venue and host-committee pages (SoFi Stadium for the Super Bowl)
+  carry dates when the league page will not render.
+- **Second pass on a dated calendar (calendar-2027 pass 2, 2026-11-10).** "Not yet announced" and "no ticket
+  information" findings are the ones that were wrong, not the dated ones. Shapes: the researcher read last year's
+  date notice and never opened the organiser's homepage, which carried "registration for next year is open" with
+  the date in the linked news item (a marathon); the researcher read a years-old dates announcement and reported
+  "no ticket information", while the organiser's newest news item had opened ticket sales two months earlier (an
+  art exhibition). **How to apply:** for every "not yet announced" or "no tickets yet" finding, fetch the
+  organiser's homepage and its newest news item, not the page the researcher cited. Other shapes: an article dated
+  the day before an event cited for the event having ended; a "styled as the official site" trap where the agency
+  page was describing the government site as official; an inference sentence riding on true dates ("the Pope is
+  expected to attend", "a trip has to sit in that span"); "tickets are on sale" where the page shows Buy links plus
+  a waitlist. Organisers often give an opening date only as a countdown ("365 days to the opening" in a dated news
+  item): compute it and say it is computed. A tourism board's event overview can lift a whole "secondary only"
+  list in one fetch.
+- **Refuted vs weakened when the verifier finds the real date.** If a "not yet announced" finding is wrong, mark it
+  refuted (its value field has null dates that must not render) and put the correct row, with where it was read,
+  in the reason and in the handback so the orchestrator can add a finding.
+
+- **Event-ticket runs re-verified a month later (Rugby World Cup, 2026-11-10).** An official page's "every match
+  is available" line can belong to the hospitality block, not the standard sale: ask the fetch which block or
+  heading each sentence sits under. New official seller classes appear between waves (a second list of
+  "official hospitality agents" was announced six days before the verify): fetch the organiser's newest news
+  ids before confirming any "sold only by" or "only official if on list X" claim. Infrastructure opens between
+  research and verify (a second city airport broke "one airport per host city"). A hotel-data release's
+  year-on-year percentages were pinned to the wrong city; ask which market each figure belongs to. A same-day
+  agent read of a seller landing page missed a third product tier. "Guides disagree on which venue" was one
+  site at two dates (old tenant closed, new one moved in): search "<venue> closed" before keeping the trap.
+  Route tables list a city without saying nonstop (a JFK flight ran via Auckland). Card "lowest fee with a
+  route to X" lines miss a no-fee card in the agent's own list. Award ranges: the low end came from an undated
+  chart aggregator and the "conflicting" figure was another cabin's price; the airline's own chart settled both.
+- **proposedClaim cannot carry "under AUD 100" or a set fare** either; write the pair as a range or point to
+  "the rate printed on the page".
+
 Related: [[source-access-notes]]
