@@ -102,6 +102,33 @@
   font-style: italic;
   font-weight: 400;
 }
+/* the headline arrives a line at a time, rising out of its own baseline */
+.pk-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.pk-line > span {
+  display: block;
+  animation: pk-line-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.pk-line:nth-child(2) > span {
+  animation-delay: 0.12s;
+}
+@keyframes pk-line-up {
+  from {
+    transform: translateY(105%);
+  }
+}
+.pk-title p {
+  animation: pk-fade 0.9s 0.45s ease-out both;
+}
+@keyframes pk-fade {
+  from {
+    opacity: 0;
+  }
+}
 .pk-title p {
   margin: 0;
   max-width: 23rem;
@@ -167,6 +194,43 @@
   box-shadow:
     0 0 0 5px rgba(242, 180, 90, 0.2),
     0 0 22px rgba(242, 180, 90, 0.7);
+}
+
+/* which map: one region at a time, each at full width */
+.pk-regions {
+  position: absolute;
+  z-index: 2;
+  left: clamp(20px, 5vw, 76px);
+  bottom: 96px;
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 999px;
+  background: rgba(13, 20, 18, 0.72);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.pk-regions button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--stone-2);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.pk-regions button:hover {
+  color: var(--paper);
+}
+.pk-regions button.is-on {
+  background: var(--paper);
+  color: #14261d;
+  font-weight: 600;
 }
 
 /* ---------- the park card ---------- */
@@ -243,6 +307,57 @@
   margin: 0 0 1.4rem;
   font-size: 0.78rem;
   color: var(--stone-3);
+}
+.pk-trails {
+  margin: 0 0 1.4rem;
+}
+.pk-trails h3 {
+  margin: 0 0 4px;
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--stone-2);
+}
+.pk-trails ol {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  counter-reset: trail;
+}
+.pk-trails li {
+  counter-increment: trail;
+  display: grid;
+  grid-template-columns: 1.6rem 1fr;
+  column-gap: 4px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.pk-trails li::before {
+  content: counter(trail);
+  grid-row: span 2;
+  font-family: var(--pk-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--ember);
+}
+.pk-trails li a {
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 0.97rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(244, 234, 212, 0.3);
+  text-underline-offset: 3px;
+}
+.pk-trails li a:hover {
+  text-decoration-color: var(--ember);
+}
+.pk-trails li span {
+  font-size: 0.86rem;
+  color: var(--stone-2);
+  font-variant-numeric: tabular-nums;
+}
+.pk-card-credit a {
+  color: inherit;
 }
 .pk-fees {
   width: 100%;
@@ -443,7 +558,15 @@
     opacity: 1;
   }
   .parksmap-sun {
-    bottom: 24px;
+    top: calc(max(80svh, 520px) - 76px);
+    bottom: auto;
+  }
+  .pk-regions {
+    top: calc(max(80svh, 520px) - 132px);
+    bottom: auto;
+  }
+  .pk-regions button {
+    min-height: 44px;
   }
   .pk-card {
     position: relative;
@@ -454,8 +577,13 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pk-card {
+  .pk-card,
+  .pk-line > span,
+  .pk-title p {
     animation: none;
+  }
+  .pk-regions button {
+    transition: none;
   }
   .pk-stage.has-park .pk-title,
   .pk-title h1 {

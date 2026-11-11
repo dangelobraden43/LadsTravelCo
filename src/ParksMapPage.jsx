@@ -15,7 +15,8 @@ import { Link } from 'react-router-dom'
 import { Nav } from './App'
 import Footer from './Footer'
 import { PARKS, PARKS_SOURCE } from './data/nationalParks'
-import ParksMap, { inCanvas, shortName } from './ParksMap'
+import { PARK_TRAILS, TRAILS_SOURCE, UNRANKED_PARKS } from './data/parkTrails'
+import ParksMap, { REGIONS, shortName } from './ParksMap'
 import './ParksMapPage.css'
 
 const STATE_NAMES = {
@@ -95,12 +96,30 @@ const PLAN_AROUND = [
 ]
 const thingsToDo = (park) => PLAN_AROUND.filter((a) => park.activities.includes(a)).slice(0, 6)
 
+const trailsChecked = new Date(TRAILS_SOURCE.checkedOn + 'T12:00:00').toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+})
+function trailFacts(t) {
+  return [
+    t.miles !== null && `${t.miles} mi`,
+    t.climbFeet !== null && `${t.climbFeet.toLocaleString('en-US')} ft climb`,
+    t.difficulty,
+    t.route,
+  ]
+    .filter(Boolean)
+    .join(', ')
+}
+
 function ParkCard({ park, onClose }) {
   const ref = useRef(null)
   useEffect(() => {
     if (ref.current) ref.current.scrollTop = 0
   }, [park.code])
   const fees = park.entranceFees.slice(0, 4).map(fee)
+  const trails = PARK_TRAILS[park.code] || []
+  const ranked = !UNRANKED_PARKS.includes(park.code)
   return (
     <aside className="pk-card" ref={ref} aria-live="polite" aria-label={park.name}>
       <button type="button" className="pk-card-close" onClick={onClose}>
@@ -113,6 +132,31 @@ function ParkCard({ park, onClose }) {
           <p className="pk-card-body">{park.npsDescription}</p>
           <p className="pk-card-credit">Description from the National Park Service</p>
         </>
+      )}
+      {trails.length > 0 && (
+        <section className="pk-trails" aria-label="Trails">
+          <h3>{ranked ? 'Most popular trails' : 'Trails in the park'}</h3>
+          <ol>
+            {trails.map((t) => (
+              <li key={t.id}>
+                <a href={t.url} target="_blank" rel="noopener noreferrer">
+                  {t.name}
+                </a>
+                <span>
+                  {trailFacts(t)}
+                  {t.closed && '. Listed as closed when checked'}
+                </span>
+              </li>
+            ))}
+          </ol>
+          <p className="pk-card-credit">
+            {ranked ? 'Ranked by popularity on' : 'From'}{' '}
+            <a href={TRAILS_SOURCE.url} target="_blank" rel="noopener noreferrer">
+              AllTrails
+            </a>
+            , checked {trailsChecked}
+          </p>
+        </section>
       )}
       {fees.length > 0 && (
         <table className="pk-fees">
@@ -148,6 +192,7 @@ function ParkCard({ park, onClose }) {
 
 export default function ParksMapPage() {
   const [selected, setSelected] = useState(null)
+  const [region, setRegion] = useState('lower48')
   const [query, setQuery] = useState('')
   const [hinted, setHinted] = useState(null)
   const stageRef = useRef(null)
@@ -164,12 +209,15 @@ export default function ParksMapPage() {
     const hit = (p) =>
       !q || p.name.toLowerCase().includes(q) || stateList(p).toLowerCase().includes(q)
     return [
-      ['The lower 48', PARKS.filter((p) => inCanvas(p) && hit(p))],
-      ['Alaska, Hawaii and the islands', PARKS.filter((p) => !inCanvas(p) && hit(p))],
+      ...REGIONS.map((r) => [r.label, PARKS.filter((p) => p.region === r.id && hit(p))]),
+      ['Island parks', PARKS.filter((p) => !p.region && hit(p))],
     ]
   }, [query])
 
   const chooseFromIndex = (code) => {
+    const chosen = PARKS.find((p) => p.code === code)
+    // a park in another region brings its own map with it
+    if (chosen && chosen.region) setRegion(chosen.region)
     setSelected(code)
     if (stageRef.current) stageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
@@ -192,14 +240,43 @@ export default function ParksMapPage() {
         ref={stageRef}
         aria-label="The parks map"
       >
-        <ParksMap parks={PARKS} selected={selected} onSelect={setSelected} hinted={hinted} />
+        <ParksMap
+          parks={PARKS}
+          region={region}
+          selected={selected}
+          onSelect={setSelected}
+          hinted={hinted}
+        />
         <header className="pk-title">
-          <h1>Find your national park.</h1>
+          <h1>
+            <span className="pk-line">
+              <span>Find your</span>
+            </span>
+            <span className="pk-line">
+              <span>national park.</span>
+            </span>
+          </h1>
           <p>
             Every U.S. national park is on this map. Pick a marker to see what the park is known for
             and what it costs at the gate.
           </p>
         </header>
+        <div className="pk-regions" role="group" aria-label="Which map to show">
+          {REGIONS.map((r) => (
+            <button
+              key={r.id}
+              type="button"
+              aria-pressed={region === r.id}
+              className={region === r.id ? 'is-on' : undefined}
+              onClick={() => {
+                setRegion(r.id)
+                setSelected(null)
+              }}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
         {park && <ParkCard park={park} onClose={() => setSelected(null)} />}
       </section>
 
