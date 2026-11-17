@@ -549,6 +549,15 @@
 .lp-event-where button:hover {
   color: var(--gold);
 }
+.lp-event-note {
+  grid-column: 2;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--cream-2);
+  border-left: 2px solid var(--copper);
+  padding-left: 10px;
+  margin: 2px 0 4px;
+}
 .lp-event-type {
   font-family: var(--mono);
   font-size: 0.66rem;
@@ -579,6 +588,9 @@
 }
 .lp-events--card .lp-event-type {
   display: none;
+}
+.lp-events--card .lp-event-note {
+  grid-column: 1 / -1;
 }
 .lp-events--card .lp-event-title {
   font-size: 0.94rem;
@@ -893,6 +905,9 @@
     gap: 2px 12px;
   }
   .lp-event-date {
+    grid-column: 1 / -1;
+  }
+  .lp-event-note {
     grid-column: 1 / -1;
   }
   .lp-event-type {

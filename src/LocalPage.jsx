@@ -88,6 +88,7 @@ function EventRow({ e, onPlace, showPlace = true }) {
           </span>
         )}
       </span>
+      {e.note && <span className="lp-event-note">{e.note}</span>}
       <span className="lp-event-type">{EVENT_TYPES[e.type] || 'Event'}</span>
       <a
         className="lp-event-link"

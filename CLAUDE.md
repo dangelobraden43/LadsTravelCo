@@ -332,16 +332,22 @@ preview; `/ship` is his call.** Read `git log` for the branch tip.
      Health Arena, Milwaukee Public Museum = Nature & Culture Museum of Wisconsin…); attaches the traps to
      the place they name (43 cautions); adds a venue for every event venue the scouts' 40-place cap left
      out (48, identity-checked on a shared word); drops refuted findings and uses the verifier's
-     `proposedClaim` for weakened ones; refuses any money amount. **Today: 248 researched places (234 with a
-     coordinate, 12 without a QID so listed only), 471 events (252 in the next 30 days), 57 events at
-     venues with no record so no column of light.**
+     `proposedClaim` for weakened ones; refuses any money amount. **Today: 248 researched places (235 with a
+     coordinate, one of them via its building: Fisher Theatre has no coordinate on Wikidata, the Fisher
+     Building does, so a QID without P625 follows its P276/P361 location; 12 without a QID so listed only),
+     408 events after verification, 54 of them at venues with no record so no column of light.**
    - ⚠️ **Wikidata P576 is not a closure filter.** Michigan Central Station carries its 1988 closure and
      reopened in 2024. The tool flags, the verifier rules.
-   - **Verification:** `lads-verifier` ran at 90 calls, stalled on the harness watchdog after **210
-     verdicts (112 confirmed · 24 refuted · 4 weakened · 70 unverifiable)** and was resumed with an
-     instruction to write incrementally. **Re-run `build-local-data.mjs` when it finishes and re-read
-     the numbers above; until then the page carries unverified events.** Per the Oct 6 correction rule,
-     nothing here is relayed as fact in chat without that pass.
+   - **Verification is DONE:** `lads-verifier` stalled on the harness watchdog after 210 verdicts, was
+     resumed with an instruction to write incrementally, and finished with **751 verdicts (517 confirmed ·
+     39 weakened · 63 refuted · 132 unverifiable), 27 WebSearch calls and about 190 WebFetch calls.**
+     Every one of the 63 refuted is an event whose last day had passed (Nov 13-15): the data was right
+     on Nov 11 and expired, which is why the page filters by date at render and never trusts a file.
+     Every event dated Nov 16 to Dec 16 was re-read on the organiser page; later ones are mostly
+     unverifiable (out of budget) and say nothing on the page. **273 rows are confirmed, 13 carry the
+     verifier's corrected sentence on the row** (kickoff times, the Bucks opponents, closed nights in the
+     light-show date ranges) and a weakened event whose reason says cancelled is dropped. Verdict ids
+     repeat across parts, so a verdict is keyed by `part|findingId`.
 
 4. **THE EVENT-SOURCE SURVEY (Nov 11, 29 sources read, terms pages opened, not legal advice)** — this is
    the rule for what may be shown on the public page:
@@ -360,11 +366,17 @@ preview; `/ship` is his call.** Read `git log` for the branch tip.
    - Nothing on the page comes from an aggregator. If Ticketmaster is added later it is a live, attributed,
      short-cached layer with its own affiliate disclosure, never copied into a data file.
 
-5. **Also shipped on this branch:** `/outdoors` on phones no longer has the title lying across the north of
+5. ⚠️ **Verifier findings a founder should know:** Milwaukee Public Museum's last day in its building
+   is Jan 3 2027 (the Nature & Culture Museum of Wisconsin follows); Toledo Museum of Art reopens in
+   2027; Indianapolis City Market is closed until 2028 or later; USS Silversides was towed away and is
+   back as of Oct 31; the Ren Cen demolition plan is funded but contested. These ride on the place cards
+   as cautions, in the verifier's words.
+
+6. **Also shipped on this branch:** `/outdoors` on phones no longer has the title lying across the north of
    the map (the model is fitted into the band between the title and the controls; `homeView(…, clear)` in
    `ParksMap.jsx`). Checked on all three regions at 390×664.
 
-6. **Lessons:**
+7. **Lessons:**
    - A python heredoc turned `\b` in a regex into a literal backspace character and the poster mode
      silently never matched. **Same rule as the Bash heredocs: write regex and backslash payloads with the
      Write tool or a node one-liner reading a file.**

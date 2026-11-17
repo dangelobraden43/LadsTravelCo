@@ -35,14 +35,17 @@ const eventFiles = files.filter((f) => /^lads-timing-events\..*\.json$/.test(f) 
 const verifier = files.includes('lads-verifier.json') ? load('lads-verifier.json') : null
 
 /* ---------- verdicts ---------- */
+/* Finding ids repeat across parts (every scout starts at scout-001), so a verdict is keyed by
+ * the part it belongs to as well. The part is the middle of the file name. */
+const partOf = (file) => file.replace(/^lads-[a-z-]+\./, '').replace(/\.json$/, '')
 const verdicts = new Map()
 if (verifier) {
   for (const v of verifier.verdicts || verifier.findings || []) {
     const id = v.findingId || v.id
-    if (id) verdicts.set(id, v)
+    if (id) verdicts.set(`${v.part || ''}|${id}`, v)
   }
 }
-const verdictOf = (f) => verdicts.get(f.id) || null
+const verdictOf = (f) => verdicts.get(`${partOf(f._file)}|${f.id}`) || null
 let dropped = 0
 let weakened = 0
 
@@ -78,6 +81,21 @@ async function entity(qid) {
     lng: coord ? coord.value.longitude : null,
     site: site ? site.value : null,
     dissolved: Boolean(e.claims && (e.claims.P576 || e.claims.P3999)), // dissolved / date of official closure
+    via: null,
+  }
+  if (!coord) {
+    // a hall inside a building, a market inside a block: Wikidata records the container
+    const holder = claim('P276') || claim('P361')
+    const hq = holder && holder.value && holder.value.id
+    if (hq && /^Q\d+$/.test(hq)) {
+      const h = await entity(hq)
+      if (h && Number.isFinite(h.lat)) {
+        out.lat = h.lat
+        out.lng = h.lng
+        out.via = hq
+        console.log(`${qid} has no coordinate; using its location ${hq} (${h.label})`)
+      }
+    }
   }
   cache[qid] = out
   return out
@@ -99,13 +117,14 @@ const traps = []
 for (const f of scoutFiles) {
   const j = load(f)
   for (const x of j.findings) {
+    x._file = f
     const v = verdictOf(x)
     if (v && v.verdict === 'refuted') {
       dropped++
       continue
     }
     if (x.kind === 'place' && x.value && x.value.name) placeFindings.push({ ...x, _file: f, _verdict: v })
-    else if (x.kind === 'trap') traps.push({ ...x, _verdict: v })
+    else if (x.kind === 'trap') traps.push({ ...x, _file: f, _verdict: v })
   }
 }
 
@@ -140,7 +159,7 @@ for (const [qid, f] of byQid) {
     officialUrl: v.officialUrl || (e && e.site) || null,
     lat: e && Number.isFinite(e.lat) ? Math.round(e.lat * 1e5) / 1e5 : null,
     lng: e && Number.isFinite(e.lng) ? Math.round(e.lng * 1e5) / 1e5 : null,
-    coordSource: e && Number.isFinite(e.lat) ? `https://www.wikidata.org/wiki/${qid}` : null,
+    coordSource: e && Number.isFinite(e.lat) ? `https://www.wikidata.org/wiki/${e.via || qid}` : null,
     wikidataLabel: e ? e.label : null,
     sources: f.sources.filter((s) => s.access === 'read').slice(0, 2).map((s) => ({ title: s.title, url: s.url })),
     checkedOn: f.checkedOn,
@@ -190,7 +209,8 @@ let attached = 0
 for (const t of traps) {
   const target = t.appliesTo && byNorm.get(norm(t.appliesTo))
   if (!target) continue
-  target.caution = t.claim
+  const tv = t._verdict
+  target.caution = tv && tv.verdict === 'weakened' && tv.proposedClaim ? tv.proposedClaim : t.claim
   attached++
 }
 
@@ -243,12 +263,18 @@ for (const f of eventFiles) {
   const j = load(f)
   for (const x of j.findings) {
     if (x.kind !== 'fact' || !x.value || !x.value.date) continue
+    x._file = f
     const v = verdictOf(x)
     if (v && v.verdict === 'refuted') {
       dropped++
       continue
     }
     const e = x.value
+    if (v && v.verdict === 'weakened' && /cancel/i.test((v.reason || '') + (v.proposedClaim || ''))) {
+      console.log(`cancelled, dropped: ${e.title} (${e.date})`)
+      dropped++
+      continue
+    }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(e.date) || !e.title || !e.venue || !e.url) continue
     if (MONEY.test(x.claim) || MONEY.test(e.title)) throw new Error(`a money amount in an event: ${x.id}`)
     const place = (e.venueWikidata && placeByQid.get(e.venueWikidata)) || byNorm.get(norm(e.venue)) || null
@@ -256,9 +282,15 @@ for (const f of eventFiles) {
     const key = `${e.date}|${norm(e.title)}|${norm(e.venue)}`
     if (seenEvents.has(key)) continue
     seenEvents.add(key)
+    // a row the researcher could only call 'home game' takes the opponent the verifier read
+    let title = e.title
+    if (/opponent not printed/i.test(title) && v && v.proposedClaim) {
+      const m = /^([A-Z][\w .'-]+? vs [A-Z][\w .'-]+?) at /.exec(v.proposedClaim)
+      if (m) title = m[1].replace(/^(Milwaukee|Chicago|Detroit|Minnesota|Cleveland|Indiana|Indianapolis) /, '')
+    }
     events.push({
       id: `${slug(e.venue).slice(0, 24)}-${e.date}-${slug(e.title).slice(0, 28)}`,
-      title: e.title,
+      title,
       date: e.date,
       endDate: e.endDate && /^\d{4}-\d{2}-\d{2}$/.test(e.endDate) ? e.endDate : null,
       time: e.time || null,
@@ -268,7 +300,8 @@ for (const f of eventFiles) {
       type: e.type || 'other',
       url: e.url,
       venueKey: place ? place.id : null,
-      ...(v && v.verdict === 'weakened' ? { weakened: true } : {}),
+      ...(v && v.verdict === 'weakened' && v.proposedClaim ? { note: v.proposedClaim } : {}),
+      ...(v && v.verdict === 'confirmed' ? { checked: true } : {}),
     })
   }
 }
@@ -304,4 +337,4 @@ console.log(
   `places: ${kept.length} (${before - kept.length} already on the page, ${kept.filter((p) => p.lat != null).length} with a coordinate, ${noQid.length} without a QID, ${attached} cautions attached, ${mismatched.length} identities to check)`
 )
 console.log(`events: ${events.length} (${unplaced} at a venue not in the place list)`)
-console.log(`verifier: ${verifier ? `${verdicts.size} verdicts, ${dropped} refuted dropped, ${weakened} weakened` : 'not run yet'}`)
+console.log(`verifier: ${verifier ? `${verdicts.size} verdicts, ${dropped} dropped (refuted or cancelled), ${events.filter((e) => e.checked).length} events confirmed on the organiser page, ${events.filter((e) => e.note).length} carrying a correction` : 'not run yet'}`)
