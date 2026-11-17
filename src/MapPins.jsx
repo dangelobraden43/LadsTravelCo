@@ -162,10 +162,8 @@ export function formatVisitedDate(v) {
  * Single-linkage on PROJECTED coordinates: anything within `join` units of any
  * member joins the group; groups of `collapseAt` or more collapse.
  *
- * ⚠️ `src/GoodNews.jsx` still carries its own local copy of this logic for the
- * Midwest map. This is the shared version — migrate that one to this in a
- * follow-up rather than editing both. It was left alone here deliberately:
- * /local is in production and this session was not the time to refactor it.
+ * (The old /local SVG map carried its own copy of this logic; that map was retired on
+ * Nov 16 2026 for the 3D Midwest model, so this is now the only copy.)
  */
 export function collapseDense(places, project, { join = 18, collapseAt = 6 } = {}) {
   const pts = places
@@ -310,7 +308,7 @@ export function spreadClusters(
 }
 
 /* ---------- PANEL ADAPTER ----------
- * Same convention as anchorToPanel / airportToPanel in GoodNews.jsx: turn a
+ * Same convention as the panel builders in PeruMap: turn a
  * record into the shared Panel shape. Reuses that one card pattern; there is
  * no second card here.
  *
