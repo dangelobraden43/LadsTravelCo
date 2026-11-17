@@ -821,7 +821,7 @@ function DebugProbe({ frame, places, hubs, groundAt }) {
 function HubLabels({ frame, hubs, groundAt, onHub, still }) {
   const { camera, size } = useThree()
   const [ready, setReady] = useState(still)
-  const [visible, setVisible] = useState(() => new Set())
+  const [visible, setVisible] = useState(() => new Map()) // id -> '' | 'left' | 'right'
   const last = useRef('')
   useEffect(() => {
     if (still) return undefined
@@ -846,23 +846,26 @@ function HubLabels({ frame, hubs, groundAt, onHub, still }) {
       const hit = boxes.some((b) => Math.abs(b[0] - px) < w && Math.abs(b[1] - py) < h)
       if (hit) continue
       boxes.push([px, py])
-      keep.push(hub.id)
+      // a label near the edge of the canvas hangs inward from its point instead of being cut off
+      const edge = px > size.width - w * 0.55 ? 'right' : px < w * 0.55 ? 'left' : ''
+      keep.push([hub.id, edge])
     }
-    const key = keep.join('|')
+    const key = keep.map((k) => k.join(':')).join('|')
     if (key !== last.current) {
       last.current = key
-      setVisible(new Set(keep))
+      setVisible(new Map(keep))
     }
   })
   if (!ready) return null
   return hubs.map((h) => {
     if (!visible.has(h.id)) return null
+    const edge = visible.get(h.id)
     const [x, z] = frame.project(h.lat, h.lng)
     return (
       <Html key={h.id} position={[x, groundAt(h.lat, h.lng) + 0.2, z]} center zIndexRange={[18, 0]}>
         <button
           type="button"
-          className={`lm-hub${h.walked ? ' has-walked' : ''}`}
+          className={`lm-hub${h.walked ? ' has-walked' : ''}${edge ? ` at-${edge}` : ''}`}
           onClick={() => onHub(h.id)}
           aria-label={`${h.name}: ${h.count} places${h.events ? `, ${h.events} events in these dates` : ''}. Fly in.`}
         >

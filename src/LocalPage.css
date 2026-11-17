@@ -303,6 +303,20 @@
     transform 0.18s,
     background 0.18s;
 }
+.lm-hub.at-right {
+  transform: translateX(calc(-50% + 14px));
+}
+.lm-hub.at-left {
+  transform: translateX(calc(50% - 14px));
+}
+.lm-hub.at-right:hover,
+.lm-hub.at-right:focus-visible {
+  transform: translateX(calc(-50% + 14px)) scale(1.07);
+}
+.lm-hub.at-left:hover,
+.lm-hub.at-left:focus-visible {
+  transform: translateX(calc(50% - 14px)) scale(1.07);
+}
 .lm-hub.has-walked {
   border-color: rgba(226, 181, 73, 0.9) !important;
 }
