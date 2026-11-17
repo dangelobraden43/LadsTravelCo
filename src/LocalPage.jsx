@@ -1,12 +1,14 @@
-/* /local — Lads Local: the Midwest on one model, and what is on there.
+/* /local — Lads Local: the Midwest, city by city.
  *
  * The stage is a 3D relief of the six states and the Great Lakes (LocalMap). Cities are
  * found in the data and offered as fly-ins; a column of light stands on every venue with a
- * dated event in the chosen dates. Everything the canvas shows is also reachable below it
- * as ordinary lists, with 44px targets and a keyboard.
+ * dated event in the chosen dates. Under it: each city's headline places, the events board,
+ * and every place indexed. Everything the canvas shows is also reachable below it as
+ * ordinary lists, with 44px targets and a keyboard.
  *
+ * ⛔ This is an information page (ruled Nov 17 2026). It does not say who has been where.
  * ⛔ Every number on this page is counted from src/data/localIndex.js at render. Never type one.
- * ⛔ Gold is a place a founder has been. Copper is everything else, and says so.
+ * ⛔ Headline places are ordered by a published measure (Wikipedia coverage), never by us.
  * ⛔ No ticket prices, anywhere.
  */
 import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -20,13 +22,13 @@ import {
   KIND_LABELS,
   LOCAL_PLACES,
   PINNED,
-  WALKED_TOTAL,
-  OTHER_TOTAL,
-  UNPINNED_WALKED,
+  UNPINNED,
+  TOTAL,
   HUBS,
   hubIdOf,
   hubById,
   placeById,
+  headline,
   LOCAL_EVENTS,
   EVENT_TYPES,
   EVENT_GROUPS,
@@ -59,6 +61,12 @@ const eventWhen = (e) =>
   e.endDate && e.endDate !== e.date
     ? `${shortDate(e.date)} to ${shortDate(e.endDate)}`
     : shortDate(e.date)
+const approx = (n) =>
+  n >= 1e6
+    ? `${(n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, '')} million`
+    : n >= 1e3
+      ? `${Math.round(n / 1e3).toLocaleString()},000`
+      : String(n)
 
 /* 100 world units span the frame's width; this is how many kilometres one of them is. */
 const B = MIDWEST_RELIEF.bounds
@@ -103,8 +111,23 @@ function EventRow({ e, onPlace, showPlace = true }) {
   )
 }
 
+function PlaceRow({ p, onPlace, active }) {
+  return (
+    <li>
+      <button
+        type="button"
+        className={active ? 'is-active' : undefined}
+        aria-pressed={active}
+        onClick={() => onPlace(p.id)}
+      >
+        <span className="lp-row-name">{p.name}</span>
+        <span className="lp-row-kind">{KIND_LABELS[p.kind] || ''}</span>
+      </button>
+    </li>
+  )
+}
+
 function PlaceCard({ place, events, onClose, onPlace }) {
-  const walked = place.tier === 'walked'
   return (
     <aside className="lp-card" aria-label={place.name}>
       <button type="button" className="lp-card-close" onClick={onClose} aria-label="Close">
@@ -116,9 +139,14 @@ function PlaceCard({ place, events, onClose, onPlace }) {
         {place.state && place.city ? `, ${place.state}` : ''}
       </p>
       <h2 className="lp-card-title">{place.name}</h2>
-      <p className={`lp-chip ${walked ? 'lp-chip--gold' : 'lp-chip--copper'}`}>{place.status}</p>
       {place.what && <p className="lp-card-what">{place.what}</p>}
       {place.caution && <p className="lp-card-caution">{place.caution}</p>}
+      {place.visitors && (
+        <p className="lp-card-fact">
+          About {approx(place.visitors.n)} visitors in {place.visitors.year}, as recorded on
+          Wikidata.
+        </p>
+      )}
       {place.capacity && (
         <p className="lp-card-fact">Holds about {place.capacity.toLocaleString()} people.</p>
       )}
@@ -126,13 +154,12 @@ function PlaceCard({ place, events, onClose, onPlace }) {
         <p className="lp-card-fact">
           Google rates it {place.google.rating}
           {place.google.reviews ? ` across ${place.google.reviews.toLocaleString()} reviews` : ''}.
-          That is Google&rsquo;s number, not ours.
         </p>
       )}
       {!place.pinned && (
         <p className="lp-card-fact">
-          Not on the map: we do not hold a recorded coordinate for it, and we do not look one up
-          from a name.
+          Not on the map: there is no recorded coordinate for it, and we do not look one up from a
+          name.
         </p>
       )}
       {events.length > 0 && (
@@ -168,21 +195,34 @@ function PlaceCard({ place, events, onClose, onPlace }) {
   )
 }
 
-function HubCard({ hub, places, events, onClose, onPlace }) {
-  const byLayer = LAYERS.map((l) => [l, places.filter((p) => p.layer === l.id)]).filter(
-    ([, list]) => list.length
-  )
+function HubCard({ hub, places, events, onClose, onPlace, selected }) {
+  const picks = headline(hub, 5)
+  const pickIds = new Set(picks.map((p) => p.id))
+  const byLayer = LAYERS.map((l) => [
+    l,
+    places.filter((p) => p.layer === l.id && !pickIds.has(p.id)),
+  ]).filter(([, list]) => list.length)
   return (
     <aside className="lp-card" aria-label={hub.name}>
       <button type="button" className="lp-card-close" onClick={onClose} aria-label="Close">
         &times;
       </button>
-      <p className="lp-card-eyebrow">City</p>
+      <p className="lp-card-eyebrow">City{hub.state ? ` · ${hub.state}` : ''}</p>
       <h2 className="lp-card-title">{hub.name}</h2>
       <p className="lp-card-what">
-        {plural(places.length, 'place')} on the map here
-        {events.length ? `, and ${plural(events.length, 'event')} in the dates you chose` : ''}.
+        {plural(places.length, 'place')} on the map
+        {events.length ? `, ${plural(events.length, 'event')} in the dates you chose` : ''}.
       </p>
+      {picks.length > 0 && (
+        <>
+          <h3 className="lp-card-h">Best known</h3>
+          <ol className="lp-card-places lp-card-places--ranked">
+            {picks.map((p) => (
+              <PlaceRow key={p.id} p={p} onPlace={onPlace} active={p.id === selected} />
+            ))}
+          </ol>
+        </>
+      )}
       {events.length > 0 && (
         <>
           <h3 className="lp-card-h">On in these dates</h3>
@@ -201,12 +241,7 @@ function HubCard({ hub, places, events, onClose, onPlace }) {
           <h3 className="lp-card-h">{layer.long}</h3>
           <ul className="lp-card-places">
             {list.map((p) => (
-              <li key={p.id}>
-                <button type="button" onClick={() => onPlace(p.id)}>
-                  <span className={`lp-dot lp-dot--${p.tier === 'walked' ? 'gold' : 'copper'}`} />
-                  {p.name}
-                </button>
-              </li>
+              <PlaceRow key={p.id} p={p} onPlace={onPlace} active={p.id === selected} />
             ))}
           </ul>
         </div>
@@ -226,6 +261,7 @@ export default function LocalPage() {
   const [more, setMore] = useState(false)
   const [query, setQuery] = useState('')
   const stageRef = useRef(null)
+  const boardRef = useRef(null)
   // ?poster renders the model alone, for the still picture shown when a browser has no 3D
   const poster = useMemo(() => /[?&]poster(?![a-z])/.test(window.location.search), [])
 
@@ -276,7 +312,6 @@ export default function LocalPage() {
         name: h.name,
         lat: h.lat,
         lng: h.lng,
-        walked: h.walked,
         count: h.memberIds.filter((id) => layers.has(placeById(id).layer)).length,
         events: inWindow.filter((e) => e.placeId && h.memberIds.includes(e.placeId)).length,
       })).filter((h) => h.count > 0),
@@ -306,6 +341,10 @@ export default function LocalPage() {
     setSelected(null)
     setHubId(id)
   }, [])
+  const chooseHubFromList = (id) => {
+    chooseHub(id)
+    toStage()
+  }
   const home = () => {
     setSelected(null)
     setHubId(null)
@@ -317,6 +356,11 @@ export default function LocalPage() {
       else next.add(id)
       return next.size ? next : new Set(LAYERS.map((l) => l.id))
     })
+  const showCityOnBoard = (name) => {
+    setCity(name)
+    setMore(false)
+    if (boardRef.current) boardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   /* the board under the map */
   const types = EVENT_GROUPS.find((g) => g.id === group).types
@@ -338,6 +382,13 @@ export default function LocalPage() {
     ? LOCAL_EVENTS.filter((e) => e.placeId === place.id && e.last >= localISO())
     : []
 
+  /* the city blocks */
+  const cityBlocks = HUBS.map((h) => ({
+    hub: h,
+    picks: headline(h, 5),
+    on: inWindow.filter((e) => e.placeId && h.memberIds.includes(e.placeId)).length,
+  })).filter((b) => b.picks.length >= 3)
+
   /* the index */
   const q = query.trim().toLowerCase()
   const hit = (p) =>
@@ -348,19 +399,19 @@ export default function LocalPage() {
   const indexGroups = [
     ...HUBS.map((h) => [h.name, h.memberIds.map(placeById).filter(hit)]),
     ['Across the region', LOCAL_PLACES.filter((p) => p.pinned && !hubIdOf(p.id) && hit(p))],
-    ['Places we have been that are not on the map yet', UNPINNED_WALKED.filter(hit)],
+    ['Not on the map', UNPINNED.filter(hit)],
   ].filter(([, list]) => list.length)
 
   const checked = EVENTS_META.checkedOn ? longDate(EVENTS_META.checkedOn) : null
-  const description = `A 3D map of the Midwest and the Great Lakes: ${WALKED_TOTAL} places we have been, ${OTHER_TOTAL} more researched and marked as not visited, and dated events at the region's venues read from each venue's own calendar.`
+  const description = `The Midwest on one map: ${TOTAL} places across six states and the Great Lakes, each city's best-known sights, and dated events read from every venue's own calendar.`
 
   return (
     <div className="lp-page">
       <Helmet>
-        <title>Lads Local: what&rsquo;s on across the Midwest | The Lads Travel Co.</title>
+        <title>Lads Local: the Midwest, city by city | The Lads Travel Co.</title>
         <meta name="description" content={description} />
         <link rel="canonical" href="https://ladstravel.com/local" />
-        <meta property="og:title" content="Lads Local: Good Brews · Good Views · Good News" />
+        <meta property="og:title" content="Lads Local: the Midwest, city by city" />
         <meta property="og:description" content={description} />
         <meta property="og:url" content="https://ladstravel.com/local" />
         <meta property="og:type" content="website" />
@@ -368,7 +419,7 @@ export default function LocalPage() {
           {JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'CollectionPage',
-            name: 'Lads Local: Good Brews · Good Views · Good News',
+            name: 'Lads Local: the Midwest, city by city',
             url: 'https://ladstravel.com/local',
             description,
             isPartOf: {
@@ -406,29 +457,19 @@ export default function LocalPage() {
         </Suspense>
 
         <header className="lm-title">
-          <p className="lm-eyebrow">Lads Local · Good Brews · Good Views · Good News</p>
+          <p className="lm-eyebrow">Lads Local · The Midwest</p>
           <h1>
             <span className="lm-line">
-              <span>Find what&rsquo;s on</span>
+              <span>The Midwest,</span>
             </span>
             <span className="lm-line">
-              <span>in the Midwest.</span>
+              <span>city by city.</span>
             </span>
           </h1>
           <p className="lm-lede">
-            Pick a city to fly in. A column of light means something is on there in the dates you
-            choose.
+            The best-known places in each city, and what&rsquo;s on there, every date read from the
+            organiser&rsquo;s own page. Pick a city to fly in.
           </p>
-          <ul className="lm-key" aria-label="What the marks mean">
-            <li>
-              <span className="lp-dot lp-dot--gold" />
-              {WALKED_TOTAL} we have been to
-            </li>
-            <li>
-              <span className="lp-dot lp-dot--copper" />
-              {OTHER_TOTAL} researched, not visited
-            </li>
-          </ul>
         </header>
 
         {(hub || place) && (
@@ -468,7 +509,7 @@ export default function LocalPage() {
           <p className="lm-count" role="status">
             {inWindow.length
               ? `${plural(inWindow.length, 'event')} at ${plural(beams.length, 'venue')}, ${shortDate(win.from)} to ${shortDate(win.to)}`
-              : `No dated events on our list between ${shortDate(win.from)} and ${shortDate(win.to)}`}
+              : `Nothing dated between ${shortDate(win.from)} and ${shortDate(win.to)}`}
           </p>
         </div>
 
@@ -486,15 +527,64 @@ export default function LocalPage() {
             events={hubEvents}
             onClose={home}
             onPlace={choosePlace}
+            selected={selected}
           />
         ) : null}
       </section>
 
-      <section className="lp-section" aria-labelledby="lp-on-h">
+      <section className="lp-section" aria-labelledby="lp-picks-h">
+        <div className="lp-head">
+          <h2 id="lp-picks-h">Where to start, city by city</h2>
+          <p>
+            Each city&rsquo;s best-known places, then what&rsquo;s on there in the dates you chose.
+            The order is how widely each place is written about, not a ranking of ours.
+          </p>
+        </div>
+        <div className="lp-cities">
+          {cityBlocks.map(({ hub: h, picks, on }) => (
+            <article key={h.id} className="lp-city">
+              <header className="lp-city-head">
+                <button
+                  type="button"
+                  className="lp-city-name"
+                  onClick={() => chooseHubFromList(h.id)}
+                >
+                  {h.name}
+                  {h.state ? <span>{h.state}</span> : null}
+                </button>
+                <span className="lp-city-meta">
+                  {plural(h.memberIds.length, 'place')} on the map
+                </span>
+              </header>
+              <ol className="lp-city-picks">
+                {picks.map((p) => (
+                  <PlaceRow
+                    key={p.id}
+                    p={p}
+                    onPlace={choosePlaceFromList}
+                    active={p.id === selected}
+                  />
+                ))}
+              </ol>
+              <p className="lp-city-on">
+                {on ? (
+                  <button type="button" onClick={() => showCityOnBoard(h.name)}>
+                    {plural(on, 'event')} here, {win.label.toLowerCase()} &rarr;
+                  </button>
+                ) : (
+                  <span>Nothing dated here, {win.label.toLowerCase()}.</span>
+                )}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="lp-section" aria-labelledby="lp-on-h" ref={boardRef}>
         <div className="lp-head">
           <h2 id="lp-on-h">What&rsquo;s on</h2>
           <p>
-            {win.label}: {shortDate(win.from)} to {shortDate(win.to)}. Each line was read from the
+            {win.label}: {shortDate(win.from)} to {shortDate(win.to)}. Every line was read from the
             venue&rsquo;s, team&rsquo;s or organiser&rsquo;s own page, which is where
             &ldquo;Details&rdquo; takes you. Dates move, so check there before you travel.
             {checked ? ` Last read ${checked}.` : ''}
@@ -552,7 +642,7 @@ export default function LocalPage() {
           </ul>
         ) : (
           <p className="lp-note">
-            Nothing on our list matches that. Try a longer stretch of dates.
+            Nothing on the list matches that. Try a longer stretch of dates.
           </p>
         )}
         {board.length > boardShown.length && (
@@ -582,18 +672,12 @@ export default function LocalPage() {
             </h3>
             <ul>
               {list.map((p) => (
-                <li key={p.id}>
-                  <button
-                    type="button"
-                    className={p.id === selected ? 'is-active' : undefined}
-                    aria-pressed={p.id === selected}
-                    onClick={() => choosePlaceFromList(p.id)}
-                  >
-                    <span className={`lp-dot lp-dot--${p.tier === 'walked' ? 'gold' : 'copper'}`} />
-                    <span className="lp-index-name">{p.name}</span>
-                    <span className="lp-index-kind">{KIND_LABELS[p.kind] || ''}</span>
-                  </button>
-                </li>
+                <PlaceRow
+                  key={p.id}
+                  p={p}
+                  onPlace={choosePlaceFromList}
+                  active={p.id === selected}
+                />
               ))}
             </ul>
           </div>
@@ -603,13 +687,10 @@ export default function LocalPage() {
 
       <section className="lp-section lp-two" aria-label="More from Lads Local">
         <Link to="/michigan" className="lp-feature">
-          <p className="lp-card-eyebrow">Home turf</p>
+          <p className="lp-card-eyebrow">Our home state</p>
           <h2>Michigan</h2>
-          <p>
-            The guide behind the gold marks: breweries, golf and road trips across both peninsulas,
-            all places we have been.
-          </p>
-          <span className="lp-feature-cta">Open the Michigan guide &rarr;</span>
+          <p>Our own guide to Michigan: breweries, golf and road trips across both peninsulas.</p>
+          <span className="lp-feature-cta">Read the Michigan guide &rarr;</span>
         </Link>
         <details className="lp-golf">
           <summary>
@@ -621,9 +702,7 @@ export default function LocalPage() {
           <ol>
             {GOLF_SLATE.map((g) => (
               <li key={g.rank}>
-                <span className={`lp-dot lp-dot--${g.ladsPlayed ? 'gold' : 'copper'}`} />
                 {g.name}, {g.town}
-                {g.ladsPlayed ? ' (we have played it)' : ''}
               </li>
             ))}
           </ol>
@@ -641,19 +720,11 @@ export default function LocalPage() {
         <h2 id="lp-how-h">How this page is built</h2>
         <div className="lp-how">
           <div>
-            <h3>Two kinds of mark, never mixed</h3>
-            <p>
-              Gold is a place one of us has been. Copper is a place we have researched or saved and
-              have not visited, and the page says so on every one. We do not rate or describe in our
-              own voice a place we have not been to.
-            </p>
-          </div>
-          <div>
             <h3>Every pin stands on a record</h3>
             <p>
-              Coordinates come from our own saved places or from a published record for that exact
-              place, such as its Wikidata entry. We never look a location up from a name. A place
-              with no record is listed and left off the map.
+              Coordinates come from a published record for that exact place, such as its Wikidata
+              entry, or from a saved place of our own. We never look a location up from a name. A
+              place with no record is listed and left off the map.
             </p>
           </div>
           <div>
@@ -664,13 +735,21 @@ export default function LocalPage() {
               show no ticket prices.
             </p>
           </div>
+          <div>
+            <h3>Best known is measured, not judged</h3>
+            <p>
+              A city&rsquo;s headline places are ordered by how many Wikipedia editions carry an
+              article on them, read from Wikidata. Visitor counts, where shown, are Wikidata&rsquo;s
+              too. None of it is our opinion.
+            </p>
+          </div>
         </div>
         <p className="lp-credit">
           The terrain is measured elevation from the open Terrarium tiles (USGS, SRTM and others).
           State outlines and lake shores are from Natural Earth. Place identities and coordinates
           for researched places are from Wikidata. The model is stylised: the Midwest is flat, so
-          heights are exaggerated a great deal to make the land readable. The Hop Passport is a
-          third-party Michigan brewery programme, not ours.
+          heights are exaggerated a great deal to make the land readable. Google ratings, where
+          shown, are Google&rsquo;s.
         </p>
       </section>
 

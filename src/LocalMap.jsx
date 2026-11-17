@@ -458,8 +458,7 @@ function Backdrop() {
 }
 
 /* ---------- the pins: one draw call, the same size on screen at any zoom ---------- */
-const GOLD = new THREE.Color('#E2B549')
-const COPPER = new THREE.Color('#C98F6B')
+const MARK = new THREE.Color('#E8C978') // one mark for every place: this page draws no tiers
 const PIN_VERT = `
 attribute vec3 aColor;
 attribute float aSolid;
@@ -506,9 +505,8 @@ function Pins({ frame, places, shown, groundAt, still }) {
     places.forEach((p, i) => {
       const [x, z] = frame.project(p.lat, p.lng)
       pos.set([x, groundAt(p.lat, p.lng) + 0.1, z], i * 3)
-      const c = p.tier === 'walked' ? GOLD : COPPER
-      col.set([c.r, c.g, c.b], i * 3)
-      solid[i] = p.tier === 'walked' ? 1 : 0
+      col.set([MARK.r, MARK.g, MARK.b], i * 3)
+      solid[i] = 1
     })
     const g = new THREE.BufferGeometry()
     g.setAttribute('position', new THREE.BufferAttribute(pos, 3))
@@ -865,7 +863,7 @@ function HubLabels({ frame, hubs, groundAt, onHub, still }) {
       <Html key={h.id} position={[x, groundAt(h.lat, h.lng) + 0.2, z]} center zIndexRange={[18, 0]}>
         <button
           type="button"
-          className={`lm-hub${h.walked ? ' has-walked' : ''}${edge ? ` at-${edge}` : ''}`}
+          className={`lm-hub${edge ? ` at-${edge}` : ''}`}
           onClick={() => onHub(h.id)}
           aria-label={`${h.name}: ${h.count} places${h.events ? `, ${h.events} events in these dates` : ''}. Fly in.`}
         >
@@ -958,9 +956,9 @@ function canWebGL() {
 }
 
 /**
- * places  every pinnable place: { id, name, lat, lng, tier: 'walked' | other }
+ * places  every pinnable place: { id, name, lat, lng }
  * shown   Set of place ids to draw now (the page decides: layer filters, hub or home view)
- * hubs    cities to offer as fly-ins on the home view: { id, name, lat, lng, count, events, walked }
+ * hubs    cities to offer as fly-ins on the home view: { id, name, lat, lng, count, events }
  * beams   venues with dated events in the chosen dates: { id, lat, lng, count }
  * focus   null for the whole Midwest, or { lat, lng, dist } to fly to
  */

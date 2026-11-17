@@ -51,8 +51,28 @@ let weakened = 0
 
 /* ---------- wikidata ---------- */
 const cache = fs.existsSync(CACHE) ? JSON.parse(fs.readFileSync(CACHE, 'utf8')) : {}
+/* Which Wikipedia editions have an article: a published measure of how widely a place is
+ * documented, used to order a city's headline places. Never a judgement of ours. */
+const editions = (e) =>
+  e.sitelinks
+    ? Object.keys(e.sitelinks).filter((k) => /^[a-z_]+wiki$/.test(k) && !/^(commons|species|meta|wikidata|sources|mania)wiki$/.test(k)).length
+    : 0
+/* P1174 visitors per year: the most recent statement that carries a point in time. */
+const visitors = (e) => {
+  const rows = (e.claims && e.claims.P1174) || []
+  let best = null
+  for (const s of rows) {
+    const amount = s.mainsnak && s.mainsnak.datavalue && Number(s.mainsnak.datavalue.value.amount)
+    const when = s.qualifiers && s.qualifiers.P585 && s.qualifiers.P585[0].datavalue
+    const year = when ? Number(when.value.time.slice(1, 5)) : null
+    if (!Number.isFinite(amount)) continue
+    if (!best || (year || 0) > (best.year || 0)) best = { n: amount, year }
+  }
+  return best
+}
+
 async function entity(qid) {
-  if (cache[qid]) return cache[qid]
+  if (cache[qid] && 'editions' in cache[qid]) return cache[qid]
   const url = `https://www.wikidata.org/wiki/Special:EntityData/${qid}.json`
   let j
   for (let attempt = 1; ; attempt++) {
@@ -82,6 +102,8 @@ async function entity(qid) {
     site: site ? site.value : null,
     dissolved: Boolean(e.claims && (e.claims.P576 || e.claims.P3999)), // dissolved / date of official closure
     via: null,
+    editions: editions(e),
+    visitors: visitors(e),
   }
   if (!coord) {
     // a hall inside a building, a market inside a block: Wikidata records the container
@@ -160,6 +182,8 @@ for (const [qid, f] of byQid) {
     lat: e && Number.isFinite(e.lat) ? Math.round(e.lat * 1e5) / 1e5 : null,
     lng: e && Number.isFinite(e.lng) ? Math.round(e.lng * 1e5) / 1e5 : null,
     coordSource: e && Number.isFinite(e.lat) ? `https://www.wikidata.org/wiki/${e.via || qid}` : null,
+    editions: e ? e.editions : 0,
+    visitors: e && e.visitors ? e.visitors : null,
     wikidataLabel: e ? e.label : null,
     sources: f.sources.filter((s) => s.access === 'read').slice(0, 2).map((s) => ({ title: s.title, url: s.url })),
     checkedOn: f.checkedOn,
@@ -179,6 +203,8 @@ for (const f of noQid) {
     lat: null,
     lng: null,
     coordSource: null,
+    editions: 0,
+    visitors: null,
     sources: f.sources.filter((s) => s.access === 'read').slice(0, 2).map((s) => ({ title: s.title, url: s.url })),
     checkedOn: f.checkedOn,
   })
@@ -243,6 +269,8 @@ for (const f of eventFiles) {
       lat: Math.round(w.lat * 1e5) / 1e5,
       lng: Math.round(w.lng * 1e5) / 1e5,
       coordSource: `https://www.wikidata.org/wiki/${q}`,
+      editions: w.editions,
+      visitors: w.visitors || null,
       sources: src ? [{ title: src.title, url: src.url }] : [],
       checkedOn: x.checkedOn,
     }

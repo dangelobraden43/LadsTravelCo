@@ -1,32 +1,39 @@
-/* /local: the derived index behind the Midwest map. These fail if a count is ever typed, a
- * tier is blended, a pin has no coordinate, or an event could survive its own last day. */
+/* /local: the derived index behind the Midwest map. These fail if a count is ever typed, a pin
+ * has no coordinate, a headline list is ordered by anything but the published measure, or an
+ * event could survive its own last day. */
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 
 const idx = await import('../../src/data/localIndex.js')
-const { LOCAL_PLACES, PINNED, WALKED_TOTAL, OTHER_TOTAL, HUBS, LOCAL_EVENTS, eventsBetween, dateWindows, hubIdOf } = idx
+const {
+  LOCAL_PLACES,
+  PINNED,
+  UNPINNED,
+  TOTAL,
+  HUBS,
+  LOCAL_EVENTS,
+  eventsBetween,
+  dateWindows,
+  hubIdOf,
+  headline,
+  headlineAcross,
+  HEADLINE_LAYERS,
+} = idx
 
-test('every place has an id, a name and a tier, and ids are unique', () => {
+test('every place has an id, a name and a source, and ids are unique', () => {
   const ids = new Set()
   for (const p of LOCAL_PLACES) {
-    assert.ok(p.id && p.name, `${p.name} lacks an id or name`)
-    assert.ok(['walked', 'saved', 'researched'].includes(p.tier), `${p.name}: tier ${p.tier}`)
+    assert.ok(p.id && p.name && p.source, `${p.name} lacks an id, name or source`)
+    assert.ok(!('tier' in p) && !('status' in p), `${p.name}: this page carries no tiers`)
     assert.ok(!ids.has(p.id), `duplicate id ${p.id}`)
     ids.add(p.id)
   }
 })
 
 test('the counts the page prints are the arrays, not typed numbers', () => {
-  assert.equal(WALKED_TOTAL, LOCAL_PLACES.filter((p) => p.tier === 'walked').length)
-  assert.equal(OTHER_TOTAL, LOCAL_PLACES.length - WALKED_TOTAL)
-  assert.ok(WALKED_TOTAL > 0 && OTHER_TOTAL > 0)
-})
-
-test('only walked places are gold, and no walked place came from the research run', () => {
-  for (const p of LOCAL_PLACES) {
-    if (p.key) assert.notEqual(p.tier, 'walked', `${p.name} is researched and cannot be gold`)
-    if (p.tier !== 'walked') assert.notEqual(p.status, 'We have been')
-  }
+  assert.equal(TOTAL, LOCAL_PLACES.length)
+  assert.equal(PINNED.length + UNPINNED.length, TOTAL)
+  assert.ok(TOTAL > 0 && PINNED.length > 0)
 })
 
 test('every pinned place has finite coordinates inside the Midwest frame', () => {
@@ -36,9 +43,9 @@ test('every pinned place has finite coordinates inside the Midwest frame', () =>
   }
 })
 
-test('researched places carry no Lads voice', () => {
+test('places from the research run carry no Lads voice', () => {
   const voice = /\b(we|our|the lads)\b/i
-  for (const p of LOCAL_PLACES.filter((x) => x.tier === 'researched')) {
+  for (const p of LOCAL_PLACES.filter((x) => x.key)) {
     assert.ok(!p.what || !voice.test(p.what), `${p.name}: ${p.what}`)
   }
 })
@@ -54,6 +61,22 @@ test('hubs are found in the data, name a real city and do not share members', ()
       assert.equal(hubIdOf(id), h.id)
     }
   }
+})
+
+test('headline places are ordered by Wikipedia coverage, come from the hub, and are never bars or food', () => {
+  for (const h of HUBS) {
+    const picks = headline(h, 5)
+    assert.ok(picks.length <= 5)
+    for (let i = 0; i < picks.length; i++) {
+      const p = picks[i]
+      assert.ok(h.memberIds.includes(p.id), `${p.name} is not in ${h.name}`)
+      assert.ok(HEADLINE_LAYERS.has(p.layer), `${p.name} is a ${p.layer}`)
+      assert.ok(p.editions > 0, `${p.name} has no coverage record`)
+      if (i) assert.ok(picks[i - 1].editions >= p.editions, `${h.name} is out of order at ${p.name}`)
+    }
+  }
+  const across = headlineAcross(12)
+  for (let i = 1; i < across.length; i++) assert.ok(across[i - 1].editions >= across[i].editions)
 })
 
 test('events are dated, sorted, linked to an organiser page and carry no price', () => {

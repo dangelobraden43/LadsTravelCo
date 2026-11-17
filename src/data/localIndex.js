@@ -4,15 +4,17 @@
  * only gives every record the same shape, so the map, the lists and the counts all read
  * one array and cannot disagree:
  *
- *   michigan.js          walked     the Michigan framework (founder-validated)
- *   brucePeninsula.js    walked     Brady's Bruce Peninsula trip, ruled Sept 1 2026
- *   midwestCandidates.js saved      Brady's saved Maps lists: on our list, not visited
- *   localBestOf.js       researched landmarks, coordinates from published records
- *   localResearch.js     researched GENERATED from the research agents' verified findings
+ *   michigan.js          the Michigan guide's places
+ *   brucePeninsula.js    the Bruce Peninsula list (Aug 2026)
+ *   midwestCandidates.js saved Maps lists across the region
+ *   localBestOf.js       landmarks with coordinates from published records
+ *   localResearch.js     GENERATED from the research agents' verified findings
  *
- * ⛔ Two tiers, never blended: `walked` is gold, everything else is copper. A place moves
- * to gold only when a founder rules it, in its own source file.
+ * ⛔ /local is an information page (ruled Nov 17 2026): it does not split places by who has
+ *    been there. Provenance stays on every record (`source`) and is never a tier on the page.
  * ⛔ Counts are derived from these arrays wherever they are printed. Never type one.
+ * ⛔ Headline places are ORDERED BY A PUBLISHED MEASURE (how many Wikipedia editions carry an
+ *    article, read from Wikidata at build), never by an opinion typed here.
  */
 import michigan from './michigan.js'
 import { BRUCE_PLACES, BRUCE_SOURCE } from './brucePeninsula.js'
@@ -86,13 +88,6 @@ const slug = (s) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
 
-const MONTHS =
-  'January February March April May June July August September October November December'.split(' ')
-const visited = (ym) => {
-  const m = /^(\d{4})-(\d{2})$/.exec(ym || '')
-  return m ? `${MONTHS[Number(m[2]) - 1]} ${m[1]}` : null
-}
-
 /* michigan.js is a framework file: its places carry no `type`, so the kind is read from
  * the name. Its Lads rating is deliberately NOT carried over to this page. */
 const NAME_KIND = [
@@ -130,13 +125,11 @@ const fromMichigan = michiganSpots.map((s) => {
     ...pin(s),
     kind,
     layer: TYPE_LAYER[kind],
-    tier: 'walked',
     city: s.area || null,
     state: 'MI',
     what: s.description || s.notes,
-    status: 'We have been',
     source: 'The Lads Michigan guide',
-    link: { to: '/michigan', label: 'Open the Michigan guide' },
+    link: { to: '/michigan', label: 'Read the Michigan guide' },
   }
 })
 
@@ -145,14 +138,9 @@ const fromBruce = BRUCE_PLACES.map((p) => ({
   ...pin(p),
   kind: p.type,
   layer: TYPE_LAYER[p.type] || 'sights',
-  tier: p.validated === true ? 'walked' : 'saved',
   city: 'Bruce Peninsula',
   state: 'ON',
   what: p.note || null,
-  status:
-    p.validated === true
-      ? `We have been${visited(p.visitedDate) ? `, ${visited(p.visitedDate)}` : ''}`
-      : 'On our list, not visited',
   google: google(p),
   source: BRUCE_SOURCE.label,
 }))
@@ -162,13 +150,11 @@ const fromCandidates = MIDWEST_CANDIDATES.map((p) => ({
   ...pin(p),
   kind: p.type,
   layer: TYPE_LAYER[p.type] || 'sights',
-  tier: 'saved',
   // a region label that names one city is that city; a label that names an area is not
   city: p.region === 'Grand Rapids' ? 'Grand Rapids' : null,
   area: p.region,
   state: null,
   what: null, // no description is written for a place nobody has ruled on
-  status: 'On our list, not visited',
   google: google(p),
   address: p.address || null,
   source: MIDWEST_CANDIDATES_SOURCE.label,
@@ -179,12 +165,10 @@ const fromViews = GOOD_VIEWS.map((p) => ({
   ...pin(p),
   kind: 'view',
   layer: 'views',
-  tier: 'researched',
   city: null,
   area: p.region,
   state: p.state,
   what: p.what,
-  status: 'Researched, not visited',
   source: 'Published records',
   url: p.wiki ? `https://en.wikipedia.org/wiki/${p.wiki}` : null,
   urlLabel: 'Read about it on Wikipedia',
@@ -196,13 +180,13 @@ const fromResearch = RESEARCH_PLACES.map((p) => ({
   ...pin(p),
   kind: p.category,
   layer: CATEGORY_LAYER[p.category] || 'sights',
-  tier: 'researched',
   city: p.city,
   state: p.state,
   what: p.what,
   caution: p.caution || null,
   capacity: p.capacity || null,
-  status: 'Researched, not visited',
+  editions: p.editions || 0,
+  visitors: p.visitors && p.visitors.year ? p.visitors : null,
   source:
     p.sources && p.sources.length ? p.sources.map((s) => s.title).join(' · ') : 'Published records',
   url: p.officialUrl || null,
@@ -210,8 +194,8 @@ const fromResearch = RESEARCH_PLACES.map((p) => ({
   checkedOn: p.checkedOn,
 }))
 
-/* A researched record of a place that is already here from a founder's own list is not a second
- * place: the founder's record wins and the research record is dropped (matched on the name). */
+/* A researched record of a place that is already here from another list is not a second
+ * place: the earlier record wins and the research record is dropped (matched on the name). */
 const norm = (s) => slug(s).replace(/^the-/, '')
 const owned = new Set(
   [...fromMichigan, ...fromBruce, ...fromCandidates, ...fromViews].map((p) => norm(p.name))
@@ -229,15 +213,20 @@ export const LOCAL_PLACES = [
   const base = slug(p.name)
   const n = (seen.get(base) || 0) + 1
   seen.set(base, n)
-  return { ...p, id: n === 1 ? base : `${base}-${n}`, pinned: Number.isFinite(p.lat) }
+  return {
+    ...p,
+    id: n === 1 ? base : `${base}-${n}`,
+    pinned: Number.isFinite(p.lat),
+    editions: p.editions || 0,
+    visitors: p.visitors || null,
+  }
 })
 const idByKey = new Map(LOCAL_PLACES.filter((p) => p.key).map((p) => [p.key, p.id]))
 export const placeById = (id) => LOCAL_PLACES.find((p) => p.id === id) || null
 
 export const PINNED = LOCAL_PLACES.filter((p) => p.pinned)
-export const WALKED_TOTAL = LOCAL_PLACES.filter((p) => p.tier === 'walked').length
-export const OTHER_TOTAL = LOCAL_PLACES.length - WALKED_TOTAL
-export const UNPINNED_WALKED = LOCAL_PLACES.filter((p) => p.tier === 'walked' && !p.pinned)
+export const UNPINNED = LOCAL_PLACES.filter((p) => !p.pinned)
+export const TOTAL = LOCAL_PLACES.length
 
 /* ---------- what is on ---------- */
 export const EVENT_TYPES = {
@@ -343,7 +332,9 @@ export const HUBS = (() => {
     h.lng = members.reduce((s, m) => s + m.lng, 0) / members.length
     h.memberIds = members.map((m) => m.id)
     h.spreadKm = Math.max(...members.map((m) => km(m, h)))
-    h.walked = members.some((m) => m.tier === 'walked')
+    const states = new Map()
+    members.forEach((m) => m.state && states.set(m.state, (states.get(m.state) || 0) + 1))
+    h.state = ([...states.entries()].sort((a, b) => b[1] - a[1])[0] || [null])[0]
     delete h.members
   }
   return hubs.sort((a, b) => b.memberIds.length - a.memberIds.length)
@@ -352,3 +343,23 @@ const hubOf = new Map()
 HUBS.forEach((h) => h.memberIds.forEach((id) => hubOf.set(id, h.id)))
 export const hubIdOf = (placeId) => hubOf.get(placeId) || null
 export const hubById = (id) => HUBS.find((h) => h.id === id) || null
+
+/* ---------- headline places: ordered by a published measure, never by us ----------
+ * `editions` is how many Wikipedia language editions carry an article on the place, read
+ * from Wikidata by QID at build. Bars, food and golf carry no such record and are not ranked. */
+export const HEADLINE_LAYERS = new Set(['sights', 'views', 'venues'])
+const byCoverage = (a, b) =>
+  b.editions - a.editions ||
+  ((b.visitors && b.visitors.n) || 0) - ((a.visitors && a.visitors.n) || 0) ||
+  a.name.localeCompare(b.name)
+export function headline(hub, n = 5) {
+  return hub.memberIds
+    .map(placeById)
+    .filter((p) => HEADLINE_LAYERS.has(p.layer) && p.editions > 0)
+    .sort(byCoverage)
+    .slice(0, n)
+}
+export const headlineAcross = (n = 12) =>
+  PINNED.filter((p) => HEADLINE_LAYERS.has(p.layer) && p.editions > 0)
+    .sort(byCoverage)
+    .slice(0, n)
