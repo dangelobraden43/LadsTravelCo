@@ -234,7 +234,10 @@ for (const t of traps) {
 const seen = new Map()
 for (const e of events) seen.set(slug(e.name), e)
 const unique = [...seen.values()].map((e) => {
-  const { findingId, appliesTo, run, ...rest } = e
+  const rest = { ...e }
+  delete rest.findingId
+  delete rest.appliesTo
+  delete rest.run
   return rest
 })
 unique.sort((a, b) => {

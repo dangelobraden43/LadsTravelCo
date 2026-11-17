@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: November 16, 2026 (/local rebuilt as a 3D model on feature/local-3d, preview only; the Nov 10 ship before it)
+## Last Updated: November 17, 2026 (/local reworked as an information page after Brady's review, the black-map fix, the /bucket-list 2027 calendar; all on feature/local-3d, preview only; the Nov 10 ship before it)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -43,12 +43,15 @@ Canonical total: **227 places · 14 validated cities · 11 countries · 4 contin
   serves. Then **`THE SEPTEMBER 8 QUEUE`**, which is the live work order, and
   `THE NEW FRAMEWORK AGENDA` behind it. **`THE OCTOBER VISION` sets next month.**
 Peru completed. Ford started May 18.
-🟡 **`/local` IS BEING REBUILT AS A 3D MODEL — branch `feature/local-3d`, Vercel preview, NOT MERGED
-  (Nov 16, 2026).** The Midwest as a relief model with the Great Lakes as water, cities as fly-ins,
-  a column of light on every venue with something on in the chosen dates, 248 researched venues and
-  attractions from the agents' Nov 11 run (coordinates from Wikidata by QID) and 471 dated events
-  read from organisers' own pages. Every count derived from `src/data/localIndex.js`. See the
-  **NOVEMBER 11–16** record. The old SVG map (`GoodNews.jsx`) is deleted on that branch.
+🟡 **`/local` AND `/bucket-list` ARE REBUILT ON `feature/local-3d` — Vercel preview, NOT MERGED
+  (Nov 17, 2026).** Brady rejected the Nov 16 `/local` (black map on his GPU, too much "where we
+  have been", loose copy). Nov 17: the render fault is fixed (Bloom under a multisampled composer),
+  the page is an **information page with no walked/researched split**, each city leads with its
+  best-known places ordered by Wikipedia coverage read from Wikidata, and the copy is plainer.
+  `/bucket-list` on the same branch is a 2027 calendar of dated trips generated from two research
+  runs. Every count derived from `src/data/localIndex.js` and `src/data/bucketList.js`. See the
+  **NOVEMBER 17** and **NOVEMBER 11–16** records. The old SVG map (`GoodNews.jsx`) is deleted on
+  that branch. The `/outdoors` phone fix sits alone on `fix/outdoors-phone-title`.
   ⛔ **`/good-news` is RETIRED** — it permanently redirects to `/local`. Do not
   re-add its route or its rewrite.
   On `main` today `/local` is still the Sept 2 SVG map: **113 places** (16 Good Views) plus the
@@ -274,6 +277,67 @@ own branch** (see Parallel Agent Workflow at the foot of this file), never in th
 shared checkout someone else is serving localhost from.
 
 ---
+
+## 🟡 NOVEMBER 17, 2026 — `/local` REJECTED AND REWORKED, THE BLACK MAP, THE `/bucket-list` CALENDAR, THE BUSINESS OVERVIEW (branch `feature/local-3d`, PREVIEW, NOT MERGED)
+
+Brady reviewed the Nov 16 preview and rejected it: *"the 3d map doesnt really work its rendering black
+also the focus should be mostly just the concrete top recommendations and the verbage used should be
+fixed and cleaner"*, then *"lets abandon we have been too vs reasrched it should just land as an amazing
+informational page not places weve been."* A `/ship` was stopped before anything merged: **`main` never
+changed.** Read `git log` for the branch tip.
+
+1. **THE BLACK MAP, root-caused in his own Chrome** (Intel Iris Xe, ANGLE/Direct3D 11, Chrome 157): with
+   the Bloom pass in the chain, a multisampled EffectComposer target renders an all-black frame, and black
+   blocks around every beam without the mipmap blur. Removing either Bloom or `multisampling` fixed it;
+   `/outdoors` never showed it because it has no Bloom. Fix: `multisampling={0}` + `<SMAA />`, with the
+   reason beside the composer in `LocalMap.jsx`. ⛔ **Headless swiftshader rendered the broken build
+   perfectly. A 3D page is verified in the real Chrome on this machine (the Playwright MCP browser, hardware
+   GPU), not only headless.** Isolation was one temporary `?fx=` flag per pass, one variable at a time.
+2. **`/local` is an information page now.** No walked/researched split anywhere: one mark on the map, no
+   status chips, no "we have been" counts, no gold dots in the Golfweek list; `tier` and `status` are gone
+   from `localIndex.js` (provenance stays on `source`). **Headline places per city are ordered by a
+   published measure, never by us:** `tools/build-local-data.mjs` reads each QID's Wikipedia sitelink count
+   (`editions`) and P1174 visitors-per-year (`visitors`, with its year) from Wikidata; `headline(hub, 5)`
+   ranks museums, landmarks, parks and venues by editions (bars, food and golf carry no such record and are
+   not ranked); the page says so under "How this page is built". New shape: "The Midwest, city by city.",
+   the stage, **Where to start, city by city** (a block per hub: its five best-known places, the count of
+   events in the chosen dates), What's on, Every place, Michigan + Golfweek, How this page is built. The
+   city card leads with "Best known". `local.test.mjs` fails if a tier field returns or a headline list is
+   out of coverage order. Poster re-rendered. Verified in real Chrome at 1440 and 390: city block → fly-in
+   → place card, no overflow.
+3. **`/bucket-list` is a 2027 calendar** (same branch). Run `internal/research/bucket-list-2027/2026-11-17T16-25/`:
+   three `lads-timing-events` parts (americas · europe · rest-of-world, 14 WebSearch calls each, organiser
+   pages only, nothing repeated from Nov 10) on top of the Nov 10 `calendar-2027` run.
+   **`node tools/build-bucket-list.mjs <runDir> [<runDir>…]`** → `src/data/bucketList.js`: refuted dropped,
+   weakened take `proposedClaim`, traps attach to the event they name (a trap naming its own undated event,
+   Bonnaroo's year off or Essence's lost venue, becomes a "waiting on dates" entry), **sentences about the
+   research process are stripped from every claim** (a claim is written for the verifier; its working notes
+   are not reader copy), ticket status kept only when it is information, money refused. The Nov 10 run's
+   findings carry no `value.name`, so the tool holds a LABELS map (names and kinds only, never a fact).
+   The page: featured cards picked out of the same data by id (Ryder Cup, the markets guide with dates from
+   `christmasMarkets.js`, the Spain eclipse, Oktoberfest, Vivid), kind and month filters, a month-by-month
+   grid of compact cards (pill: Dates confirmed · Expected dates · Happening now; organiser link; framework
+   link derived from the country or city; Plan this trip), a Waiting-for-dates list, How this list is
+   built. Entries self-expire by `end`. `tools/tests/bucket.test.mjs` (6 tests); `npm test` → 180.
+   Validator lesson: marathon "charity entry" routes trip the charity rule (four findings fixed on resend).
+   ⚠️ **Numbers: re-read the build tool's output.** At the time of writing: 152 trips (106 confirmed ·
+   33 expected · 13 waiting) from the first two parts plus Nov 10, with the third part and the verifier
+   still running; the final figures are in the commit that follows this record.
+4. **The `/outdoors` phone fix is on its own branch** `fix/outdoors-phone-title` (one commit cut from
+   `main`, pushed, built clean) so it can ship without the local work.
+5. **Business overview doc** (Brady, for a separate project): https://claude.ai/artifact/FPXJZypLpaFCFuxUAnPj95 .
+   Two corrections he made are now rules for anything that describes the company: ⛔ **never describe
+   the company as walking or validating everywhere** (the founders have visited some places; the method
+   is the research and the checking); ⛔ **never describe it as a research pipeline**: it is a travel
+   company whose plans beat other travel companies' because they are checked, commission-free, personal
+   and kept live. The doc leads with "Why we are better than another travel company."
+6. **Lessons:** a page can pass every headless check and be black on the founder's GPU; a claim written
+   for the verifier is not reader copy, strip process sentences at build; a `/ship` on a feature branch
+   stops at the diff and waits, and the CLAUDE.md merge edits are made only after Brady confirms.
+
+**Open for Brady:** review the reworked `/local` and the `/bucket-list` calendar on the preview, then
+`/ship` the branch or ask for changes; `/ship` `fix/outdoors-phone-title` on its own; the hub named
+"Notre Dame"; re-run the events parts every two to three weeks.
 
 ## 🟡 NOVEMBER 11–16, 2026 — `/local` REBUILT AS A 3D MODEL OF THE MIDWEST (branch `feature/local-3d`, PREVIEW, NOT MERGED)
 
@@ -1597,9 +1661,9 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | **Nov 16: unchanged since the Nov 10 merge. `feature/local-3d` is pushed and has a READY Vercel preview; it is NOT merged and waits for Brady's `/ship`.** Nov 10: the `feature/nov-refresh` merge rides with the Nov 10 record (Parks Map as `/outdoors`, page refreshes). Read `git log` for the hash. Before it, Oct 21: the `feature/ryder-cup-2027` merge (which carries `feature/gorge-ridge-trip`) rides with the Oct 14–21 record. Read `git log` for the hash and check Vercel READY by SHA at the next `/morning`. Oct 12 `/deals` merge before it. |
+| `main` | **Nov 17: unchanged since the Nov 10 merge. `feature/local-3d` (the reworked `/local` + the `/bucket-list` calendar) and `fix/outdoors-phone-title` are pushed with Vercel previews; neither is merged; both wait for Brady's `/ship`.** Nov 10: the `feature/nov-refresh` merge rides with the Nov 10 record (Parks Map as `/outdoors`, page refreshes). Read `git log` for the hash. Before it, Oct 21: the `feature/ryder-cup-2027` merge (which carries `feature/gorge-ridge-trip`) rides with the Oct 14–21 record. Read `git log` for the hash and check Vercel READY by SHA at the next `/morning`. Oct 12 `/deals` merge before it. |
 | Working tree | clean at merge |
-| Pending `/ship` | **`feature/local-3d`** (the 3D /local + the /outdoors phone fix), on Brady's approval of the preview. |
+| Pending `/ship` | **`feature/local-3d`** (the reworked 3D `/local` + the `/bucket-list` calendar) on Brady's approval of the preview; **`fix/outdoors-phone-title`** (the phone fix alone) whenever he says. |
 | Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
 
 **✅ SHIPPED SEPT 29 (see `SEPTEMBER 29, 2026 — THE RESEARCH AGENTS`):** the 14
@@ -1807,8 +1871,8 @@ the research pipeline stands on its own without a Lads visit.
 |---|---|---|
 | **Lads Global** | `/global` | International frameworks (Dublin, Spain, Rome, Iceland, Prague, Vienna, Australia, Munich, Poland, Peru) |
 | **Lads Outdoors** | `/outdoors` | **The Parks Map** (since Nov 10, 2026): every U.S. national park on a 3D relief model, from Park Service records. The Ladder page is retired; Salkantay links to `/peru`. |
-| **Lads Bucket List** | `/bucket-list` | Events/festivals/sports/holidays (Vivid Sydney, Oktoberfest, Ryder Cup '27, Christmas Markets). Calendar view planned. |
-| **Lads Local** | `/local` | The Midwest as a 3D relief model (Good Brews · Good Views · Good News): walked places gold, researched venues, attractions and dated events copper, cities as fly-ins (on `feature/local-3d` since Nov 16; the SVG map on `main` until it ships) + the `/michigan` framework. |
+| **Lads Bucket List** | `/bucket-list` | A 2027 calendar of dated trips generated from research runs (festivals, finals, carnivals, natural seasons, holidays), month by month, self-expiring (on `feature/local-3d` since Nov 17; four typed cards on `main` until it ships). |
+| **Lads Local** | `/local` | The Midwest as a 3D relief model, an information page: each city's best-known places ordered by Wikipedia coverage, dated events from venues' own calendars, cities as fly-ins (on `feature/local-3d` since Nov 17; the SVG map on `main` until it ships) + the `/michigan` framework. |
 
 Footer carries: Follow Along (socials, blog later), The Lads (team),
 brand mark. Everything else in nav is dead.
