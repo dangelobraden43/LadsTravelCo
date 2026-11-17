@@ -88,6 +88,26 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'wonderfruit-2026',
+    name: 'Wonderfruit',
+    kind: 'music',
+    start: '2026-12-03',
+    end: '2026-12-07',
+    city: 'Chonburi',
+    country: 'Thailand',
+    status: 'confirmed',
+    what: 'Wonderfruit, a five-day arts and music festival on a purpose-built site, runs 3 to 7 December 2026 at The Fields at Siam Country Club in Chonburi province, Thailand (the organiser names Chonburi, not Pattaya). The organiser page sells weekend and programme passes through its tickets page and says limited on-site accommodation remains.',
+    ticket:
+      "passes sold on the organiser's tickets page; 'Limited accommodations remain' for on-site stays",
+    sources: [
+      {
+        title: 'Wonderfruit 3-7 December 2026: official site',
+        url: 'https://www.wonderfruit.co/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'art-basel-miami-beach-2026',
     name: 'Art Basel Miami Beach',
     kind: 'culture',
@@ -102,6 +122,25 @@ export const BUCKET_EVENTS = [
       {
         title: 'Art Basel: Miami Beach',
         url: 'https://www.artbasel.com/miami-beach',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'dubai-shopping-festival-2026',
+    name: 'Dubai Shopping Festival',
+    kind: 'festival',
+    start: '2026-12-04',
+    end: '2027-01-17',
+    city: 'Dubai',
+    country: 'United Arab Emirates',
+    status: 'confirmed',
+    what: "The Dubai Shopping Festival, the city-wide retail and entertainment season run by Dubai's tourism department, runs 4 December 2026 to 17 January 2027. It is a citywide season rather than a ticketed event; the page prints no ticket line.",
+    ticket: null,
+    sources: [
+      {
+        title: 'Visit Dubai: Dubai Shopping Festival (4 December 2026 to 17 January 2027)',
+        url: 'https://www.visitdubai.com/en/festivals-and-events/dsf',
       },
     ],
     checkedOn: '2026-11-17',
@@ -169,6 +208,26 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'boxing-day-test-australia-v-new-zealand-2026',
+    name: 'Boxing Day Test (Australia v New Zealand)',
+    kind: 'sport',
+    start: '2026-12-26',
+    end: '2026-12-30',
+    city: 'Melbourne',
+    country: 'Australia',
+    status: 'confirmed',
+    what: "The Boxing Day Test at the MCG, Melbourne, runs 26 to 30 December 2026 (10.30am starts) and is the third Test of Australia's four-Test series against New Zealand, followed by the fourth Test at the SCG, Sydney, 4 to 8 January 2027, per Cricket Australia's 2026-27 schedule. It is not an Ashes Test: England's 2026 tour is white-ball only (ODIs 13 to 18 November, T20Is 21 November to 2 December 2026). Ticket status is not printed on the schedule page.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Cricket Australia: Schedule released for an international cricket season like no other (2026-27 fixtures)',
+        url: 'https://www.cricket.com.au/news/4474501/schedule-released-for-an-international-cricket-season-like-no-other',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'junkanoo-nassau-2026',
     name: 'Junkanoo, Nassau',
     kind: 'holiday',
@@ -183,6 +242,26 @@ export const BUCKET_EVENTS = [
       {
         title: 'Bahamas.com: Junkanoo',
         url: 'https://www.bahamas.com/junkanoo',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'rolex-sydney-hobart-yacht-race-start-2026',
+    name: 'Rolex Sydney Hobart Yacht Race (start)',
+    kind: 'sport',
+    start: '2026-12-26',
+    end: '2026-12-26',
+    city: 'Sydney',
+    country: 'Australia',
+    status: 'confirmed',
+    what: 'The Rolex Sydney Hobart Yacht Race starts on Saturday 26 December 2026 from Sydney Harbour. Watching the start from the harbour foreshore needs no ticket; the one public spectator vessel allowed inside the start exclusion zone (a charter from King Street Wharf) is listed as sold out on the race site.',
+    ticket:
+      'shore viewing unticketed; the official spectator vessel inside the exclusion zone is listed sold out',
+    sources: [
+      {
+        title: 'Rolex Sydney Hobart Yacht Race: official site (race date 26 December 2026)',
+        url: 'https://www.rolexsydneyhobart.com/',
       },
     ],
     checkedOn: '2026-11-17',
@@ -214,6 +293,26 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'beyond-the-valley-2026',
+    name: 'Beyond The Valley',
+    kind: 'music',
+    start: '2026-12-28',
+    end: '2027-01-01',
+    city: 'Hesse (near Geelong)',
+    country: 'Australia',
+    status: 'confirmed',
+    what: "Beyond The Valley, a camping music festival over New Year, runs 28 December 2026 to 1 January 2027 at Barunah Plains, Hesse, about 126 km west of Melbourne. The organiser page says the 2026 edition 'is officially an instant sell out' and points buyers to the Tixel waitlist; bus passes remain and a limited number of car passes go on sale later in the year.",
+    ticket: "sold out ('instant sell out'); official Tixel waitlist; bus passes still available",
+    sources: [
+      {
+        title:
+          'Beyond The Valley: official site (December 28 to January 01; Beyond The Valley 2026 is officially an instant sell out)',
+        url: 'https://www.beyondthevalley.com.au/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'edinburgh-s-hogmanay-2026',
     name: "Edinburgh's Hogmanay",
     kind: 'winter',
@@ -233,6 +332,27 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'rhythm-and-vines-2026',
+    name: 'Rhythm and Vines',
+    kind: 'music',
+    start: '2026-12-29',
+    end: '2026-12-31',
+    city: 'Gisborne',
+    country: 'New Zealand',
+    status: 'confirmed',
+    what: "Rhythm and Vines, New Zealand's New Year music festival, runs 29 to 31 December 2026 at Waiohika Estate on the East Coast of the North Island (near Gisborne), with camping from 28 December. The organiser page sells three-day and single-day passes through Moshtix and marks several camping tiers and tent add-ons as sold out.",
+    ticket:
+      'festival passes on sale via Moshtix; several camping passes and tent add-ons marked sold out',
+    sources: [
+      {
+        title:
+          'Rhythm and Vines: official site (Waiohika Estate, December 29-31; camping 28-31 December)',
+        url: 'https://www.rhythmandvines.co.nz/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'nhl-winter-classic-2026',
     name: 'NHL Winter Classic',
     kind: 'sport',
@@ -247,6 +367,30 @@ export const BUCKET_EVENTS = [
       {
         title: 'NHL: 2027 Winter Classic',
         url: 'https://www.nhl.com/winterclassic',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'sydney-new-year-s-eve-fireworks-2026',
+    name: "Sydney New Year's Eve fireworks",
+    kind: 'holiday',
+    start: '2026-12-31',
+    end: '2026-12-31',
+    city: 'Sydney',
+    country: 'Australia',
+    status: 'expected',
+    what: "Sydney's New Year's Eve fireworks on 31 December 2026 light the harbour at 9pm and midnight. Most are unticketed; several are ticketed at no charge by ballot, and as of 17 November 2026 nine of them (Blues Point, Bradleys Head, Cahill Expressway, Clark Island, Cockatoo Island, Goat Island, Lower Bradfield Park, Shark Island, Strickland Estate) are listed as sold out or ballot exhausted. Sydney Opera House forecourt tickets release at 10am on 26 December.",
+    ticket:
+      'most vantage points unticketed; nine ballot or ticketed sites already sold out or exhausted; Opera House forecourt release 10am 26 Dec',
+    sources: [
+      {
+        title: "Sydney New Year's Eve: vantage points (City of Sydney)",
+        url: 'https://www.sydneynewyearseve.com/vantage-points',
+      },
+      {
+        title: "Sydney New Year's Eve: official site (fireworks at 9pm and midnight; 49 locations)",
+        url: 'https://www.sydneynewyearseve.com/',
       },
     ],
     checkedOn: '2026-11-17',
@@ -299,6 +443,54 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'dakar-rally-2027-portugal-and-morocco-2027',
+    name: 'Dakar Rally 2027 (Portugal and Morocco)',
+    kind: 'sport',
+    start: '2027-01-09',
+    end: '2027-01-23',
+    city: 'Loule (start) to Marrakech (finish)',
+    country: 'Portugal and Morocco',
+    status: 'expected',
+    what: 'The 2027 Dakar Rally will not be held in Saudi Arabia. Organiser ASO moved it, as a one-off, to Portugal and Morocco: prologue at Loule-Faro in the Algarve on 9 January 2027, then twelve stages to a finish in Marrakech on 23 January 2027 (9 to 23 January). The decision was announced on 30 October 2026 citing the situation in the region; the rally returns to Saudi Arabia for its 50th edition in 2028.',
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Red Bull: Dakar Rally route 2027 (January 9-23, 2027; start Loule, finish Marrakech; prologue + 12 stages)',
+        url: 'https://www.redbull.com/us-en/dakar-rally-route-2027',
+      },
+      {
+        title: 'AutoGuide: Dakar relocates to Portugal and Morocco for 2027 (Oct 30, 2026)',
+        url: 'https://www.autoguide.com/auto/dakar-relocates-to-portugal-and-morocco-for-2027-44641459',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'grand-sumo-january-tournament-2027',
+    name: 'Grand Sumo January Tournament',
+    kind: 'sport',
+    start: '2027-01-10',
+    end: '2027-01-24',
+    city: 'Tokyo',
+    country: 'Japan',
+    status: 'confirmed',
+    what: 'The 2027 Grand Sumo year opens with the January tournament at Ryogoku Kokugikan, Tokyo, 10 to 24 January 2027, with advance tickets on sale from 5 December 2026. The same page lists Osaka 14 to 28 March (sales 6 Feb), Tokyo 9 to 23 May (sales 10 Apr), Nagoya 11 to 25 July (sales 15 May) and Tokyo 12 to 26 September (sales 7 Aug). The current November 2026 Fukuoka tournament is marked sold out for all days.',
+    ticket: "advance sales open 5 December 2026; the Nov 2026 tournament is 'sold out all dates'",
+    sources: [
+      {
+        title:
+          'Sumo Ticket (Japan Sumo Association official ticket site): tournament schedule and sales dates',
+        url: 'https://sumo.pia.jp/en/',
+      },
+      {
+        title: 'Japan Travel: January Grand Sumo Tournament (Tokyo) 2027, tickets from Dec 5, 2026',
+        url: 'https://en.japantravel.com/event/january-grand-sumo-tournament-tokyo/70726',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'australian-open-2027',
     name: 'Australian Open',
     kind: 'sport',
@@ -322,6 +514,25 @@ export const BUCKET_EVENTS = [
     ],
     checkedOn: '2026-11-10',
     note: "Australian Open 2027 is at Melbourne Park in January 2027, with the main draw from Sunday 17 to Sunday 31 January and the finals weekend on Saturday 30 and Sunday 31 January. The first day is given two ways: the tournament's own homepage banner reads 10 to 31 Jan 2027, while Melbourne Park, the venue operator, lists Opening Week as Monday 11 to Saturday 16 January. Tickets are on sale to the public through Ticketmaster as of 10 Nov 2026.",
+  },
+  {
+    id: 'dubai-marathon-2027',
+    name: 'Dubai Marathon',
+    kind: 'sport',
+    start: '2027-01-17',
+    end: '2027-01-17',
+    city: 'Dubai',
+    country: 'United Arab Emirates',
+    status: 'confirmed',
+    what: 'The Dubai Marathon, 26th edition, is on Sunday 17 January 2027.',
+    ticket: 'runner registration open',
+    sources: [
+      {
+        title: 'Dubai Marathon: official site (Sunday 17th January 2027; registration open)',
+        url: 'https://www.dubaimarathon.org/',
+      },
+    ],
+    checkedOn: '2026-11-17',
   },
   {
     id: 'hahnenkamm-races-2027',
@@ -509,6 +720,26 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'sapporo-snow-festival-2027',
+    name: 'Sapporo Snow Festival',
+    kind: 'winter',
+    start: '2027-02-04',
+    end: '2027-02-11',
+    city: 'Sapporo',
+    country: 'Japan',
+    status: 'confirmed',
+    what: 'The 2027 Sapporo Snow Festival runs Thursday 4 to Thursday 11 February 2027 at all three sites (Odori Park, Susukino and Tsudome). The sites are open-air public spaces; the page prints no ticket line.',
+    ticket: 'no ticket line printed (public park sites)',
+    sources: [
+      {
+        title:
+          'Sapporo Snow Festival official site (Japanese): 2027 2月4日(木) - 2月11日(木・祝) at Odori, Tsudome and Susukino',
+        url: 'https://www.snowfes.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'vienna-opera-ball-2027',
     name: 'Vienna Opera Ball',
     kind: 'culture',
@@ -635,6 +866,44 @@ export const BUCKET_EVENTS = [
     checked: true,
   },
   {
+    id: 'lunar-new-year-2027',
+    name: 'Lunar New Year',
+    kind: 'holiday',
+    start: '2027-02-06',
+    end: '2027-02-08',
+    city: 'Singapore (and East and Southeast Asia)',
+    country: 'Singapore',
+    status: 'confirmed',
+    what: "Lunar New Year 2027 falls on Saturday 6 February 2027. Singapore's Ministry of Manpower lists Chinese New Year as public holidays on 6 and 7 February 2027 (Saturday and Sunday), with Monday 8 February a holiday for workers whose rest day is the 7th.",
+    ticket: null,
+    sources: [
+      {
+        title: 'Ministry of Manpower Singapore: Public holidays 2027',
+        url: 'https://www.mom.gov.sg/employment-practices/public-holidays',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'kilimanjaro-marathon-2027',
+    name: 'Kilimanjaro Marathon',
+    kind: 'sport',
+    start: '2027-02-07',
+    end: '2027-02-07',
+    city: 'Moshi',
+    country: 'Tanzania',
+    status: 'confirmed',
+    what: "The Kilimanjaro Marathon (42.2 km, 21.1 km and a 5 km run) is on Sunday 7 February 2027, flagged on the organiser's site as a 'NEW RACE DATE'. Entries are open through the organiser's online entries page. The race is run from Moshi, Tanzania, below Kilimanjaro.",
+    ticket: 'entries open',
+    sources: [
+      {
+        title: 'Kilimanjaro Marathon: official site (NEW RACE DATE: 7 FEB 2027; ENTER HERE)',
+        url: 'https://www.kilimanjaromarathon.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'rio-carnival-2027',
     name: 'Rio Carnival',
     kind: 'festival',
@@ -695,6 +964,32 @@ export const BUCKET_EVENTS = [
       {
         title: "Carnaval de Nice: official site (Du 9 au 28 fevrier 2027, Vive l'Amour)",
         url: 'https://www.nicecarnaval.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'sydney-gay-and-lesbian-mardi-gras-parade-2027',
+    name: 'Sydney Gay and Lesbian Mardi Gras (Parade)',
+    kind: 'festival',
+    start: '2027-02-12',
+    end: '2027-03-07',
+    city: 'Sydney',
+    country: 'Australia',
+    status: 'confirmed',
+    what: "Sydney Gay and Lesbian Mardi Gras 2027 runs 12 February to 7 March 2027, with the Parade on Saturday 6 March 2027 through Darlinghurst (Oxford, Flinders and Anzac Parade area). Tickets for ticketed events are sold through Moshtix; parade viewing from the street is unticketed, with a no-charge accessible viewing area booked online and a paid 'Glitter Club' seated area.",
+    ticket:
+      'festival tickets via Moshtix; parade street viewing unticketed; accessible viewing area and Glitter Club ticketed',
+    sources: [
+      {
+        title:
+          'Sydney Gay and Lesbian Mardi Gras: official site (12 FEB - 07 MAR 2027; GET YOUR TICKETS)',
+        url: 'https://www.mardigras.org.au/',
+      },
+      {
+        title:
+          'Sydney Gay and Lesbian Mardi Gras: Parade page (Accessible Shuttle Bus Schedule - Saturday 6 March 2027)',
+        url: 'https://www.mardigras.org.au/parade',
       },
     ],
     checkedOn: '2026-11-17',
@@ -767,6 +1062,26 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'adelaide-fringe-2027',
+    name: 'Adelaide Fringe',
+    kind: 'culture',
+    start: '2027-02-19',
+    end: '2027-03-21',
+    city: 'Adelaide',
+    country: 'Australia',
+    status: 'confirmed',
+    what: 'Adelaide Fringe 2027, the open-access arts festival across Adelaide, runs 19 February to 21 March 2027. The programme launches on 4 December 2026, the same day tickets go on sale to the public.',
+    ticket: 'public sales open 4 December 2026 with the programme launch',
+    sources: [
+      {
+        title:
+          'Adelaide Fringe: Key dates for Adelaide Fringe 2027 (Festival Dates: 19 February - 21 March; Program Launch: 4 December)',
+        url: 'https://avr.adelaidefringe.com.au/blog/events/key-dates',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'nba-all-star-weekend-2027',
     name: 'NBA All-Star Weekend',
     kind: 'sport',
@@ -786,6 +1101,26 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'womadelaide-2027',
+    name: 'WOMADelaide',
+    kind: 'music',
+    start: '2027-03-05',
+    end: '2027-03-08',
+    city: 'Adelaide',
+    country: 'Australia',
+    status: 'confirmed',
+    what: 'WOMADelaide, the four-day world music and arts festival, returns to Botanic Park/Tainmuntilla in Adelaide from 5 to 8 March 2027.',
+    ticket: 'on sale (early bird announced 27 Aug 2026); no sold-out notice',
+    sources: [
+      {
+        title:
+          'WOMADelaide: official site (returns to Botanic Park/Tainmuntilla from 5-8 March 2027)',
+        url: 'https://www.womadelaide.com.au/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'iditarod-2027',
     name: 'Iditarod',
     kind: 'winter',
@@ -800,6 +1135,118 @@ export const BUCKET_EVENTS = [
       {
         title: 'Iditarod: official site',
         url: 'https://iditarod.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'tokyo-marathon-2027',
+    name: 'Tokyo Marathon',
+    kind: 'sport',
+    start: '2027-03-07',
+    end: '2027-03-07',
+    city: 'Tokyo',
+    country: 'Japan',
+    status: 'confirmed',
+    what: "The Tokyo Marathon 2027 is on Sunday 7 March 2027. The general-entry lottery is closed (drawing announced 14 Aug 2026, results notified 11 Sept 2026), and the organiser's other 2027 application routes closed over the summer of 2026; elite entry opened 12 Nov 2026. Spectating along the course is unticketed.",
+    ticket:
+      'general-entry lottery closed (results 11 Sept 2026); other 2027 application routes closed',
+    sources: [
+      {
+        title: 'Tokyo Marathon 2027: official site (March 7, 2027; entry news headlines)',
+        url: 'https://www.marathon.tokyo/en/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'nyepi-bali-day-of-silence-2027',
+    name: 'Nyepi (Bali day of silence)',
+    kind: 'holiday',
+    start: '2027-03-08',
+    end: '2027-03-08',
+    city: 'Bali',
+    country: 'Indonesia',
+    status: 'expected',
+    what: "Nyepi, Bali's Hindu day of silence, is expected on Monday 8 March 2027 (Saka year 1949): from 6am to 6am the next day the island stops, Bali's airport closes, nobody may be on the streets or beaches, and visitors stay inside their hotels. The Ogoh-Ogoh parades are the evening before (7 March). Two holiday calendars read give Monday 8 March; a third list gives 9 March, and Indonesia's joint ministerial holiday decree for 2027 was not found.",
+    ticket: null,
+    sources: [
+      {
+        title: 'Office Holidays: Hari Raya Nyepi in Indonesia (2027 Mar 8; airport closed)',
+        url: 'https://www.officeholidays.com/holidays/indonesia/hari-raya-nyepi',
+      },
+      {
+        title: 'PublicHolidays.co.id: Bali Hindu New Year 2027 and 2028 (Monday 8 March 2027)',
+        url: 'https://publicholidays.co.id/?p=50',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'ramadan-and-eid-al-fitr-2027',
+    name: 'Ramadan and Eid al-Fitr',
+    kind: 'holiday',
+    start: '2027-03-10',
+    end: '2027-03-10',
+    city: 'Dubai (and Muslim-majority destinations)',
+    country: 'United Arab Emirates',
+    status: 'expected',
+    what: "Eid al-Fitr 2027 is listed by Singapore's government as Hari Raya Puasa on Wednesday 10 March 2027, which places Ramadan across roughly February and early March 2027. Gulf states set the holiday by moon sighting: the UAE government portal lists Eid Al Fitr as 1 to 3 Shawwal and states 'Islamic holidays are determined according to moon sighting', with Ramadan's 30th day added if the month runs long. During Ramadan, daytime eating hours and nightlife in Muslim-majority destinations (Dubai, Morocco, Malaysia, Indonesia) change.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Ministry of Manpower Singapore: Public holidays 2027 (Hari Raya Puasa 10 March 2027, Wednesday)',
+        url: 'https://www.mom.gov.sg/employment-practices/public-holidays',
+      },
+      {
+        title:
+          'UAE Government portal: Public holidays (Eid Al Fitr 1-3 Shawwal; determined by moon sighting; updated 29 Oct 2026)',
+        url: 'https://u.ae/en/information-and-services/public-holidays-and-religious-affairs/public-holidays',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: '150th-anniversary-test-australia-v-england-mcg-2027',
+    name: '150th Anniversary Test (Australia v England, MCG)',
+    kind: 'sport',
+    start: '2027-03-11',
+    end: '2027-03-15',
+    city: 'Melbourne',
+    country: 'Australia',
+    status: 'confirmed',
+    what: "A one-off 150th Anniversary Test is scheduled at the MCG, Melbourne, 11 to 15 March 2027, as a day-night match with 2.00pm starts, per Cricket Australia's 2026-27 schedule, marking 150 years since the first Test (Australia v England at the MCG, March 1877). Cricket Australia's July 2026 Ashes article refers to England's tour match 'ahead of the 150th anniversary Test at the MCG next March', so the opponent is England. Ticket status is not printed on the schedule page.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Cricket Australia: 2026-27 schedule (150th Anniversary Test: March 11-15, MCG, Melbourne, 2.00pm D/N)',
+        url: 'https://www.cricket.com.au/news/4474501/schedule-released-for-an-international-cricket-season-like-no-other',
+      },
+      {
+        title:
+          "Cricket Australia: England 2027 Ashes venues confirmed (23 Jul 2026; England's tour match ahead of the 150th anniversary Test at the MCG next March)",
+        url: 'https://www.cricket.com.au/news/4537483/england-2027-ashes-venues-world-test-championship-final-return-the-oval-australia-dates-trent-bridge-lords-edgbaston-southampton-rose-bowl',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'f1-bahrain-and-saudi-arabian-grands-prix-season-opener-2027',
+    name: 'F1 Bahrain and Saudi Arabian Grands Prix (season opener)',
+    kind: 'sport',
+    start: '2027-03-12',
+    end: '2027-03-21',
+    city: 'Sakhir and Jeddah',
+    country: 'Bahrain and Saudi Arabia',
+    status: 'confirmed',
+    what: 'The 2027 Formula 1 season opens with a Middle East double-header: round 1 in Bahrain on 12 to 14 March 2027 and round 2 in Saudi Arabia on 19 to 21 March 2027, after pre-season testing in Bahrain on 24 to 27 February. The calendar page prints no ticket status.',
+    ticket: null,
+    sources: [
+      {
+        title: 'Formula 1: 2027 race calendar',
+        url: 'https://www.formula1.com/en/racing/2027',
       },
     ],
     checkedOn: '2026-11-17',
@@ -881,6 +1328,25 @@ export const BUCKET_EVENTS = [
       {
         title: 'Uno TV: Vive Latino 2027 ya tiene fechas oficiales (11 Sept 2026)',
         url: 'https://www.unotv.com/entretenimiento/vive-latino-2027-ya-tiene-fechas-oficiales-cuando-sera-el-festival-en-cdmx/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'cape-town-cycle-tour-2027',
+    name: 'Cape Town Cycle Tour',
+    kind: 'sport',
+    start: '2027-03-14',
+    end: '2027-03-14',
+    city: 'Cape Town',
+    country: 'South Africa',
+    status: 'confirmed',
+    what: 'The Cape Town Cycle Tour, the 109 km mass-participation road ride around the Cape Peninsula, is on Sunday 14 March 2027.',
+    ticket: '2027 entries open',
+    sources: [
+      {
+        title: 'Cape Town Cycle Tour: official site (Event Date 14 Mar 2027; Enter 109km Here)',
+        url: 'https://www.capetowncycletour.com/',
       },
     ],
     checkedOn: '2026-11-17',
@@ -983,6 +1449,25 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'fespaco-30th-edition-2027',
+    name: 'FESPACO (30th edition)',
+    kind: 'culture',
+    start: '2027-03-20',
+    end: '2027-03-27',
+    city: 'Ouagadougou',
+    country: 'Burkina Faso',
+    status: 'confirmed',
+    what: 'FESPACO, the biennial Pan-African Film and Television Festival of Ouagadougou, holds its 30th edition from 20 to 27 March 2027 in Ouagadougou, Burkina Faso. No ticket line is printed.',
+    ticket: null,
+    sources: [
+      {
+        title: 'FESPACO: official site (30e edition, 20 au 27 mars 2027, Ouagadougou)',
+        url: 'https://www.fespaco.bf/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'national-cherry-blossom-festival-2027',
     name: 'National Cherry Blossom Festival',
     kind: 'nature',
@@ -997,6 +1482,25 @@ export const BUCKET_EVENTS = [
       {
         title: 'National Cherry Blossom Festival: official site',
         url: 'https://nationalcherryblossomfestival.org/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'absa-cape-epic-2027',
+    name: 'Absa Cape Epic',
+    kind: 'sport',
+    start: '2027-03-21',
+    end: '2027-03-28',
+    city: 'Western Cape',
+    country: 'South Africa',
+    status: 'confirmed',
+    what: 'The Absa Cape Epic, the eight-day two-rider mountain-bike stage race, runs 21 to 28 March 2027 in the Western Cape, South Africa.',
+    ticket: "entries closed to a waiting list ('Waiting List Open')",
+    sources: [
+      {
+        title: 'Epic Series: Absa Cape Epic (March 21-28, 2027; Western Cape; Waiting List Open)',
+        url: 'https://www.epic-series.com/capeepic',
       },
     ],
     checkedOn: '2026-11-17',
@@ -1116,6 +1620,31 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'f1-australian-grand-prix-2027',
+    name: 'F1 Australian Grand Prix',
+    kind: 'sport',
+    start: '2027-04-02',
+    end: '2027-04-04',
+    city: 'Melbourne',
+    country: 'Australia',
+    status: 'confirmed',
+    what: "The 2027 Formula 1 Australian Grand Prix in Melbourne is round 3 of the season on 2 to 4 April 2027, per Formula 1's official 2027 calendar; it is no longer the season opener and has moved from March to April. The Australian Grand Prix Corporation's site is live for the 2027 event (title 'Formula 1 Australian Grand Prix 2027') with hospitality, grandstand and park-pass ticket categories, but prints no on-sale or sold-out status on its home page.",
+    ticket:
+      'ticket categories listed (hospitality, grandstands, park pass); no on-sale or sold-out status printed',
+    sources: [
+      {
+        title: 'Formula 1: 2027 race calendar (Round 3 Australia 02-04 Apr)',
+        url: 'https://www.formula1.com/en/racing/2027',
+      },
+      {
+        title:
+          'Australian Grand Prix Corporation: F1 Melbourne (Formula 1 Australian Grand Prix 2027)',
+        url: 'https://www.grandprix.com.au/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'ncaa-men-s-final-four-2027',
     name: "NCAA Men's Final Four",
     kind: 'sport',
@@ -1176,6 +1705,45 @@ export const BUCKET_EVENTS = [
       {
         title: 'Coachella: official site',
         url: 'https://www.coachella.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'f1-japanese-and-chinese-grands-prix-2027',
+    name: 'F1 Japanese and Chinese Grands Prix',
+    kind: 'sport',
+    start: '2027-04-09',
+    end: '2027-04-18',
+    city: 'Suzuka and Shanghai',
+    country: 'Japan and China',
+    status: 'confirmed',
+    what: 'Formula 1 runs consecutive April rounds in Asia in 2027: the Japanese Grand Prix on 9 to 11 April 2027 (round 4) and the Chinese Grand Prix on 16 to 18 April 2027 (round 5). The calendar page prints no ticket status and names countries rather than circuits.',
+    ticket: null,
+    sources: [
+      {
+        title: 'Formula 1: 2027 race calendar (Round 4 Japan 09-11 Apr; Round 5 China 16-18 Apr)',
+        url: 'https://www.formula1.com/en/racing/2027',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'hong-kong-sevens-2027',
+    name: 'Hong Kong Sevens',
+    kind: 'sport',
+    start: '2027-04-09',
+    end: '2027-04-11',
+    city: 'Hong Kong',
+    country: 'Hong Kong SAR, China',
+    status: 'confirmed',
+    what: 'The Hong Kong Sevens rugby tournament returns to Kai Tak Stadium on 9 to 11 April 2027.',
+    ticket: 'ticketing details to follow',
+    sources: [
+      {
+        title:
+          'Hong Kong Sevens: official site (returns to Kai Tak Stadium on 9-11 April 2027; Ticketing details to follow)',
+        url: 'https://www.hksevens.com/',
       },
     ],
     checkedOn: '2026-11-17',
@@ -1753,6 +2321,26 @@ export const BUCKET_EVENTS = [
     checkedOn: '2026-11-17',
   },
   {
+    id: 'dark-mofo-2027',
+    name: 'Dark Mofo',
+    kind: 'culture',
+    start: '2027-06-09',
+    end: '2027-06-22',
+    city: 'Hobart',
+    country: 'Australia',
+    status: 'expected',
+    what: "Dark Mofo, Hobart's midwinter arts festival around the solstice, is scheduled for 9 to 22 June 2027, opening a night earlier than usual with a new First Nations-led event, The Gathering, on Wednesday 9 June, per an Australasian Leisure Management report; the programme is expected early in 2027. Tourism Tasmania lists the Dark Mofo Winter Feast for Thursday 10 to Sunday 20 June 2027 (4pm to 11pm) with 'Full details announced in 2027'. The festival's own site rendered no text.",
+    ticket: 'programme and tickets expected early 2027',
+    sources: [
+      {
+        title:
+          'Tourism Tasmania: Hobart Dark Mofo Winter Feast (Thursday 10 June 2027 - Sunday 20 June 2027; returns in 2027; full details announced in 2027)',
+        url: 'https://www.discovertasmania.com.au/things-to-do/festivals-and-events/hobart-dark-mofo-winter-feast/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'cma-fest-2027',
     name: 'CMA Fest',
     kind: 'music',
@@ -1810,6 +2398,27 @@ export const BUCKET_EVENTS = [
     ],
     checkedOn: '2026-11-10',
     note: "documenta 16 runs from Saturday 12 June to Sunday 19 September 2027 in Kassel, Germany, under the artistic direction of Naomi Beckwith, per documenta's news item of 15 Sept 2026. That item says tickets for the exhibition and guided tours are available online, so tickets are on sale as of 10 Nov 2026. CONFIRMS the Oct 12 file's dates and updates its ticket status.",
+  },
+  {
+    id: 'comrades-marathon-2027',
+    name: 'Comrades Marathon',
+    kind: 'sport',
+    start: '2027-06-13',
+    end: '2027-06-13',
+    city: 'Durban and Pietermaritzburg',
+    country: 'South Africa',
+    status: 'confirmed',
+    what: 'The Comrades Marathon, the roughly 90 km ultramarathon between Durban and Pietermaritzburg, is on Sunday 13 June 2027. Runners must qualify by 3 May 2027; withdrawals open 1 February, with substitution draws on 30 March and 6 May 2027. The page does not say whether 2027 is an up or down run.',
+    ticket:
+      'entries closed to ballot; qualify by 3 May 2027; substitution draws 30 March and 6 May',
+    sources: [
+      {
+        title:
+          'Comrades Marathon: official site (Sunday 13 June 2027; qualify by 3 May 2027; 56,283 entries)',
+        url: 'https://www.comrades.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
   },
   {
     id: 'skulptur-projekte-munster-2027',
@@ -1968,6 +2577,26 @@ export const BUCKET_EVENTS = [
     checked: true,
   },
   {
+    id: 'gnaoua-and-world-music-festival-2027',
+    name: 'Gnaoua and World Music Festival',
+    kind: 'music',
+    start: '2027-06-24',
+    end: '2027-06-26',
+    city: 'Essaouira',
+    country: 'Morocco',
+    status: 'confirmed',
+    what: 'The Gnaoua and World Music Festival, 28th edition, runs 24 to 26 June 2027 in Essaouira, Morocco.',
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Festival Gnaoua et Musiques du Monde: official site (du 24 au 26 juin 2027, Essaouira)',
+        url: 'https://www.festival-gnaoua.net/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'inti-raymi-2027',
     name: 'Inti Raymi',
     kind: 'culture',
@@ -1993,6 +2622,26 @@ export const BUCKET_EVENTS = [
     checked: true,
     caution:
       'Seated tickets for the Inti Raymi staging are few and sell out ahead of the day: Infobae reported on 17 June 2026 that the 4,116 tickets sold for the two restricted venues, Saqsaywaman and Qorikancha, were gone, citing the organiser. In June 2025 it reported that Cusco prosecutors had opened a preventive investigation after complaints about fake Inti Raymi tickets sold on unauthorised websites, aimed mainly at domestic and foreign tourists; the organiser said sales ran only through Teleticket that year.',
+  },
+  {
+    id: 'matariki-nz-public-holiday-2027',
+    name: 'Matariki (NZ public holiday)',
+    kind: 'holiday',
+    start: '2027-06-25',
+    end: '2027-06-27',
+    city: 'nationwide',
+    country: 'New Zealand',
+    status: 'confirmed',
+    what: "Matariki, New Zealand's midwinter public holiday for the Maori new year, is Friday 25 June 2027, per the New Zealand government's employment holiday table. The same table gives Waitangi Day as Saturday 6 February 2027 (Mondayised to 8 February for most workers), Good Friday 26 March, Easter Monday 29 March, Anzac Day Saturday 25 April (Mondayised 26 April) and King's Birthday Monday 7 June 2027. Matariki brings a three-day weekend with dawn ceremonies, light events and festivals in Auckland, Wellington and elsewhere.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Employment New Zealand: Public holidays and anniversary dates (Matariki Friday 25 June)',
+        url: 'https://www.employment.govt.nz/leave-and-holidays/public-holidays/public-holidays-and-anniversary-dates',
+      },
+    ],
+    checkedOn: '2026-11-17',
   },
   {
     id: 'montreal-jazz-festival-2027',
@@ -2061,6 +2710,31 @@ export const BUCKET_EVENTS = [
     ],
     checkedOn: '2026-11-10',
     note: "The 2027 Wimbledon Championships run from Monday 28 June to Sunday 11 July 2027, with the ladies' singles final on Saturday 10 July and the gentlemen's on Sunday 11 July (Lawn Tennis Association). The public ballot for 2027 tickets opened in early September 2026 and was reported to close in mid-September. The LTA's page gives two statuses for its own 2027 ballot: an FAQ line says it is closed and a news teaser says the opt-in is open.",
+  },
+  {
+    id: 'great-migration-river-crossings-2027',
+    name: 'Great Migration river crossings',
+    kind: 'nature',
+    start: '2027-07-01',
+    end: '2027-10-31',
+    city: 'Maasai Mara and northern Serengeti',
+    country: 'Kenya and Tanzania',
+    status: 'expected',
+    what: "The wildebeest migration's Mara River crossings, between Tanzania's northern Serengeti and Kenya's Maasai Mara, happen from about July to October each year, with late July to September usually the busiest crossing period; the Grumeti River stage in the western Serengeti is June to July, and the calving season on the southern Serengeti plains is January to March. Two safari operators' calendars read agree on these months, both say timing follows the rains and shifts year to year, and one states plainly that river crossings 'are unpredictable and cannot be guaranteed'.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Asilia Africa: Understanding the Great Migration, a year-round wildlife spectacle (July to October: the famous Mara River crossings)',
+        url: 'https://www.asiliaafrica.com/blog/understanding-the-great-migration-a-year-round-wildlife-spectacle/',
+      },
+      {
+        title:
+          'Yellow Zebra Safaris: Great Migration (mid-July to October river crossings; cannot be guaranteed)',
+        url: 'https://yellowzebrasafaris.com/great-migration/',
+      },
+    ],
+    checkedOn: '2026-11-17',
   },
   {
     id: 'british-grand-prix-2027',
@@ -2148,6 +2822,26 @@ export const BUCKET_EVENTS = [
     note: "The 2027 Tour de France starts in Edinburgh on Friday 2 July 2027 and ends on Sunday 25 July 2027. Stage 1 is 184 km from the Palace of Holyroodhouse, Edinburgh, to Carlisle; the first three days cross Scotland, England and Wales. Two individual time trials (Chambord, Toulouse) total 71 km, and six mountain stages include finishes at the Grand Colombier, Les Saisies and the Col du Portet. The organiser's route page could not be read: stage 2 (Keswick to Liverpool, 3 July), stage 3 (Welshpool to Cardiff, 4 July) and the Paris finish rest on Wikipedia's table citing letour.fr.",
   },
   {
+    id: 'hollywoodbets-durban-july-2027',
+    name: 'Hollywoodbets Durban July',
+    kind: 'sport',
+    start: '2027-07-03',
+    end: '2027-07-03',
+    city: 'Durban',
+    country: 'South Africa',
+    status: 'confirmed',
+    what: "The Hollywoodbets Durban July, South Africa's biggest horse-racing and fashion day, is on Saturday 3 July 2027 at Greyville Racecourse, Durban, per the organiser's site (the 2027 date appears in the countdown banner under '2027 Hollywoodbets Durban July'; the page's main content is still the 4 July 2026 edition). Tickets are sold through a Ticketpro shop linked from the page; no 2027 sale date is printed.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Hollywoodbets Durban July: official site (2027 Hollywoodbets Durban July, 3 July 2027)',
+        url: 'https://www.hollywoodbetsdurbanjuly.co.za/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'calgary-stampede-2027',
     name: 'Calgary Stampede',
     kind: 'festival',
@@ -2162,6 +2856,26 @@ export const BUCKET_EVENTS = [
       {
         title: 'Calgary Stampede: official site',
         url: 'https://www.calgarystampede.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'naadam-festival-2027',
+    name: 'Naadam Festival',
+    kind: 'holiday',
+    start: '2027-07-11',
+    end: '2027-07-13',
+    city: 'Ulaanbaatar',
+    country: 'Mongolia',
+    status: 'expected',
+    what: "Naadam, Mongolia's national festival of wrestling, horse racing and archery, is held on fixed dates every year around 11 to 13 July (the national holiday period, which the guide read gives as 11 to 15 July), with the opening ceremony on the morning of 11 July at the National Sports Stadium in Ulaanbaatar. The ceremony is the only ticketed part; the guide read says ceremony tickets are released only about two weeks before and are hard to obtain without a local agency, while the competitions themselves need no ticket.",
+    ticket: 'opening ceremony ticketed, released about two weeks before; competitions unticketed',
+    sources: [
+      {
+        title:
+          "Meanwhile in Mongolia: Naadam, a guide to Mongolia's biggest national festival (always July 11 to July 15; opening ceremony morning of July 11; tickets released two weeks before)",
+        url: 'https://meanwhileinmongolia.com/best-festivals-in-mongolia-naadam/',
       },
     ],
     checkedOn: '2026-11-17',
@@ -2262,6 +2976,26 @@ export const BUCKET_EVENTS = [
         title:
           'Salzburger Festspiele: official site (Whitsun 14 - 17 May 2027; Summer 16 July - 29 August 2027)',
         url: 'https://www.salzburgerfestspiele.at/en',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'gion-matsuri-yamaboko-junko-processions-2027',
+    name: 'Gion Matsuri (Yamaboko Junko processions)',
+    kind: 'festival',
+    start: '2027-07-17',
+    end: '2027-07-24',
+    city: 'Kyoto',
+    country: 'Japan',
+    status: 'expected',
+    what: "Gion Matsuri, Kyoto's month-long festival of Yasaka Shrine, runs on fixed dates every July: it opens on 1 July, the first float procession (Saki Matsuri Yamaboko Junko, 20 floats) is on 17 July, the second procession (Ato Matsuri, 9 floats) and the Hanagasa parade on 24 July, mikoshi rites on 10 and 28 July, and it closes on 31 July.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Yasaka Shrine: Gion Matsuri (7月1日 吉符入 ... 7月17日 前祭 山鉾二十基 ... 7月24日 後祭 山九基 ... 31日 疫神社夏越祭)',
+        url: 'https://www.yasaka-jinja.or.jp/event/gion/',
       },
     ],
     checkedOn: '2026-11-17',
@@ -2430,6 +3164,51 @@ export const BUCKET_EVENTS = [
         title:
           'Fleadh Cheoil: official site (Fleadh Cheoil na hEireann will return to Belfast from Sunday 1 to Sunday 8 August 2027)',
         url: 'https://fleadhcheoil.ie/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'aomori-nebuta-matsuri-2027',
+    name: 'Aomori Nebuta Matsuri',
+    kind: 'festival',
+    start: '2027-08-02',
+    end: '2027-08-07',
+    city: 'Aomori',
+    country: 'Japan',
+    status: 'expected',
+    what: "The Aomori Nebuta Matsuri, the lantern-float festival in Aomori city, runs on fixed dates every year from 2 to 7 August ('毎年 8月2日から7日'). Street viewing is unticketed; paid reserved seats exist, and the organiser's seat-purchase guide for 2026 was updated on 27 May 2026.",
+    ticket:
+      'street viewing unticketed; paid reserved seats sold in advance (2026 guide published late May)',
+    sources: [
+      {
+        title: 'Aomori Nebuta Matsuri official site (毎年 8月2日から7日; 有料観覧席)',
+        url: 'https://www.nebuta.jp/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'nashik-trimbakeshwar-kumbh-mela-amrit-snan-days-2027',
+    name: 'Nashik-Trimbakeshwar Kumbh Mela (Amrit Snan days)',
+    kind: 'culture',
+    start: '2027-08-02',
+    end: '2027-09-12',
+    city: 'Nashik and Trimbakeshwar',
+    country: 'India',
+    status: 'expected',
+    what: "The Nashik-Trimbakeshwar Simhastha Kumbh Mela, the once-in-twelve-years Hindu gathering on the Godavari in Maharashtra, India, formally opened with flag hoisting on 31 October 2026 and runs until the flag comes down on 24 July 2028. The three main bathing days (Amrit Snan, formerly Shahi Snan) announced by Maharashtra's Chief Minister on 1 June 2025 are 2 August 2027, 31 August 2027 and 11 September 2027 at Nashik (12 September 2027 at Trimbakeshwar). Crowds on those days run into the millions; the event is unticketed.",
+    ticket: 'unticketed',
+    sources: [
+      {
+        title:
+          'ThePrint (PTI): Simhastha Kumbh Mela to begin in Nashik-Trimbakeshwar on Oct 31 next year, CM chairs meet (1 June 2025)',
+        url: 'https://theprint.in/india/simhastha-kumbh-mela-to-begin-in-nashik-trimbakeshwar-on-oct-31-next-year-cm-chairs-meet/2643892',
+      },
+      {
+        title:
+          'Lokshahi: Official dates announced for Nashik-Trimbakeshwar Simhastha Kumbh (1 Jun 2025)',
+        url: 'https://english.lokshahi.com/top-stories/official-dates-announced-for-nashik-trimbakeshwar-simhastha-kumbh',
       },
     ],
     checkedOn: '2026-11-17',
@@ -2817,6 +3596,29 @@ export const BUCKET_EVENTS = [
     note: "The ICC Men's Cricket World Cup 2027 runs 2 October to 21 November 2027 in South Africa, Zimbabwe and Namibia: 12 venues, 14 teams, 57 matches. It opens in Namibia on 2 October with the Super Series, a three-match round robin between the three lowest-ranked qualifiers; Windhoek is the only Namibian venue listed. India v Australia is at Newlands, Cape Town, on Thursday 7 October. Semi-finals: Cape Town on 17 November and Centurion (Tshwane) on 18 November. Final: Johannesburg, Sunday 21 November.",
   },
   {
+    id: 'f1-singapore-grand-prix-2027',
+    name: 'F1 Singapore Grand Prix',
+    kind: 'sport',
+    start: '2027-10-08',
+    end: '2027-10-10',
+    city: 'Singapore',
+    country: 'Singapore',
+    status: 'confirmed',
+    what: "The 2027 Formula 1 Singapore Grand Prix, the Marina Bay night street race, is round 18 on 8 to 10 October 2027, per Formula 1's official 2027 calendar; it is the only Asian round in the second half of the season. The promoter's site (singaporegp.sg) still shows 2026 content and a general 'Buy Tickets' link, with no 2027 sale date printed.",
+    ticket: null,
+    sources: [
+      {
+        title: 'Formula 1: 2027 race calendar (Round 18 Singapore 08-10 Oct)',
+        url: 'https://www.formula1.com/en/racing/2027',
+      },
+      {
+        title: 'Singapore GP: official promoter site (2026 content; Buy Tickets)',
+        url: 'https://singaporegp.sg/en',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'chicago-marathon-2027',
     name: 'Chicago Marathon',
     kind: 'sport',
@@ -2831,6 +3633,26 @@ export const BUCKET_EVENTS = [
       {
         title: 'Bank of America Chicago Marathon: official site',
         url: 'https://www.chicagomarathon.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'deepavali-singapore-2027',
+    name: 'Deepavali (Singapore)',
+    kind: 'holiday',
+    start: '2027-10-28',
+    end: '2027-10-28',
+    city: 'Singapore',
+    country: 'Singapore',
+    status: 'confirmed',
+    what: "Deepavali (Diwali) 2027 is a public holiday in Singapore on Thursday 28 October 2027, per the Ministry of Manpower's 2027 list; Little India's street light-up runs for weeks beforehand.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Ministry of Manpower Singapore: Public holidays 2027 (Deepavali 28 October 2027, Thursday)',
+        url: 'https://www.mom.gov.sg/employment-practices/public-holidays',
       },
     ],
     checkedOn: '2026-11-17',
@@ -2941,6 +3763,31 @@ export const BUCKET_EVENTS = [
     checked: true,
   },
   {
+    id: 'loy-krathong-and-yi-peng-2027',
+    name: 'Loy Krathong and Yi Peng',
+    kind: 'festival',
+    start: '2027-11-14',
+    end: '2027-11-15',
+    city: 'Chiang Mai (and nationwide)',
+    country: 'Thailand',
+    status: 'expected',
+    what: "Loy Krathong, Thailand's festival of floating lanterns on the full moon of the twelfth lunar month, and Chiang Mai's Yi Peng sky-lantern festival are expected on 14 to 15 November 2027. One calendar read gives Loy Krathong as Sunday 14 November 2027; another gives Yi Peng 14 to 15 November with the Loy Krathong night on 15 November, so the exact night is unsettled until Thailand's official announcement. The 2026 edition is 24 to 25 November 2026.",
+    ticket:
+      'public celebrations unticketed; mass lantern-release events ticketed by private organisers',
+    sources: [
+      {
+        title: 'UME Travel: Loy Krathong 2026 and 2027 dates (Sunday, November 14, 2027)',
+        url: 'https://www.umetravel.com/loy-krathong-festival/dates.html',
+      },
+      {
+        title:
+          'Thailand Highlights: Yi Peng Festival (2027: Yi Peng November 14-15; Loy Krathong night November 15; full moon of the twelfth lunar month)',
+        url: 'https://www.thailandhighlights.com/thailand/yi-peng-festival',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
     id: 'f1-las-vegas-grand-prix-2027',
     name: 'F1 Las Vegas Grand Prix',
     kind: 'sport',
@@ -2959,6 +3806,92 @@ export const BUCKET_EVENTS = [
       {
         title: 'OPM: Federal holidays (Thanksgiving Day, Thursday 25 November 2027)',
         url: 'https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'f1-qatar-and-abu-dhabi-grands-prix-season-finale-2027',
+    name: 'F1 Qatar and Abu Dhabi Grands Prix (season finale)',
+    kind: 'sport',
+    start: '2027-12-03',
+    end: '2027-12-12',
+    city: 'Lusail and Yas Island, Abu Dhabi',
+    country: 'Qatar and United Arab Emirates',
+    status: 'confirmed',
+    what: 'The 2027 Formula 1 season ends with a Gulf double-header: the Qatar Grand Prix on 3 to 5 December 2027 (round 23) and the season finale, the Abu Dhabi Grand Prix, on 10 to 12 December 2027 (round 24). The calendar page prints no ticket status.',
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Formula 1: 2027 race calendar (Round 23 Qatar 03-05 Dec; Round 24 Abu Dhabi 10-12 Dec)',
+        url: 'https://www.formula1.com/en/racing/2027',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'afc-asian-cup-saudi-arabia-2027-postponed-to-dec-2027-jan-2028-2027',
+    name: 'AFC Asian Cup Saudi Arabia 2027 (postponed to Dec 2027 - Jan 2028)',
+    kind: 'sport',
+    start: '2027-12-23',
+    end: '2028-01-21',
+    city: 'Riyadh, Jeddah, Al Khobar',
+    country: 'Saudi Arabia',
+    status: 'expected',
+    what: "The AFC Asian Cup Saudi Arabia 2027 has been postponed: the Asian Football Confederation announced on 3 November 2026 that the tournament, originally 7 January to 5 February 2027, will instead run 23 December 2027 to 21 January 2028, citing 'exceptional circumstances' from developments in the region and logistical and travel disruption. The hosts remain Riyadh, Jeddah and Al Khobar across eight stadiums; the final draw had already been pushed from March to 9 May 2026.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          'Khaleej Times: Asian Cup in Saudi Arabia postponed until December 2027, organisers say (3 Nov 2026)',
+        url: 'https://www.khaleejtimes.com/sports/football/asian-cup-postponed-until-december-2027-over-safety-concerns',
+      },
+      {
+        title:
+          "Wikipedia: 2027 AFC Asian Cup (cites the AFC statement 'Important update on AFC Asian Cup Saudi Arabia 2027', retrieved 3 Nov 2026, and Reuters 3 Nov 2026)",
+        url: 'https://en.wikipedia.org/wiki/2027_AFC_Asian_Cup',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'afrikaburn-2027',
+    name: 'AfrikaBurn',
+    kind: 'festival',
+    start: null,
+    end: null,
+    city: 'Tankwa Karoo (Quaggafontein)',
+    country: 'South Africa',
+    status: 'not-announced',
+    what: "AfrikaBurn, the Tankwa Karoo regional burn at Quaggafontein ('Tankwa Town'), has not printed its 2027 event dates on its ticket site as of 17 November 2026. The 2026 edition ran 27 April to 3 May 2026. The ticket site already lists 2027 administrative dates: a minors' consent application window 1 to 31 March 2027, ticket resales opening after all other sales close on 15 March 2027, and a refund deadline of 1 April 2027 for the subsidised tiers, which implies a late-April to early-May 2027 event; subsidised and Anathi applications run 28 October to 4 December 2026.",
+    ticket:
+      '2026-27 subsidised and Anathi application windows 28 Oct - 4 Dec 2026; Ground Up tier open until sold out; resales via the official Quicket platform only',
+    sources: [
+      {
+        title:
+          'AfrikaBurn tickets: official ticket site (AfrikaBurn 2026: 27 April to 3 May; 2027 windows)',
+        url: 'https://tickets.afrikaburn.org/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'bluesfest-byron-bay-no-2026-event-liquidator-appointed-2027',
+    name: 'Bluesfest Byron Bay (no 2026 event; liquidator appointed)',
+    kind: 'music',
+    start: null,
+    end: null,
+    city: 'Byron Bay',
+    country: 'Australia',
+    status: 'not-announced',
+    what: "Bluesfest Byron Bay, the Easter-weekend blues and roots festival, is not running: the organiser's site says 'Bluesfest has made the difficult decision not to proceed with the 2026 event' and that ticket holders, parking-pass buyers and campers 'will be contacted directly by the appointed liquidator'. No 2027 edition is announced, and a company in liquidation is not an organiser; treat any 2027 Bluesfest listing as unfounded until a new organiser publishes dates.",
+    ticket: '2026 cancelled; refunds through the appointed liquidator',
+    sources: [
+      {
+        title:
+          'Bluesfest Byron Bay: official site (decision not to proceed with the 2026 event; appointed liquidator)',
+        url: 'https://www.bluesfest.com.au/',
       },
     ],
     checkedOn: '2026-11-17',
@@ -3059,6 +3992,31 @@ export const BUCKET_EVENTS = [
       {
         title: 'Great American Beer Festival: official site (2026 edition shown)',
         url: 'https://www.greatamericanbeerfestival.com/',
+      },
+    ],
+    checkedOn: '2026-11-17',
+  },
+  {
+    id: 'harbin-ice-snow-world-2026-27-season-2027',
+    name: 'Harbin Ice-Snow World (2026-27 season)',
+    kind: 'winter',
+    start: null,
+    end: null,
+    city: 'Harbin',
+    country: 'China',
+    status: 'not-announced',
+    what: "Harbin Ice-Snow World, the ice-sculpture park in Harbin, Heilongjiang, has not announced an opening date for its 2026-27 season as of 17 November 2026; Xinhua (13 Oct 2026) says the park is 'in full preparation' and will expand to a record 1.25 million square metres. The previous (27th) edition opened on Wednesday 17 December 2025 and set a single-day record of more than 120,000 visitors in February 2026. The park usually runs to late February, weather permitting.",
+    ticket: null,
+    sources: [
+      {
+        title:
+          "People's Daily / Xinhua: World's largest ice and snow theme park to expand to record size this winter (Oct 13, 2026)",
+        url: 'http://en.people.cn/n3/2026/1013/c90000-20507752.html',
+      },
+      {
+        title:
+          'CGTN: Harbin Ice and Snow World opens, a record-breaking winter fairyland (2025-12-18)',
+        url: 'https://news.cgtn.com/news/2025-12-18/Harbin-Ice-and-Snow-World-opens-A-record-breaking-winter-fairyland-1JckVDMksQU/share_amp.html',
       },
     ],
     checkedOn: '2026-11-17',
