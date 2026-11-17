@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: November 10, 2026 (the Parks Map is /outdoors; /deals and markets refreshed; agents on Fable 5.2)
+## Last Updated: November 16, 2026 (/local rebuilt as a 3D model on feature/local-3d, preview only; the Nov 10 ship before it)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -43,20 +43,16 @@ Canonical total: **227 places · 14 validated cities · 11 countries · 4 contin
   serves. Then **`THE SEPTEMBER 8 QUEUE`**, which is the live work order, and
   `THE NEW FRAMEWORK AGENDA` behind it. **`THE OCTOBER VISION` sets next month.**
 Peru completed. Ford started May 18.
-LIVE: **`/local` IS THE MAP** (graduated Sept 2, 2026). Full MIDWEST canvas
-  (MN·WI·MI·IL·IN·OH + the Ontario shore) as the page hero, under the banner
-  identity **"Good Brews · Good Views · Good News"**. Indexed, in nav, with a
-  companion list beside it. **83 markers: 25 gold validated · 58 copper
-  candidates**, plus 14 validated-but-unplaceable spots named in the list only.
+🟡 **`/local` IS BEING REBUILT AS A 3D MODEL — branch `feature/local-3d`, Vercel preview, NOT MERGED
+  (Nov 16, 2026).** The Midwest as a relief model with the Great Lakes as water, cities as fly-ins,
+  a column of light on every venue with something on in the chosen dates, 248 researched venues and
+  attractions from the agents' Nov 11 run (coordinates from Wikidata by QID) and 471 dated events
+  read from organisers' own pages. Every count derived from `src/data/localIndex.js`. See the
+  **NOVEMBER 11–16** record. The old SVG map (`GoodNews.jsx`) is deleted on that branch.
   ⛔ **`/good-news` is RETIRED** — it permanently redirects to `/local`. Do not
   re-add its route or its rewrite.
-  ✅ **SHIPPED TO PRODUCTION** (`f9af4b7`, merged from `feature/travel-windows`).
-  `/local` carries **113 places** (16 Good Views across all six states) plus
-  **THE LIVE PULSE** — 58 sourced events at 9 venues with a This Weekend filter
-  — and Golfweek's cited top-20 golf slate. Every framework gained a **"When to
-  Go"** section; Dublin/Spain gained **Flight Intelligence**. The branch/
-  production split that used to be described here is GONE: both figures are now
-  the same figure.
+  On `main` today `/local` is still the Sept 2 SVG map: **113 places** (16 Good Views) plus the
+  Live Pulse (58 events from Sept 2, all expired) and Golfweek's top-20 golf slate.
 🟣 **PERU IS MERGED, LIVE AND INDEXED.** ✅ Shipped Sept 8 (`2446f94`), `noindex`
   lifted, in the sitemap at 0.9, and registered in `canonical.js` on Sept 16.
   ⛔ **The old "built but not merged" record in `THE PERU STANDARD-SETTER` below
@@ -278,6 +274,110 @@ own branch** (see Parallel Agent Workflow at the foot of this file), never in th
 shared checkout someone else is serving localhost from.
 
 ---
+
+## 🟡 NOVEMBER 11–16, 2026 — `/local` REBUILT AS A 3D MODEL OF THE MIDWEST (branch `feature/local-3d`, PREVIEW, NOT MERGED)
+
+Brady, Nov 11: *"taking the local page to a new level with all of the new 3d animation and design
+capabilities… deeper research inclusion of more event venues and tourist attractions… find all of the
+best current local event tools and bring them all into our research work then just build."* He left the
+build to run and asked for a fully built preview on his return. **It is on the branch and on a Vercel
+preview; `/ship` is his call.** Read `git log` for the branch tip.
+
+1. **`/local` is now a relief model of the six states with the Great Lakes as water** (`src/LocalMap.jsx`,
+   `src/LocalPage.jsx`, `src/LocalPage.css`). Built the way the Parks Map was built, with its own palette
+   (ink, gold, copper, lake teal; the dusk palette stays on `/outdoors`):
+   - **Ground generated, never drawn:** `node tools/build-local-relief.mjs` samples the Terrarium elevation
+     tiles into `public/local/relief-midwest.png` (640×640; red height, green kind: lake / one of the six
+     states / Canada), with state membership from Natural Earth 1:50m and the lake shores from Natural
+     Earth **1:10m** (which is what gives the lakes their real outline). State lines in
+     `public/local/state-lines.json`. Canada is drawn quieter; the water moves (a shader, not a texture).
+     Heights are exaggerated a great deal and the page says so: the Midwest is flat.
+   - **Cities are found in the data, never declared** (`HUBS` in `src/data/localIndex.js`): the place with
+     the most neighbours within 34 km takes them, repeat; a cluster of six or more whose members name a
+     city becomes a fly-in. Two clusters with one name merge (Bruce Peninsula taught that). Labels are
+     collision-resolved on screen every frame, biggest city first.
+   - **A column of light stands on every venue with a dated event in the chosen dates** (This weekend ·
+     Next 7 days · Next 30 days · Everything ahead); its height is the number of events. Layer chips
+     (Brews · Eats · Views · Sights · Venues · Golf) filter the pins. One picker chooses the pin nearest
+     the pointer in screen space; a drag never selects.
+   - Cards: a city card (what is on there in the dates, then its places by layer) and a place card (kind,
+     tier chip, the sourced one-line description, a caution where the research found a rename or seasonal
+     closure, Google's rating labelled as Google's, the events there, official site, Michigan guide link).
+   - Under the stage: **What's on** (the same date windows, type groups, a city select, 40 rows then
+     "show all"), **Every place** (grouped by city, searchable, 44px targets), the Michigan card, Golfweek's
+     slate as a disclosure, and **How this page is built**.
+   - If a browser cannot start 3D, the page shows `public/local/poster-midwest.jpg` (rendered from
+     `/local?poster`, which hides the page text; re-render when the look changes) with everything else working.
+   - ⛔ **Retired:** `GoodNews.jsx/.css`, `midwestGeo.js`, `ontarioGeo.js` and the four tracer tools. The
+     SVG map, the airports layer and the route paths went with them (dead code holding typed facts is a
+     loaded gun). `/good-news` still redirects to `/local`.
+
+2. **ONE index, every count derived** (`src/data/localIndex.js`). Michigan (walked), Bruce (walked), the
+   saved Maps lists (saved), the landmarks (researched) and the research run (researched) are normalised
+   into one array; the page prints only lengths of that array. A researched record of a place a founder's
+   own list already holds is dropped (Navy Pier was on twice). `tools/tests/local.test.mjs` (9 tests) fails
+   if a count is typed, a tier is blended, a researched place carries Lads voice, an event has a price, or
+   an event could outlive its last day. `npm test` → 174.
+
+3. **THE RESEARCH RUN** `internal/research/midwest-local/2026-11-11T11-49/` (gitignored). Ten parts: five
+   `lads-destination-scout.places-*` (west MI · east MI · Chicago+NW Indiana · WI+MN · IN+OH) and five
+   `lads-timing-events.events-*`, briefed in `RUN.json` (places carry a **Wikidata QID**, no coordinates;
+   events are read from the organiser's own page, no prices). **258 place findings, 493 event findings.**
+   - 🚩 **All ten agents died mid-run when the Fable 5.2 credits ran out (Nov 11), after writing their files.**
+     Check the run directory before re-dispatching anything: the work was all there. The session resumed
+     Nov 16 on Fable 5.1 (Brady switched the model).
+   - **`node tools/build-local-data.mjs <runDir>`** → `src/data/localResearch.js`: resolves each place's
+     coordinate **from Wikidata by QID (P625)**, never from its name; flags a QID whose label does not share
+     the place's name (12 flagged, all renames: Schottenstein = Value City Arena, Trinity Health = Mercy
+     Health Arena, Milwaukee Public Museum = Nature & Culture Museum of Wisconsin…); attaches the traps to
+     the place they name (43 cautions); adds a venue for every event venue the scouts' 40-place cap left
+     out (48, identity-checked on a shared word); drops refuted findings and uses the verifier's
+     `proposedClaim` for weakened ones; refuses any money amount. **Today: 248 researched places (234 with a
+     coordinate, 12 without a QID so listed only), 471 events (252 in the next 30 days), 57 events at
+     venues with no record so no column of light.**
+   - ⚠️ **Wikidata P576 is not a closure filter.** Michigan Central Station carries its 1988 closure and
+     reopened in 2024. The tool flags, the verifier rules.
+   - **Verification:** `lads-verifier` ran at 90 calls, stalled on the harness watchdog after **210
+     verdicts (112 confirmed · 24 refuted · 4 weakened · 70 unverifiable)** and was resumed with an
+     instruction to write incrementally. **Re-run `build-local-data.mjs` when it finishes and re-read
+     the numbers above; until then the page carries unverified events.** Per the Oct 6 correction rule,
+     nothing here is relayed as fact in chat without that pass.
+
+4. **THE EVENT-SOURCE SURVEY (Nov 11, 29 sources read, terms pages opened, not legal advice)** — this is
+   the rule for what may be shown on the public page:
+   - **Usable on the page:** Ticketmaster Discovery API (self-serve key, 5,000 calls/day; no long caching,
+     no team or league artwork; affiliate via Impact); OpenStreetMap/Overpass at build time (ODbL credit);
+     **Wikidata (CC0, what the build uses)**; Wikimedia Commons per file; NPS API and Recreation.gov RIDB
+     (credit requested); CollegeFootballData (commercial use permitted); **facts read by hand from a
+     venue's own calendar, in our own words, linked back** (what the events agents do).
+   - **Private research only:** tourism-bureau RSS feeds (Experience GR, Visit Milwaukee, Ann Arbor,
+     Columbus, Cincy, Visit Indiana, Choose Chicago all expose `/event/rss/`; no licence to republish),
+     Pure Michigan (terms bar automated reads and redistribution), SerpApi Google Events, league sites
+     (MLB/NHL/NBA/NFL terms are non-commercial), JamBase free tier, PredictHQ.
+   - **Not usable:** Eventbrite search (shut 2019), Bandsintown (artists only), Songkick (paid
+     partnership), Yelp (24-hour storage cap, no commercial use), Google Places for a build pipeline
+     (no storing beyond place IDs), ESPN's undocumented endpoints, Meetup.
+   - Nothing on the page comes from an aggregator. If Ticketmaster is added later it is a live, attributed,
+     short-cached layer with its own affiliate disclosure, never copied into a data file.
+
+5. **Also shipped on this branch:** `/outdoors` on phones no longer has the title lying across the north of
+   the map (the model is fitted into the band between the title and the controls; `homeView(…, clear)` in
+   `ParksMap.jsx`). Checked on all three regions at 390×664.
+
+6. **Lessons:**
+   - A python heredoc turned `\b` in a regex into a literal backspace character and the poster mode
+     silently never matched. **Same rule as the Bash heredocs: write regex and backslash payloads with the
+     Write tool or a node one-liner reading a file.**
+   - Headless software rendering of this page runs at about a frame a second: drei `Html` labels report
+     "not stable" to Playwright (click with `force`), and a 13-second wait can catch the model before its
+     reveal. Probe the DOM (the `?debug` probe exposes screen positions) rather than trusting one frame.
+   - A 20-day-old `generatedOn` fails `validate.mjs` by the date rule alone; that is the known artefact,
+     not bad data. `runs.mjs` judges a run by its own day.
+
+**Open for Brady:** (a) `/ship` the branch, or ask for changes first; (b) the hub named **"Notre Dame"**
+(the data's own city word for the campus venues; South Bend is its neighbour); (c) whether to add
+Ticketmaster as a live layer; (d) re-run the events parts every two to three weeks so the columns of light
+stay honest (an event removes itself the day after its last day, but nothing adds the next month).
 
 ## 🟢 NOVEMBER 10, 2026 — THE PARKS MAP IS /outdoors, PAGE REFRESHES, AGENTS ON FABLE
 
@@ -1485,9 +1585,9 @@ not from memory, and not from this file's own previous record.**
 
 | | |
 |---|---|
-| `main` | **Nov 10: the `feature/nov-refresh` merge rides with the Nov 10 record** (Parks Map as `/outdoors`, page refreshes). Read `git log` for the hash. Before it, Oct 21: the `feature/ryder-cup-2027` merge (which carries `feature/gorge-ridge-trip`) rides with the Oct 14–21 record. Read `git log` for the hash and check Vercel READY by SHA at the next `/morning`. Oct 12 `/deals` merge before it. |
+| `main` | **Nov 16: unchanged since the Nov 10 merge. `feature/local-3d` is pushed and has a READY Vercel preview; it is NOT merged and waits for Brady's `/ship`.** Nov 10: the `feature/nov-refresh` merge rides with the Nov 10 record (Parks Map as `/outdoors`, page refreshes). Read `git log` for the hash. Before it, Oct 21: the `feature/ryder-cup-2027` merge (which carries `feature/gorge-ridge-trip`) rides with the Oct 14–21 record. Read `git log` for the hash and check Vercel READY by SHA at the next `/morning`. Oct 12 `/deals` merge before it. |
 | Working tree | clean at merge |
-| Pending `/ship` | **Nothing.** |
+| Pending `/ship` | **`feature/local-3d`** (the 3D /local + the /outdoors phone fix), on Brady's approval of the preview. |
 | Vercel | Confirm the production deployment for the merge SHA reached **READY** at the start of the next session if this session did not record it below. |
 
 **✅ SHIPPED SEPT 29 (see `SEPTEMBER 29, 2026 — THE RESEARCH AGENTS`):** the 14
@@ -1696,7 +1796,7 @@ the research pipeline stands on its own without a Lads visit.
 | **Lads Global** | `/global` | International frameworks (Dublin, Spain, Rome, Iceland, Prague, Vienna, Australia, Munich, Poland, Peru) |
 | **Lads Outdoors** | `/outdoors` | **The Parks Map** (since Nov 10, 2026): every U.S. national park on a 3D relief model, from Park Service records. The Ladder page is retired; Salkantay links to `/peru`. |
 | **Lads Bucket List** | `/bucket-list` | Events/festivals/sports/holidays (Vivid Sydney, Oktoberfest, Ryder Cup '27, Christmas Markets). Calendar view planned. |
-| **Lads Local** | `/local` | The Midwest map (Good Brews · Good Views · Good News) + the `/michigan` framework. Engineered the same as international. |
+| **Lads Local** | `/local` | The Midwest as a 3D relief model (Good Brews · Good Views · Good News): walked places gold, researched venues, attractions and dated events copper, cities as fly-ins (on `feature/local-3d` since Nov 16; the SVG map on `main` until it ships) + the `/michigan` framework. |
 
 Footer carries: Follow Along (socials, blog later), The Lads (team),
 brand mark. Everything else in nav is dead.

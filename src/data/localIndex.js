@@ -210,13 +210,21 @@ const fromResearch = RESEARCH_PLACES.map((p) => ({
   checkedOn: p.checkedOn,
 }))
 
+/* A researched record of a place that is already here from a founder's own list is not a second
+ * place: the founder's record wins and the research record is dropped (matched on the name). */
+const norm = (s) => slug(s).replace(/^the-/, '')
+const owned = new Set(
+  [...fromMichigan, ...fromBruce, ...fromCandidates, ...fromViews].map((p) => norm(p.name))
+)
+const researchOnly = fromResearch.filter((p) => !owned.has(norm(p.name)))
+
 const seen = new Map()
 export const LOCAL_PLACES = [
   ...fromMichigan,
   ...fromBruce,
   ...fromCandidates,
   ...fromViews,
-  ...fromResearch,
+  ...researchOnly,
 ].map((p) => {
   const base = slug(p.name)
   const n = (seen.get(base) || 0) + 1
