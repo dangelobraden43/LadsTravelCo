@@ -297,4 +297,27 @@ metadata:
   with a state stadium operator by a day on two matches, so prefer the operator. Wikidata SPARQL with P625,
   P31 and P576 for 11 QIDs returned every row in one fetch.
 
+- **Midwest venues and events (midwest-local, 2026-11-16, 27 searches + ~190 fetches for 751 findings).** One Wikidata SPARQL
+  call per part (VALUES of 45-55 QIDs, label + description + P625) settled every place QID; query.wikidata.org returned one
+  502, a retry worked. JS-only calendars that return "no events" on fetch: vanandelarena.com/events and devosperformancehall.com/events
+  (their per-event pages fetch fine), fightingirish.com (domain refused; smumustangs.com and a domain search carry the times),
+  mgoblue/msuspartans (use bigten.org/schedule.aspx?schedule=<id>). NBA team pages nba.com/team/<id>/schedule print a season header
+  and home games with ET times; api-web.nhle.com club-schedule-season feeds give venue and startTimeUTC and can be read up to
+  100k chars. 403: downtownholland.com (all paths; its listings still appear in a domain search), jbzoo.org, artic.edu/visit,
+  nps.gov/indu mount-baldy slug (404; the news release mountbaldyreopens2026.htm works), toledomuseum.org, ums.org and
+  meadowbrookhall.org intermittently ("unable to verify domain": retry once). Redirects to note: events.bellsbeer.com ->
+  bellsbeer.com/visit/events, oldnationalcentre.com -> an empty Live Nation venue shell, broadwayindetroit.com -> us.atgtickets.com
+  (its What's On is paginated; page 2 holds the postponed labels), msichicago.org refused connection, armorymn.com loops 307.
+  Fetch cleanly: 313presents.com venue and event pages, rosemont.com/allstate/event-calendar and /theatre, fiservforum.com,
+  gainbridgefieldhouse.com, rocketarena.com, targetcenter.com, grandcasinoarena.com, nationwidearena.com (all show 'Load More',
+  so ask for the date range you need), pabsttheatergroup.com venue pages, marcuscenter.org/shows, playhousesquare.org events and
+  detail pages, heritagebankcenter.com/events?month=&year=, huntingtoncentertoledo.com, first-avenue.com/shows, hennepinarts.org,
+  jamusa.com venue pages (carry Cancelled labels), metrochicago.com/events (carries RESCHEDULED labels), auditoriumtheatre.org,
+  msg.com/the-chicago-theatre, broadwayinchicago.com/shows, cso.org performance pages (the chicagosymphony.org curation page prints
+  no dates), all NFL team /schedule/ pages (flag neutral-site 'VS' games with the venue column), zoo and garden light-show pages
+  (lpzoo, brookfieldzoo, chicagobotanic FAQ, detroitzoo, milwaukeezoo, columbuszoo, cincinnatizoo, toledozoo/lights, arb.umn.edu),
+  thehenryford.org calendar and visit pages, motownmuseum.org, mackinacparks.com/venue/<slug> (prints next opening day),
+  shipwreckmuseum.com, mchistorical.org, washingtonparkzoo.com, marbleheadlighthouseohio.org, nps.gov/pevi conditions page,
+  childrensmuseum.org/visit/plan-your-visit, mpm.edu, valleyfair.enchantedparks.com.
+
 Related: [[verification-patterns]]

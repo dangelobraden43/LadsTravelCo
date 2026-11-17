@@ -20,7 +20,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Html } from '@react-three/drei'
-import { EffectComposer, N8AO, Bloom, Vignette, Noise } from '@react-three/postprocessing'
+import { EffectComposer, N8AO, Bloom, Vignette, Noise, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { MIDWEST_RELIEF } from './data/midwestRelief'
 
@@ -1036,7 +1036,11 @@ export default function LocalMap(props) {
           onHub={onHub}
         />
         {!coarse && (
-          <EffectComposer multisampling={4}>
+          /* multisampling stays 0: with Bloom in the chain, a multisampled composer target renders
+           * an all-black frame on ANGLE/Direct3D 11 (Intel Iris Xe, Chrome 157, seen Nov 17 2026)
+           * and black blocks around every beam without the mipmap blur. SMAA takes the edges instead. */
+          <EffectComposer multisampling={0}>
+            <SMAA />
             <N8AO
               aoRadius={1.2}
               intensity={1.3}

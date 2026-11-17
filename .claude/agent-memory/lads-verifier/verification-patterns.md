@@ -325,4 +325,18 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
 - **proposedClaim cannot carry "under AUD 100" or a set fare** either; write the pair as a range or point to
   "the rate printed on the page".
 
+- **Dated venue-event runs re-verified days later (midwest-local, 2026-11-16).** Events read from venue/team pages held
+  almost without exception (about 300 re-read, none wrong on date or venue); the work is in what moved. Shapes: (1) a run
+  verified five days late has a block of expired rows (Nov 13-15 here, ~60 findings): mark them refuted "expired" without
+  spending calls; (2) "opponent not printed" rows (Bucks) resolve on the league team page, so weaken with the opponent;
+  (3) a snapshot of sold-out nights or cancelled listings widens or shrinks between runs (Holiday Nights added Dec 4; a
+  cancelled Turner Hall show was removed from the calendar), so re-read and restate "as of <date>"; (4) light-show claims
+  written as a date range hide closed nights that the FAQ lists (ZooLights, Arboretum, Cincinnati Zoo, Carmel market): ask
+  the fetch for closed dates every time; (5) a cited "holidays" curation page can print no dates at all (CSO), so ask
+  "does this page print the date?" before confirming. Wikidata identity checks via one SPARQL call per part catch:
+  QIDs for the convention centre not the hall (DeVos Place vs Performance Hall), a company not a venue (Second City,
+  Quincy Mine), an island not the gardens, a submarine not its museum, and entities with no P625 at all (Fisher Theatre,
+  GR Downtown Market, DeVos Place Performance Hall), which a QID-driven pin will silently drop. Two parts of one run can
+  pin the same venue to different QIDs; grep venueWikidata against the places part.
+
 Related: [[source-access-notes]]
