@@ -486,9 +486,9 @@ void main() {
   if (vShow < 0.01) discard;
   float d = length(gl_PointCoord - 0.5) * 2.0;
   if (d > 1.0) discard;
-  float edge = smoothstep(1.0, 0.86, d);
-  // gold is a filled mark; copper is a ring around a dark centre
-  float fill = vSolid > 0.5 ? smoothstep(0.74, 0.62, d) : smoothstep(0.34, 0.46, d) * smoothstep(0.78, 0.66, d);
+  float edge = smoothstep(1.0, 0.82, d);
+  // one small filled mark with a thin dark rim, the same on every place
+  float fill = smoothstep(0.76, 0.6, d);
   vec3 col = mix(vec3(0.07, 0.06, 0.05), vColor, fill);
   gl_FragColor = vec4(col, edge * uDrop);
   #include <colorspace_fragment>
@@ -534,7 +534,7 @@ function Pins({ frame, places, shown, groundAt, still }) {
   )
   useEffect(() => {
     const k = Math.min(1, Math.max(0.72, size.width / 900))
-    PIN_U.uPx.value = 15 * k * gl.getPixelRatio()
+    PIN_U.uPx.value = 10 * k * gl.getPixelRatio()
     if (still) PIN_U.uDrop.value = 1
   }, [size, gl, still])
   useFrame(({ clock }) => {
@@ -627,6 +627,7 @@ function Beams({ frame, beams, groundAt, homeDist, still }) {
 
 /* ---------- camera ---------- */
 const HOME_DIR = new THREE.Vector3(0, 0.76, 0.65).normalize()
+const SHIFT = new THREE.Vector3()
 function clearance(canvas) {
   const stage = canvas.closest('.lm-stage')
   const title = stage && stage.querySelector('.lm-title')
@@ -656,13 +657,14 @@ function homeView(camera, size, frame, clear) {
     const dist = Math.max(W / (2 * half * aspect * 0.94), (frame.D * 1.25) / (2 * half))
     return { dist, x: 0, z: -dist * 0.03 }
   }
-  // wide: the model takes the right-hand side, the title the left
-  const dist = Math.max(W / (2 * half * aspect * 0.5), (frame.D * 1.3) / (2 * half))
+  // wide: the model takes most of the width and sits to the right of the title, which only
+  // overlaps its empty south-west corner (nothing is drawn outside the six states there)
+  const dist = Math.max(W / (2 * half * aspect * 0.64), (frame.D * 1.12) / (2 * half))
   const visibleW = 2 * half * aspect * dist
-  return { dist, x: -visibleW * 0.2, z: -dist * 0.045 }
+  return { dist, x: -visibleW * 0.15, z: -dist * 0.04 }
 }
 
-function Rig({ frame, focus, still, coarse, groundAt, onHome }) {
+function Rig({ frame, focus, still, coarse, groundAt, onHome, zoomApiRef }) {
   const controls = useRef()
   const { camera, size, gl } = useThree()
   const want = useRef({
@@ -671,10 +673,32 @@ function Rig({ frame, focus, still, coarse, groundAt, onHome }) {
     moving: true,
     first: true,
     slow: false,
+    homeDist: 150,
   })
+  /* the + and − buttons: move the camera along its own line of sight, within limits */
+  useEffect(() => {
+    if (!zoomApiRef) return undefined
+    zoomApiRef.current = {
+      zoom(factor) {
+        const c = controls.current
+        if (!c) return
+        const w = want.current
+        w.target.copy(c.target)
+        w.offset.copy(camera.position).sub(c.target)
+        const len = Math.min(w.homeDist * 1.25, Math.max(3.2, w.offset.length() * factor))
+        w.offset.setLength(len)
+        w.slow = false
+        w.moving = true
+      },
+    }
+    return () => {
+      zoomApiRef.current = null
+    }
+  }, [zoomApiRef, camera])
   useEffect(() => {
     const w = want.current
     const home = homeView(camera, size, frame, clearance(gl.domElement))
+    w.homeDist = home.dist
     onHome(home.dist)
     if (focus) {
       w.slow = false
@@ -721,19 +745,32 @@ function Rig({ frame, focus, still, coarse, groundAt, onHome }) {
       }
     }
     c.update()
+    // a drag slides the map; it cannot be pushed off the table
+    const t = c.target
+    const limX = W * 0.6
+    const limZ = frame.D * 0.7
+    const dx = Math.max(-limX, Math.min(limX, t.x)) - t.x
+    const dz = Math.max(-limZ, Math.min(limZ, t.z)) - t.z
+    if (dx || dz) {
+      t.x += dx
+      t.z += dz
+      camera.position.add(SHIFT.set(dx, 0, dz))
+    }
   })
   return (
     <OrbitControls
       ref={controls}
       enabled={!coarse}
-      enablePan={false}
-      enableZoom={false} /* the page must keep its scroll wheel */
+      /* a map is dragged, not spun: the drag slides it across the table; the view angle is fixed */
+      enableRotate={false}
+      enablePan
+      screenSpacePanning={false}
+      panSpeed={1.15}
+      enableZoom={false} /* the page must keep its scroll wheel; the + and − buttons zoom */
       enableDamping
-      dampingFactor={0.08}
-      minPolarAngle={0.3}
-      maxPolarAngle={1.15}
-      minAzimuthAngle={-0.7}
-      maxAzimuthAngle={0.7}
+      dampingFactor={0.1}
+      mouseButtons={{ LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.PAN, RIGHT: THREE.MOUSE.PAN }}
+      touches={{ ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_PAN }}
       onStart={() => {
         want.current.moving = false
       }}
@@ -928,6 +965,7 @@ function Scene(props) {
         coarse={coarse}
         groundAt={relief.groundAt}
         onHome={setHomeDist}
+        zoomApiRef={props.zoomApiRef}
       />
       <Picker
         frame={frame}
@@ -981,6 +1019,7 @@ export default function LocalMap(props) {
     setAttempt((n) => n + 1)
     setOk(canWebGL())
   }, [])
+  const zoomApiRef = useRef(null)
 
   if (!ok) {
     return (
@@ -1032,6 +1071,7 @@ export default function LocalMap(props) {
           onHover={setHover}
           onSelect={onSelect}
           onHub={onHub}
+          zoomApiRef={zoomApiRef}
         />
         {!coarse && (
           /* multisampling stays 0: with Bloom in the chain, a multisampled composer target renders
@@ -1052,6 +1092,22 @@ export default function LocalMap(props) {
           </EffectComposer>
         )}
       </Canvas>
+      <div className="lm-zoom" role="group" aria-label="Zoom the map">
+        <button
+          type="button"
+          onClick={() => zoomApiRef.current && zoomApiRef.current.zoom(0.7)}
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          onClick={() => zoomApiRef.current && zoomApiRef.current.zoom(1.45)}
+          aria-label="Zoom out"
+        >
+          &minus;
+        </button>
+      </div>
     </div>
   )
 }

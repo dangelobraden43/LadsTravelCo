@@ -171,6 +171,32 @@
   opacity: 0;
   transition: opacity 0.35s;
 }
+.lm-zoom {
+  position: absolute;
+  z-index: 3;
+  right: clamp(16px, 3vw, 44px);
+  bottom: 60px;
+  display: grid;
+  gap: 6px;
+}
+.lm-zoom button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--cream);
+  font-size: 1.3rem;
+  line-height: 1;
+  backdrop-filter: blur(10px);
+}
+.lm-zoom button:hover {
+  background: rgba(46, 38, 28, 0.96);
+}
+.lm-stage.has-card .lm-zoom,
+.lm-stage.is-poster .lm-zoom {
+  display: none;
+}
 
 /* the poster render: the model alone */
 .lm-stage.is-poster .lm-title,
@@ -885,6 +911,11 @@
   }
   .lm-home {
     top: 80px;
+  }
+  .lm-zoom {
+    right: 12px;
+    bottom: auto;
+    top: calc(var(--lm-map-h) - 290px);
   }
   .lm-dock {
     left: 12px;
