@@ -320,4 +320,38 @@ metadata:
   shipwreckmuseum.com, mchistorical.org, washingtonparkzoo.com, marbleheadlighthouseohio.org, nps.gov/pevi conditions page,
   childrensmuseum.org/visit/plan-your-visit, mpm.edu, valleyfair.enchantedparks.com.
 
+- **World event organisers (bucket-list-2027, 2026-11-17/18, 16 searches + ~158 fetches for 146 findings, every one a
+  real verdict).** Blocked on fetch: eurovision.tv and eurovision.com (403), roskilde-festival.dk (403), dakar.com (refused),
+  the-afc.com (403), tiff.net (403), usopen.org (ECONNRESET), mlb.com/all-star (406), ausleisure.com.au (403), afrikaburn.org
+  (403; tickets.afrikaburn.org works), adelaidefringe.com.au (403; avr. subdomain works), nyrr.org (queue redirect).
+  Empty render: primaverasound.com (all paths), grandprix.com.au (title and ticket categories only, no dates), ncctt.org
+  10-year calendar (an image). giroditalia.it failed DNS once and read on retry. **A WebSearch restricted with
+  `allowed_domains` to the blocked organiser's own domain returns its date, venue and ticket text** (eurovision.com + ebu.ch,
+  primaverasound.com, roskilde-festival.dk, mlb.com, balloonfiesta.com FAQ): one search per blocked organiser settles it.
+  Fetch cleanly: formula1.com/en/racing/<year> (whole calendar with round numbers; settles every F1 finding in one call),
+  mom.gov.sg public-holidays (Singapore list settles LNY, Eid, Deepavali), employment.govt.nz (NZ table; the next-year
+  table under 'More dates' has no year label), service-public.gouv.fr F2405 (French holidays), cricket.com.au and
+  mcg.org.au schedules (MCG names opponents and ballot status), sumo.pia.jp/en, snowfes.com (Japanese home page has next
+  year; /en/ lags), yasaka-jinja.or.jp, nebuta.jp, irishrugby.ie fixtures, uefa.com news, 24h-lemans.com/en, arena.it/en,
+  ascot.com, thejockeyclub.co.uk, londonmarathonevents.co.uk, rolandgarros.com, iomttraces.com (iomtt.com 403),
+  alexandrapalace.com (pdc.tv empty), vierschanzentournee.com news, edwinterfest.com, hahnenkamm.com, nicecarnaval.com,
+  fasnachts-comite.ch, giaf.ie, galwayraces.com, edintattoo.co.uk, szigetfestival.com, electricpicnic.ie, nhcarnival.org,
+  bmw-berlin-marathon.com, fleadhcheoil.ie, cannstatter-volksfest.de, salzburgerfestspiele.at, montreuxjazzfestival.com,
+  theopen.com, hellfest.fr, wacken.com (ticket tiers, no dates), visitnorway.com, aa.usno.navy.mil rstt API, USA/Americas:
+  nhl.com/winterclassic, nba.com/allstar, tournamentofroses.com, allegiantstadium.com, canada.ca Winterlude, carnaval.qc.ca,
+  carnavaldebarranquilla.org, iditarod.com, lollapalooza cl/ar/br, sxsw.com, ultramusicfestival.com, merriemonarch.com,
+  coachella.com, stagecoachfestival.com (no day numbers), baa.org, lasvegas.edc.com, pgachampionship.com,
+  indianapolismotorspeedway.com, cmafest.com, montrealjazzfest.com, calgarystampede.com, comic-con.org, torontocarnival.ca,
+  sturgismotorcyclerally.com/dates, burningman.org/event, chicagomarathon.com, travelmanitoba.com, mexicocity.cdmx.gob.mx,
+  bonnaroo.com, greatamericanbeerfestival.com, feriadecali.com.co, bahamas.com, neworleans.com, guelaguetza.oaxaca.gob.mx,
+  eclipse.gsfc.nasa.gov; ROW: wonderfruit.co, visitdubai.com, rolexsydneyhobart.com, beyondthevalley.com.au,
+  rhythmandvines.co.nz, dubaimarathon.org, kilimanjaromarathon.com, mardigras.org.au (+/parade), womadelaide.com.au,
+  marathon.tokyo, capetowncycletour.com, fespaco.bf, epic-series.com, hksevens.com, comrades.com, festival-gnaoua.net,
+  sydneynewyearseve.com/vantage-points, hollywoodbetsdurbanjuly.co.za, discovertasmania.com.au, bluesfest.com.au,
+  en.people.cn, theprint.in, officeholidays.com.
+- **Greek government holiday pages do not print a dated 2027 list** (two searches, one restricted to gov.gr/gov.cy):
+  compute Orthodox Easter by the Julian formula and cite the Cyprus MoE school calendar as the consistent official trace.
+- **A 5-hour tool limit (WebFetch and WebSearch together) hit after ~150 fetches + 15 searches in one sitting.** Write the
+  verdict file before the big final batch; verdicts decided without the stopped reads can be topped up after the reset.
+
 Related: [[verification-patterns]]

@@ -304,7 +304,13 @@ changed.** Read `git log` for the branch tip.
    events in the chosen dates), What's on, Every place, Michigan + Golfweek, How this page is built. The
    city card leads with "Best known". `local.test.mjs` fails if a tier field returns or a headline list is
    out of coverage order. Poster re-rendered. Verified in real Chrome at 1440 and 390: city block → fly-in
-   → place card, no overflow.
+   → place card, no overflow. **Brady's second look (Nov 17 evening): "the map in the corner is a little
+   small and moving it around is awkward and the pin size and look is weird, other than that this is
+   better."** Fixed in the same evening: on a wide screen the model takes about two thirds of the width
+   and sits right of the title; **a drag slides the map (OrbitControls pan on every button, rotation off,
+   target clamped to the table) and + / − buttons zoom** along the line of sight, the page keeps its
+   scroll wheel; pins are 10 px filled marks with a thin dark rim. Verified by a scripted drag in real
+   Chrome: the Chicago label followed the pointer and no card opened.
 3. **`/bucket-list` is a 2027 calendar** (same branch). Run `internal/research/bucket-list-2027/2026-11-17T16-25/`:
    three `lads-timing-events` parts (americas · europe · rest-of-world, 14 WebSearch calls each, organiser
    pages only, nothing repeated from Nov 10) on top of the Nov 10 `calendar-2027` run.
@@ -320,9 +326,16 @@ changed.** Read `git log` for the branch tip.
    link derived from the country or city; Plan this trip), a Waiting-for-dates list, How this list is
    built. Entries self-expire by `end`. `tools/tests/bucket.test.mjs` (6 tests); `npm test` → 180.
    Validator lesson: marathon "charity entry" routes trip the charity rule (four findings fixed on resend).
-   ⚠️ **Numbers: re-read the build tool's output.** At the time of writing: 152 trips (106 confirmed ·
-   33 expected · 13 waiting) from the first two parts plus Nov 10, with the third part and the verifier
-   still running; the final figures are in the commit that follows this record.
+   **Final (Nov 18, verifier done): 197 trips (139 with organiser-confirmed dates · 42 expected · 16
+   waiting on dates), 170 rows checked by a verifier, 25 carrying the verifier's wording.** The Nov 17
+   verifier pass: 146 verdicts, 131 confirmed · 15 weakened · 0 refuted · 0 unverifiable, 16 WebSearch
+   calls, about 158 WebFetch; it stalled on the 5-hour usage limit after writing its file and finished
+   four reads after the reset. Three "expected" rows it read on organiser pages (Eurovision Burgas,
+   Primavera Sound, Roskilde) are upgraded to confirmed by an explicit list in the build tool. Founder
+   flags from the run: **Dakar 2027 is in Portugal and Morocco (9–23 Jan), the AFC Asian Cup is
+   postponed to Dec 2027–Jan 2028, F1 Australia is 2–4 April, the Boxing Day Test is v New Zealand,
+   Bonnaroo takes 2027 off, Bluesfest Byron Bay is in liquidation.** ℹ️ `validate.mjs` says the verifier
+   file's verdicts lack `agent`; the build tool keys verdicts on `part|findingId`, which every row has.
 4. **The `/outdoors` phone fix is on its own branch** `fix/outdoors-phone-title` (one commit cut from
    `main`, pushed, built clean) so it can ship without the local work.
 5. **Business overview doc** (Brady, for a separate project): https://claude.ai/artifact/FPXJZypLpaFCFuxUAnPj95 .

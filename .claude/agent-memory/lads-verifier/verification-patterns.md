@@ -339,4 +339,17 @@ Failure shapes seen in agent output (first seen Vancouver pilot 2026-09-29). Che
   GR Downtown Market, DeVos Place Performance Hall), which a QID-driven pin will silently drop. Two parts of one run can
   pin the same venue to different QIDs; grep venueWikidata against the places part.
 
+- **Organiser-page 2027 calendars (bucket-list-2027, 2026-11-17).** 131 of 146 held; all 15 weakened were at the edges, none
+  on a date. Shapes: (1) "ticket status not shown" where the page prints ON SALE (NHL Winter Classic, NBA All-Star fan events):
+  always ask the fetch for sale text, not just dates; (2) a comparative line not in the source ("a week later than 2026" for
+  the TT; "two days for the first time" where the page says "first and only time"); (3) an organiser headline vs its own
+  embedded social post (Balloon Fiesta 2-10 vs 2-11 Oct): the FAQ future-dates list settles it; (4) a timetable detail
+  misread (Palio tratta "midday" where the page prints ore 9,00 ca.); (5) superlatives against the same calendar ("only Asian
+  round in the second half" with Azerbaijan and Turkiye on the list); (6) snippet-only secondaries riding on a confirmed date
+  (Daytona Speedweeks start, on-sale date); (7) a venue's own schedule page outranking the governing body's (MCG names the
+  150th Test opponent and says the ballot has closed; Cricket Australia's page names neither); (8) postponement/relocation
+  rows carry "pending FIFA / FIA approval" that press summaries drop: look for the approval line before confirming new dates.
+  Fixed-rule and Easter-cycle dates computed by the agents were right in every case (Rosenmontag, Mardi Gras, Orthodox Easter,
+  Up Helly Aa, Guelaguetza, Palio, Naadam, Gion, Nebuta): check the arithmetic first, it costs nothing.
+
 Related: [[source-access-notes]]

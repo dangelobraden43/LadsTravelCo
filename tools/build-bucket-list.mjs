@@ -88,6 +88,9 @@ const LABELS = {
 }
 /* traps in the Nov 10 run that name no event: where they belong */
 const TRAP_TARGET = { 'time-028': 'time-007' }
+/* a researcher could only read these dates second-hand ("expected"); the verifier then read them on
+ * the organiser's own page (lads-verifier.json, Nov 18), so they are confirmed */
+const UPGRADED = new Set(['europe|time-eu-016', 'europe|time-eu-022', 'europe|time-eu-028'])
 /* Holy Week in Rome: the finding's range runs on to World Youth Day in Seoul; the trip is the week */
 const RANGE_OVERRIDE = { 'time-rec-028': { start: '2027-03-21', end: '2027-03-28' } }
 
@@ -163,6 +166,7 @@ for (const runDir of runDirs) {
       const s2027 = String(val.status2027 || '').toLowerCase()
       let status = !start ? 'not-announced' : s2027.startsWith('expected') ? 'expected' : s2027.startsWith('not') ? 'expected' : 'confirmed'
       if (start && /conflict|computed|fixed/.test(s2027)) status = 'expected'
+      if (start && UPGRADED.has(`${part}|${x.id}`) && v && v.verdict === 'confirmed') status = 'confirmed'
       events.push({
         id: `${slug(name)}-${start ? start.slice(0, 4) : '2027'}`,
         findingId: x.id,
