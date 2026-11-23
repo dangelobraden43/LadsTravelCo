@@ -36,7 +36,9 @@ import {
   eventsBetween,
   dateWindows,
   localISO,
+  gatewayOf,
 } from './data/localIndex'
+import { FARES, FARES_META, AIRPORT_NOTES } from './data/localFares'
 import { GOLF_SLATE, GOLF_SOURCE } from './data/localBestOf'
 import { MIDWEST_RELIEF } from './data/midwestRelief'
 import './LocalPage.css'
@@ -127,7 +129,90 @@ function PlaceRow({ p, onPlace, active }) {
   )
 }
 
+const SEASONS = { low: 'Low season', shoulder: 'Shoulder', peak: 'Peak' }
+const money = (n) => `$${Math.round(n).toLocaleString()}`
+
+/* An airport card: the gateway's researched fare ranges, then the push into the intake. */
+function AirportFares({ place }) {
+  const gateway = gatewayOf(place)
+  const rows = FARES.filter((f) => f.origin === gateway.iata)
+  const checked = FARES_META.checkedOn ? longDate(FARES_META.checkedOn) : null
+  const notes = AIRPORT_NOTES[place.iata] || []
+  return (
+    <>
+      {notes.slice(0, 1).map((n) => (
+        <p key={n} className="lp-card-what">
+          {n}
+        </p>
+      ))}
+      {place.passengers && (
+        <p className="lp-card-fact">
+          About {approx(place.passengers.n)} passengers in {place.passengers.year}, as recorded on
+          Wikidata.
+        </p>
+      )}
+      {rows.length > 0 && (
+        <>
+          <h3 className="lp-card-h">
+            Typical round-trip fares{gateway.id !== place.id ? ` from ${gateway.iata}` : ''}
+          </h3>
+          {gateway.id !== place.id && (
+            <p className="lp-card-fact">
+              {gateway.name} is the nearest gateway with nonstop and one-stop options to Europe; the
+              ranges below are from there.
+            </p>
+          )}
+          <ul className="lp-fares">
+            {rows.map((f) => (
+              <li key={f.destination}>
+                <span className="lp-fare-dest">
+                  {f.framework ? <Link to={f.framework}>{f.destination}</Link> : f.destination}
+                </span>
+                <span className="lp-fare-ranges">
+                  {f.ranges.map((r) => (
+                    <span key={r.season || r.months}>
+                      {SEASONS[r.season] || r.season}: {money(r.low)}&ndash;{money(r.high)}
+                    </span>
+                  ))}
+                </span>
+                {(f.routing || f.hours) && (
+                  <span className="lp-fare-note">
+                    {f.routing}
+                    {f.hours ? ` About ${f.hours} hours.` : ''}
+                  </span>
+                )}
+                {f.window && <span className="lp-fare-note">{f.window}</span>}
+                {f.arrival && <span className="lp-fare-note">{f.arrival}</span>}
+                {f.caution && <span className="lp-fare-note lp-fare-caution">{f.caution}</span>}
+              </li>
+            ))}
+          </ul>
+          <p className="lp-card-fact">
+            Ranges from published fare history, not quotes{checked ? `, read ${checked}` : ''}. Your
+            dates decide the real number.
+          </p>
+        </>
+      )}
+    </>
+  )
+}
+
 function PlaceCard({ place, events, onClose, onPlace }) {
+  const venue = place.layer === 'venues'
+  const airport = place.kind === 'airport'
+  const whatsOn = events.length > 0 && (
+    <>
+      <h3 className="lp-card-h">{venue ? "What's on here" : 'On here'}</h3>
+      <ul className="lp-events lp-events--card">
+        {events.slice(0, 8).map((e) => (
+          <EventRow key={e.id} e={e} onPlace={onPlace} showPlace={false} />
+        ))}
+      </ul>
+      {events.length > 8 && (
+        <p className="lp-card-fact">And {events.length - 8} more in the list below.</p>
+      )}
+    </>
+  )
   return (
     <aside className="lp-card" aria-label={place.name}>
       <button type="button" className="lp-card-close" onClick={onClose} aria-label="Close">
@@ -135,10 +220,13 @@ function PlaceCard({ place, events, onClose, onPlace }) {
       </button>
       <p className="lp-card-eyebrow">
         {KIND_LABELS[place.kind] || 'Place'}
+        {airport && place.iata ? ` · ${place.iata}` : ''}
         {place.city || place.area ? ` · ${place.city || place.area}` : ''}
         {place.state && place.city ? `, ${place.state}` : ''}
       </p>
       <h2 className="lp-card-title">{place.name}</h2>
+      {venue && whatsOn}
+      {airport && <AirportFares place={place} />}
       {place.what && <p className="lp-card-what">{place.what}</p>}
       {place.caution && <p className="lp-card-caution">{place.caution}</p>}
       {place.visitors && (
@@ -162,20 +250,13 @@ function PlaceCard({ place, events, onClose, onPlace }) {
           name.
         </p>
       )}
-      {events.length > 0 && (
-        <>
-          <h3 className="lp-card-h">On here</h3>
-          <ul className="lp-events lp-events--card">
-            {events.slice(0, 8).map((e) => (
-              <EventRow key={e.id} e={e} onPlace={onPlace} showPlace={false} />
-            ))}
-          </ul>
-          {events.length > 8 && (
-            <p className="lp-card-fact">And {events.length - 8} more in the list below.</p>
-          )}
-        </>
-      )}
+      {!venue && whatsOn}
       <div className="lp-card-actions">
+        {airport && (
+          <Link className="lp-btn" to="/plan-your-trip">
+            Plan a trip from here
+          </Link>
+        )}
         {place.url && (
           <a className="lp-btn" href={place.url} target="_blank" rel="noopener noreferrer">
             {place.urlLabel || 'Open the official site'}
@@ -451,6 +532,7 @@ export default function LocalPage() {
             beams={beams}
             focus={focus}
             selected={selected}
+            hubId={hubId}
             onSelect={choosePlace}
             onHub={chooseHub}
           />
@@ -747,9 +829,13 @@ export default function LocalPage() {
         <p className="lp-credit">
           The terrain is measured elevation from the open Terrarium tiles (USGS, SRTM and others).
           State outlines and lake shores are from Natural Earth. Place identities and coordinates
-          for researched places are from Wikidata. The model is stylised: the Midwest is flat, so
-          heights are exaggerated a great deal to make the land readable. Google ratings, where
-          shown, are Google&rsquo;s.
+          for researched places are from Wikidata, and each airport is the Wikidata entity that
+          carries its code. The model cities, stadium footprints and runways are building outlines
+          from OpenStreetMap (&copy; OpenStreetMap contributors, ODbL), enlarged like a souvenir
+          model so they read on the relief, with a building that has no recorded height drawn at
+          three storeys. The whole model is stylised: the Midwest is flat, so heights are
+          exaggerated a great deal to make the land readable. Google ratings, where shown, are
+          Google&rsquo;s.
         </p>
       </section>
 

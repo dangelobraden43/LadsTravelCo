@@ -332,6 +332,57 @@
   font-weight: 600;
   letter-spacing: 0.04em;
 }
+.lm-air {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(20, 18, 16, 0.82);
+  border: 1px solid rgba(239, 228, 207, 0.5);
+  color: #efe4cf;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  animation: lm-fade 0.6s ease-out both;
+}
+.lp-fares {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lp-fares li {
+  display: grid;
+  gap: 3px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(232, 220, 200, 0.07);
+}
+.lp-fare-dest {
+  font-size: 1rem;
+  color: #f3ead9;
+}
+.lp-fare-dest a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(232, 220, 200, 0.35);
+  text-underline-offset: 3px;
+}
+.lp-fare-ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.03em;
+  color: var(--gold);
+}
+.lp-fare-note {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--cream-2);
+}
+.lp-fare-caution {
+  padding-left: 10px;
+  border-left: 2px solid var(--copper);
+}
 .lm-label {
   display: inline-block;
   transform: translate(12px, -50%);

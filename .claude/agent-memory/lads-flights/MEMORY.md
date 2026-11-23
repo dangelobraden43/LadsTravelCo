@@ -1,1 +1,1 @@
-- [Flight source lessons](reference_flight_sources.md) — clean/blocked sources, off-season "no nonstop" trap, sales-window arithmetic, event-week fare traps, budget splits
+- [Flight source lessons](reference_flight_sources.md) — clean/blocked sources (KAYAK route pages = best historical fares; RatePunk URL format), off-season "no nonstop" trap, sales-window arithmetic, event-week traps, how to build a validator-safe fare band

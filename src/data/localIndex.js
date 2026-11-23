@@ -21,6 +21,7 @@ import { BRUCE_PLACES, BRUCE_SOURCE } from './brucePeninsula.js'
 import { MIDWEST_CANDIDATES, MIDWEST_CANDIDATES_SOURCE } from './midwestCandidates.js'
 import { GOOD_VIEWS } from './localBestOf.js'
 import { RESEARCH_PLACES, RESEARCH_EVENTS, RESEARCH_META } from './localResearch.js'
+import { AIRPORTS } from './localLandmarks.js'
 
 export const LAYERS = [
   { id: 'brews', label: 'Brews', long: 'Breweries, bars and wineries' },
@@ -29,6 +30,7 @@ export const LAYERS = [
   { id: 'sights', label: 'Sights', long: 'Museums, landmarks and attractions' },
   { id: 'venues', label: 'Venues', long: 'Arenas, stadiums, theatres and clubs' },
   { id: 'golf', label: 'Golf', long: 'Golf courses' },
+  { id: 'airports', label: 'Airports', long: 'Airports' },
 ]
 
 const TYPE_LAYER = {
@@ -63,6 +65,7 @@ export const KIND_LABELS = {
   bar: 'Bar',
   food: 'Food',
   golf: 'Golf',
+  airport: 'Airport',
   view: 'View',
   gem: 'Hidden gem',
   arena: 'Arena',
@@ -202,6 +205,27 @@ const owned = new Set(
 )
 const researchOnly = fromResearch.filter((p) => !owned.has(norm(p.name)))
 
+/* Airports: identity proven on Wikidata by the IATA code (tools/build-local-landmarks.mjs). A
+ * gateway carries its own researched fares; the others point at the nearest gateway's. */
+const fromAirports = AIRPORTS.map((a) => ({
+  key: a.qid,
+  name: a.name,
+  lat: a.lat,
+  lng: a.lng,
+  kind: 'airport',
+  layer: 'airports',
+  city: null,
+  state: null,
+  what: null,
+  iata: a.iata,
+  gateway: a.gateway,
+  gatewayIata: a.gatewayIata,
+  passengers: a.passengers && a.passengers.year ? a.passengers : null,
+  source: 'Wikidata',
+  url: a.url || null,
+  urlLabel: 'Open the airport site',
+}))
+
 const seen = new Map()
 export const LOCAL_PLACES = [
   ...fromMichigan,
@@ -209,6 +233,7 @@ export const LOCAL_PLACES = [
   ...fromCandidates,
   ...fromViews,
   ...researchOnly,
+  ...fromAirports,
 ].map((p) => {
   const base = slug(p.name)
   const n = (seen.get(base) || 0) + 1
@@ -347,6 +372,12 @@ export const hubById = (id) => HUBS.find((h) => h.id === id) || null
 /* ---------- headline places: ordered by a published measure, never by us ----------
  * `editions` is how many Wikipedia language editions carry an article on the place, read
  * from Wikidata by QID at build. Bars, food and golf carry no such record and are not ranked. */
+export const AIRPORT_PLACES = LOCAL_PLACES.filter((p) => p.kind === 'airport')
+export const airportByIata = (iata) => AIRPORT_PLACES.find((a) => a.iata === iata) || null
+/** The airport whose fares an airport card shows: itself if it is a gateway, else its nearest gateway. */
+export const gatewayOf = (airport) =>
+  airport.gateway ? airport : airportByIata(airport.gatewayIata) || airport
+
 export const HEADLINE_LAYERS = new Set(['sights', 'views', 'venues'])
 const byCoverage = (a, b) =>
   b.editions - a.editions ||

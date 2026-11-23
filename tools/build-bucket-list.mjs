@@ -110,9 +110,12 @@ function clean(claim) {
     .map((s) => s.replace(TAIL, '.').replace(/\.\.$/, '.').trim())
     .filter((s) => s && !PROCESS.test(s))
     .slice(0, 3)
-  return (kept.length ? kept : sentences.slice(0, 1)).join(' ')
+  return (kept.length ? kept : sentences.slice(0, 1)).join(' ').replace(/coming soon/gi, 'not yet on sale')
 }
-const cleanTicket = (t) => (t && !/not read|fetch|not printed|not stated|not shown|not listed/i.test(t) ? t : null)
+const cleanTicket = (t) =>
+  t && !/not read|fetch|not printed|not stated|not shown|not listed/i.test(t)
+    ? t.replace(/coming soon/gi, 'not yet on sale') // the site never says "coming soon", even quoting a box office
+    : null
 const events = []
 const traps = []
 const stats = { files: 0, findings: 0, dropped: 0, weakened: 0, verified: false, runs: [] }

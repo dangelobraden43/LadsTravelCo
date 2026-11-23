@@ -22,7 +22,9 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Html } from '@react-three/drei'
 import { EffectComposer, N8AO, Bloom, Vignette, Noise, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { MIDWEST_RELIEF } from './data/midwestRelief'
+import { AIRPORTS, HUB_BUILDS, LANDMARKS_META } from './data/localLandmarks'
 
 const W = 100
 const RISE = 4.6 // world units at maxMetres: a large exaggeration, stated on the page
@@ -475,7 +477,7 @@ void main() {
   vec3 p = position;
   p.y += (1.0 - uDrop) * 4.0;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
-  gl_PointSize = uPx * (aSolid > 0.5 ? 1.0 : 0.86) * aShow;
+  gl_PointSize = uPx * (aSolid > 0.5 ? 1.0 : 1.5) * aShow;
 }`
 const PIN_FRAG = `
 varying vec3 vColor;
@@ -487,8 +489,8 @@ void main() {
   float d = length(gl_PointCoord - 0.5) * 2.0;
   if (d > 1.0) discard;
   float edge = smoothstep(1.0, 0.82, d);
-  // one small filled mark with a thin dark rim, the same on every place
-  float fill = smoothstep(0.76, 0.6, d);
+  // a small filled mark with a thin dark rim; an airport is a ring
+  float fill = vSolid > 0.5 ? smoothstep(0.76, 0.6, d) : smoothstep(0.3, 0.42, d) * smoothstep(0.78, 0.64, d);
   vec3 col = mix(vec3(0.07, 0.06, 0.05), vColor, fill);
   gl_FragColor = vec4(col, edge * uDrop);
   #include <colorspace_fragment>
@@ -506,7 +508,7 @@ function Pins({ frame, places, shown, groundAt, still }) {
       const [x, z] = frame.project(p.lat, p.lng)
       pos.set([x, groundAt(p.lat, p.lng) + 0.1, z], i * 3)
       col.set([MARK.r, MARK.g, MARK.b], i * 3)
-      solid[i] = 1
+      solid[i] = p.kind === 'airport' ? 0 : 1 // an airport is a ring; everything else a filled mark
     })
     const g = new THREE.BufferGeometry()
     g.setAttribute('position', new THREE.BufferAttribute(pos, 3))
@@ -621,6 +623,299 @@ function Beams({ frame, beams, groundAt, homeDist, still }) {
         homeDist={homeDist}
         still={still}
       />
+    )
+  })
+}
+
+/* ---------- the landmarks: model cities, venues, runways, a plane on approach ----------
+ * Every footprint comes from OpenStreetMap at build time (tools/build-local-landmarks.mjs) in metres
+ * from a centre the data chose. The models are enlarged like a souvenir model so they read on the
+ * relief: footprints ×FOOT, heights ×HSCALE, both stated on the page. */
+const FOOT = LANDMARKS_META.footprintScale
+const HSCALE = LANDMARKS_META.heightScale
+const RUNWAY_SCALE = 3
+const KM_PER_UNIT = (() => {
+  const B = MIDWEST_RELIEF.bounds
+  return ((B.east - B.west) * 111.2 * Math.cos((((B.north + B.south) / 2) * Math.PI) / 180)) / 100
+})()
+const UNITS_PER_METRE = 1 / (KM_PER_UNIT * 1000)
+/* metres east/north of an origin → world x,z, through the frame's own projection */
+const metresToWorld = (frame, lat, lng, scale) => {
+  const kx = scale / (111200 * Math.cos((lat * Math.PI) / 180))
+  const ky = scale / 111200
+  return (dx, dy) => frame.project(lat + dy * ky, lng + dx * kx)
+}
+const signedArea = (p) => {
+  let s = 0
+  for (let i = 0; i < p.length; i++) {
+    const a = p[i]
+    const b = p[(i + 1) % p.length]
+    s += a.x * b.y - b.x * a.y
+  }
+  return s / 2
+}
+const BUILDING_COL = new THREE.Color('#8a7049')
+const VENUE_COL = new THREE.Color('#d9b263')
+function extrude(poly, toWorld, h, baseY, col) {
+  let pts = poly.map(([dx, dy]) => {
+    const [x, z] = toWorld(dx, dy)
+    return new THREE.Vector2(x, -z) // the shape's y is world -z: see the rotation below
+  })
+  if (signedArea(pts) < 0) pts = pts.reverse()
+  const g = new THREE.ExtrudeGeometry(new THREE.Shape(pts), {
+    depth: h * HSCALE * UNITS_PER_METRE,
+    bevelEnabled: false,
+    curveSegments: 1,
+  })
+  g.rotateX(-Math.PI / 2) // extrude along +y; shape y → world -z
+  g.translate(0, baseY, 0)
+  const n = g.getAttribute('position').count
+  const c = new Float32Array(n * 3)
+  for (let i = 0; i < n; i++) c.set([col.r, col.g, col.b], i * 3)
+  g.setAttribute('color', new THREE.BufferAttribute(c, 3))
+  return g
+}
+function cityGeometry(frame, data, baseY) {
+  const toWorld = metresToWorld(frame, data.centre[0], data.centre[1], FOOT)
+  const geos = []
+  for (const b of data.buildings) geos.push(extrude(b.p, toWorld, b.h, baseY, BUILDING_COL))
+  for (const v of data.venues) geos.push(extrude(v.p, toWorld, v.h, baseY, VENUE_COL))
+  if (!geos.length) return null
+  const merged = mergeGeometries(geos, false)
+  geos.forEach((g) => g.dispose())
+  merged.computeVertexNormals()
+  return merged
+}
+const CITY_CACHE = new Map() // hub id → merged geometry, built once per page
+
+/* The model city of the hub in focus: rises out of the ground on arrival, sinks on leaving. */
+function CityBuild({ frame, hubId, groundAt, still }) {
+  const [model, setModel] = useState(null) // { id, geo, radius, cx, cz, baseY }
+  const group = useRef()
+  const material = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.92,
+        metalness: 0,
+        flatShading: true,
+      }),
+    []
+  )
+  const plinth = useMemo(
+    () => new THREE.MeshStandardMaterial({ color: '#241f19', roughness: 1, metalness: 0 }),
+    []
+  )
+  useEffect(() => {
+    const hub = hubId && HUB_BUILDS.find((h) => h.id === hubId)
+    if (!hub) return undefined
+    let live = true
+    const place = (geo, data) => {
+      const [cx, cz] = frame.project(data.centre[0], data.centre[1])
+      setModel({
+        id: hub.id,
+        geo,
+        cx,
+        cz,
+        baseY: groundAt(data.centre[0], data.centre[1]) + 0.015,
+        radius: data.radius * FOOT * UNITS_PER_METRE * 1.08,
+      })
+    }
+    if (CITY_CACHE.has(hub.id)) {
+      const { geo, data } = CITY_CACHE.get(hub.id)
+      place(geo, data)
+      return undefined
+    }
+    window
+      .fetch(hub.file)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!live || !data) return
+        const baseY = groundAt(data.centre[0], data.centre[1]) + 0.015
+        const geo = cityGeometry(frame, data, baseY)
+        if (!geo) return
+        CITY_CACHE.set(hub.id, { geo, data })
+        place(geo, data)
+      })
+      .catch(() => {})
+    return () => {
+      live = false
+    }
+  }, [frame, hubId, groundAt])
+  useFrame((_, dt) => {
+    const g = group.current
+    if (!g || !model) return
+    const up = Boolean(hubId && hubId === model.id)
+    const goal = up ? 1 : 0.001
+    const k = still ? 1 : 1 - Math.exp(-Math.min(dt, 0.25) * (up ? 4.2 : 6))
+    g.scale.y += (goal - g.scale.y) * k
+    g.visible = g.scale.y > 0.004
+  })
+  if (!model) return null
+  return (
+    <group ref={group} scale={[1, 0.001, 1]} position={[0, model.baseY, 0]}>
+      <mesh
+        geometry={model.geo}
+        material={material}
+        position={[0, -model.baseY, 0]}
+        castShadow
+        receiveShadow
+      />
+      <mesh position={[model.cx, -0.004, model.cz]} material={plinth} receiveShadow>
+        <cylinderGeometry args={[model.radius, model.radius, 0.012, 48]} />
+      </mesh>
+    </group>
+  )
+}
+
+/* Runways as pale strips at their true bearing, enlarged like the cities, drawn always: an airport
+ * reads as an airport from the whole-Midwest view. */
+function Runways({ frame, groundAt }) {
+  const geometry = useMemo(() => {
+    const geos = []
+    for (const a of AIRPORTS) {
+      const toWorld = metresToWorld(frame, a.lat, a.lng, RUNWAY_SCALE)
+      const y = groundAt(a.lat, a.lng) + 0.03
+      for (const r of a.runways) {
+        for (let i = 1; i < r.p.length; i++) {
+          const [ax, az] = toWorld(r.p[i - 1][0], r.p[i - 1][1])
+          const [bx, bz] = toWorld(r.p[i][0], r.p[i][1])
+          const dx = bx - ax
+          const dz = bz - az
+          const len = Math.hypot(dx, dz)
+          if (!len) continue
+          const w = Math.max(0.012, r.w * RUNWAY_SCALE * UNITS_PER_METRE)
+          const nx = (-dz / len) * (w / 2)
+          const nz = (dx / len) * (w / 2)
+          const g = new THREE.BufferGeometry()
+          g.setAttribute(
+            'position',
+            new THREE.BufferAttribute(
+              new Float32Array([
+                ax + nx,
+                y,
+                az + nz,
+                bx + nx,
+                y,
+                bz + nz,
+                bx - nx,
+                y,
+                bz - nz,
+                ax + nx,
+                y,
+                az + nz,
+                bx - nx,
+                y,
+                bz - nz,
+                ax - nx,
+                y,
+                az - nz,
+              ]),
+              3
+            )
+          )
+          geos.push(g)
+        }
+      }
+    }
+    return geos.length ? mergeGeometries(geos, false) : null
+  }, [frame, groundAt])
+  const material = useMemo(
+    () => new THREE.MeshBasicMaterial({ color: '#efe4cf', transparent: true, opacity: 0.75 }),
+    []
+  )
+  if (!geometry) return null
+  return <mesh geometry={geometry} material={material} renderOrder={2} />
+}
+
+/* One aircraft on approach to each gateway airport, on a loop: it descends along the longest
+ * runway's bearing from a few units out, lands, and goes around. */
+function Planes({ frame, groundAt, still, homeDist }) {
+  const paths = useMemo(() => {
+    const out = []
+    for (const a of AIRPORTS) {
+      if (!a.gateway || !a.runways.length) continue
+      const toWorld = metresToWorld(frame, a.lat, a.lng, RUNWAY_SCALE)
+      const main = a.runways
+        .map((r) => ({
+          r,
+          len: Math.hypot(r.p[r.p.length - 1][0] - r.p[0][0], r.p[r.p.length - 1][1] - r.p[0][1]),
+        }))
+        .sort((p, q) => q.len - p.len)[0].r
+      const [ax, az] = toWorld(main.p[0][0], main.p[0][1])
+      const [bx, bz] = toWorld(main.p[main.p.length - 1][0], main.p[main.p.length - 1][1])
+      const dx = bx - ax
+      const dz = bz - az
+      const len = Math.hypot(dx, dz) || 1
+      const ux = dx / len
+      const uz = dz / len
+      const y0 = groundAt(a.lat, a.lng) + 0.03
+      out.push({
+        id: a.iata,
+        start: new THREE.Vector3(ax - ux * 3.2, y0 + 1.1, az - uz * 3.2),
+        touch: new THREE.Vector3(ax + ux * len * 0.25, y0 + 0.01, az + uz * len * 0.25),
+        end: new THREE.Vector3(bx, y0 + 0.01, bz),
+        heading: Math.atan2(ux, uz),
+        phase: out.length * 3.7, // each gateway's plane starts at a different point of the loop
+      })
+    }
+    return out
+  }, [frame, groundAt])
+  const refs = useRef([])
+  useFrame(({ clock }) => {
+    const t = still ? 2 : clock.elapsedTime
+    paths.forEach((p, i) => {
+      const m = refs.current[i]
+      if (!m) return
+      const cycle = 11
+      const u = ((t + p.phase) % cycle) / cycle
+      if (u < 0.62) {
+        const s = u / 0.62 // descent: ease in
+        const e = s * s
+        m.position.lerpVectors(p.start, p.touch, e)
+        m.position.y = p.start.y + (p.touch.y - p.start.y) * (1 - Math.pow(1 - s, 2.2))
+        m.visible = true
+      } else if (u < 0.82) {
+        m.position.lerpVectors(p.touch, p.end, (u - 0.62) / 0.2)
+        m.visible = true
+      } else m.visible = false
+      m.rotation.y = p.heading
+      // only legible from above the city: fade with the camera far out
+      m.scale.setScalar(Math.min(1, Math.max(0.25, 12 / homeDist)))
+    })
+  })
+  return paths.map((p, i) => (
+    <group key={p.id} ref={(el) => (refs.current[i] = el)}>
+      {/* the cone points along +y; turned to +z it flies along the runway bearing */}
+      <mesh rotation={[Math.PI / 2, 0, 0]} renderOrder={9}>
+        <coneGeometry args={[0.028, 0.11, 6]} />
+        <meshBasicMaterial color="#fff2d0" />
+      </mesh>
+    </group>
+  ))
+}
+
+/* IATA chips over the airports: the four gateways always, every airport when flying in. */
+function AirportLabels({ frame, groundAt, focused, still }) {
+  const [ready, setReady] = useState(still)
+  useEffect(() => {
+    if (still) return undefined
+    const t = window.setTimeout(() => setReady(true), 2800)
+    return () => window.clearTimeout(t)
+  }, [still])
+  if (!ready) return null
+  return AIRPORTS.filter((a) => a.gateway || focused).map((a) => {
+    const [x, z] = frame.project(a.lat, a.lng)
+    return (
+      <Html
+        key={a.iata}
+        position={[x, groundAt(a.lat, a.lng) + 0.12, z]}
+        center
+        zIndexRange={[16, 0]}
+        style={{ pointerEvents: 'none' }}
+      >
+        <span className="lm-air">{a.iata}</span>
+      </Html>
     )
   })
 }
@@ -947,6 +1242,20 @@ function Scene(props) {
         still={still}
       />
       <Pins frame={frame} places={places} shown={shown} groundAt={relief.groundAt} still={still} />
+      <Runways frame={frame} groundAt={relief.groundAt} />
+      <Planes
+        frame={frame}
+        groundAt={relief.groundAt}
+        still={still}
+        homeDist={focus ? focus.dist : homeDist}
+      />
+      <CityBuild frame={frame} hubId={props.hubId} groundAt={relief.groundAt} still={still} />
+      <AirportLabels
+        frame={frame}
+        groundAt={relief.groundAt}
+        focused={Boolean(focus)}
+        still={still}
+      />
       {!focus && (
         <HubLabels
           frame={frame}
@@ -1001,7 +1310,7 @@ function canWebGL() {
  * focus   null for the whole Midwest, or { lat, lng, dist } to fly to
  */
 export default function LocalMap(props) {
-  const { places, shown, hubs, beams, focus, selected, onSelect, onHub } = props
+  const { places, shown, hubs, beams, focus, selected, onSelect, onHub, hubId } = props
   const [hover, setHover] = useState(null)
   const [ok, setOk] = useState(canWebGL)
   const [attempt, setAttempt] = useState(0)
@@ -1071,6 +1380,7 @@ export default function LocalMap(props) {
           onHover={setHover}
           onSelect={onSelect}
           onHub={onHub}
+          hubId={hubId}
           zoomApiRef={zoomApiRef}
         />
         {!coarse && (

@@ -103,6 +103,20 @@ test('an event leaves the page the day after its last day', () => {
   assert.ok(!eventsBetween(next(e.last), '2999-12-31').includes(e))
 })
 
+test('every airport carries an IATA code, a Wikidata identity and a gateway that exists', () => {
+  const { AIRPORT_PLACES, gatewayOf } = idx
+  assert.ok(AIRPORT_PLACES.length >= 4)
+  const gateways = AIRPORT_PLACES.filter((a) => a.gateway)
+  assert.ok(gateways.length >= 3)
+  for (const a of AIRPORT_PLACES) {
+    assert.match(a.iata, /^[A-Z]{3}$/, a.name)
+    assert.match(a.key, /^Q\d+$/, a.name)
+    const g = gatewayOf(a)
+    assert.ok(g && g.gateway, `${a.iata} points at no gateway`)
+    assert.ok(!HEADLINE_LAYERS.has(a.layer), 'an airport is never a headline place')
+  }
+})
+
 test('the date windows start today or later and the weekend is Friday to Sunday', () => {
   const w = dateWindows('2026-11-18') // a Wednesday
   const weekend = w.find((x) => x.id === 'weekend')
