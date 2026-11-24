@@ -224,11 +224,11 @@ const dublinData = {
       subcategory: 'Trad music pub',
       vibeTags: ['Take It All In', 'Just Us'],
       description:
-        "Legendary trad music pub with free sessions in the front bar every night and ticketed acts in the Backroom venue. Widely regarded as Dublin's best spot for authentic traditional Irish music.",
+        "Legendary trad music pub with sessions in the front bar every night with no cover and ticketed acts in the Backroom venue. Widely regarded as Dublin's best spot for authentic traditional Irish music.",
       priceRange: '$',
       hours: 'Mon-Fri 4pm-11:30pm, Sat-Sun 1:30pm-12:30am',
       happyHour: 'None known',
-      wayToSave: 'Stick to the free front-bar sessions — same quality musicians, no cover charge.',
+      wayToSave: 'Stick to the front-bar sessions — same quality musicians, no cover charge.',
       bestTime: 'evening',
       address: '77 North King St, Smithfield, Dublin 7',
       coordinates: { lat: 53.3484, lng: -6.2785 },
@@ -281,7 +281,7 @@ const dublinData = {
       hours: 'Daily 10am-2am',
       happyHour: 'None known',
       wayToSave:
-        'Free live music nightly instead of paying for ticketed trad shows. Whiskey flights better value than singles.',
+        'Live music nightly with no cover instead of paying for ticketed trad shows. Whiskey flights better value than singles.',
       bestTime: 'evening',
       address: '19 Fishamble St, Dublin 8',
       coordinates: { lat: 53.3441, lng: -6.271 },
@@ -334,7 +334,7 @@ const dublinData = {
       hours: 'Mon-Thu 10:30am-11:30pm, Fri-Sat 10:30am-12:30am, Sun 12:30pm-11pm',
       happyHour: 'None known',
       wayToSave:
-        'Music is free every night. Saturday 5pm session is less packed than the 9pm slot.',
+        'Music has no cover every night. Saturday 5pm session is less packed than the 9pm slot.',
       bestTime: 'evening',
       address: '15 Merrion Row, Dublin 2',
       coordinates: { lat: 53.3393, lng: -6.2516 },
@@ -440,7 +440,7 @@ const dublinData = {
       priceRange: '$$',
       hours: 'Daily 12pm-late (food until 9pm)',
       wayToSave:
-        'Go for a pint in the courtyard, skip the full meal. Sunday trad session 3-6pm is free.',
+        'Go for a pint in the courtyard, skip the full meal. Sunday trad session 3-6pm has no cover.',
       bestTime: 'evening',
       address: '20 Lower Bridge St, Dublin 8',
       coordinates: { lat: 53.3448, lng: -6.2778 },
@@ -678,7 +678,7 @@ const dublinData = {
       hours: 'Mon-Sat 9:30am-5pm (varies seasonally)',
       happyHour: 'N/A',
       wayToSave:
-        'Book online in advance for cheapest timed slot. Students get discount. Campus grounds are free.',
+        'Book online in advance for cheapest timed slot. Students get discount. No charge to walk the campus grounds.',
       bestTime: 'morning',
       address: 'College Green, Dublin 2',
       coordinates: { lat: 53.3438, lng: -6.2546 },
@@ -732,7 +732,7 @@ const dublinData = {
       hours: 'Mon-Fri 9am-5pm, Sat 9am-5pm (6pm summer), Sun limited',
       happyHour: 'N/A',
       wayToSave:
-        'Check for evensong services — free admission during worship. Surrounding park is free.',
+        'Check for evensong services — no admission charge during worship. Surrounding park has no admission charge.',
       bestTime: 'morning',
       address: "St Patrick's Close, Patrick St, Dublin 8",
       coordinates: { lat: 53.3393, lng: -6.2716 },
@@ -759,7 +759,7 @@ const dublinData = {
       hours: 'Daily 10:30am-5:15pm (Oct-Mar) / 5:45pm (Apr-Sep)',
       happyHour: 'N/A',
       wayToSave:
-        'Book online 28 days in advance (tickets release at midnight). Saves \u20AC1 and guarantees entry. Children under 12 free.',
+        'Book online 28 days in advance (tickets release at midnight). Saves \u20AC1 and guarantees entry. No charge for children under 12.',
       bestTime: 'morning',
       address: 'Inchicore Rd, Kilmainham, Dublin 8',
       coordinates: { lat: 53.3421, lng: -6.31 },
@@ -805,7 +805,7 @@ const dublinData = {
       },
       hours: 'Closed to visitors until Dec 31, 2026',
       happyHour: 'N/A',
-      wayToSave: 'Grounds and courtyard are free to walk.',
+      wayToSave: 'No charge to walk the grounds and courtyard.',
       bestTime: 'morning',
       address: 'Dame St, Dublin 2',
       coordinates: { lat: 53.3429, lng: -6.2674 },
@@ -985,7 +985,7 @@ const dublinData = {
       subcategory: 'Historic pub / bistro',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        '800-year-old pub across three floors. Irish whiskey bar, cocktails, bistro food, and free live music every night.',
+        '800-year-old pub across three floors. Irish whiskey bar, cocktails, bistro food, and live music every night with no cover.',
       priceRange: '$$',
       hours: 'Mon-Thu & Sun 12pm-11:30pm, Fri-Sat 12pm-12:30am (food 1-8pm)',
       happyHour: 'None known',
@@ -1118,11 +1118,11 @@ const dublinData = {
       subcategory: 'Cathedral',
       vibeTags: ['Take It All In', 'Unplug'],
       description:
-        'Renaissance-style cathedral completed in 1965, one of the last great stone cathedrals built in Europe. Notable dome, rose window, and Kennedy mosaic. Free entry.',
+        'Renaissance-style cathedral completed in 1965, one of the last great stone cathedrals built in Europe. Notable dome, rose window, and Kennedy mosaic. No admission charge.',
       priceRange: '$',
       hours: 'Daily ~8am-8pm',
       happyHour: 'N/A',
-      wayToSave: 'Free to visit. Go between masses for a quiet experience.',
+      wayToSave: 'No admission charge. Go between masses for a quiet experience.',
       bestTime: 'morning',
       address: 'Gaol Road, Galway',
       coordinates: { lat: 53.274, lng: -9.058 },
@@ -1153,7 +1153,7 @@ const dublinData = {
       description:
         '30 minutes by DART from Connolly or Tara Street. Coastal village, cliff walk with Atlantic views, seafood at the harbour, pint at McNeills at the trailhead.',
       rating: 4.9,
-      price: 'Free',
+      price: 'No charge',
       ladsRating: '8/10',
     },
     {

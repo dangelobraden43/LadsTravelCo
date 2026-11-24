@@ -119,7 +119,7 @@ export default {
       hours: 'Mon 10am-4am, Tue-Sun 9am-4am',
       happyHour: 'None known',
       wayToSave:
-        'Already cheap. Beer 10-15 PLN (~$2.50-4). The basement concerts are free or very cheap cover.',
+        'Already cheap. Beer 10-15 PLN (~$2.50-4). The basement concerts have no or very low cover.',
       bestTime: 'evening',
       address: 'ul. Estery 5, 31-056 Krakow',
       coordinates: { lat: 50.0519, lng: 19.9447 },
@@ -247,13 +247,13 @@ export default {
       subcategory: 'Memorial / museum',
       vibeTags: ['Take It All In'],
       description:
-        'The most important site in Poland. Book guided tours 90 days ahead — summer tours sell out completely. Free entry but guided tour required in peak season. Allow a full day including travel from Krakow.',
-      priceRange: 'Free',
+        'The most important site in Poland. Book guided tours 90 days ahead — summer tours sell out completely. No admission charge but guided tour required in peak season. Allow a full day including travel from Krakow.',
+      priceRange: 'No charge',
       hours:
         'Daily 7:30am-seasonal close (3:30pm Dec, 8:30pm Jun-Aug). Closed Jan 1, Dec 25, Easter Sun',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry. Guided tour required in peak season (~50 PLN). Book at visit.auschwitz.org 90 days ahead. Morning tours (7:30-8:30am) have smaller groups.',
+        'No admission charge. Guided tour required in peak season (~50 PLN). Book at visit.auschwitz.org 90 days ahead. Morning tours (7:30-8:30am) have smaller groups.',
       bestTime: 'morning',
       address: 'ul. Wiezniow Oswiecimia 20, 32-603 Oswiecim',
       coordinates: { lat: 50.0266, lng: 19.2036 },
@@ -306,7 +306,8 @@ export default {
       priceRange: '$',
       hours: 'Mon/Wed/Fri-Sun 8am-6pm, Thu 8am-8pm, Tue closed',
       happyHour: 'N/A',
-      wayToSave: 'Free on Sundays. Weekdays 25 PLN. Go Thursday evening for extended hours.',
+      wayToSave:
+        'No admission charge on Sundays. Weekdays 25 PLN. Go Thursday evening for extended hours.',
       bestTime: 'morning',
       address: 'ul. Grzybowska 79, 00-844 Warszawa',
       coordinates: { lat: 52.226, lng: 20.9752 },
@@ -332,7 +333,7 @@ export default {
       priceRange: '$',
       hours: 'Mon/Wed-Fri 10am-5pm, Sat-Sun 10am-6pm, Tue closed',
       happyHour: 'N/A',
-      wayToSave: 'Free on Wednesdays. Standard admission 25 PLN.',
+      wayToSave: 'No admission charge on Wednesdays. Standard admission 25 PLN.',
       bestTime: 'morning',
       address: 'pl. Solidarnosci 1, 80-863 Gdansk',
       coordinates: { lat: 54.3597, lng: 18.6468 },
@@ -358,7 +359,7 @@ export default {
       priceRange: '$',
       hours: 'Tue 10am-4pm, Wed-Sun 10am-6pm (Jul-Aug until 8pm), Mon closed',
       happyHour: 'N/A',
-      wayToSave: 'Free on Tuesdays. Standard admission 25 PLN.',
+      wayToSave: 'No admission charge on Tuesdays. Standard admission 25 PLN.',
       bestTime: 'morning',
       address: 'pl. Wladyslawa Bartoszewskiego 1, 80-862 Gdansk',
       coordinates: { lat: 54.3545, lng: 18.6518 },
@@ -509,7 +510,7 @@ export default {
     {
       title: 'Skipping Auschwitz',
       detail:
-        'It is the most important site in Poland. Book 90 days ahead — summer guided tours sell out completely. Free entry but guided tour required in peak season.',
+        'It is the most important site in Poland. Book 90 days ahead — summer guided tours sell out completely. No admission charge but guided tour required in peak season.',
     },
   ],
 

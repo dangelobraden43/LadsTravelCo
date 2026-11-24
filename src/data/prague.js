@@ -142,12 +142,12 @@ const pragueData = {
       subcategory: 'Castle complex',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        'Largest ancient castle complex in the world (70,000 sq m). Free to walk the grounds and courtyards. Paid tickets for the interior buildings. The views over Prague from the ramparts are the main draw.',
+        'Largest ancient castle complex in the world (70,000 sq m). No charge to walk the grounds and courtyards. Paid tickets for the interior buildings. The views over Prague from the ramparts are the main draw.',
       priceRange: '$$',
       hours: 'Grounds 6am-10pm, buildings Apr-Oct 9am-5pm, Nov-Mar 9am-4pm',
       happyHour: 'N/A',
       wayToSave:
-        'Grounds and courtyards are free. Circuit B ticket (250 CZK) covers the essentials. Skip Circuit A unless you want everything.',
+        'Grounds and courtyards have no admission charge. Circuit B ticket (250 CZK) covers the essentials. Skip Circuit A unless you want everything.',
       bestTime: 'morning',
       address: 'Hradcany, 119 08 Prague 1',
       coordinates: { lat: 50.0897, lng: 14.3984 },
@@ -169,12 +169,12 @@ const pragueData = {
       subcategory: 'Gothic cathedral',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        "Gothic cathedral inside the castle complex. 600 years to build. Mucha's Art Nouveau stained glass window is the highlight. Free entry to the nave, paid for the full interior.",
+        "Gothic cathedral inside the castle complex. 600 years to build. Mucha's Art Nouveau stained glass window is the highlight. No admission charge for the nave, paid for the full interior.",
       priceRange: '$',
       hours: 'Mon-Sat 9am-5pm, Sun 12-5pm (Apr-Oct), closes 4pm winter',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry to the front nave gives you the best views of the stained glass. Full access requires castle ticket.',
+        'The front nave has no admission charge and gives you the best views of the stained glass. Full access requires castle ticket.',
       bestTime: 'morning',
       address: 'III. nadvori 48/2, 119 08 Praha 1',
       coordinates: { lat: 50.0909, lng: 14.4005 },
@@ -197,11 +197,11 @@ const pragueData = {
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
         'Heart of Prague. Tyn Church, Astronomical Clock, street performers. Beautiful at night when lit up. Christmas market in December. Do NOT eat at the restaurants here — tourist markup 2-3x.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Always accessible',
       happyHour: 'N/A',
       wayToSave:
-        'Free to enjoy. Walk 10 minutes in any direction for real Czech food at real prices.',
+        'No charge to enjoy. Walk 10 minutes in any direction for real Czech food at real prices.',
       bestTime: 'evening',
       address: 'Staromestske namesti, 110 00 Prague 1',
       coordinates: { lat: 50.0875, lng: 14.4213 },
@@ -228,7 +228,7 @@ const pragueData = {
       hours: 'Clock chimes every hour 8am-11pm. Tower Mon 11am-6pm, Tue-Sun 9am-6pm',
       happyHour: 'N/A',
       wayToSave:
-        'Watching the clock is free. Tower climb (300 CZK) gives panoramic views worth more than the clock itself.',
+        'Watching the clock costs nothing. Tower climb (300 CZK) gives panoramic views worth more than the clock itself.',
       bestTime: 'morning',
       address: 'Staromestske namesti 1, 110 00 Prague 1',
       coordinates: { lat: 50.087, lng: 14.4208 },
@@ -251,11 +251,11 @@ const pragueData = {
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
         'Iconic 14th-century pedestrian bridge with 30 Baroque statues. Go at sunrise to avoid crowds. The bridge connects Old Town to Mala Strana with the castle rising behind it.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Always accessible (sunrise is the move)',
       happyHour: 'N/A',
       wayToSave:
-        "Free. Sunrise (5-6am in summer) is the only time you'll have it nearly to yourself.",
+        "No charge. Sunrise (5-6am in summer) is the only time you'll have it nearly to yourself.",
       bestTime: 'morning',
       address: 'Karluv Most, 110 00 Prague 1',
       coordinates: { lat: 50.0865, lng: 14.4114 },
@@ -304,10 +304,11 @@ const pragueData = {
       vibeTags: ['Take It All In', 'Unplug', 'Just Us'],
       description:
         'Hilltop fortress south of centre. Views over the Vltava and Prague skyline. Far fewer tourists than the castle. The cemetery holds Dvorak, Mucha, and Smetana.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Grounds 24/7. Casemates Apr-Oct 9:30am-6pm, Nov-Mar 9:30am-5pm',
       happyHour: 'N/A',
-      wayToSave: 'Grounds free. Combine with Vitkarka Beer Garden nearby for sunset beers.',
+      wayToSave:
+        'Grounds have no admission charge. Combine with Vitkarka Beer Garden nearby for sunset beers.',
       bestTime: 'afternoon',
       address: 'V Pevnosti 159/5b, 128 00 Prague 2',
       coordinates: { lat: 50.0641, lng: 14.4194 },
@@ -437,11 +438,11 @@ const pragueData = {
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
         'Baroque church completely destroyed in the 1945 firebombing and rebuilt from original stones (1994-2005). The reconstruction story is extraordinary. Darker stones in the exterior are originals.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Mon-Fri 10am-11:30am & 1-5:30pm, Sat-Sun varies',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry. Dome climb available for views. The exterior tells the story — look for the dark original stones.',
+        'No admission charge. Dome climb available for views. The exterior tells the story — look for the dark original stones.',
       bestTime: 'morning',
       address: 'Georg-Treu-Platz 3, 01067 Dresden',
       coordinates: { lat: 51.0523, lng: 13.7419 },
@@ -463,12 +464,12 @@ const pragueData = {
       subcategory: 'Baroque palace / gallery',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        "Baroque palace with world-class art galleries including the Old Masters Gallery (Raphael's Sistine Madonna). Courtyard is free and architecturally stunning.",
+        "Baroque palace with world-class art galleries including the Old Masters Gallery (Raphael's Sistine Madonna). Courtyard has no admission charge and is architecturally stunning.",
       priceRange: '$$',
       hours: 'Courtyards 6am-10pm, museums Tue-Sun 10am-6pm, Mon closed',
       happyHour: 'N/A',
       wayToSave:
-        'Courtyard is free. Old Masters Gallery (€14) is the must-see if you pick one museum.',
+        'Courtyard has no admission charge. Old Masters Gallery (€14) is the must-see if you pick one museum.',
       bestTime: 'morning',
       address: 'Sophienstrasse, 01067 Dresden',
       coordinates: { lat: 51.0534, lng: 13.7345 },
@@ -491,10 +492,10 @@ const pragueData = {
       vibeTags: ['Take It All In', 'Unplug'],
       description:
         'Catholic cathedral and largest church in Saxony. Adjacent to the Zwinger on Theaterplatz. Baroque interior with Silbermann organ.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Mon-Fri 10am-12pm & 1-6pm, liturgy only on weekends',
       happyHour: 'N/A',
-      wayToSave: "Free entry. Quick stop between Zwinger and Bruhl's Terrace.",
+      wayToSave: "No admission charge. Quick stop between Zwinger and Bruhl's Terrace.",
       bestTime: 'morning',
       address: 'Schlossstrasse 24, 01067 Dresden',
       coordinates: { lat: 51.0529, lng: 13.7358 },
@@ -516,11 +517,11 @@ const pragueData = {
       subcategory: 'Elevated promenade',
       vibeTags: ['Take It All In', 'Unplug'],
       description:
-        'The "Balcony of Europe." Elevated walkway along the Elbe with views of the Neustadt across the river. Free, atmospheric, and the best place to end a Dresden day.',
-      priceRange: 'Free',
+        'The "Balcony of Europe." Elevated walkway along the Elbe with views of the Neustadt across the river. No charge, atmospheric, and the best place to end a Dresden day.',
+      priceRange: 'No charge',
       hours: 'Always accessible',
       happyHour: 'N/A',
-      wayToSave: 'Free. Walk the full length for the best views.',
+      wayToSave: 'No charge. Walk the full length for the best views.',
       bestTime: 'evening',
       address: 'Georg-Treu-Platz 1, 01067 Dresden',
       coordinates: { lat: 51.0527, lng: 13.7435 },

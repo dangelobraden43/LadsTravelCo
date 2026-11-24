@@ -283,7 +283,7 @@ export default {
       hours: 'Always accessible',
       happyHour: 'N/A',
       wayToSave:
-        'Free to enter. Beer gardens inside have reasonable prices. Watch the Eisbach surfers for free.',
+        'No admission charge. Beer gardens inside have reasonable prices. Watch the Eisbach surfers at no charge.',
       bestTime: 'afternoon',
       address: 'Englischer Garten, 80538 Munchen',
       coordinates: { lat: 48.1528, lng: 11.5919 },
@@ -306,10 +306,10 @@ export default {
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
         'Main square. Glockenspiel at 11am and noon (daily, plus 5pm in summer). Orientation point — not a destination you linger at. Neues Rathaus tower has views.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Always accessible. Glockenspiel 11am, 12pm (+ 5pm May-Oct)',
       happyHour: 'N/A',
-      wayToSave: 'Free. Tower climb ~€4 for views. Do not eat at the restaurants here.',
+      wayToSave: 'No charge. Tower climb ~€4 for views. Do not eat at the restaurants here.',
       bestTime: 'morning',
       address: 'Marienplatz 1, 80331 Munchen',
       coordinates: { lat: 48.1373, lng: 11.5753 },
@@ -429,7 +429,7 @@ export default {
     {
       title: 'Buying Fake Entry Tickets',
       detail:
-        'There is no general entry ticket to Oktoberfest. Entry to the Wiesn grounds is free. Anyone selling "tickets" is scamming you.',
+        'There is no general entry ticket to Oktoberfest. There is no admission charge for the Wiesn grounds. Anyone selling "tickets" is scamming you.',
     },
     {
       title: 'Anchoring at Hofbrau',

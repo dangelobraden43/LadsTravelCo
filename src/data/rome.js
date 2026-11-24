@@ -157,7 +157,7 @@ const romeData = {
       hours: 'Daily 8:30am-seasonal close (4:30pm winter, 7:15pm summer)',
       happyHour: 'N/A',
       wayToSave:
-        'Combined ticket (€16) covers Colosseum + Forum + Palatine for 2 days. Free first Sunday of the month (massive queues).',
+        'Combined ticket (€16) covers Colosseum + Forum + Palatine for 2 days. No admission charge first Sunday of the month (massive queues).',
       bestTime: 'morning',
       address: 'Piazza del Colosseo 1, 00184 Roma',
       coordinates: { lat: 41.8903, lng: 12.4924 },
@@ -211,7 +211,7 @@ const romeData = {
       hours: 'Mon-Sat 8am-8pm (last entry 6pm), closed Sun except last Sun of month 9am-2pm',
       happyHour: 'N/A',
       wayToSave:
-        'Book online (€17) — door price is higher and the queue can be 2+ hours. Last Sunday of month is free but extremely crowded.',
+        'Book online (€17) — door price is higher and the queue can be 2+ hours. Last Sunday of month has no admission charge but is extremely crowded.',
       bestTime: 'morning',
       address: 'Viale Vaticano, 00120 Citta del Vaticano',
       coordinates: { lat: 41.9038, lng: 12.4527 },
@@ -233,12 +233,12 @@ const romeData = {
       subcategory: 'Basilica',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        "Largest church in the world. Free entry. Michelangelo's Pieta is just inside on the right. Climb the dome for panoramic Rome views — 551 steps or elevator + 320 steps.",
+        "Largest church in the world. No admission charge. Michelangelo's Pieta is just inside on the right. Climb the dome for panoramic Rome views — 551 steps or elevator + 320 steps.",
       priceRange: '$',
       hours: 'Apr-Sep 7:30am-6pm, Oct-Mar 7:30am-5pm',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry to the basilica. Dome climb €8 (stairs) or €10 (elevator + stairs). Go early to avoid security line.',
+        'No admission charge for the basilica. Dome climb €8 (stairs) or €10 (elevator + stairs). Go early to avoid security line.',
       bestTime: 'morning',
       address: 'Piazza San Pietro, 00120 Citta del Vaticano',
       coordinates: { lat: 41.9022, lng: 12.4539 },
@@ -265,7 +265,7 @@ const romeData = {
       hours: 'Daily 9am-7pm (last entry 6:30pm)',
       happyHour: 'N/A',
       wayToSave:
-        'Timed entry €5 — book online. Free on first Sunday of the month. Visit during rain to watch water fall through the oculus.',
+        'Timed entry €5 — book online. No admission charge on first Sunday of the month. Visit during rain to watch water fall through the oculus.',
       bestTime: 'morning',
       address: 'Piazza della Rotonda, 00186 Roma',
       coordinates: { lat: 41.8986, lng: 12.4769 },
@@ -292,7 +292,7 @@ const romeData = {
       hours: 'Always accessible (inner basin 9am-10pm, €2)',
       happyHour: 'N/A',
       wayToSave:
-        'Free to view from the piazza. €2 inner basin access. Sunrise visit is free, empty, and the light is perfect.',
+        'No charge to view from the piazza. €2 inner basin access. Sunrise visit costs nothing, is empty, and the light is perfect.',
       bestTime: 'morning',
       address: 'Piazza di Trevi, 00187 Roma',
       coordinates: { lat: 41.9009, lng: 12.4833 },
@@ -318,7 +318,8 @@ const romeData = {
       priceRange: '$$',
       hours: 'Tue-Sun 9am-7:30pm (closed Mon)',
       happyHour: 'N/A',
-      wayToSave: 'First Sunday of the month free. Summer night openings are worth the late visit.',
+      wayToSave:
+        'No admission charge first Sunday of the month. Summer night openings are worth the late visit.',
       bestTime: 'afternoon',
       address: 'Lungotevere Castello 50, 00193 Roma',
       coordinates: { lat: 41.9031, lng: 12.4663 },
@@ -340,11 +341,11 @@ const romeData = {
       subcategory: 'Baroque church',
       vibeTags: ['Take It All In', 'Unplug'],
       description:
-        "The trompe-l'oeil ceiling by Andrea Pozzo is one of the greatest optical illusions in art. The painted dome is not real. Stand on the disk in the floor for the full effect. Free. Underrated.",
-      priceRange: 'Free',
+        "The trompe-l'oeil ceiling by Andrea Pozzo is one of the greatest optical illusions in art. The painted dome is not real. Stand on the disk in the floor for the full effect. No admission charge. Underrated.",
+      priceRange: 'No charge',
       hours: 'Mon-Sat 7:30am-7pm, Sun 9am-7pm',
       happyHour: 'N/A',
-      wayToSave: 'Free entry. Five minutes from the Pantheon — combine them.',
+      wayToSave: 'No admission charge. Five minutes from the Pantheon — combine them.',
       bestTime: 'morning',
       address: 'Via del Caravita 8A, 00186 Roma',
       coordinates: { lat: 41.8987, lng: 12.4795 },
@@ -366,12 +367,12 @@ const romeData = {
       subcategory: 'National monument',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        'Monument to Victor Emmanuel II at Piazza Venezia. The main monument is free. Pay for the panoramic lift to the top for 360-degree views rivaling any rooftop bar.',
+        'Monument to Victor Emmanuel II at Piazza Venezia. The main monument has no admission charge. Pay for the panoramic lift to the top for 360-degree views rivaling any rooftop bar.',
       priceRange: '$',
       hours: 'Daily 9:30am-7:30pm (terrace lift Mon-Thu 9am-6:30pm, Fri-Sun 9:30am-7:30pm)',
       happyHour: 'N/A',
       wayToSave:
-        'Ground level is free. Panoramic terrace elevator is €7 and worth it for the view.',
+        'Ground level has no admission charge. Panoramic terrace elevator is €7 and worth it for the view.',
       bestTime: 'afternoon',
       address: 'Piazza Venezia, 00186 Roma',
       coordinates: { lat: 41.8946, lng: 12.4831 },
@@ -769,12 +770,12 @@ const romeData = {
       subcategory: 'Hostel',
       vibeTags: ['Send It', 'Just Us'],
       description:
-        '10 min walk from Termini station. YellowBar across the street does free pasta hour 7-8pm. Social atmosphere, good for groups. The free pasta hour is a budget game-changer.',
+        '10 min walk from Termini station. YellowBar across the street does a pasta hour at no charge 7-8pm. Social atmosphere, good for groups. The pasta hour is a budget game-changer.',
       priceRange: '$',
       hours: 'Reception 24/7',
-      happyHour: 'Free pasta hour at YellowBar 7-8pm',
+      happyHour: 'Pasta hour at no charge at YellowBar 7-8pm',
       wayToSave:
-        'Free pasta hour at YellowBar (across the street, 7-8pm) replaces one dinner per night. Book private room for group value.',
+        'The no-charge pasta hour at YellowBar (across the street, 7-8pm) replaces one dinner per night. Book private room for group value.',
       bestTime: 'any',
       address: 'Via Palestro 51, 00185 Roma',
       coordinates: { lat: 41.9025, lng: 12.5009 },
@@ -874,7 +875,7 @@ const romeData = {
     {
       title: 'Buying the Roma Pass',
       detail:
-        '€58 for two free sites that total ~€35 in ticket value. Buy tickets individually instead.',
+        '€58 for two included sites that total ~€35 in ticket value. Buy tickets individually instead.',
     },
     {
       title: 'Over-tipping',

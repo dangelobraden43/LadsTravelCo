@@ -473,11 +473,11 @@ const australiaData = {
       vibeTags: ['Push Your Limits', 'Take It All In'],
       description:
         'Only accessible at low tide. 6km return hike through Royal National Park. Natural rock formations that create figure-8 shaped pools. Unique on the planet. Check the safety risk forecast before going — people have been swept away.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Low tide only — check tides and BOM risk forecast',
       happyHour: 'N/A',
       wayToSave:
-        'Free. Check the Royal National Park Figure 8 Pools risk assessment website before going.',
+        'No charge. Check the Royal National Park Figure 8 Pools risk assessment website before going.',
       bestTime: 'morning',
       address: 'Royal National Park, Garawarra NSW',
       coordinates: { lat: -34.1667, lng: 151.0667 },
@@ -529,7 +529,8 @@ const australiaData = {
       priceRange: '$',
       hours: 'Always accessible (visitor centre 9am-5pm)',
       happyHour: 'N/A',
-      wayToSave: 'Train from Central Station ~$8 AUD with Opal. Pack lunch. The walks are free.',
+      wayToSave:
+        'Train from Central Station ~$8 AUD with Opal. Pack lunch. The walks have no charge.',
       bestTime: 'morning',
       address: 'Katoomba NSW 2780',
       coordinates: { lat: -33.732, lng: 150.312 },

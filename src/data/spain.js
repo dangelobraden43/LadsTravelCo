@@ -246,7 +246,7 @@ const spainData = {
       hours: 'Daily 9:30am-7:30pm (winter 9:30am-5:30pm)',
       happyHour: 'N/A',
       wayToSave:
-        'Book timed entry online — cheaper than door. Free entry before 9:30am and after closing to the non-monumental areas.',
+        'Book timed entry online — cheaper than door. No admission charge before 9:30am and after closing to the non-monumental areas.',
       bestTime: 'morning',
       address: "Carrer d'Olot, 08024 Barcelona",
       coordinates: { lat: 41.4145, lng: 2.1527 },
@@ -295,12 +295,12 @@ const spainData = {
       subcategory: 'Gaudi house museum',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        "Gaudi's dragon house on Passeig de Gracia. The interior is spectacular but expensive. Facade viewable from the street for free. Night experience adds light shows.",
+        "Gaudi's dragon house on Passeig de Gracia. The interior is spectacular but expensive. Facade viewable from the street at no charge. Night experience adds light shows.",
       priceRange: '$$$',
       hours: 'Daily 9am-8pm (last entry 7pm)',
       happyHour: 'N/A',
       wayToSave:
-        'View the facade from Passeig de Gracia for free. If entering, book Blue ticket online — cheapest tier. Skip the Gold/Silver upgrades.',
+        'View the facade from Passeig de Gracia at no charge. If entering, book Blue ticket online — cheapest tier. Skip the Gold/Silver upgrades.',
       bestTime: 'morning',
       address: 'Passeig de Gracia 43, 08007 Barcelona',
       coordinates: { lat: 41.3916, lng: 2.165 },
@@ -327,7 +327,7 @@ const spainData = {
       hours: 'Mon-Sat 10am-6:30pm, Sun 10am-2:30pm (Apr-Oct until 7pm)',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry first Sunday of the month. Combined ticket with Palau de la Musica saves a few euros.',
+        'No admission charge first Sunday of the month. Combined ticket with Palau de la Musica saves a few euros.',
       bestTime: 'morning',
       address: 'Carrer de Sant Antoni Maria Claret 167, 08025 Barcelona',
       coordinates: { lat: 41.4114, lng: 2.1745 },
@@ -349,11 +349,12 @@ const spainData = {
       subcategory: 'Panoramic lookout',
       vibeTags: ['Take It All In', 'Just Us', 'Unplug'],
       description:
-        'Best free 360-degree sunset view in Barcelona. Old Spanish Civil War anti-aircraft bunkers on Turo de la Rovira hill. Bring a beer and snacks. The local sunset ritual.',
-      priceRange: 'Free',
+        'Best no-charge 360-degree sunset view in Barcelona. Old Spanish Civil War anti-aircraft bunkers on Turo de la Rovira hill. Bring a beer and snacks. The local sunset ritual.',
+      priceRange: 'No charge',
       hours: 'Always accessible (best at sunset)',
       happyHour: 'N/A',
-      wayToSave: 'Completely free. Buy drinks at a bodega on the way up — nothing sold at the top.',
+      wayToSave:
+        'No charge at all. Buy drinks at a bodega on the way up — nothing sold at the top.',
       bestTime: 'evening',
       address: 'Carrer de Marià Labèrnia, 08032 Barcelona',
       coordinates: { lat: 41.4189, lng: 2.1618 },
@@ -375,12 +376,12 @@ const spainData = {
       subcategory: 'Gothic basilica',
       vibeTags: ['Take It All In', 'Unplug'],
       description:
-        'Catalan Gothic masterpiece built 1329-1383. More powerful than the Cathedral and preferred by locals. Free mornings for general access. Rooftop tour available.',
+        'Catalan Gothic masterpiece built 1329-1383. More powerful than the Cathedral and preferred by locals. No admission charge in the mornings for general access. Rooftop tour available.',
       priceRange: '$',
       hours: 'Mon-Sat 9am-1pm & 5pm-8:30pm, Sun 10am-2pm & 5pm-8pm',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry during worship hours. Paid rooftop tours (€10) offer Born neighborhood views.',
+        'No admission charge during worship hours. Paid rooftop tours (€10) offer Born neighborhood views.',
       bestTime: 'morning',
       address: 'Placa de Santa Maria 1, 08003 Barcelona',
       coordinates: { lat: 41.3835, lng: 2.1818 },
@@ -402,11 +403,11 @@ const spainData = {
       subcategory: 'Light show fountain',
       vibeTags: ['Show Them Everything', 'Take It All In'],
       description:
-        'Free light, water, and music show with the Palau Nacional as backdrop. Built for the 1929 International Exposition. Go with a group and a beer.',
-      priceRange: 'Free',
+        'Light, water, and music show with no admission charge, with the Palau Nacional as backdrop. Built for the 1929 International Exposition. Go with a group and a beer.',
+      priceRange: 'No charge',
       hours: 'Thu-Sun evenings (times vary by season, typically 9pm-10:30pm summer)',
       happyHour: 'N/A',
-      wayToSave: 'Completely free. Arrive 15 min early for a front-row spot on the steps.',
+      wayToSave: 'No charge at all. Arrive 15 min early for a front-row spot on the steps.',
       bestTime: 'evening',
       address: 'Placa de Carles Buigas 1, 08038 Barcelona',
       coordinates: { lat: 41.3713, lng: 2.1517 },
@@ -429,11 +430,11 @@ const spainData = {
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
         'Medieval heart of Barcelona. Roman walls, narrow alleys, hidden plazas. Best explored by wandering without a plan. Cathedral, Placa Reial, and Bisbe Bridge are the anchors.',
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Always accessible',
       happyHour: 'N/A',
       wayToSave:
-        'Free to wander. Skip the restaurants on La Rambla — walk one block off the main drag for half the price.',
+        'No charge to wander. Skip the restaurants on La Rambla — walk one block off the main drag for half the price.',
       bestTime: 'any',
       address: 'Barri Gotic, Barcelona',
       coordinates: { lat: 41.3833, lng: 2.1761 },
@@ -886,7 +887,7 @@ const spainData = {
       hours: 'Mon-Sat 10am-8pm, Sun & holidays 10am-7pm',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry last 2 hours daily (Mon-Sat 6-8pm, Sun 5-7pm). Queue is long but moves fast.',
+        'No admission charge for the last 2 hours daily (Mon-Sat 6-8pm, Sun 5-7pm). Queue is long but moves fast.',
       bestTime: 'morning',
       address: 'Calle de Ruiz de Alarcon 23, 28014 Madrid',
       coordinates: { lat: 40.4138, lng: -3.6921 },
@@ -913,7 +914,7 @@ const spainData = {
       hours: 'Mon & Wed-Sat 10am-9pm, Sun 10am-2:30pm, Tue closed',
       happyHour: 'N/A',
       wayToSave:
-        'Free Mon & Wed-Sat 7-9pm, Sun 12:30-2:30pm. Go straight to Guernica on free evenings.',
+        'No admission charge Mon & Wed-Sat 7-9pm, Sun 12:30-2:30pm. Go straight to Guernica on those evenings.',
       bestTime: 'morning',
       address: 'Calle de Santa Isabel 52, 28012 Madrid',
       coordinates: { lat: 40.4086, lng: -3.6942 },
@@ -936,10 +937,11 @@ const spainData = {
       vibeTags: ['Take It All In', 'Unplug', 'Just Us'],
       description:
         "Madrid's green lungs — 125 hectares. Row boats on the lake, Crystal Palace, rose garden, and world-class people-watching. The Sunday afternoon ritual.",
-      priceRange: 'Free',
+      priceRange: 'No charge',
       hours: 'Daily 6am-midnight (Oct-Mar until 10pm)',
       happyHour: 'N/A',
-      wayToSave: 'Free. Row boats €6/45min. Bring a picnic from Mercado de San Anton.',
+      wayToSave:
+        'No admission charge. Row boats €6/45min. Bring a picnic from Mercado de San Anton.',
       bestTime: 'afternoon',
       address: 'Plaza de la Independencia 7, 28001 Madrid',
       coordinates: { lat: 40.4153, lng: -3.6844 },
@@ -988,12 +990,12 @@ const spainData = {
       subcategory: 'Ancient Egyptian temple',
       vibeTags: ['Take It All In', 'Unplug'],
       description:
-        'Actual 2nd-century BC Egyptian temple gifted by Egypt in 1968. Free. Sunset views behind the Royal Palace are extraordinary. One of the most unique spots in any European city.',
-      priceRange: 'Free',
+        'Actual 2nd-century BC Egyptian temple gifted by Egypt in 1968. No admission charge. Sunset views behind the Royal Palace are extraordinary. One of the most unique spots in any European city.',
+      priceRange: 'No charge',
       hours: 'Tue-Sun 10am-8pm (gardens always open)',
       happyHour: 'N/A',
       wayToSave:
-        'Free entry. Go at sunset for the best experience — the western-facing park catches golden hour perfectly.',
+        'No admission charge. Go at sunset for the best experience — the western-facing park catches golden hour perfectly.',
       bestTime: 'evening',
       address: 'Calle de Ferraz 1, 28008 Madrid',
       coordinates: { lat: 40.4242, lng: -3.7177 },
@@ -1020,7 +1022,7 @@ const spainData = {
       hours: 'Thu-Sat midnight-6am',
       happyHour: 'None known',
       wayToSave:
-        'Get on the guest list online for free/reduced entry. Drinks inside are €10-15. Pre-game at Malasana bars.',
+        'Get on the guest list online for no or reduced cover. Drinks inside are €10-15. Pre-game at Malasana bars.',
       bestTime: 'evening',
       address: 'Calle de Atocha 125, 28012 Madrid',
       coordinates: { lat: 40.4086, lng: -3.6955 },

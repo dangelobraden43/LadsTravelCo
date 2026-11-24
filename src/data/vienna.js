@@ -144,12 +144,12 @@ const viennaData = {
       subcategory: 'Imperial palace',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        'Habsburg summer residence. 1,441 rooms. Gardens are free and enormous — the Gloriette hilltop view is worth the walk. The palace tour is worth the fee for the state rooms.',
+        'Habsburg summer residence. 1,441 rooms. Gardens have no admission charge and are enormous — the Gloriette hilltop view is worth the walk. The palace tour is worth the fee for the state rooms.',
       priceRange: '$$',
       hours: 'Apr-Oct 8:30am-6:30pm, Nov-Mar 8:30am-5:30pm',
       happyHour: 'N/A',
       wayToSave:
-        'Gardens free. Imperial Tour (22 rooms, €22) is sufficient — skip the Grand Tour unless you love Habsburg history.',
+        'Gardens have no admission charge. Imperial Tour (22 rooms, €22) is sufficient — skip the Grand Tour unless you love Habsburg history.',
       bestTime: 'morning',
       address: 'Schonbrunner Schlossstrasse 47, 1130 Wien',
       coordinates: { lat: 48.1845, lng: 16.3122 },
@@ -203,7 +203,7 @@ const viennaData = {
       hours: 'Mon-Sat 9am-11:30am & 1-4:30pm, Sun 1-4:30pm. Towers daily 9am-7pm',
       happyHour: 'N/A',
       wayToSave:
-        'Cathedral entry free during worship. South tower climb €6. Catacombs €6. Both worth it.',
+        'No admission charge to the cathedral during worship. South tower climb €6. Catacombs €6. Both worth it.',
       bestTime: 'morning',
       address: 'Stephansplatz 3, 1010 Wien',
       coordinates: { lat: 48.2085, lng: 16.3731 },
@@ -225,12 +225,12 @@ const viennaData = {
       subcategory: 'Baroque palace / art museum',
       vibeTags: ['Take It All In', 'Show Them Everything'],
       description:
-        "Baroque palace complex. Klimt's The Kiss is in the Upper Belvedere — the reason you come. The gardens between upper and lower palaces are free and beautiful.",
+        "Baroque palace complex. Klimt's The Kiss is in the Upper Belvedere — the reason you come. The gardens between upper and lower palaces have no admission charge and are beautiful.",
       priceRange: '$$',
       hours: 'Upper daily 9am-6pm, Lower daily 10am-6pm',
       happyHour: 'N/A',
       wayToSave:
-        "Gardens free. Upper Belvedere (€16.70) for The Kiss. Skip Lower unless you're an art completist.",
+        "Gardens have no admission charge. Upper Belvedere (€16.70) for The Kiss. Skip Lower unless you're an art completist.",
       bestTime: 'morning',
       address: 'Prinz Eugen-Strasse 27, 1030 Wien',
       coordinates: { lat: 48.1914, lng: 16.3808 },
@@ -256,7 +256,8 @@ const viennaData = {
       priceRange: '$$',
       hours: 'Daily 10am-6pm, Wed & Fri until 9pm',
       happyHour: 'N/A',
-      wayToSave: 'Wednesday/Friday evenings (6-9pm) are less crowded. Under-19 free.',
+      wayToSave:
+        'Wednesday/Friday evenings (6-9pm) are less crowded. No admission charge under 19.',
       bestTime: 'afternoon',
       address: 'Albertinaplatz 1, 1010 Wien',
       coordinates: { lat: 48.2047, lng: 16.3683 },
@@ -309,7 +310,8 @@ const viennaData = {
       priceRange: '$$',
       hours: 'Courtyards 24/7. Museums vary (most Tue-Sun 10am-6pm)',
       happyHour: 'N/A',
-      wayToSave: 'Courtyard is free and atmospheric. Pick one museum instead of trying all three.',
+      wayToSave:
+        'Courtyard has no admission charge and is atmospheric. Pick one museum instead of trying all three.',
       bestTime: 'afternoon',
       address: 'Museumsplatz 1, 1070 Wien',
       coordinates: { lat: 48.2032, lng: 16.3583 },
@@ -336,7 +338,7 @@ const viennaData = {
       hours: 'Riesenrad daily 9am-10pm (high season), shorter in winter',
       happyHour: 'N/A',
       wayToSave:
-        'Riesenrad ticket ~€14. The park itself is free to walk through. Skip the VIP cabin.',
+        'Riesenrad ticket ~€14. No charge to walk through the park itself. Skip the VIP cabin.',
       bestTime: 'evening',
       address: 'Gaudeegasse 1, 1020 Wien',
       coordinates: { lat: 48.2167, lng: 16.3967 },
