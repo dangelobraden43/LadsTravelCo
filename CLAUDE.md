@@ -1,5 +1,5 @@
 # THE LADS TRAVEL CO. — CLAUDE.md
-## Last Updated: November 17, 2026 (/local reworked as an information page after Brady's review, the black-map fix, the /bucket-list 2027 calendar; all on feature/local-3d, preview only; the Nov 10 ship before it)
+## Last Updated: November 24, 2026 (/local landmark layer: airports with researched fares, model cities, runways and a plane; the deals refresh and the "free" pass under way; all on feature/local-3d, preview only; the Nov 10 ship before it)
 > Sept 29: trimmed 3,005 → ~1,700 lines. Old session logs and shipped queues moved
 > verbatim to **`docs/history.md`** (a record, never a work order); their durable
 > rules are distilled in **`HARD-WON LESSONS`** below.
@@ -277,6 +277,65 @@ own branch** (see Parallel Agent Workflow at the foot of this file), never in th
 shared checkout someone else is serving localhost from.
 
 ---
+
+## 🟡 NOVEMBER 22–24, 2026 — THE `/local` LANDMARK LAYER, THE FARES RUN, THE DEALS REFRESH, THE "FREE" PASS (branch `feature/local-3d`, PREVIEW, NOT MERGED)
+
+Brady, Nov 22, after reviewing the reworked page: keep going on `/local` "research forward"; add landmarks and
+animations around airports, stadiums and concert venues "where we can show the most information"; act as a
+design engineer; side task: improvement passes on all frameworks. Brainstormed in chat and in the visual
+companion: he chose **"Model city"** (B) over survey marks or a lit night map, and for airports **researched
+fares to six destinations (Dublin, Rome, Barcelona, Prague, Munich, Sydney) as a gateway to the intake**.
+Spec: `docs/superpowers/specs/2026-11-22-local-landmarks-design.md`. Read `git log` for the branch tip.
+
+1. **The landmark layer** (`tools/build-local-landmarks.mjs` → `src/data/localLandmarks.js` +
+   `public/local/build/<hub>.json`; rendering in `LocalMap.jsx`: `CityBuild`, `Runways`, `Planes`,
+   `AirportLabels`):
+   - **Airports by proof, not by name:** each of 18 airports is the Wikidata entity whose P238 equals the IATA
+     code (a search hit without that property is rejected; Green Bay and South Bend needed alternate search
+     names). Coordinates P625, passengers P3872 with year. Four gateways carry fares (ORD, DTW, MSP, GRR);
+     every other airport points at its nearest gateway. Airports are a layer ("Airports") and a ring mark;
+     the IATA chip sits above the ring (gateways always, all airports when flying in).
+   - **Model cities from OpenStreetMap:** for each hub, the centre is the member with the most neighbours
+     within 2 km (never typed); buildings within 800–1,100 m are read from Overpass with `height` or
+     `building:levels` (a building with neither is drawn at 12 m and marked `d:1`); venues by their
+     `wikidata` tag; runways by `aeroway=runway` around the airport's own coordinate. Simplified
+     (Douglas–Peucker 2 m, ≥150 m²), stored in metres from the centre, lazy-loaded on fly-in, merged into one
+     extruded geometry that rises on arrival and sinks on leaving; a plane loops an approach to each gateway.
+     **Scale is stated:** footprints ×11, heights ×28 ("enlarged like a souvenir model"); OSM credited under
+     "How this page is built". 14 hub models built; two small hubs the servers refused (East Lansing,
+     Duluth, both born when airports joined their clusters) are skipped until a re-run.
+   - ⚠️ Overpass and Wikidata both rate-limit a burst: the tool caches every response under
+     `internal/research/landmarks-cache/`, backs off on 429, tries a second Overpass mirror, and skips a hub
+     rather than die (`LANDMARK_FAST=1` for a quick re-run). The index imports the tool's output, so the
+     tool writes a stub first on a fresh checkout.
+   - **Verified on the real GPU through headless Chrome** (`--use-angle=d3d11`), because the Playwright MCP
+     browser disconnected mid-session and the software renderer cannot draw a merged city in time: home view,
+     the Chicago fly-in (city on its plinth, ORD and MDW runways, chips), the O'Hare card with six fare rows.
+2. **The fares run** `internal/research/midwest-fares/2026-11-22T11-05/` — four `lads-flights` parts (ORD,
+   DTW, MSP, GRR; 58 · 61 · 53 · 38 findings) → `tools/build-local-fares.mjs` → `src/data/localFares.js`:
+   per gateway and destination the whole-year and low/shoulder/peak **ranges** (the span of two aggregators'
+   published medians, named at each end), routing, flight time, booking window, arrival note, cautions;
+   sentences about the research process and any sentence with a money amount are stripped; a point price in a
+   fare-range claim throws. **24 rows on the cards.** Verifier running at the time of writing (budget 36):
+   re-read the numbers below when it lands. What the run says a founder should know: no Google Flights, BTS
+   or airline fare data was reachable, so every band is KAYAK + RatePunk history and says so; Delta's DTW–DUB
+   summer 2027 is not filed yet; MSP–DUB is Delta-only and now runs through winter; GRR is one-stop everywhere.
+   The flights agents stalled on the watchdog whenever they batched 10+ fetches: **three fetches per step,
+   write the file first** is now in their memory and in every dispatch prompt.
+3. **Side task, the quality pass:** a Playwright audit of 23 routes at 1440 and 390 (scratchpad `audit.mjs`)
+   found no overflow, no broken images, one h1 per page (the homepage reads 0 only when the lazy hero has
+   not mounted yet), and the two 404s on every page are the `_vercel` analytics scripts in local preview.
+   Real items: **about 140 uses of "free" across nine framework files** (the Sept 29 backlog) — a
+   general-purpose agent is doing the line-by-line pass under the rules in that backlog note (names, free
+   time, founder voice and third-party offers untouched); **`/deals` was overdue** (2026 sales last read Nov
+   10, and the page hides a sale not re-checked within a week once the watch window opens Nov 20) — run
+   `internal/research/holiday-deals-2026/2026-11-23T13-10/` (two `lads-deals-savings` parts + verifier) is
+   in flight. The bucket list no longer prints "coming soon" even when quoting a box office.
+4. **The 2027 calendar as a paid product:** three directions were put to Brady in the companion (a Year
+   Planner, a Trip Windows subscription, per-trip guides); **no pick yet**. Nothing built.
+
+**Open for Brady:** review the landmark layer on the preview (fly into Chicago or Detroit; open O'Hare);
+pick the 2027 product direction; `/ship` when the deals refresh and the "free" pass have landed.
 
 ## 🟡 NOVEMBER 17, 2026 — `/local` REJECTED AND REWORKED, THE BLACK MAP, THE `/bucket-list` CALENDAR, THE BUSINESS OVERVIEW (branch `feature/local-3d`, PREVIEW, NOT MERGED)
 
