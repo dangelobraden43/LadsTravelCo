@@ -703,7 +703,14 @@ function CityBuild({ frame, hubId, groundAt, still }) {
     []
   )
   const plinth = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: '#241f19', roughness: 1, metalness: 0 }),
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: '#2c2519',
+        roughness: 1,
+        metalness: 0,
+        transparent: true,
+        opacity: 0.45, // a shadowed base under the model, not a hole in the ground
+      }),
     []
   )
   useEffect(() => {

@@ -6,8 +6,8 @@
 export const LANDMARKS_META = {
   builtOn: '2026-11-23',
   defaultHeightM: 12,
-  footprintScale: 8,
-  heightScale: 25,
+  footprintScale: 11,
+  heightScale: 28,
 }
 
 export const AIRPORTS = [
@@ -1051,17 +1051,6 @@ export const HUB_BUILDS = [
     venues: ['Q387157', 'Q1154053', 'Q1100756', 'Q5967714', 'Q2493255', 'Q1100756', 'Q2978998'],
   },
   {
-    id: 'hub-bruce-peninsula',
-    name: 'Bruce Peninsula',
-    centre: [45.2547826, -81.6630724],
-    anchor: 'Tobermory Brewing Company & Grill',
-    radius: 800,
-    file: '/local/build/hub-bruce-peninsula.json',
-    buildings: 77,
-    unknownHeights: 76,
-    venues: [],
-  },
-  {
     id: 'hub-milwaukee',
     name: 'Milwaukee',
     centre: [43.0451, -87.9182],
@@ -1071,6 +1060,17 @@ export const HUB_BUILDS = [
     buildings: 349,
     unknownHeights: 24,
     venues: ['Q11781326', 'Q6861840', 'Q7121829', 'Q6758076', 'Q20372160'],
+  },
+  {
+    id: 'hub-bruce-peninsula',
+    name: 'Bruce Peninsula',
+    centre: [45.2547826, -81.6630724],
+    anchor: 'Tobermory Brewing Company & Grill',
+    radius: 800,
+    file: '/local/build/hub-bruce-peninsula.json',
+    buildings: 77,
+    unknownHeights: 76,
+    venues: [],
   },
   {
     id: 'hub-indianapolis',
@@ -1124,5 +1124,16 @@ export const HUB_BUILDS = [
     buildings: 141,
     unknownHeights: 135,
     venues: ['Q8068532', 'Q7774611'],
+  },
+  {
+    id: 'hub-madison',
+    name: 'Madison',
+    centre: [43.07472, -89.38417],
+    anchor: 'Wisconsin State Capitol',
+    radius: 800,
+    file: '/local/build/hub-madison.json',
+    buildings: 691,
+    unknownHeights: 340,
+    venues: [],
   },
 ]

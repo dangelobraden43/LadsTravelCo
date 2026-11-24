@@ -334,6 +334,7 @@
 }
 .lm-air {
   display: inline-block;
+  transform: translateY(-18px); /* above the ring, clear of a city label on the same spot */
   padding: 2px 7px;
   border-radius: 4px;
   background: rgba(20, 18, 16, 0.82);
